@@ -1,0 +1,403 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>The 'profile' Link Relation Type</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="The 'profile' Link Relation Type">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">EMC Corporation</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">April 15, 2012</td></tr>
+<tr><td class="header">Expires: October 17, 2012</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />The 'profile' Link Relation Type<br />draft-wilde-profile-link-01</h1>
+
+<h3>Abstract</h3>
+
+<p>This specification defines the 'profile' link relation type that allows resource representations to indicate that they are following one or more profiles. A profile is defined to not alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on October 17, 2012.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2012 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+<a href="#anchor2">2.</a>&nbsp;
+Terminology<br />
+<a href="#anchor3">3.</a>&nbsp;
+Profiles<br />
+<a href="#anchor4">4.</a>&nbsp;
+IANA Considerations<br />
+<a href="#anchor5">5.</a>&nbsp;
+Examples<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">5.1.</a>&nbsp;
+hCard<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">5.2.</a>&nbsp;
+Dublin Core<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">5.3.</a>&nbsp;
+Podcasts<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">5.4.</a>&nbsp;
+Atom Publishing Protocol (AtomPub)<br />
+<a href="#anchor10">6.</a>&nbsp;
+Security Considerations<br />
+<a href="#anchor11">7.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">7.1.</a>&nbsp;
+From -00 to -01<br />
+<a href="#rfc.references1">8.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
+Informative References<br />
+<a href="#anchor15">Appendix&nbsp;A.</a>&nbsp;
+Acknowledgements<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Author's Address<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>One of the foundations of the Internet and Web Architecture is the fact that resource representations communicated through protocols such as SMTP or HTTP are labeled with a 'media type', which allows a client to understand at run time what 'type' of resource representation it is handling. Sometimes, it would be useful for servers and clients to include additional information about the nature of the resource, so that a client understanding this additional information could react in a way specific to that specialization of the resource, where the specialization can be about constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. HTML 4 <a class='info' href='#HTML401'>[3]<span> (</span><span class='info'>Hors, A., Raggett, D., and I. Jacobs, &ldquo;HTML 4.01 Specification,&rdquo; December&nbsp;1999.</span><span>)</span></a> has such a mechanism built into the language, which is the 'profile' attribute of the 'head' element. This mechanism, however, is specific to HTML alone, and at the time of writing it seems as if HTML 5 will drop support for this mechanism entirely.
+</p>
+<p>RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> "defines a framework for typed links that is not specific to a particular serialization or application. It does so by redefining the link relation registry established by Atom to have a broader domain, and adding to it the relations that are defined by HTML."
+</p>
+<p>This specification registers a 'profile' link relation type according to the rules of RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>. This link relation type is independent of the context in which it is used (however, the representation must support typed links for this mechanism to work) and does not constrain in any way the target of the linked URI. In fact, for the purpose of this specification, the target URI does not necessarily have to identify a dereferencable resource (or even use a dereferencable URI scheme), and clients can treat the occurrence of a specific URI in the same way as an XML namespace URI and invoke specific behavior based on the assumption that a specific profile target URI signals that a resource representation follows a specific profile. Note that at the same time, it is possible for profile target URIs to use referencable URIs and use a media type (which is outside the scope of this specification) which represents the information about the profile in a human- or machine-readable way.
+</p>
+<p>As one example, consider the case of podcasts, a specific kind of feed using additional fields for media-related metadata. Using a 'profile' link, it would be easily possible for clients to understand that a specific feed is supposed to be a podcast feed, and that it may contain entries using podcast-specific fields. This may allow a client to behave differently when handling such a feed (such as rendering a podcast-specific UI), even when the current set of entries in the feed may not contain any podcast entries.
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Terminology</h3>
+
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[2]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Profiles</h3>
+
+<p>The concept of a profile has no strict definition on the Internet or on the Web. For the purpose of this specification, a profile can be described as additional semantics that can be used to process a resource representation, such as constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. A profile MUST NOT change the semantics of the resource representation when processed without profile knowledge, so that clients both with and without knowledge of a profiled resource can safely use the same representation. While this specification associates profiles with resource representations, creators of profiles MAY define and manage them in a way that they can be used across media types and thus could be associated with a resource, independent of its representations. However, such a design is outside of the scope of this specification, and clients profiles SHOULD treat them as being associated with a representation.
+</p>
+<p>Profiles can be combined, meaning that a single resource representation can conform to zero or any number of profiles. Depending on the profile support of clients, it is possible that the same resource representation, when linked to a number of profiles, can be processed with different sets of processing rules, based on the profile support of the clients.
+</p>
+<p>Profiles are identified by URI, but as with for example XML namespace URIs, the URI in this case only serves as an identifier, meaning that the presence of a specific URI has to be sufficient for a client to assert that a resource representation conforms to a profile. Clients thus SHOULD treat profile URIs as identifiers and not as links, but profiles MAY be defined in a way that the URIs do identify retrievable profile description and thus can be accessed by clients by dereferencing the profile URI. For profiles intended for use in environments where clients may encounter unknown profile URIs, profile maintainers SHOULD consider to make the profile URI dereferencable and provide useful documentation at that URI. The design of such profile descriptions, however, is outside the scope of this specification.
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+IANA Considerations</h3>
+
+<p>The link relation type below has been registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
+</p>
+<p>
+            </p>
+<blockquote class="text">
+<p>Relation Name: profile
+</p>
+<p>Description: Identifying that a resource representation conforms to a certain profile, without affecting the non-profile semantics of the resource representation.
+</p>
+<p>Reference: [[ This document ]]
+</p>
+<p>Notes: Profile URIs are primarily intended to be used as identifiers, and thus clients SHOULD NOT indiscriminately access profile URIs.
+</p>
+</blockquote><p>
+         
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Examples</h3>
+
+<p>This section lists some examples of profiles that already are defined today (and thus could be readily used with a 'profile' link), and of some potential additional examples. Since so far, profiles have been mostly limited to HTML (because of the support of profiles in HTML), the two examples of existing profiles are HTML profiles, and the two hypothetical examples are non-HTML examples.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+hCard</h3>
+
+<p>The hCard profile uses http://microformats.org/profile/hcard as its defining URI and is essentially a mechanism how vCard <a class='info' href='#RFC6350'>[4]<span> (</span><span class='info'>Perreault, S., &ldquo;vCard Format Specification,&rdquo; August&nbsp;2011.</span><span>)</span></a> information can be embedded in an HTML page using the mechanisms provided by microformats. It is thus a good example for how profiles might on the one hand define a model-based extension of the original media type (in this case adding vCard fields), and how they also have to define specific ways of how that model extension then is represented in the media type (in this case, using microformats). Alternatively, it would be possible to represent vCard information through the mechanisms of RDFa or microdata, but since these would be different conventions that a client would need to follow to extract the vCard data, they would be identified by different profiles.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Dublin Core</h3>
+
+<p>Dublin Core metadata identified by the profile http://dublincore.org/documents/2008/08/04/dc-html/ can be used to embed Dublin Core metadata in an HRML page. In contrast to hCard, which is using microformats as its foundation, the Dublin Core profile defines its own way of embedding metadata into HTML, and does so by using HTML &lt;link> elements. The interesting difference to hCard is that Dublin Core not only defines metadata to be embedded in HTML, it also allows links to be added as metadata, in which case the profile not just describes additional data to be found within the representation, but also allows the representation to be linked to additional resources.
+</p>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+Podcasts</h3>
+
+<p>Podcasts are an extension of feed formats, and define a substantial set of additional attributes to reflect the fact that the resources in podcast feeds are time-based media formats such as audio and video. While there is no profile URI for podcasts, the current definition (maintained by Apple) at http://www.apple.com/itunes/podcasts/specs.html could serve as such a URI, or it could by updated to include such a URI. Podcasts are feeds with special behavior, and while it is possible to follow a podcast feed using a generic feed reader, a podcast-aware feed reader will be able to extract additional information from the feed, and thus can implement more sophisticated services or present a more sophisticated UI for podcast feeds. The Apple page referenced above describes the implementation of one such specialized podcast feed reader, Apple iTunes.
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+Atom Publishing Protocol (AtomPub)</h3>
+
+<p>The Atom Publishing Protocol (AtomPub) <a class='info' href='#RFC5023'>[5]<span> (</span><span class='info'>Gregorio, J. and B. Hóra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2010.</span><span>)</span></a> has no mechanism for signalling to clients that a feed supports AtomPub, this is only discoverable for clients if they know that a feed's URI appears in a service document (because they have found that service document through some means outside of the AtomPub specification). By adding a profile link to a feed supporting AtomPub (using Atom's generic link element), an AtomPub feed could be self-describing in the sense that clients could discover a feed's support for AtomPub just by looking at the feed itself. While this approach would require an update of the AtomPub specification, future specifications could easily include such a profile URI as part of the specification itself, and profile links then could serve as the generic discovery mechanism for these extensions of a feed's capabilities.
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+Security Considerations</h3>
+
+<p>The 'profile' relation type is not known to introduce any new security issues not already discussed in RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> for generic use of Web linking mechanisms.
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Change Log</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+From -00 to -01</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Updated security considerations.
+</li>
+<li>Minor typographical changes.
+</li>
+<li>Added section with examples.
+</li>
+<li>Made it clear that profiles are about resource representations, and not about resources.
+</li>
+<li>Added structured examples section with fours examples (Dublin Core, HCard, AtomPub, and Podcasts)
+</li>
+</ul><p>
+            
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>8.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC5988">[1]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[2]</a></td>
+<td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>8.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="HTML401">[3]</a></td>
+<td class="author-text">Hors, A., Raggett, D., and I. Jacobs, &ldquo;<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML 4.01 Specification</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-html401-19991224, December&nbsp;1999 (<a href="http://www.w3.org/TR/1999/REC-html401-19991224">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6350">[4]</a></td>
+<td class="author-text">Perreault, S., &ldquo;<a href="http://tools.ietf.org/html/rfc6350">vCard Format Specification</a>,&rdquo; RFC&nbsp;6350, August&nbsp;2011.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5023">[5]</a></td>
+<td class="author-text">Gregorio, J. and B. Hóra, &ldquo;<a href="http://tools.ietf.org/html/rfc5023">The Atom Publishing Protocol</a>,&rdquo; RFC&nbsp;5023, October&nbsp;2010.</td></tr>
+</table>
+
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Acknowledgements</h3>
+
+<p>Thanks for comments and suggestions provided by Erlend Hamnaberg, Markus Lanthaler, Simon Mayer, Mark Nottingham, and Tim Williams.
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Erik Wilde</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">EMC Corporation</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">6801 Koll Center Parkway</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Pleasanton, CA 94566</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">U.S.A.</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1-925-6006244</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
+</table>
+</body></html>
