@@ -1,0 +1,619 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>URI scheme for GSM Short Message Service</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="URI scheme for GSM Short Message Service">
+<meta name="generator" content="xml2rfc v1.25 (http://xml.resource.org/)">
+<style type='text/css'>
+<!--
+    body {
+        font-family: verdana, charcoal, helvetica, arial, sans-serif;
+        font-size: small ; color: #000000 ; background-color: #ffffff ; }
+    .title { color: #990000; font-size: x-large ;
+        font-weight: bold; text-align: right;
+        font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+        background-color: transparent; }
+    .filename { color: #666666; font-size: 18px; line-height: 28px;
+        font-weight: bold; text-align: right;
+        font-family: helvetica, arial, sans-serif;
+        background-color: transparent; }
+    td.rfcbug { background-color: #000000 ; width: 30px ; height: 30px ; 
+        text-align: justify; vertical-align: middle ; padding-top: 2px ; }
+    td.rfcbug span.RFC { color: #666666; font-weight: bold; text-decoration: none;
+        background-color: #000000 ;
+        font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+        font-size: x-small ; }
+    td.rfcbug span.hotText { color: #ffffff; font-weight: normal; text-decoration: none;
+        text-align: center ;
+        font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+        font-size: x-small ; background-color: #000000; }
+/* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+    div#counter{margin-top: 100px}
+
+    a.info{
+        position:relative; /*this is the key*/
+        z-index:24;
+        text-decoration:none}
+
+    a.info:hover{z-index:25; background-color:#990000 ; color: #ffffff ;}
+
+    a.info span{display: none}
+
+    a.info:hover span{ /*the span will display just on :hover state*/
+        display:block;
+        position:absolute;
+        font-size: smaller ;
+        top:2em; left:2em; width:15em;
+        padding: 2px ;
+        border:1px solid #333333;
+        background-color:#eeeeee; color:#990000;
+        text-align: left ;}
+
+     A { font-weight: bold; }
+     A:link { color: #990000; background-color: transparent ; }
+     A:visited { color: #333333; background-color: transparent ; }
+     A:active { color: #333333; background-color: transparent ; }
+
+    p { margin-left: 2em; margin-right: 2em; }
+    p.copyright { font-size: x-small ; }
+    p.toc { font-size: small ; font-weight: bold ; margin-left: 3em ;}
+
+    span.emph { font-style: italic; }
+    span.strong { font-weight: bold; }
+    span.verb { font-family: "Courier New", Courier, monospace ; }
+
+    ol.text { margin-left: 2em; margin-right: 2em; }
+    ul.text { margin-left: 2em; margin-right: 2em; }
+    li { margin-left: 3em;  }
+
+    pre { margin-left: 3em; color: #333333;  background-color: transparent;
+        font-family: "Courier New", Courier, monospace ; font-size: small ;
+        }
+
+    h3 { color: #333333; font-size: medium ;
+        font-family: helvetica, arial, sans-serif ;
+        background-color: transparent; }
+    h4 { font-size: small; font-family: helvetica, arial, sans-serif ; }
+
+    table.bug { width: 30px ; height: 15px ; }
+    td.bug { color: #ffffff ; background-color: #990000 ;
+        text-align: center ; width: 30px ; height: 15px ;
+         }
+    td.bug A.link2 { color: #ffffff ; font-weight: bold;
+        text-decoration: none;
+        font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+        font-size: x-small ; background-color: transparent }
+
+    td.header { color: #ffffff; font-size: x-small ;
+        font-family: arial, helvetica, sans-serif; vertical-align: top;
+        background-color: #666666 ; width: 33% ; }
+    td.author { font-weight: bold; margin-left: 4em; font-size: x-small ; }
+    td.author-text { font-size: x-small; }
+    table.data { vertical-align: top ; border-collapse: collapse ;
+        border-style: solid solid solid solid ;
+        border-color: black black black black ;
+        font-size: small ; text-align: center ; }
+    table.data th { font-weight: bold ;
+        border-style: solid solid solid solid ;
+        border-color: black black black black ; }
+    table.data td {
+        border-style: solid solid solid solid ;
+        border-color: #333333 #333333 #333333 #333333 ; }
+
+    hr { height: 1px }
+-->
+</style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">Swiss Federal Institute of</td></tr>
+<tr><td class="header">Expires: January 12, 2005</td><td class="header">Technology</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">A. Vaha-Sipila</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">Nokia</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">Jul 14, 2004</td></tr>
+</table></td></tr></table>
+<div align="right"><span class="title"><br />URI scheme for GSM Short Message Service</span></div>
+<div align="right"><span class="title"><br />draft-wilde-sms-uri-06</span></div>
+
+<h3>Status of this Memo</h3>
+<p>
+This document is an Internet-Draft and is
+in full conformance with all provisions of Section 10 of RFC2026.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF), its areas, and its working groups.
+Note that other groups may also distribute working documents as
+Internet-Drafts.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as "work in progress."</p>
+<p>
+The list of current Internet-Drafts can be accessed at
+<a href='http://www.ietf.org/ietf/1id-abstracts.txt'>http://www.ietf.org/ietf/1id-abstracts.txt</a>.</p>
+<p>
+The list of Internet-Draft Shadow Directories can be accessed at
+<a href='http://www.ietf.org/shadow.html'>http://www.ietf.org/shadow.html</a>.</p>
+<p>
+This Internet-Draft will expire on January 12, 2005.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (C) The Internet Society (2004). All Rights Reserved.</p>
+
+<h3>Abstract</h3>
+
+<p>This memo specifies a URI (Universal Resource Identifier) scheme "sms" for specifying a recipient (and optionally a gateway) for an SMS message. SMS messages are two-way paging messages that can be sent from and received by a mobile phone or a suitably equipped computer.
+</p><a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">1.1</a>&nbsp;
+The Short Message Service<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">1.2</a>&nbsp;
+Universal Resource Identifiers<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">1.3</a>&nbsp;
+SMS Messages and the Internet<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">1.3.1</a>&nbsp;
+SMS Messages and the Web<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">1.3.2</a>&nbsp;
+SMS Messages and Forms<br />
+<a href="#anchor7">2.</a>&nbsp;
+The "sms" URI Scheme<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">2.1</a>&nbsp;
+Applicability<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#syntaxdef">2.2</a>&nbsp;
+Formal Definition<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">2.3</a>&nbsp;
+Parsing an "sms" URI<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">2.4</a>&nbsp;
+Examples of Use<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#htmlforms">2.5</a>&nbsp;
+Using "sms" URIs in HTML Forms<br />
+<a href="#smsservice">3.</a>&nbsp;
+"sms" URIs and SMS Web Services<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">3.1</a>&nbsp;
+Example<br />
+<a href="#anchor12">4.</a>&nbsp;
+Security Considerations<br />
+<a href="#anchor13">5.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">5.1</a>&nbsp;
+From -00 to -01<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">5.2</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">5.3</a>&nbsp;
+From -02 to -03<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">5.4</a>&nbsp;
+From -03 to -04<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">5.5</a>&nbsp;
+From -04 to -05<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">5.6</a>&nbsp;
+From -05 to -06<br />
+<a href="#rfc.references1">&#167;.</a>&nbsp;
+Normative References<br />
+<a href="#rfc.references2">&#167;.</a>&nbsp;
+Non-Normative References<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Authors' Addresses<br />
+<a href="#anchor22">A.</a>&nbsp;
+Where to send Comments<br />
+<a href="#anchor23">B.</a>&nbsp;
+Acknowledgements<br />
+<a href="#rfc.copyright">&#167;</a>&nbsp;
+Intellectual Property and Copyright Statements<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;Introduction</h3>
+
+<p>Compliant software MUST follow this specification. The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class="info" href="#RFC2119">[RFC2119]<span>Bradner, S., Key words for use in RFCs to Indicate Requirement Levels, March 1997.</span></a>.
+</p>
+<a name="rfc.section.1.1"></a><h4><a name="anchor2">1.1</a>&nbsp;The Short Message Service</h4>
+
+<p>The Short Message Service (SMS) <a class="info" href="#SMS">[SMS]<span>European Telecommunications Standards Institute, ETSI TS 100 901 (GSM 03.40 version 7.3.0 Release 1998): Digital Cellular Telecommunications System (Phase 2+); Technical realization of the Short Message Service (SMS); Point-to-Point (PP), November 1999.</span></a> is a rather simple service for sending messages between SMS clients or, using so-called "Telematic Interworking", from an SMS client through a gateway to a receiver using a different service, such as fax or email. The SMS service is described in more detail in the SMS service registration memo <a class="info" href="#draft-wilde-sms-service-06">[draft-wilde-sms-service-06]<span>Wilde, E., Registration of GSTN SMS Service Qualifier, Jul 2004.</span></a>.
+				
+</p>
+<a name="rfc.section.1.2"></a><h4><a name="anchor3">1.2</a>&nbsp;Universal Resource Identifiers</h4>
+
+<p>One of the core specifications for identifying resources on the Internet is RFC 2396 <a class="info" href="#RFC2396">[RFC2396]<span>Berners-Lee, T., Fielding, R. and L. Masinter, Uniform Resource Identifiers (URI): Generic Syntax, August 1998.</span></a>, specifying the syntax and semantics of a Universal Resource Identifier (URI). The most important notion of URIs are "schemes", which define a framework within which resources can be identified (and possibly accessed). URIs enable users to identify resources, and are used for very diverse schemes such as access protocols (HTTP, FTP), broadcast media (TV channels <a class="info" href="#RFC2838">[RFC2838]<span>Zigmond, D. and M. Vickers, Uniform Resource Identifiers for Television Broadcasts, May 2000.</span></a>), messaging (email <a class="info" href="#RFC2368">[RFC2368]<span>Hoffmann, P., Masinter, L. and J. Zawinski, The mailto URL scheme, June 1998.</span></a>), or even telephone numbers (voice <a class="info" href="#RFC2806">[RFC2806]<span>Vaha-Sipila, A., URLs for Telephone Calls, April 2000.</span></a>).
+</p>
+<p>URIs often are mentioned together with Universal Resource Names (URNs) and/or Uniform Resource Locators (URLs), and it often is unclear how to separate these concepts. For the purpose of this memo, only the term URI will be used, referring to the most fundamental concept. The World Wide Web Consortium (W3C) has issued a note <a class="info" href="#uri-clarification">[uri-clarification]<span>World Wide Web Consortium, URIs, URLs, and URNs: Clarifications and Recommendations 1.0, September 2001.</span></a> discussing the topic of URIs, URNs, and URLs in detail.
+</p>
+<a name="rfc.section.1.3"></a><h4><a name="anchor4">1.3</a>&nbsp;SMS Messages and the Internet</h4>
+
+<p>One of the important reasons for the universal access of the Web is the ability to access all information through a unique interface. This kind of integration makes it easy to provide information as well as to consume it. One aspect of this integration is the support of user agents (in the case of the Web, commonly referred to as browsers) for multiple content formats (such as HTML, GIF, JPEG) and access schemes (such as HTTP, HTTP-S, FTP).
+</p>
+<p>The "mailto" scheme has proven to be very useful and popular, because most user agents support it by providing an email composition facility when the user activates (eg, clicks on) the URI. Accordingly, the "sms" scheme could be supported by user agents by providing an SMS message composition facility when the user activates the URI. Alternatively, in cases where the user agent does not provide a built-in SMS message composition facility, the scheme could still be supported by opening a Web page which provides such a service. The specific Web page to be used could be configured by the user, so that each user could use the SMS message composition service of his choice.
+</p>
+<p>The goal of this memo is to specify the "sms" URI scheme, so that user agents (such as Web browsers and email clients) could start to support it. The "sms" URI scheme identifies SMS message endpoints as resources. When "sms" URIs are dereferenced, implementations MAY create a message and present it to be edited before being sent, or they MAY use additional services to provide the functionality necessary for composing a message and sending it to the SMS message endpoint.
+</p>
+<a name="rfc.section.1.3.1"></a><h4><a name="anchor5">1.3.1</a>&nbsp;SMS Messages and the Web</h4>
+
+<p>SMS messages can provide an alternative to a "mailto" URIs <a class="info" href="#RFC2368">[RFC2368]<span>Hoffmann, P., Masinter, L. and J. Zawinski, The mailto URL scheme, June 1998.</span></a>, or "tel" or "fax" URIs <a class="info" href="#RFC2806">[RFC2806]<span>Vaha-Sipila, A., URLs for Telephone Calls, April 2000.</span></a>. When a "sms" URI is activated, the user agent MAY start a program for sending an SMS message, just as "mailto" may open a mail client. Unfortunately, most browsers do not support the external handling of internally unsupported URI schemes in the same generalized way as most of them support external handling of additional MIME type content for types which they do not support internally. Ideally, user agents should implement generic URI parsers and provide a way to associate unsupported schemes with external applications (or Web services).
+</p>
+<p>The recipient of an SMS message need not be a mobile phone. It can be a server that can process SMS messages, either by gatewaying them to another messaging system (such as regular electronic mail), or by parsing them for supplementary services.
+</p>
+<p>SMS messages can be used to transport almost any kind of data (even though there is a very tight size limit), but the only standardized data formats are character-based messages in different character encodings. SMS messages have a maximum length of 160 characters (when using 7-bit characters from the SMS character set), or 140 octets. However, SMS messages can be concatenated to form longer messages. It is up to the user agent to decide whether to limit the length of the message, and how to indicate this limit in its user interface, if necessary. There is one exception to this, see <a class="info" href="#htmlforms">Section 2.5<span>Using &quot;sms&quot; URIs in HTML Forms</span></a>.
+</p>
+<a name="rfc.section.1.3.2"></a><h4><a name="anchor6">1.3.2</a>&nbsp;SMS Messages and Forms</h4>
+
+<p>The Hypertext Markup Language (HTML) <a class="info" href="#HTML401">[HTML401]<span>Raggett, D., Le Hors, A. and I. Jacobs, HTML 4.01 Specification, December 1999.</span></a> provides a way to collect information from a user and pass it to a server for processing. This functionality is known as "HTML forms". A filled-in form is usually sent to the destination using the Hypertext Transfer Protocol (HTTP) or email. However, SMS messages can also be used as the transport mechanism for these forms. As SMS transport is "out-of-band" as far as normal HTTP over TCP/IP is concerned, this provides a way to fill in forms offline, and send the data without making a TCP connection to the server, as the set-up time, cost, and overhead for a TCP connection are large compared to an SMS message. Also, depending on the network configuration, the sender's telephone number may be included in the SMS message, thus providing a weak form of authentication.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;The "sms" URI Scheme</h3>
+
+<p>Syntax definitions are given using the Augmented BNF for Syntax Specifications <a class="info" href="#RFC2234">[RFC2234]<span>Crocker, D. and P. Overell, Augmented BNF for Syntax Specifications: ABNF, November 1997.</span></a>.
+</p>
+<a name="rfc.section.2.1"></a><h4><a name="anchor8">2.1</a>&nbsp;Applicability</h4>
+
+<p>This URI scheme is intended for sending an SMS message to a certain recipient(s). The functionality is quite similar to that of the "mailto" URL, which (as per RFC 2368 <a class="info" href="#RFC2368">[RFC2368]<span>Hoffmann, P., Masinter, L. and J. Zawinski, The mailto URL scheme, June 1998.</span></a>) can also be used with a comma-separated list of email addresses.
+</p>
+<p>In some situations, it may be necessary to guide the sender to send the SMS message via a certain SMSC. For this purpose, the URI may specify the number of the SMSC.
+</p>
+<p>SMS messages may be sent through gateways to other services. These gateways are operated inside SMS centers. An "SMS" URI may specify that a certain gateway should be used.
+</p>
+<p>The notation for phone numbers is taken from <a class="info" href="#RFC3601">[RFC3601]<span>Allocchio, C., Text string notation for Dial Sequences and GSTN / E.164 addresses, September 2003.</span></a>. Refer to this document for information on why this particular format was chosen.
+</p>
+<p>How the SMS message is sent to the SMSC is outside the scope of this specification. SMS messages can be sent over the GSM air interface, by using a modem and a suitable protocol, or by accessing services over other protocols, such as a Web service for sending SMS messages. Also, SMS message service options like deferred delivery and delivery notification requests are not in the scope of this document. Such services MAY be requested from the network by the user agent if necessary.
+</p>
+<p>SMS messages sent as a result of this URI MUST be sent as class 1 SMS messages, if the user agent is able to specify the message class.
+</p>
+<a name="rfc.section.2.2"></a><h4><a name="syntaxdef">2.2</a>&nbsp;Formal Definition</h4>
+
+<p>The URI scheme's keywords specified in the following syntax description are case-insensitive. The syntax of an "sms" URI is formally described as follows, where the base syntax is taken from RFC 2396 <a class="info" href="#RFC2396">[RFC2396]<span>Berners-Lee, T., Fielding, R. and L. Masinter, Uniform Resource Identifiers (URI): Generic Syntax, August 1998.</span></a>:
+</p>
+<p></p>
+<pre>
+sms-uri               =  scheme ":" scheme-specific-part
+scheme                =  "sms"
+scheme-specific-part  =  1*( sms-recipient ) [ sms-body ]
+sms-recipient         =  gstn-phone sms-qualifier
+                         [ "," sms-recipient ]
+sms-qualifier         =  *( smsc-qualifier / pid-qualifier )
+smsc-qualifier        =  ";smsc=" SMSC-sub-addr
+pid-qualifier         =  ";pid=" PID-sub-addr
+sms-body              =  "?body=" *urlc
+                </pre>
+<p>
+
+</p>
+<p>The syntax definition for "gstn-phone" is taken from <a class="info" href="#RFC3601">[RFC3601]<span>Allocchio, C., Text string notation for Dial Sequences and GSTN / E.164 addresses, September 2003.</span></a>, allowing global as well as local telephone numbers.
+</p>
+<p>The syntax definition for "SMSC-sub-addr" and "PID-sub-addr" is derived from <a class="info" href="#draft-wilde-sms-service-06">[draft-wilde-sms-service-06]<span>Wilde, E., Registration of GSTN SMS Service Qualifier, Jul 2004.</span></a>, please refer to that document for the syntax of the qualifier values.
+</p>
+<p>The "sms-body" is used to define the body of the SMS message to be composed. It consists of URL-encoded UTF-8 characters. Implementations MUST make sure that the sms-body characters are converted to a suitable character encoding before sending, the most popular being the 7-bit SMS character encoding, another variant (though not as universally supported as 7-bit SMS) is the UCS-2 character encoding  (both specified in <a class="info" href="#SMS-CHAR">[SMS-CHAR]<span>European Telecommunications Standards Institute, ETSI TS 100 901 (GSM 03.38 version 7.2.0 Release 1998): Digital Cellular Telecommunications System (Phase 2+); Alphabets and language-specific information, July 1999.</span></a>). Implementations MAY choose to silently discard (or convert) characters in the sms-body that are not supported by the SMS character set they are using to send the SMS message.
+</p>
+<p>It should be noted that both the SMSC as well as the PID qualifier may appear only once per sms-recipient. If multiple qualifiers are present, conforming software MUST interpret the first occurrence and ignore all other occurrences.
+</p>
+<a name="rfc.section.2.3"></a><h4><a name="anchor9">2.3</a>&nbsp;Parsing an "sms" URI</h4>
+
+<p>The following list describes the steps for processing an "sms" URI:
+</p>
+<p></p>
+<ol class="text">
+<li>The "gstn-phone" of the first "sms-recipient" is extracted. It is the phone number of the final recipient and it MUST be written in international form with country code, unless the number only works from inside a certain geographical area or a network. Note that some numbers may work from several networks but not from the whole world - these SHOULD be written in international form. According to <a class="info" href="#RFC3601">[RFC3601]<span>Allocchio, C., Text string notation for Dial Sequences and GSTN / E.164 addresses, September 2003.</span></a>, all international numbers MUST begin with a "+" character. Hyphens and dots are only to aid readability. They MUST NOT have any other meaning.
+</li>
+<li>The "smsc-qualifier" of the first "sms-recipient" is extracted, if present.
+</li>
+<li>The "pid-qualifier" of the first "sms-recipient" is extracted, if present.
+</li>
+<li>The "sms-body" is extracted, if present.
+</li>
+<li>The user agent should provide some means for message composition, either by implementing this itself, or by accessing a service providing it. Message composition SHOULD start with the body extracted from the "sms-body", if present. If the "pid-qualifier" is set to "pid=SMTP:...", then the user agents must make sure that the email address is correctly set (as defined by the SMS specification <a class="info" href="#SMS">[SMS]<span>European Telecommunications Standards Institute, ETSI TS 100 901 (GSM 03.40 version 7.3.0 Release 1998): Digital Cellular Telecommunications System (Phase 2+); Technical realization of the Short Message Service (SMS); Point-to-Point (PP), November 1999.</span></a>) in the message being composed.
+</li>
+<li>After message composition, a user agent SHOULD try to send the message first using the SMSC set in the "smsc-qualifier" (if present). If that fails, the user agent MAY try another SMSC.
+</li>
+<li>If the URI consists of a comma-separated list of recipients (ie, contains multiple "sms-recipient" parts), all of them are processed in this manner. Exactly the same message SHOULD be sent to all of the listed recipients.
+</li>
+</ol>
+
+<a name="rfc.section.2.4"></a><h4><a name="anchor10">2.4</a>&nbsp;Examples of Use</h4>
+
+<p></p>
+<pre>sms:+41796431851</pre>
+<p>
+
+</p>
+<p>This indicates an SMS message capable recipient at the given telephone number. The message is sent using the user agent's default SMSC.
+</p>
+<p></p>
+<pre>sms:+41796431851;smsc=+41794999000</pre>
+<p>
+
+</p>
+<p>This indicates that the SMS message should be sent using the SMSC at the given number.
+</p>
+<p></p>
+<pre>sms:+41796431851,+4116321035;pid=fax</pre>
+<p>
+
+</p>
+<p>This URI should result in two SMS messages being sent, one to the recipient number as shown in the example above, the other one being sent as a fax to the second number (the fax is sent by the SMSC performing the gatewaying, not by the user agent).
+</p>
+<p></p>
+<pre>sms:+41796431851;pid=smtp:erik.wilde@dret.net?body=hello%20there</pre>
+<p>
+
+</p>
+<p>In this case, a message (initially being set to "hello there", which may have been modified by the user before sending) will be sent via SMS using the SMS to email functionality in the SMSC, so that it will eventually result in an email being sent to the specified email address. In this case, the phone number will not be interpreted.
+</p>
+<a name="rfc.section.2.5"></a><h4><a name="htmlforms">2.5</a>&nbsp;Using "sms" URIs in HTML Forms</h4>
+
+<p>When using a "sms" type URI as an action URI for HTML form submission <a class="info" href="#HTML401">[HTML401]<span>Raggett, D., Le Hors, A. and I. Jacobs, HTML 4.01 Specification, December 1999.</span></a>, the form contents MUST be packaged in the SMS message just as they are packaged when using a "mailto" URL <a class="info" href="#RFC2368">[RFC2368]<span>Hoffmann, P., Masinter, L. and J. Zawinski, The mailto URL scheme, June 1998.</span></a>, using the "application/x-www-form-urlencoded" MIME type, effectively packaging all form data into URI compliant syntax <a class="info" href="#RFC2396">[RFC2396]<span>Berners-Lee, T., Fielding, R. and L. Masinter, Uniform Resource Identifiers (URI): Generic Syntax, August 1998.</span></a>. The SMS message MUST NOT contain any HTTP headers, only the form data. The MIME type is implicit. It MUST NOT be transferred in the SMS message.
+</p>
+<p>The character encoding used for form submissions MUST be UTF-8 <a class="info" href="#RFC2279">[RFC2279]<span>Yergeau, F., UTF-8, a transformation format of ISO 10646, January 1998.</span></a>. It should be noted, however, that user agents MUST URL-encode form submissions before sending them.
+</p>
+<p>The user agent SHOULD inform the user about the possible security hazards involved when submitting the form (it is probably being sent as plain text over an air interface).
+</p>
+<p>If the form submission is longer than the maximum SMS message size, the user agent MAY either concatenate SMS messages, if it is able to do so, or it MAY refuse to send the message. The user agent MUST NOT send out partial form submissions.
+</p>
+<p>Form submission via an "sms" URI can be combined with Telematic Interworking to result in form submissions being submitted via an SMS message and finally being sent to an email account. In this case, all provisions for using the email "pid-qualifier" and using "sms" URIs with HTML forms must be followed.
+</p>
+<a name="smsservice"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;"sms" URIs and SMS Web Services</h3>
+
+<p>In many cases, user agents will not be able to directly compose and send SMS messages (because this requires that such a service is accessible to the system the user agent is running on). However, it is likely that the user has access to a Web service that provides an SMS service, such as a Web site offering form-based SMS composition. Ideally, the user agent should access this Web service when activating an "sms" URI, thus enabling the user to use the Web service.
+</p>
+<p>One problem with this approach is that the Web service should somehow get the "sms" URI, in order interpret it and set the required parameters (such as the receiver's phone number). The easiest way to implement this is for the user agent to add the "sms" URI as query string to the Web service's URI. Consequently, user agents supporting SMS Web services identified by URIs SHOULD append the "sms" URI as query string to the Web services URI when accessing the Web service. Web services providing SMS composition facilities SHOULD expect to receive an "sms" URI as query string and should process it as described by this memo. This method only can be applied for Web service URIs which permit query strings (such as "http" and "https" URIs). For other Web service URIs (such as "ftp" and "mailto"), user agents as well as Web services MUST NOT use the query string.
+</p>
+<p>It should be noted that RFC 2396 <a class="info" href="#RFC2396">[RFC2396]<span>Berners-Lee, T., Fielding, R. and L. Masinter, Uniform Resource Identifiers (URI): Generic Syntax, August 1998.</span></a> defines that within query strings, the characters ";", "/", "?", ":", "@", "&amp;", "=", "+", ",", and "$" are reserved. It is therefore necessary to encode the "sms" URI accordingly before appending it as query string.
+</p>
+<a name="rfc.section.3.1"></a><h4><a name="anchor11">3.1</a>&nbsp;Example</h4>
+
+<p>A document contains this piece of (X)HTML:
+</p>
+<p></p>
+<pre>&lt;a href="sms:+41796431851">Send me an SMS!&lt;/a></pre>
+<p>
+
+</p>
+<p>The user agent interpreting this document does not internally support SMS message composition, but has been configured to access a Web service for handling "sms" URIs. This Web service has the following URI:
+</p>
+<p></p>
+<pre>http://sms.example.com/sms-form</pre>
+<p>
+
+</p>
+<p>When the user activates the "sms" URI (eg, by clicking on the text "Send me an SMS!"), the user agents acts as if the activated URI had been:
+</p>
+<p></p>
+<pre>http://sms.example.com/sms-form?sms%3A%2B41796431851</pre>
+<p>
+
+</p>
+<p>The Web service is then responsible for parsing the query string and providing an approriate interface, for example by already filling in the recipient address with the number provided in the "sms" URI.
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;Security Considerations</h3>
+
+<p>The "Security Considerations" section of the SMS service registration memo <a class="info" href="#draft-wilde-sms-service-06">[draft-wilde-sms-service-06]<span>Wilde, E., Registration of GSTN SMS Service Qualifier, Jul 2004.</span></a> MUST be consulted.
+</p>
+<p>A user agent SHOULD NOT send out SMS messages without the knowledge of the user, because of associated risks, which include sending masses of SMS messages to a subscriber without his consent, and the costs involved in sending an SMS message.
+</p>
+<p>The user agent SHOULD have some mechanism that the user can use to filter out unwanted destinations for SMS messages. The user agent SHOULD also have some means of restricting the number of SMS messages being sent as the result of activating one "sms" URI.
+</p>
+<p>If an "sms" URI contains a pid-qualifier and the user agent supports the qualifier and its value, then the user agent MUST set the SMS message's PID as specified by the qualifier. User agents MAY inform users about the value and the functional consequences of PID qualifiers (eg, by notifying users that sending the SMS effectively will result in a fax message being delivered, rather than an SMS message).
+</p>
+<p>The method described in section <a class="info" href="#smsservice">Section 3<span>&quot;sms&quot; URIs and SMS Web Services</span></a> adds another level of indirection to the handling of "sms" URIs. If this method is combined with the pid-qualifier gateway functionality, SMS composition and reception will probably be distributed over three different protocols (the Web service, SMS transport itself, and the service selected by the pid-qualifier). User agent SHOULD make this clear to users (either when the Web service is being configured, or when it is accessed).
+</p>
+<p>The Telematic Interworking functionality of the SMSC addressed by the pid-qualifier is not necessarily implemented by the SMSC being used, and SMSC providers are known for not or not correctly supporting some or all pid-qualifier values. User agents SHOULD take into account that the success rate of SMS messages being sent using pid-qualifiers is lower than that of "plain" SMS messages.
+</p>
+<a name="anchor13"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;Change Log</h3>
+
+<a name="rfc.section.5.1"></a><h4><a name="anchor14">5.1</a>&nbsp;From -00 to -01</h4>
+
+<p></p>
+<ul class="text">
+<li>Added the "sms-body" field and its processing rules.
+</li>
+<li>Added Section <a class="info" href="#smsservice">Section 3<span>&quot;sms&quot; URIs and SMS Web Services</span></a> about using "sms" URIs as query strings for SMS Web services.
+</li>
+<li>Fixed typo in ABNF (said "global-phone" instead of "gstn-phone").
+</li>
+<li>Added some explanatory text about form submissions using email Telematic Interworking.
+</li>
+<li>Added some text about character encoding in form submissions.
+</li>
+</ul>
+
+<a name="rfc.section.5.2"></a><h4><a name="anchor15">5.2</a>&nbsp;From -01 to -02</h4>
+
+<p></p>
+<ul class="text">
+<li>Changed the sms-body field to URL encoded UTF-8 characters.
+</li>
+</ul>
+
+<a name="rfc.section.5.3"></a><h4><a name="anchor16">5.3</a>&nbsp;From -02 to -03</h4>
+
+<p></p>
+<ul class="text">
+<li>Changed ordering of "change Log" section (descending to ascending).
+</li>
+<li>Clarified the wording at the beginning of Section <a class="info" href="#syntaxdef">Section 2.2<span>Formal Definition</span></a> about only the keywords of the scheme being case-insensitive.
+</li>
+<li>Changed "sms-body" to be a URI query string.
+</li>
+<li>Added some text describing "sms" URIs as addressing resources.
+</li>
+</ul>
+
+<a name="rfc.section.5.4"></a><h4><a name="anchor17">5.4</a>&nbsp;From -03 to -04</h4>
+
+<p></p>
+<ul class="text">
+<li>Updated reference to draft-allocchio-gstn (to revision -05).
+</li>
+</ul>
+
+<a name="rfc.section.5.5"></a><h4><a name="anchor18">5.5</a>&nbsp;From -04 to -05</h4>
+
+<p></p>
+<ul class="text">
+<li>Updated reference to SMS spec to the version referenced in the SMS service draft.
+</li>
+</ul>
+
+<a name="rfc.section.5.6"></a><h4><a name="anchor19">5.6</a>&nbsp;From -05 to -06</h4>
+
+<p></p>
+<ul class="text">
+<li>Updated reference from draft-allocchio-gstn to RFC 3601.
+</li>
+</ul>
+
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>6.1&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="HTML401">[HTML401]</a></td>
+<td class="author-text">Raggett, D., Le Hors, A. and I. Jacobs, "<a href="http://www.w3.org/TR/html401/">HTML 4.01 Specification</a>", W3C REC-html401, December 1999.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text">Bradner, S., "<a href="ftp://ftp.isi.edu/in-notes/rfc2119.txt">Key words for use in RFCs to Indicate Requirement Levels</a>", RFC 2119, March 1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2234">[RFC2234]</a></td>
+<td class="author-text"><a href="mailto:dcrocker@imc.org">Crocker, D.</a> and <a href="mailto:paulo@turnpike.com">P. Overell</a>, "<a href="ftp://ftp.isi.edu/in-notes/rfc2234.txt">Augmented BNF for Syntax Specifications: ABNF</a>", RFC 2234, November 1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2279">[RFC2279]</a></td>
+<td class="author-text"><a href="mailto:fyergeau@alis.com">Yergeau, F.</a>, "<a href="ftp://ftp.isi.edu/in-notes/rfc2279.txt">UTF-8, a transformation format of ISO 10646</a>", RFC 2279, January 1998.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2396">[RFC2396]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@ics.uci.edu">Fielding, R.</a> and <a href="mailto:masinter@parc.xerox.com">L. Masinter</a>, "<a href="ftp://ftp.isi.edu/in-notes/rfc2396.txt">Uniform Resource Identifiers (URI): Generic Syntax</a>", RFC 2396, August 1998.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3601">[RFC3601]</a></td>
+<td class="author-text">Allocchio, C., "<a href="ftp://ftp.isi.edu/in-notes/rfc3601.txt">Text string notation for Dial Sequences and GSTN / E.164 addresses</a>", RFC 3601, September 2003.</td></tr>
+<tr><td class="author-text" valign="top"><a name="SMS">[SMS]</a></td>
+<td class="author-text">European Telecommunications Standards Institute, "<a href="http://pda.etsi.org/pda/home.asp?wki_id=9942">ETSI TS 100 901 (GSM 03.40 version 7.3.0 Release 1998): Digital Cellular Telecommunications System (Phase 2+); Technical realization of the Short Message Service (SMS); Point-to-Point (PP)</a>", November 1999.</td></tr>
+<tr><td class="author-text" valign="top"><a name="SMS-CHAR">[SMS-CHAR]</a></td>
+<td class="author-text">European Telecommunications Standards Institute, "<a href="http://pda.etsi.org/pda/home.asp?wki_id=6821">ETSI TS 100 901 (GSM 03.38 version 7.2.0 Release 1998): Digital Cellular Telecommunications System (Phase 2+); Alphabets and language-specific information</a>", July 1999.</td></tr>
+<tr><td class="author-text" valign="top"><a name="draft-wilde-sms-service-06">[draft-wilde-sms-service-06]</a></td>
+<td class="author-text">Wilde, E., "<a href="http://www.ietf.org/internet-drafts/draft-wilde-sms-service-06.txt">Registration of GSTN SMS Service Qualifier</a>", draft-wilde-sms-service-06 (work in progress), Jul 2004.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>6.2&nbsp;Non-Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2368">[RFC2368]</a></td>
+<td class="author-text">Hoffmann, P., Masinter, L. and J. Zawinski, "<a href="ftp://ftp.isi.edu/in-notes/rfc2368.txt">The mailto URL scheme</a>", RFC 2368, June 1998.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2629">[RFC2629]</a></td>
+<td class="author-text"><a href="mailto:mrose@not.invisible.net">Rose, M.</a>, "<a href="ftp://ftp.isi.edu/in-notes/rfc2629.txt">Writing I-Ds and RFCs using XML</a>", RFC 2629, June 1999.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2806">[RFC2806]</a></td>
+<td class="author-text">Vaha-Sipila, A., "<a href="ftp://ftp.isi.edu/in-notes/rfc2806.txt">URLs for Telephone Calls</a>", RFC 2806, April 2000.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2838">[RFC2838]</a></td>
+<td class="author-text">Zigmond, D. and M. Vickers, "<a href="ftp://ftp.isi.edu/in-notes/rfc2838.txt">Uniform Resource Identifiers for Television Broadcasts</a>", RFC 2838, May 2000.</td></tr>
+<tr><td class="author-text" valign="top"><a name="uri-clarification">[uri-clarification]</a></td>
+<td class="author-text">World Wide Web Consortium, "<a href="http://www.w3.org/TR/uri-clarification/">URIs, URLs, and URNs: Clarifications and Recommendations 1.0</a>", W3C uri-clarification , September 2001.</td></tr>
+</table>
+
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Authors' Addresses</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Erik Wilde</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Swiss Federal Institute of Technology</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">ETH-Zentrum</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">8092 Zurich</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Switzerland</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+41-1-6325132</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:erik.wilde@dret.net">erik.wilde@dret.net</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Antti Vaha-Sipila</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Nokia</td></tr>
+<tr><td class="author" align="right">EMail:&nbsp;</td>
+<td class="author-text"><a href="mailto:antti.vaha-sipila@nokia.com">antti.vaha-sipila@nokia.com</a></td></tr>
+</table>
+
+<a name="anchor22"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;Where to send Comments</h3>
+
+<p>Please send all comments and questions concerning this document to Erik Wilde.
+</p>
+<a name="anchor23"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;Acknowledgements</h3>
+
+<p>This document has been prepared using the IETF document DTD described in RFC 2629 <a class="info" href="#RFC2629">[RFC2629]<span>Rose, M., Writing I-Ds and RFCs using XML, June 1999.</span></a>.
+</p>
+<p>Thanks to Claudio Allocchio for his comments.
+</p><a name="rfc.copyright"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="bug" align="right"><tr><td class="bug"><a href="#toc" class="link2">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Intellectual Property Statement</h3>
+<p class='copyright'>
+The IETF takes no position regarding the validity or scope of
+any intellectual property or other rights that might be claimed
+to  pertain to the implementation or use of the technology
+described in this document or the extent to which any license
+under such rights might or might not be available; neither does
+it represent that it has made any effort to identify any such
+rights. Information on the IETF's procedures with respect to
+rights in standards-track and standards-related documentation
+can be found in BCP-11. Copies of claims of rights made
+available for publication and any assurances of licenses to
+be made available, or the result of an attempt made
+to obtain a general license or permission for the use of such
+proprietary rights by implementors or users of this
+specification can be obtained from the IETF Secretariat.</p>
+<p class='copyright'>
+The IETF invites any interested party to bring to its
+attention any copyrights, patents or patent applications, or
+other proprietary rights which may cover technology that may be
+required to practice this standard. Please address the
+information to the IETF Executive Director.</p>
+<h3>Full Copyright Statement</h3>
+<p class='copyright'>
+Copyright (C) The Internet Society (2004). All Rights Reserved.</p>
+<p class='copyright'>
+This document and translations of it may be copied and furnished to
+others, and derivative works that comment on or otherwise explain it
+or assist in its implementation may be prepared, copied, published and
+distributed, in whole or in part, without restriction of any kind,
+provided that the above copyright notice and this paragraph are
+included on all such copies and derivative works. However, this
+document itself may not be modified in any way, such as by removing
+the copyright notice or references to the Internet Society or other
+Internet organizations, except as needed for the purpose of
+developing Internet standards in which case the procedures for
+copyrights defined in the Internet Standards process must be
+followed, or as required to translate it into languages other than
+English.</p>
+<p class='copyright'>
+The limited permissions granted above are perpetual and will not be
+revoked by the Internet Society or its successors or assignees.</p>
+<p class='copyright'>
+This document and the information contained herein is provided on an
+&quot;AS IS&quot; basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p>
+<h3>Acknowledgment</h3>
+<p class='copyright'>
+Funding for the RFC Editor function is currently provided by the
+Internet Society.</p>
+</body></html>
+

@@ -1,0 +1,842 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                Swiss Federal Institute of
+Expires: July 26, 2004                                        Technology
+                                                            Jan 26, 2004
+
+
+               Registration of GSTN SMS Service Qualifier
+                       draft-wilde-sms-service-05
+
+Status of this Memo
+
+   This document is an Internet-Draft and is in full conformance with
+   all provisions of Section 10 of RFC2026.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups. Note that other
+   groups may also distribute working documents as Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time. It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at http://
+   www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on July 26, 2004.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2004). All Rights Reserved.
+
+Abstract
+
+   This memo describes the registration of the Short Message Service
+   (SMS) as a registered IANA service selector for Global Switched
+   Telephone Network (GSTN) numbers. SMS is not available for all GSTN
+   subscribers, but it has proven very popular with users of the Global
+   System for Mobile Communications (GSM), and has also been adapted to
+   other telephone network technologies such as the Integrated Services
+   Digital Network (ISDN).
+
+
+
+
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 1]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+Table of Contents
+
+   1.    Introduction . . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.1   What is GSM? . . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.2   What is SMS? . . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.2.1 SMS content  . . . . . . . . . . . . . . . . . . . . . . . .  3
+   1.2.2 SMS infrastructure . . . . . . . . . . . . . . . . . . . . .  4
+   1.2.3 SMS Telematic Interworking . . . . . . . . . . . . . . . . .  5
+   2.    IANA registrations . . . . . . . . . . . . . . . . . . . . .  6
+   2.1   IANA registration form for GSTN address service-selector
+         "SMS"  . . . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   2.2   IANA registration form for GSTN address qualit-type1
+         keyword "SMSC" and value . . . . . . . . . . . . . . . . . .  7
+   2.3   IANA registration form for GSTN address qualit-type1
+         keyword "PID" and value  . . . . . . . . . . . . . . . . . .  9
+   3.    Security Considerations  . . . . . . . . . . . . . . . . . . 10
+   4.    Change Log . . . . . . . . . . . . . . . . . . . . . . . . . 11
+   4.1   From -00 to -01  . . . . . . . . . . . . . . . . . . . . . . 11
+   4.2   From -01 to -02  . . . . . . . . . . . . . . . . . . . . . . 11
+   4.3   From -02 to -03  . . . . . . . . . . . . . . . . . . . . . . 11
+   4.4   From -03 to -04  . . . . . . . . . . . . . . . . . . . . . . 12
+   4.5   From -04 to -05  . . . . . . . . . . . . . . . . . . . . . . 12
+         Normative References . . . . . . . . . . . . . . . . . . . . 12
+         Non-Normative References . . . . . . . . . . . . . . . . . . 13
+         Author's Address . . . . . . . . . . . . . . . . . . . . . . 13
+   A.    Where to send Comments . . . . . . . . . . . . . . . . . . . 13
+   B.    Acknowledgements . . . . . . . . . . . . . . . . . . . . . . 13
+         Intellectual Property and Copyright Statements . . . . . . . 14
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 2]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+1. Introduction
+
+   The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL",
+   "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in RFC
+   2119 [RFC2119].
+
+1.1 What is GSM?
+
+   GSM (Global System for Mobile Communications) is a digital mobile
+   phone standard which is used extensively in many parts of the world.
+   First named after its frequency band around 900 MHz, GSM-900 has
+   provided the basis for several other networks utilizing GSM
+   technology, in particular GSM networks operating in the frequency
+   bands around 1800 MHz and 1900 MHz. When referring to "GSM" in this
+   document, we mean any of these GSM-based networks that operate a
+   short message service.
+
+1.2 What is SMS?
+
+   The Short Message Service [SMS] is an integral part of the GSM
+   network technology. It has been very successful and currently is a
+   major source of revenue for many GSM operators. SMS as a service is
+   so successful that other Global Switched Telephone Network (GSTN)
+   technologies have adapted it as well, in particular the Integrated
+   Services Digital Network (ISDN). Because of this development, this
+   memo uses the term "SMS client" to refer to user agents who are able
+   to send and/or receive SMS messages.
+
+1.2.1 SMS content
+
+   GSM SMS messages are alphanumeric paging messages that can be sent to
+   and SMS clients. SMS messages have a maximum length of 160 characters
+   (7-bit characters from the GSM character set [SMS-CHAR]), or 140
+   octets. Other character sets (such as UCS-2 16-bit characters,
+   resulting in 70 character messages) MAY also be supported [SMS-CHAR],
+   but are defined as being OPTIONAL by the SMS specification.
+   Consequently, applications handling SMS messages as part of a chain
+   of character processing applications MUST make sure that character
+   sets are correctly mapped to and from the character set used for SMS
+   messages.
+
+   While the 160 character variety for SMS messages is by far the most
+   widely used one, there are numerous other content types for SMS
+   messages, such as small bitmaps ("operator logos") and simple formats
+   for musical notes ("ring tones"). However, these formats are
+   proprietary and are not considered in this memo.
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 3]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   SMS messages are very limited in length (140 octets), and the first
+   versions of the SMS specification did not specify any standardized
+   methods for concatenating SMS messages. As a consequence, several
+   proprietary methods were invented, but the current SMS specification
+   does specify message concatenation. In order to deal with this
+   situation, SMS clients composing messages SHOULD use the standard
+   concatenation method based on the header in the TP-User Data field as
+   specified in [SMS]. When sending a message to an SMS recipient whose
+   support for concatenated messages is unknown, the SMS client MAY opt
+   to use the backwards-compatible (text-based) concatenation method
+   defined in [SMS]. Proprietary concatenation methods SHOULD NOT be
+   used except in closed systems, where the capabilities of the
+   recipient(s) are always known.
+
+1.2.2 SMS infrastructure
+
+   SMS messages can be transmitted over an SMS client's network
+   interface using the signalling channels of the underlying GSTN
+   infrastructure, so there is no delay for call setup. Alternatively,
+   SMS messages MAY be submitted through other front-ends (for example
+   such as Web services), which makes it possible for SMS clients to run
+   on computers which are not directly connected to a GSTN network
+   supporting SMS.
+
+   SMS messages sent as with the GSTN SMS service MUST be sent as class
+   1 SMS messages, if the client is able to specify the message class.
+
+1.2.2.1 SMS Centers
+
+   SMS messages are stored by an entity called Short Message Service
+   Center (SMSC), and sent to the recipient when the subscriber connects
+   to the network. The number of a cooperative SMSC must be known to the
+   SMS sender (ie, the entity submitting the SMS message to a GSTN
+   infrastructure) when sending the message (usually, the SMSC's number
+   is configured in the SMS client and specific for the network operator
+   to which the sender has subscribed). In most situations, the SMSC
+   number is part of the sending SMS client's configuration. However, in
+   some special cases (such as when the SMS recipient only accepts
+   messages from a certain SMSC), it may be necessary to send the SMS
+   message over a specific SMSC.
+
+   Short messages can be mobile terminated (MT) or mobile originated
+   (MO). MT messages are the ones that arrive at SMS clients; MO
+   messages are sent by SMS clients. Networks may support either, both,
+   or none of these. For the purpose of this memo, it is important that
+   the sending SMS client is allowed to submit MO messages, and that the
+   receiver is allowed to receive MT messages.
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 4]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   The exact setup of message submission and delivery is not subject of
+   this memo, it may incorporate additional hops in addition to the pure
+   SMS transport. For example, the sending SMS client may use a Web
+   service to submit the SMS message, and the receiving SMS client may
+   be set up to forward the SMS to an email account. For the purpose of
+   this memo, it is important that the receiver can be addressed by a
+   GSTN number, and that the sender can submit an SMS message using this
+   number.
+
+1.2.3 SMS Telematic Interworking
+
+   While in most cases SMS messages are exchanged between SMS clients,
+   the SMS specification also includes provisions for so-called
+   "Telematic Interworking". In this scenario, the SMS message specifies
+   a Protocol Identifier, which identifies the service to which the SMS
+   message has to be submitted. In effect, this implements a gateway
+   functionality in the SMSC.
+
+   Telematic Interworking supports a number of services from Fax through
+   Telex and Internet Email up to voice telephone, where the gateway is
+   expected to make a text-to-speech transformation. The set of possible
+   services is defined by the SMS specification [SMS], but network
+   operators are not required to support any of these services. SMS
+   clients SHOULD implement support for Telematic Interworking, which
+   among other things means that users must be able to set the Protocol
+   Identifier field of generated SMS messages. If clients support
+   Telematic Interworking, they MUST indicate to the user the changed
+   semantics of the receiver number (eg, if Fax is selected, the
+   receiver will be contacted via Fax rather than SMS).
+
+   In the following list the telematic devices (ie, the services that
+   can be addressed using the Telematic Interworking mechanism) defined
+   by the SMS specification are described. The abbreviations are not
+   taken from the SMS specification, but are introduced by this memo for
+   identifying the device type using an SMS service qualifier keyword.
+
+   "IMPL": In this case the device type is implicitly defined, either
+      because the SMS Center knows it, or because it can be concluded on
+      the basis of the address.
+
+   "TELEX": Telex device
+
+   "G3FAX": Group 3 telefax device
+
+   "G4FAX": Group 4 telefax device
+
+
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 5]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   "VOICE": Voice telephone (this requires conversion to speech, but
+      there is no mechanism to specify a language)
+
+   "ERMES": ERMES (European Radio Messaging System)
+
+   "NATPAG": National paging system (this does not specify a specific
+      paging systems but implies that the SMS center knows about a
+      particular national paging system)
+
+   "VIDEOTEX": Videotex
+
+   teletex: Teletex, either with an unspecified carrier or using PSPDN,
+      CSPDN, PSTN, or ISDN as carrier
+
+   "UCI": UCI (Universal Computer Interface)
+
+   reserved: 7 combinations are reserved which do not have a specified
+      meaning
+
+   "MH": Some message handling facility known to the SMS center (not
+      further specified)
+
+   x400: X.400-based message handling system
+
+      The SMS specification fails to specify how X.400 OR addresses are
+      actually embedded into SMS messages, so even though there is a
+      Protocol Identifier for X.400, it is impossible to encode the
+      recipient(s) of a message.
+
+   email: Internet electronic mail
+
+      The recipient(s) of SMS messages gatewayed to Internet electronic
+      mail are specified in the message's user data in a way defined by
+      the SMS specification.
+
+   specific: 7 combinations are defined to have a meaning specific to
+      each SMS center, their usage is based on mutual agreement between
+      SMS clients and the SMS center.
+
+   It is important to notice that some of the above devices require
+   additional information to be specified (in particular, the "Internet
+   electronic mail" format). The SMS specification defines the methods
+   how this has to be done (effectively by embedding the email
+   information into the SMS message's text).
+
+2. IANA registrations
+
+   Based on the requirements defined in RFC 3191 [RFC3191], the IANA
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 6]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   registration forms for the "SMS" service-selector, and "SMSC" and
+   "PID" qualif-type1 elements are defined here. Syntax definitions are
+   given using the Augmented BNF for Syntax Specifications [RFC2234].
+
+2.1 IANA registration form for GSTN address service-selector "SMS"
+
+
+   To:      IANA@iana.org
+   Subject: Registration of new values for the GSTN address
+            service-selector specifier "SMS"
+
+   service-selector name: SMS
+
+   Description of Use: SMS - specify that the GSTN address refers to a
+      GSTN subscriber who is capable of receiving messages using the GSM
+      Short Message Service (SMS). However, if a "PID" qualif-type1
+      element is present for this service selector, then the GSTN
+      address must be interpreted according to the rules for the "PID"
+      qualif-type1 element's value (this may also mean that the GSTN
+      address has to be ignored).
+
+      For a complete description refer to RFC 3191 and
+      draft-wilde-sms-service-05.
+
+   Security Considerations: See the Security Consideration section of
+      draft-wilde-sms-service-05.
+
+   Person & email address to contact for further information:
+
+   Erik Wilde
+   Swiss Federal Institute of Technology
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+   tel:+41-1-6325132
+   fax:+41-1-6321035
+   mailto:ietf@dret.net
+
+
+2.2 IANA registration form for GSTN address qualit-type1 keyword "SMSC"
+    and value
+
+
+   To:      IANA@iana.org
+   Subject: Registration of new values for the GSTN address
+            qualif-type1 element "SMSC"
+
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 7]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   qualif-type1 "keyword" name: SMSC
+
+   qualif-type1 "value" ABNF definition: The ABNF definition for the
+      value of the SMSC keyword is taken from draft-allocchio-gstn-05
+
+
+
+   sub-addr      =  gstn-phone
+   gstn-phone    =  ( global-phone / local-phone )
+   global-phone  =  "+" 1*( DIGIT / written-sep )
+   local-phone   =  [ exit-code ] dial-number / exit-code [ dial-number ]
+   exit-code     =  phone-string
+   dial-number   =  phone-string
+   phone-string  =  1*( DTMF / pause / tonewait / written-sep )
+   DTMF          =  ( DIGIT / "#" / "*" / "A" / "B" / "C" / "D" )
+   pause         =  "p"
+   tonewait      =  "w"
+   written-sep   =  ( "-" / "." )
+
+   Description of Use: SMSC - In some situations, it may be necessary to
+      guide the sender of an SMS message to send the message via a
+      certain Short Message Service Center (SMSC). If the SMSC
+      qualif-type1 element is present, an SMS client SHOULD try to send
+      the message first using the specified SMSC. If that fails, the SMS
+      client MAY try another SMSC (such as the default SMSC for that
+      client).
+
+      Further description is available in draft-wilde-sms-service-05
+
+   Use Restriction: The use of the "SMSC" qualif-type1 element is
+      restricted to the "SMS" service-selector, it has no meaning
+      outside the SMS service defined by the "SMS" service-selector.
+
+   Security Considerations: See the Security Consideration section of
+      draft-wilde-sms-service-05.
+
+   Person & email address to contact for further information:
+
+   Erik Wilde
+   Swiss Federal Institute of Technology
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+   tel:+41-1-6325132
+   fax:+41-1-6321035
+   mailto:ietf@dret.net
+
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 8]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+2.3 IANA registration form for GSTN address qualit-type1 keyword "PID"
+    and value
+
+
+   To:      IANA@iana.org
+   Subject: Registration of new values for the GSTN address
+            qualif-type1 element "PID"
+
+   qualif-type1 "keyword" name: PID
+
+   qualif-type1 "value" ABNF definition: The ABNF syntax definition of
+      the PID qualifier is as follows:
+
+
+
+   sub-addr      =  "IMPL" / "TELEX" / "G3FAX" / "G4FAX" / "VOICE"
+                    / "ERMES" / "NATPAG" / "VIDEOTEX" / teletex / "UCI"
+                    / reserved / "MH" / "X400" / email / specific
+   teletex       =  "TELETEX-"
+                    ( "UNSPEC" / "PSPDN" / "CSPDN" / "PSTN" / "ISDN" )
+   email         =  "SMTP:" address
+   reserved      =  "RES" ( "1" / "2" / "3" / "4" / "5" / "6" / "7" )
+   specific      =  "SPEC" ( "1" / "2" / "3" / "4" / "5" / "6" / "7" )
+
+      The "x400" definition is functionally incomplete (because there is
+      no way how the actual OR address can be specified), but provided
+      here for completeness.
+
+      The "address" definition is taken from RFC 2822 [RFC2822] and
+      specifies an address that may either be an individual mailbox, or
+      a group of mailboxes.
+
+   Description of Use: PID - The protocol identifier is used to specify
+      SMS Telematic Interworking by selecting a specific protocol to use
+      for delivery to the recipient.
+
+      Further description is available in draft-wilde-sms-service-05
+
+   Use Restriction: The use of the "PID" qualif-type1 element is
+      restricted to the "SMS" service-selector, it has no meaning
+      outside the SMS service defined by the "SMS" service-selector.
+
+   Security Considerations: See the Security Consideration section of
+      draft-wilde-sms-service-05.
+
+   Person & email address to contact for further information:
+
+
+
+
+
+Wilde                    Expires July 26, 2004                  [Page 9]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   Erik Wilde
+   Swiss Federal Institute of Technology
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+   tel:+41-1-6325132
+   fax:+41-1-6321035
+   mailto:ietf@dret.net
+
+
+3. Security Considerations
+
+   SMS messages are transported without any provisions for privacy or
+   integrity, so SMS users should be aware of these inherent security
+   problems of SMS messages. Unlike electronic mail, where additional
+   mechanisms exist to layer security features on top of the
+   infrastructure, there currently is no such framework for SMS
+   messages.
+
+   SMS messages very often are delivered almost instantaneously (if the
+   receiving SMS client is on line), but there is no guarantee for when
+   SMS messages will be delivered. In particular, SMS messages between
+   different network operators sometimes take a long time to be
+   delivered (hours or even days) or are not delivered at all, so
+   applications SHOULD NOT make any assumptions about the reliability
+   and performance of SMS message transmission.
+
+   In most networks, sending SMS messages is not a free service.
+   Therefore, SMS clients MUST make sure that any action that incurs
+   costs is acknowledged by the end user, unless explicitly instructed
+   otherwise by the end user. If an SMS client has different ways of
+   submitting an SMS message (such as a Web service and a phone line),
+   then the end user MUST have a way to control which way is chosen.
+
+   SMS clients often are limited devices (typically mobile phones), and
+   the sending SMS client SHOULD NOT make any assumptions about the
+   receiving SMS client supporting any non-standard services, such as
+   proprietary message concatenation or proprietary content types.
+   However, if the sending SMS client has prior knowledge about the
+   receiving SMS client, then he MAY use this knowledge to compose
+   non-standard SMS messages.
+
+   There are certain special SMS messages defined in [SMS] that can be
+   used, for example, to turn on indicators on the phone display, or to
+   send data to certain communication ports (comparable to UDP ports) on
+   the device. Certain proprietary systems (for example, the Wireless
+   Application Protocol [WAP])define configuration messages that may be
+   used to reconfigure the devices remotely. Any SMS client SHOULD make
+
+
+
+Wilde                    Expires July 26, 2004                 [Page 10]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   sure that malicious use of such messages is not possible, for example
+   by filtering out certain SMS User Data headers. Gateways that accept
+   SMS messages e.g. in e-mail messages or web forms and pass them on to
+   an SMSC SHOULD implement this kind of 'firewalling' approach as well.
+
+   Because the narrow bandwidth of the SMS communications channel, there
+   should also be checks in place for excessively long concatenated
+   messages. As an example, it may take two minutes to transfer thirty
+   concatenated text messages.
+
+   Unchecked input from a user MUST NOT be used to populate any other
+   fields in a Short Message other than the User Data field (not
+   including the User Data Header field). All other parts, including the
+   User Data Header, of the Short Message should be generated by trusted
+   means.
+
+4. Change Log
+
+4.1 From -00 to -01
+
+   o  Added a number of new security considerations.
+
+   o  Added the "PID" qualif-type1 keyword and the section about "SMS
+      Telematic Interworking" Section 1.2.3.
+
+
+4.2 From -01 to -02
+
+   o  Removed address specification for X.400 SMS from ABNF
+      (surprisingly not part of the SMS spec).
+
+   o  Added some explanatory text about character set mapping for SMS
+      messages.
+
+   o  Added text requiring the use of message class 1 for sending SMS
+      messages.
+
+
+4.3 From -02 to -03
+
+   o  Changed ordering of "change Log" section (descending to
+      ascending).
+
+   o  Fixed some spelling errors.
+
+
+
+
+
+
+
+Wilde                    Expires July 26, 2004                 [Page 11]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+4.4 From -03 to -04
+
+   o  Updated reference to draft-allocchio-gstn (to revision -05).
+
+
+4.5 From -04 to -05
+
+   o  No changes, re-release for alignment with [draft-wilde-sms-uri-05]
+
+Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+   [RFC2156]  Kille, S., "MIXER (Mime Internet X.400 Enhanced Relay):
+              Mapping between X.400 and RFC 822/MIME", RFC 2156, January
+              1998.
+
+   [RFC2234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 2234, November 1997.
+
+   [RFC2822]  Resnick, P., "Internet Message Format", RFC 2822, April
+              2001.
+
+   [RFC3191]  Allocchio, C., "Minimal GSTN address format in Internet
+              Mail", RFC 3191, October 2001.
+
+   [SMS]      European Telecommunications Standards Institute, "ETSI TS
+              100 901 (GSM 03.40 version 7.3.0 Release 1998): Digital
+              Cellular Telecommunications System (Phase 2+); Technical
+              realization of the Short Message Service (SMS);
+              Point-to-Point (PP)", November 1999, <http://pda.etsi.org/
+              pda/home.asp?wki_id=9942>.
+
+   [SMS-CHAR]
+              European Telecommunications Standards Institute, "ETSI TS
+              100 901 (GSM 03.38 version 7.2.0 Release 1998): Digital
+              Cellular Telecommunications System (Phase 2+); Alphabets
+              and language-specific information", July 1999, <http://
+              pda.etsi.org/pda/home.asp?wki_id=6821>.
+
+   [draft-allocchio-gstn-05]
+              Allocchio, C., "Text string notation for Dial Sequences
+              and GSTN / E.164 addresses", draft-allocchio-gstn-05 (work
+              in progress), April 2003.
+
+   [draft-wilde-sms-service-05]
+              Wilde, E., "Registration of GSTN SMS Service Qualifier",
+
+
+
+Wilde                    Expires July 26, 2004                 [Page 12]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+              draft-wilde-sms-service-05 (work in progress), Jan 2004.
+
+   [draft-wilde-sms-uri-05]
+              Wilde, E., "URI scheme for GSM Short Message Service",
+              draft-wilde-sms-service-05 (work in progress), Jan 2004.
+
+Non-Normative References
+
+   [RFC2629]  Rose, M., "Writing I-Ds and RFCs using XML", RFC 2629,
+              June 1999.
+
+   [WAP]      WAP Forum, "Wireless Application Protocol - Architecture
+              Specification (WAP-210-WAPArch-20010712)", July 2001.
+
+
+Author's Address
+
+   Erik Wilde
+   Swiss Federal Institute of Technology
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+
+   Phone: +41-1-6325132
+   EMail: ietf@dret.net
+   URI:   http://dret.net/netdret/
+
+Appendix A. Where to send Comments
+
+   Please send all comments and questions concerning this document to
+   Erik Wilde.
+
+Appendix B. Acknowledgements
+
+   This document has been prepared using the IETF document DTD described
+   in RFC 2629 [RFC2629].
+
+   Thanks to Claudio Allocchio and Antti Vaha-Sipila for their comments.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires July 26, 2004                 [Page 13]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+Intellectual Property Statement
+
+   The IETF takes no position regarding the validity or scope of any
+   intellectual property or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; neither does it represent that it
+   has made any effort to identify any such rights. Information on the
+   IETF's procedures with respect to rights in standards-track and
+   standards-related documentation can be found in BCP-11. Copies of
+   claims of rights made available for publication and any assurances of
+   licenses to be made available, or the result of an attempt made to
+   obtain a general license or permission for the use of such
+   proprietary rights by implementors or users of this specification can
+   be obtained from the IETF Secretariat.
+
+   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights which may cover technology that may be required to practice
+   this standard. Please address the information to the IETF Executive
+   Director.
+
+
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2004). All Rights Reserved.
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works. However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assignees.
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+
+
+
+Wilde                    Expires July 26, 2004                 [Page 14]
+
+Internet-Draft    Registration of GSTN SMS Service Qualifier    Jan 2004
+
+
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Acknowledgment
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires July 26, 2004                 [Page 15]
+
+

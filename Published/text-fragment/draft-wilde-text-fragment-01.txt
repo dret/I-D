@@ -1,0 +1,730 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                Swiss Federal Institute of
+Expires: February 6, 2003                                     Technology
+                                                          August 8, 2002
+
+
+         URI Fragment Identifiers for the text/plain Media Type
+                      draft-wilde-text-fragment-01
+
+Status of this Memo
+
+   This document is an Internet-Draft and is in full conformance with
+   all provisions of Section 10 of RFC2026.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as Internet-
+   Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at http://
+   www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on February 6, 2003.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.
+
+Abstract
+
+   This memo defines URI fragment identifiers for text/plain resources.
+   These fragment identifiers make it possible to refer to parts of a
+   text resource, identified by character count or range, line count or
+   range, or a regular expression.  These identification methods can be
+   combined to identify more than one sub-resource of a text/plain
+   resource.
+
+
+
+
+
+
+
+
+Wilde                   Expires February 6, 2003                [Page 1]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+Table of Contents
+
+   1.    Open Issues  . . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.    Introduction . . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.1   What is text/plain?  . . . . . . . . . . . . . . . . . . . .  3
+   2.1.1 Line Endings in text/plain Resources . . . . . . . . . . . .  4
+   2.2   What is a URI Fragment Identifier? . . . . . . . . . . . . .  4
+   2.3   Why text/plain Fragment Identifiers? . . . . . . . . . . . .  5
+   2.4   Incremental Deployment . . . . . . . . . . . . . . . . . . .  5
+   3.    Fragment Identification Methods  . . . . . . . . . . . . . .  6
+   3.1   Fragment Identification Schemes  . . . . . . . . . . . . . .  6
+   3.1.1 Character Count  . . . . . . . . . . . . . . . . . . . . . .  6
+   3.1.2 Character Range  . . . . . . . . . . . . . . . . . . . . . .  6
+   3.1.3 Line Count . . . . . . . . . . . . . . . . . . . . . . . . .  6
+   3.1.4 Line Range . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   3.1.5 Regular Expressions  . . . . . . . . . . . . . . . . . . . .  7
+   3.1.6 Combining Fragment Identification Schemes  . . . . . . . . .  7
+   4.    Fragment Identification Syntax . . . . . . . . . . . . . . .  8
+   4.1   Handling of count Values . . . . . . . . . . . . . . . . . .  8
+   4.2   Non-ASCII Characters in Regular Expressions  . . . . . . . .  8
+   5.    Examples . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+   6.    Security Considerations  . . . . . . . . . . . . . . . . . . 10
+   7.    Change Log . . . . . . . . . . . . . . . . . . . . . . . . . 10
+   7.1   From -00 to -01  . . . . . . . . . . . . . . . . . . . . . . 10
+         Normative References . . . . . . . . . . . . . . . . . . . . 10
+         Non-Normative References . . . . . . . . . . . . . . . . . . 11
+         Author's Address . . . . . . . . . . . . . . . . . . . . . . 12
+   A.    POSIX BRE Syntax . . . . . . . . . . . . . . . . . . . . . . 12
+   B.    Where to send Comments . . . . . . . . . . . . . . . . . . . 12
+   C.    Acknowledgements . . . . . . . . . . . . . . . . . . . . . . 12
+         Full Copyright Statement . . . . . . . . . . . . . . . . . . 13
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires February 6, 2003                [Page 2]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+1. Open Issues
+
+   This section will not be part of the final RFC text, it serves as a
+   place to collect open issues regarding this memo.
+
+   o  Provide more complex example(s).
+
+   o  Provide short BRE syntax and description in Appendix A (by
+      inclusion or by reference).
+
+   o  Should line ending normalization (as described in Section 2.1.1)
+      use CR+NL instead of NL?
+
+   o  Should regex ranges be allowed (ie, a fragment ranging from one
+      regex match to another regex match)?
+
+   o  Should a more sophisticated regex mechanism than BREs be used?
+
+   o  It seems to be impossible to give a proper definition of
+      StringWithBalancedParens using rfc 2234 ABNF.  Is this right? And
+      if so, is it a problem?
+
+   o  Regexes by themselves may identify disjoint sub-resources.  Should
+      there be a mechanism to say something like "the 5th appearance of
+      the following regex"? Or are users responsible for composing
+      regexes which do not need this kind of additional mechanism?
+
+   o  Is the concatenation of schemes (and its semantics of joining the
+      individual fragments) a good thing? Or a bad thing?
+
+   o  Should there be more schemes? Or less?
+
+
+2. Introduction
+
+   Compliant software MUST follow this specification.  The capitalized
+   key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+2.1 What is text/plain?
+
+   Internet Media Types as defined in RFC 2045 [RFC2045] and RFC 2046
+   [RFC2046] are used to identify different types and sub-types of
+   media.  RFC 2046 [RFC2046] and RFC 2646 [RFC2646] specify the text/
+   plain media type, which is used for simple, unformatted text.
+   Quoting from RFC 2046 [RFC2046]: "Plain text does not provide for or
+   allow  formatting commands, font attribute specifications, processing
+
+
+
+Wilde                   Expires February 6, 2003                [Page 3]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+   instructions, interpretation directives, or content markup.  Plain
+   text is seen simply as a linear sequence of characters, possibly
+   interrupted by line breaks or page breaks."
+
+   The text/plain media type does not restrict the character encoding,
+   any character encoding may be used.  In the absence of an explicit
+   character encoding declaration, US-ASCII is assumed as the default
+   character encoding.  This variability of the character encoding makes
+   it impossible to count characters in a text/plain resource without
+   taking the character encoding into account, because there are many
+   character encodings using more than one octet per character.
+
+   The biggest advantage of text/plain resources is their portability
+   among different platforms.  As long as they use popular character
+   encodings (such as US-ASCII), they can be displayed and processed on
+   virtually every computer system.
+
+2.1.1 Line Endings in text/plain Resources
+
+   RFC 2046 [RFC2046] and RFC 2646 [RFC2646] specify that line endings
+   in text/plain resources are represented by CR+LF character sequences.
+   In implementation practice, however, text/plain resources use
+   different conventions, for example depending on the operating system
+   they have been created with (in most cases, Unix uses LF, MacOS uses
+   CR, and Windows uses CR+LF).  Because of this diversity of
+   conventions, implementations interpreting text/plain fragment
+   identifiers MUST take different line ending conventions into account.
+
+   Line endings in text/plain resources MAY be represented by other
+   character (sequences) than CR+LF, specifically CR, LF, NEL, and
+   CR+NEL.  All these character (sequences) MUST be interpreted as line
+   endings.  This interpretation MUST affect the evaluation of text/
+   plain fragment identifiers.  All representations of line endings
+   (CR+LF, CR, LF, NEL, and CR+NEL) MUST be treated as a LF line ending
+   (ie, a single character) in character counts and regular expressions.
+   The reason for this is that fragment identifiers should not be broken
+   by converting a file from one line ending convention to another.
+
+2.2 What is a URI Fragment Identifier?
+
+   URIs are the identification mechanism for resources on the Web.  The
+   URI syntax specified in RFC 2396 [RFC2396] includes as part of a URI
+   reference a fragment identifier, which (quoting from RFC 2396
+   [RFC2396]) "consists of additional reference information to be
+   interpreted by the user agent after the retrieval action has been
+   successfully completed.  As such, it is not part of a URI, but is
+   often used in conjunction with a URI.  The semantics of a fragment
+   identifier is a property of the data resulting from a retrieval
+
+
+
+Wilde                   Expires February 6, 2003                [Page 4]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+   action, regardless of the type of URI used in the reference.
+   Therefore, the format and interpretation of fragment identifiers is
+   dependent on the media type of the retrieval result."
+
+   The most popular fragment identifier is defined for text/html
+   (defined in RFC 2854 [RFC2854]), and makes it possible to refer to a
+   specific element (identified by a 'name' or 'id' attribute) of an
+   HTML document.
+
+2.3 Why text/plain Fragment Identifiers?
+
+   Referring to specific parts of a resource can be very useful, because
+   it enables users to create more specific references.  Rather than
+   pointing to a whole resource, users can create references to the part
+   they really are interested in or want to talk about.  Even though it
+   is suggested that fragment identification methods are specified in a
+   media type's MIME registration, many media types do not have fragment
+   identification methods associated with them.
+
+   Fragment identifiers are only useful if supported by the client,
+   because they are only interpreted by the client.  Therefore, a new
+   fragment identification method will require some time to be adopted
+   by clients, and older clients will not support it.  However, because
+   the URI reference still works even if the fragment identifier is not
+   supported (the resource is retrieved, but the fragment identifier is
+   not interpreted), rapid adoption is not highly critical to ensure the
+   success of a new fragment identification method.
+
+   Fragment identifiers for text/plain make it possible to refer to
+   specific parts of a text resource, either by line count, by character
+   count, or by using a regular expression for searching for a specific
+   character sequence.  Thus, text/plain fragment identifiers enable
+   users to exchange information more specifically, thereby reducing
+   time and effort that is necessary to manually search for the relevant
+   part of a text/plain resource.
+
+2.4 Incremental Deployment
+
+   As long as support for text/plain fragment identifiers is not
+   implemented by all programs, it is important to consider the
+   implications of incremental deployment.  Clients (for example, Web
+   browsers) not supporting the trext/plain fragment identifier
+   described in this memo will work with URI references to text/plain
+   resources, but they will fail to locate the sub-resource identified
+   by the fragment identifier.  This is a reasonable fallback behavior,
+   and in general users should take into account the possibility that a
+   program interpreting a given URI reference will fail to interpret the
+   fragment identifier part (this is a general principle which applies
+
+
+
+Wilde                   Expires February 6, 2003                [Page 5]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+   to fragment identifiers for all kinds of resources).
+
+3. Fragment Identification Methods
+
+   The identification of resource fragments of text/plain resources can
+   be based on different foundations.  Since it is not necessary to
+   insert explicit identifiers into a text/plain resource (as is
+   possible with HTML documents by using special attributes), fragment
+   identification has to rely on certain inherent criteria of the
+   resource.  This memo specifies fragment identification using five
+   different methods, character counts and ranges, line counts and
+   ranges, and regular expression matching.
+
+   When interpreting character or line numbers, implementations MUST
+   take the character encoding of the resource into account, because
+   character count and octet count may differ for the character encoding
+   being used.  For example, a resource using UTF-16 encoding (as
+   specified in RFC 2718 [RFC2781]) uses two octets per character, and
+   it may have a leading BOM (Byte-Order Mark) which does not count as a
+   character and thus also affects the mapping from a simple octet count
+   to a character count.
+
+3.1 Fragment Identification Schemes
+
+3.1.1 Character Count
+
+   The simplest way to identify a fragment is to point to a certain
+   character of the resource.  Rather than identifying a fragment
+   consisting of a number of characters, this method only identifies a
+   single character, but this often is sufficient by referring to the
+   start of a region of interest.  Character counting starts with 1, so
+   the first character of a text/plain resource has the count 1.
+
+3.1.2 Character Range
+
+   If it is necessary to identify a fragment of multiple characters
+   using character counting, this can be done by using a character
+   range.  A character range is a consecutive region of the resource
+   that extends from the starting character of the range to the ending
+   character of the range.  The ending character of the range must have
+   a greater number than the starting character.
+
+3.1.3 Line Count
+
+   Lines in text/plain resources are separated by line endings (Section
+   2.1.1 describes how line endings MUST be identified), and
+   consequently it is easy to identify lines.  Because lines are the
+   only structural property of text/plain resources, it is possible to
+
+
+
+Wilde                   Expires February 6, 2003                [Page 6]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+   identify a fragment of a resource by referring to a particular line.
+   Line counting starts with 1, so the first line of a text/plain
+   resource has the count 1.  If a resource does not contain any line
+   endings, then it consists of a single (the first) line.
+
+3.1.4 Line Range
+
+   If it is necessary to identify a fragment of multiple lines using
+   line counting, this can be done by using a line range.  A line range
+   is a consecutive region of the resource that extends from the
+   starting line of the range to the ending line of the range.  The
+   ending line of the range must have a greater number than the starting
+   line.
+
+3.1.5 Regular Expressions
+
+   A common problem with fragment identifiers is their robustness (to
+   changes in the resource), and character and line counts can be broken
+   very easily.  A more robust way of identifying a fragment is by
+   searching for a specific pattern.  Thus, it is possible to use a
+   Basic Regular Expression (BRE) as defined by ISO 9945-2 [ISO9945-2]
+   (the POSIX standard) as a fragment identifier (Appendix A contains a
+   short summary of the POSIX BRE syntax).
+
+3.1.6 Combining Fragment Identification Schemes
+
+   While in most cases only one fragment identification scheme will be
+   used, it is possible to combine them.  By simply concatenating
+   different fragment identification schemes, the whole fragment
+   identifier refers to the union of all parts of the text resource
+   identified by the individual fragment identification schemes.  This
+   way, it is possible to identify disjoint ranges, such as multiple
+   line ranges.
+
+   It should be noticed that regular expressions by themselves may
+   identify disjoint fragments, which is true in any case where the
+   regular expression matches more than one occurrence in the resource.
+
+   Since disjoint fragments can be identified, implementations SHOULD
+   make sure that these fragments are appropriately marked, for example
+   by highlighting the fragment (rather than only scrolling to some
+   line, which only identifies a single location in the resource).
+   However, the exact method of how implementations deal with disjoint
+   fragments depends on the application and interface, and is beyond the
+   scope of this memo.
+
+
+
+
+
+
+Wilde                   Expires February 6, 2003                [Page 7]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+4. Fragment Identification Syntax
+
+   The syntax for the fragment identifiers is very straightforward.  The
+   syntax defines three schemes, 'char', 'line', and 'match'.  The
+   'char' and 'line' can be used in two different variants, either the
+   count variant (with a single number), or the range variant (with two
+   comma-separated numbers).  The 'match' scheme has a regular
+   expression as parameter, which must be specified as a string with
+   balanced parentheses.
+
+   The following syntax definition uses ABNF as defined in RFC 2234
+   [RFC2234].
+
+
+   text-fragment =  1*text-scheme
+   text-scheme   =  ( char-scheme / line-scheme / regex-scheme )
+   char-scheme   =  "char(" ( count / range ) ")"
+   line-scheme   =  "line(" ( count / range ) ")"
+   match-scheme  =  "match(" regex ")"
+   count         =  1*DIGIT
+   range         =  count "," [ count ]
+   regex         =  StringWithBalancedParens
+
+   The StringWithBalancedParens may only contain balanced parentheses,
+   if unbalanced parentheses need to be used, they must be escaped with
+   a '^' character.  A literal '^' must be escaped as '^^'.  Thus,
+   before interpreting the StringWithBalancedParens as a BRE, it must be
+   searched for '^(', '^)', and '^^', and these strings must be
+   substituted with their unescaped variants.
+
+   Escaping with '^' is used because ongoing work for a generic fragment
+   identifier syntax [genfrag] is using this convention, and it is
+   already being used in XML XPointer fragment identifiers [xpointer].
+
+4.1 Handling of count Values
+
+   If any count value is greater than the value for the actual resource,
+   then it identifies the last character or line of the resource.  If
+   the second count value in a range is not present, then the range
+   extends to the end of the resource.  If a range scheme's counts are
+   not properly ordered (ie, the first number is less than the second),
+   then this scheme part has to be ignored.
+
+4.2 Non-ASCII Characters in Regular Expressions
+
+   RFC 2396 [RFC2396] does not define how to use non-ASCII characters in
+   URIs.  Consequently, it is not possible to use non-ASCII characters
+   in URIs in a standardized and reliable way.  However, work on
+
+
+
+Wilde                   Expires February 6, 2003                [Page 8]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+   Internationalized Resource Identifiers (IRI) [IRI] is in progress,
+   and as soon as this work results in a published RFC, it will be
+   possible to use non-ASCII characters in regular expressions, using
+   the encoding defined by IRI.
+
+5. Examples
+
+   The following examples show some usages for the fragment identifiers
+   defined in this memo.
+
+
+   http://example.com/text.txt#char(100)
+
+   This URI reference identifies the 100th character of the text.txt
+   resource.  It should be noted that it is not clear which octet(s) of
+   the resource this will be without retrieving the resource and thus
+   knowing which character encoding is used for it (in case of HTTP,
+   this information will be given in the response's Content-type
+   header).
+
+
+   http://example.com/text.txt#line(10,20)
+
+   This URI reference identifies lines 10 to 20 of the text.txt
+   resource.  If the resource has fewer than 10 lines, it identifies the
+   last line.  If the resource has less than 20 but at least 10 lines,
+   it identifies the lines 10 to the last line of the resource.
+
+
+   http://example.com/text.txt#match(searchterm)
+
+   This URI reference identifies all occurrences of the regular
+   expression 'searchterm' in the resource, ie all occurrences of the
+   string 'searchterm'.  If there is more than one occurrence, then this
+   URI references a disjoint fragment, consisting of all of these
+   occurrences.
+
+
+   http://example.com/text.txt#line(1)match(searchterm)
+
+   This URI reference identifies the first line and all occurrences of
+   the regular expression 'searchterm' in the resource.  If there is an
+   occurrence of 'searchterm' outside of the first line, then this URI
+   references a disjoint fragment.
+
+
+   http://example.com/text.txt#match(hello%5E()
+
+
+
+
+Wilde                   Expires February 6, 2003                [Page 9]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+   This URI reference identifies all occurrences of the regular
+   expression 'hello(' in the resource.  It must first be URL decoded,
+   which leads to the scheme part 'hello^('.  This is then interpreted
+   according to the definition of a string with balanced parentheses,
+   treating the '^(' as an escaped '(', so that the actual regular
+   expression is 'hello('.  If there is more than one occurrence of this
+   regular expression, then this URI references a disjoint fragment,
+   consisting of all of these occurrences.
+
+
+   ...
+
+   (more complex example...)
+
+6. Security Considerations
+
+   Regular expression matching code is notoriously vulnerable to buffer
+   overflow security holes, so any implementation supporting text/plain
+   fragment identifiers SHOULD make sure that the code being used (or
+   being written) has been tested against buffer overflow attacks using
+   match() scheme fragment identifiers.
+
+7. Change Log
+
+7.1 From -00 to -01
+
+   o  Made the second count value of ranges optional, so that something
+      like line(10,) is legal and properly defined.
+
+   o  Added non-normative reference to Internet draft about non-ASCII
+      characters in search strings.
+
+   o  Added Section 2.4 about incremental deployement.
+
+   o  Added more elaborate examples.
+
+   o  Added text about regex buffer overflow problems in Section 6.
+
+   o  Added Section 2.1.1 about line endings in text/plain resources.
+
+   o  Added Section 1 to collect open issues regarding this memo (will
+      be deleted in final RFC text).
+
+Normative References
+
+   [ISO9945-2]  International Organization for Standardization,
+                "Information technology - Portable Operating System
+                Interface (POSIX) - Part 2: Shell and Utilities", ISO
+
+
+
+Wilde                   Expires February 6, 2003               [Page 10]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+                9945-2, 1993.
+
+   [RFC2045]    Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+                Extensions (MIME) Part One: Format of Internet Message
+                Bodies", RFC 2045, November 1996.
+
+   [RFC2046]    Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+                Extensions (MIME) Part Two: Media Types", RFC 2046,
+                November 1996.
+
+   [RFC2119]    Bradner, S., "Key words for use in RFCs to Indicate
+                Requirement Levels", RFC 2119, March 1997.
+
+   [RFC2234]    Crocker, D. and P. Overell, "Augmented BNF for Syntax
+                Specifications: ABNF", RFC 2234, November 1997.
+
+   [RFC2396]    Berners-Lee, T., Fielding, R. and L. Masinter, "Uniform
+                Resource Identifiers (URI): Generic Syntax", RFC 2396,
+                August 1998.
+
+   [RFC2646]    Gellens, R., "The Text/Plain Format Parameter", RFC
+                2646, August 1999.
+
+Non-Normative References
+
+   [IRI]       Masinter, L. and M. Duerst, "Internationalized Resource
+               Identifiers (IRI)", draft-masinter-url-i18n-07 (work in
+               progress), January 2001.
+
+   [RFC2629]   Rose, M., "Writing I-Ds and RFCs using XML", RFC 2629,
+               June 1999.
+
+   [RFC2781]   Hoffman, P. and F. Yergeau, "UTF-16, an encoding of ISO
+               10646", RFC 2781, February 2000.
+
+   [RFC2854]   Connolly, D. and L. Masinter, "The 'text/html' Media
+               Type", RFC 2854, June 2000.
+
+   [genfrag]   Borden, J. and S. St. Laurent, "A generic fragment
+               identifier syntax for URI references", draft-borden-frag-
+               00 (work in progress), February 2002.
+
+   [xpointer]  DeRose, T., Maler, E. and R. Daniel Jr., "XPointer
+               xpointer() Scheme", W3C Working Draft WD-xptr-xpointer-
+               20020710, July 2002.
+
+
+
+
+
+
+Wilde                   Expires February 6, 2003               [Page 11]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+Author's Address
+
+   Erik Wilde
+   Swiss Federal Institute of Technology
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+
+   Phone: +41-1-6325132
+   EMail: net.dret@dret.net
+   URI:   http://dret.net/netdret/
+
+Appendix A. POSIX BRE Syntax
+
+   This section contains a short (and non-normative) summary of the
+   POSIX BRE syntax defined in ISO 9945-2 [ISO9945-2].  The definition
+   of BRE syntax in ISO 9945-2 [ISO9945-2] is the normative reference,
+   and the following summary is for informative purposes only.
+
+   (tbd - is there some rfc that could be referenced instead?)
+
+Appendix B. Where to send Comments
+
+   Please send all comments and questions concerning this document to
+   Erik Wilde.
+
+Appendix C. Acknowledgements
+
+   This document has been prepared using the IETF document DTD described
+   in RFC 2629 [RFC2629].
+
+   Thanks for comments and suggestions provided by Dan Kohn and John
+   Cowan.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires February 6, 2003               [Page 12]
+
+Internet-Draft      text/plain Fragment Identifiers          August 2002
+
+
+Full Copyright Statement
+
+   Copyright (C) The Internet Society (2002).  All Rights Reserved.
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implementation may be prepared, copied, published
+   and distributed, in whole or in part, without restriction of any
+   kind, provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Acknowledgement
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires February 6, 2003               [Page 13]
+
+

@@ -1,0 +1,1066 @@
+
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                                ETH Zurich
+Expires: July 10, 2006                                       Jan 6, 2006
+
+
+         URI Fragment Identifiers for the text/plain Media Type
+                      draft-wilde-text-fragment-05
+
+Status of this Memo
+
+   By submitting this Internet-Draft, each author represents that any
+   applicable patent or other IPR claims of which he or she is aware
+   have been or will be disclosed, and any of which he or she becomes
+   aware will be disclosed, in accordance with Section 6 of BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as Internet-
+   Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on July 10, 2006.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2006).
+
+Abstract
+
+   This memo defines URI fragment identifiers for text/plain MIME
+   entities.  These fragment identifiers make it possible to refer to
+   parts of a text MIME entity, identified by character count or range,
+   line count or range, or a regular expression.  These identification
+   methods can be combined to identify more than one sub-resource of a
+   text/plain MIME entity.  Fragment identifiers may also contain hash
+   information to make them more robust.
+
+
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 1]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.1.  What is text/plain?  . . . . . . . . . . . . . . . . . . .  3
+       1.1.1.  Line Endings in text/plain MIME Entities . . . . . . .  3
+     1.2.  What is a URI Fragment Identifier? . . . . . . . . . . . .  4
+     1.3.  Why text/plain Fragment Identifiers? . . . . . . . . . . .  4
+     1.4.  Incremental Deployment . . . . . . . . . . . . . . . . . .  5
+   2.  Fragment Identification Methods  . . . . . . . . . . . . . . .  5
+     2.1.  Fragment Identification Schemes  . . . . . . . . . . . . .  6
+       2.1.1.  Principles . . . . . . . . . . . . . . . . . . . . . .  6
+       2.1.2.  Combining the Principles . . . . . . . . . . . . . . .  7
+       2.1.3.  Regular Expressions  . . . . . . . . . . . . . . . . .  8
+       2.1.4.  Combining Fragment Identification Scheme Parts . . . .  9
+     2.2.  Fragment Identifier Robustness . . . . . . . . . . . . . .  9
+   3.  Fragment Identification Syntax . . . . . . . . . . . . . . . . 10
+     3.1.  Non-ASCII Characters in Regular Expressions  . . . . . . . 11
+     3.2.  Hash Sums  . . . . . . . . . . . . . . . . . . . . . . . . 11
+   4.  Fragment Identifier Processing . . . . . . . . . . . . . . . . 11
+     4.1.  Handling of position Values  . . . . . . . . . . . . . . . 11
+     4.2.  Handling of Hash Sums  . . . . . . . . . . . . . . . . . . 12
+     4.3.  Syntax Errors in Fragment Identifiers  . . . . . . . . . . 12
+   5.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 14
+   7.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+     7.1.  From -04 to -05  . . . . . . . . . . . . . . . . . . . . . 14
+     7.2.  From -03 to -04  . . . . . . . . . . . . . . . . . . . . . 14
+     7.3.  From -02 to -03  . . . . . . . . . . . . . . . . . . . . . 15
+     7.4.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . . 15
+     7.5.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . . 15
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+     8.1.  Normative References . . . . . . . . . . . . . . . . . . . 16
+     8.2.  Non-Normative References . . . . . . . . . . . . . . . . . 16
+   Appendix A.  Where to send Comments  . . . . . . . . . . . . . . . 17
+   Appendix B.  Acknowledgements  . . . . . . . . . . . . . . . . . . 17
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 18
+   Intellectual Property and Copyright Statements . . . . . . . . . . 19
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 2]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+1.  Introduction
+
+   Compliant software MUST follow this specification.  The capitalized
+   key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [1].
+
+1.1.  What is text/plain?
+
+   Internet Media Types as defined in RFC 2045 [2] and RFC 2046 [3] are
+   used to identify different types and sub-types of media.  RFC 2046
+   [3] and RFC 3676 [4] specify the text/plain media type, which is used
+   for simple, unformatted text.  Quoting from RFC 2046 [3]: "Plain text
+   does not provide for or allow formatting commands, font attribute
+   specifications, processing instructions, interpretation directives,
+   or content markup.  Plain text is seen simply as a linear sequence of
+   characters, possibly interrupted by line breaks or page breaks."
+
+   The text/plain media type does not restrict the character encoding,
+   any character encoding may be used.  In the absence of an explicit
+   character encoding declaration, US-ASCII is assumed as the default
+   character encoding.  This variability of the character encoding makes
+   it impossible to count characters in a text/plain MIME entity without
+   taking the character encoding into account, because there are many
+   character encodings using more than one octet per character.
+
+   The biggest advantage of text/plain MIME entities is their ease of
+   use and their portability among different platforms.  As long as they
+   use popular character encodings (such as US-ASCII), they can be
+   displayed and processed on virtually every computer system.
+
+1.1.1.  Line Endings in text/plain MIME Entities
+
+   RFC 2046 [3] and RFC 3676 [4] specify that line endings in text/plain
+   MIME entities are represented by CR+LF character sequences.  In
+   implementation practice, however, text/plain MIME entities use
+   different conventions, for example depending on the operating system
+   they have been created with (in most cases, Unix uses LF, MacOS uses
+   CR, and Windows uses CR+LF).  Because of this diversity of
+   conventions, implementations interpreting text/plain fragment
+   identifiers MUST take different line ending conventions into account.
+
+   Line endings in text/plain MIME entities MAY be represented by other
+   character (sequences) than CR+LF, specifically CR, LF, NEL, and CR+
+   NEL.  All these character (sequences) MUST be interpreted as line
+   endings.  This interpretation MUST affect the evaluation of text/
+   plain fragment identifiers.  All representations of line endings
+   (CR+LF, CR, LF, NEL, and CR+NEL) MUST be treated as a single
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 3]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   character in character counts.  For the purpose of regular expression
+   matching, all representations of line endings MUST be treated as
+   single LF characters.  The reason for this is that fragment
+   identifiers should not be broken by converting a file from one line
+   ending convention to another.
+
+   In general, the line ending conventions used in text/plain MIME
+   entities depends on the character encoding of the MIME entity.
+   Implementations SHOULD attempt to be as accurate as possible in
+   recognizing line ending specific to particular character encodings,
+   and MUST treat all these line endings as one character in character
+   counts, and single LF characters for regular expression matching.
+
+1.2.  What is a URI Fragment Identifier?
+
+   URIs are the identification mechanism for resources on the Web. The
+   URI syntax specified in RFC 3986 [5] includes as part of a URI a
+   fragment identifier, which (quoting from RFC 3986 [5]) "consists of
+   additional reference information to be interpreted by the user agent
+   after the retrieval action has been successfully completed.  As such,
+   it is not part of a URI, but is often used in conjunction with a URI.
+   The semantics of a fragment identifier is a property of the data
+   resulting from a retrieval action, regardless of the type of URI used
+   in the reference.  Therefore, the format and interpretation of
+   fragment identifiers is dependent on the media type of the retrieval
+   result."
+
+   The most popular fragment identifier is defined for text/html
+   (defined in RFC 2854 [10]), and makes it possible to refer to a
+   specific element (identified by a 'name' or 'id' attribute) of an
+   HTML document.
+
+1.3.  Why text/plain Fragment Identifiers?
+
+   Referring to specific parts of a resource can be very useful, because
+   it enables users and applications to create more specific references.
+   Rather than pointing to a whole resource, users can create references
+   to the part they really are interested in or want to talk about.
+   Even though it is suggested that fragment identification methods are
+   specified in a media type's MIME registration, many media types do
+   not have fragment identification methods associated with them.
+
+   Fragment identifiers are only useful if supported by the client,
+   because they are only interpreted by the client.  Therefore, a new
+   fragment identification method will require some time to be adopted
+   by clients, and older clients will not support it.  However, because
+   the URI still works even if the fragment identifier is not supported
+   (the resource is retrieved, but the fragment identifier is not
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 4]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   interpreted), rapid adoption is not highly critical to ensure the
+   success of a new fragment identification method.
+
+   Fragment identifiers for text/plain make it possible to refer to
+   specific parts of a text MIME entity, using concepts of positions and
+   ranges, which may be applied to characters and lines.  The also
+   support locating a fragment by using a regular expression for
+   searching for a specific character sequence.  Thus, text/plain
+   fragment identifiers enable users to exchange information more
+   specifically, thereby reducing time and effort that is necessary to
+   manually search for the relevant part of a text/plain MIME entity.
+
+   The text/plain format does not support the embedding of links, so in
+   normal environments, text/plain resources can only serve as targets
+   for links, and not as sources.  However, when combining the text/
+   plain fragment identifiers specified in this memo with out-of-line
+   linking mechanisms such as XLink [11], it is possible to "embed" link
+   sources into plain/text resources.  Thus, the text/plain fragment
+   identifiers specified in this memo open a path for plain/text files
+   to become fully integrated resources in hypermedia systems such as
+   the Web.
+
+1.4.  Incremental Deployment
+
+   As long as support for text/plain fragment identifiers is not
+   implemented by all programs, it is important to consider the
+   implications of incremental deployment.  Clients (for example, Web
+   browsers) not supporting the text/plain fragment identifier described
+   in this memo will work with URI references to text/plain MIME
+   entities, but they will fail to locate the sub-resource identified by
+   the fragment identifier.  This is a reasonable fallback behavior, and
+   in general users should take into account the possibility that a
+   program interpreting a given URI will fail to interpret the fragment
+   identifier part.  Since fragment identifier evaluation is local to
+   the client (and happens after retrieving the MIME entity), there is
+   no way for a server to determine whether a requesting client is using
+   a URI containing a fragment identifier.
+
+
+2.  Fragment Identification Methods
+
+   The identification of fragments of text/plain MIME entities can be
+   based on different foundations.  Since it is not possible to insert
+   explicit, invisible identifiers into a text/plain MIME entity (as for
+   example used in HTML documents, implemented through special
+   attributes), fragment identification has to rely on certain inherent
+   criteria of the MIME entity.  This memo specifies fragment
+   identification using six different methods, which are character
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 5]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   positions and ranges, line positions and ranges, regular expression
+   matching, and a mechanism for improving the robustness of fragment
+   identifiers (entity hashes).
+
+   When interpreting character or line numbers, implementations MUST
+   take the character encoding of the MIME entity into account, because
+   character count and octet count may differ for the character encoding
+   being used.  For example, a MIME entity using UTF-16 encoding (as
+   specified in RFC 2718 [12]) uses two octets per character, and it may
+   have a leading BOM (Byte-Order Mark), which does not count as a
+   character and thus also affects the mapping from a simple octet count
+   to a character count.
+
+2.1.  Fragment Identification Schemes
+
+   Fragment identification can be done using regular expressions or
+   combining two orthogonal principles, which are positions and ranges,
+   and characters and lines.  The following section describe the
+   principles themselves, while Section 2.1.2 describes the combination
+   of the principles.
+
+2.1.1.  Principles
+
+2.1.1.1.  Positions and Ranges
+
+   A position does not identify an actual fragment of the MIME entity,
+   but a position inside the MIME entity, which could be regarded as a
+   fragment of zero length.  The use case for positions is to provide
+   pointers for applications which may use them to implement
+   functionalities such as "insert some text here", which needs a
+   position rather than a fragment.  Positions are counted from zero
+   (position zero being before the first character or line of a text/
+   plain MIME entity), so that a text/plain MIME entity having one
+   character has two positions, one before the first character (position
+   0), and one after the first character (position 1).
+
+   Since positions are fragments of length zero, applications SHOULD use
+   other methods than highlighting to indicate positions, the most
+   obvious way being the positioning of a cursor (if the application
+   supports the concept of a cursor).
+
+   Ranges, on the other hand, identify fragments of a MIME entity that
+   have a length that may be greater than zero.  As a general principle
+   for ranges, they specify both a lower and a upper bound.  The start
+   or the end of a range specification may be omitted, defaulting to the
+   first repectively last position of the MIME entity.  The ending
+   position of a range must have a value greater than or equal to the
+   lower position (consequently, a range with identical lower and upper
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 6]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   positions is legal, and identifies a range of length 0, which is
+   equivalent to a position).  Counting for ranges uses positions, so
+   that a fragment containing one entity is specified by using a range
+   with two adjacent positions.
+
+   Since ranges are fragments with a length greater than zero,
+   applications SHOULD use methods like highlighting to indicate ranges
+   (if the application supports the concept of highlighting).
+
+   For positions and ranges it is implicitly assumed that if a number is
+   greater than the actual number of elements in the MIME entity, then
+   it is referring to the last element of the MIME entity (see Section 4
+   for the processing model).
+
+2.1.1.2.  Characters and Lines
+
+   The concept of positions and ranges may be applied to characters and
+   lines.  In both cases, positions indicate points between entities,
+   while ranges identify zero or more entities by indicating positions.
+
+   Character positions are numbered starting with zero (ignoring initial
+   BOM marks or similar concepts that are not part of the actual textual
+   content of a text/plain MIME entity), and counting each character
+   separately, with the exception of line endings, which are always
+   counted as one character (Section 1.1.1 describes how line endings
+   MUST be identified).
+
+   Line positions are numbered starting with zero (with line position
+   zero always being identical with character position zero), with
+   Section 1.1.1 describing how line endings MUST be identified.
+   Fragments identified by lines include the line endings, so
+   applications identifying line-based fragments MUST include the line
+   endings in the fragment identification they are using (eg, the
+   highlighted selection).  If a MIME entity does not contain any line
+   endings, then it consists of a single (the first) line.
+
+2.1.2.  Combining the Principles
+
+   In the following sections, the principles described in the preceding
+   section (positions/ranges and characters/lines) are combined,
+   resulting in four use cases.
+
+2.1.2.1.  Character Position
+
+   Using the char scheme followed by a single number, it is possible to
+   point to a character position (ie, a fragment of length zero between
+   two characters).  Rather than identifying a fragment consisting of a
+   number of characters, this method identifies a position between two
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 7]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   characters (or before the first or after the last character).
+   Character position counting starts with 0, so the character position
+   before the first character of a text/plain MIME entity has the
+   character position 0, and a MIME entity containing n distinct
+   characters has n+1 distinct character positions, the last one having
+   the character position n.
+
+2.1.2.2.  Character Range
+
+   If it is necessary to identify a fragment of one or more characters
+   using character counting, this can be done by using a character
+   range, using the char scheme followed by a range specification.  A
+   character range is a consecutive region of the MIME entity that
+   extends from the starting character position of the range to the
+   ending character position of the range.
+
+2.1.2.3.  Line Position
+
+   Using the line scheme followed by a single number, it is possible to
+   point to a line position (ie, a fragment of length zero between two
+   lines).  Rather than identifying a fragment consisting of a number of
+   lines, this method identifies a position between two lines (or before
+   the first or after the last line).  Line position counting starts
+   with 0, so the line position before the first line of a text/plain
+   MIME entity has the line position 0, and a MIME entity containing n
+   distinct lines has n+1 distinct line positions, the last one having
+   the line position n.
+
+2.1.2.4.  Line Range
+
+   If it is necessary to identify a fragment of one or more lines using
+   line counting, this can be done by using a line range, using the line
+   scheme followed by a range specification.  A line range is a
+   consecutive region of the MIME entity that extends from the starting
+   line position of the range to the ending line position of the range.
+
+2.1.3.  Regular Expressions
+
+   A common problem with fragment identifiers is their robustness (to
+   changes in the MIME entity), and character and line counts can break
+   very easily.  A more robust way of identifying a fragment is by
+   searching for a specific pattern (another way of making fragment
+   identifiers more robust is described in Section 2.2 about including
+   entity hash sums in the fragment identifier).  Thus, it is possible
+   to use a Basic Regular Expression (BRE) as defined by ISO 9945-2 [6]
+   (the POSIX standard) as a fragment identifier.
+
+
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 8]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+2.1.4.  Combining Fragment Identification Scheme Parts
+
+   While in most cases only one fragment identification scheme part will
+   be used, it is possible to combine them.  By simply concatenating
+   different fragment identification scheme parts, separated by a
+   semicolon, the whole fragment identifier refers to the union of all
+   fragments of the text/plain MIME entity identified by the individual
+   fragment identification scheme parts.  This way, it is possible to
+   identify disjoint ranges, such as multiple line ranges.
+
+   It should be noticed that regular expressions by themselves may
+   identify disjoint fragments, which is true in any case where the
+   regular expression matches more than one occurrence in the MIME
+   entity.
+
+   Since disjoint fragments can be identified, implementations SHOULD
+   make sure that these fragments are appropriately marked, for example
+   by highlighting the fragment (rather than only scrolling to some
+   line, which only identifies a single position in the MIME entity).
+   If an implementation can not mark disjoint fragments, it MAY resort
+   to marking only the first of the disjoint fragments.  However, the
+   exact method of how implementations deal with disjoint fragments
+   depends on the application and interface, and is beyond the scope of
+   this memo.
+
+2.2.  Fragment Identifier Robustness
+
+   While regular expressions (as described in Section 2.1.3) may make
+   fragment identifiers more robust than character or line counts, it is
+   still possible that modifications of the resource will break the
+   fragment identifier.  If applications want to create more robust
+   fragment identifiers, they may do so by adding hash sums to fragment
+   identifiers.  These hash sums are used to detect a change in the
+   resource, so that applications may warn users about the possibility
+   that a fragment identifier might have been broken by a modification
+   of the resource.  Since fragment identifiers are interpreted by
+   clients, hash sums are defined on MIME entities rather than the
+   resource itself, and as such are specific to a certain representation
+   of the resource, in case of text/plain resources the character
+   encoding of MIME entity.
+
+   Hash sums may specify the character encoding that has been used when
+   creating the hash sums, and if such a specification is present,
+   clients MUST check whether the character encoding specified for the
+   hash sum and the character encoding of the retrieved MIME entity are
+   equal, and clients MUST NOT check the hash sum if these values
+   differ.  However, clients MAY choose to transcode the retrieved MIME
+   entity in the case of differing character encodings, and after doing
+
+
+
+Wilde                     Expires July 10, 2006                 [Page 9]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   so, they MAY check the hash sum (please note that this method is
+   inhererently unreliable, though, because certain characters or
+   character sequences may have been lost or normalized due to
+   restrictions of the coded character set).
+
+
+3.  Fragment Identification Syntax
+
+   The syntax for the fragment identifiers is straightforward.  The
+   syntax defines four schemes, 'char', 'line', 'match', and hash (which
+   can either be 'length' or 'md5').  The 'char' and 'line' can be used
+   in two different variants, either the position variant (with a single
+   number), or the range variant (with two comma-separated positions).
+   The 'match' scheme has a regular expression as parameter, which must
+   be specified as a string with escaped semicolons (because the
+   semicolon is used to concatenate multiple fragment identification
+   scheme parts).  The hash scheme can either use the 'length' or the
+   'md5' scheme to specify a hash value.
+
+   The following syntax definition uses ABNF as defined in RFC 4234 [7].
+
+
+   text-fragment =  text-scheme 0*( ";" text-scheme) 0*( ";" hash-scheme)
+   text-scheme   =  ( char-scheme / line-scheme / match-scheme )
+   hash-scheme   =  ( length-scheme / md5-scheme ) [ "," charenc ]
+   char-scheme   =  "char=" ( position / range )
+   line-scheme   =  "line=" ( position / range )
+   match-scheme  =  "match=" regex
+   position      =  number
+   range         =  (position "," [ position ]) / ("," position )
+   number        =  1*( DIGIT )
+   regex         =  StringWithEscapedSemicolon
+   length-scheme =  "length=" number
+   md5-scheme    =  "md5=" md5-value
+   md5-value     =  32( hexdigit )
+   hexdigit      =  (DIGIT / "a" / "A" / "b" / "B" / "c" / "C" / "d" / "D" / "e" / "E" / "f" / "F" )
+   charenc       =  StringWithEscapedSemicolon
+
+   The StringWithEscapedSemicolon is a string where all characters may
+   appear literally (except the characters which are required by the URI
+   syntax to be escaped), with the exception of a semicolon.  A
+   semicolon that should be part of the regular expression must be
+   escaped with a leading backslash, and implementations MUST make sure
+   to properly interpret regular expressions, properly dereferencing all
+   escape mechanisms that apply (ie, URI encoding, semicolon escaping,
+   and BRE escaping, as well as any additional escaping that may be
+   present due to the context of the URI).
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 10]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+3.1.  Non-ASCII Characters in Regular Expressions
+
+   RFC 3986 [5] only allows a subset of ASCII as characters in URIs.
+   Consequently, it is not possible to use non-ASCII characters in URIs.
+   However, using Internationalized Resource Identifiers (IRI) as
+   defined by RFC 3987 [8], it is possible to use non-ASCII characters,
+   using the encoding defined by IRI.  Thus, using IRIs it is possible
+   to use non-ASCII characters in regular expressions, and
+   implementations MUST make sure to correctly handle any non-ASCII
+   characters in regular expressions, if they accept IRI-encoded text/
+   plain fragment identifiers.
+
+3.2.  Hash Sums
+
+   A hash sum can either specify a MIME entity's length, or its MD5
+   fingerprint.  In both cases, it can optionally specify the character
+   encoding which had been used when calculating the hash sum, so that
+   clients interpreting the fragment identifier may check whether they
+   are using the same character encoding for their calculations.  For
+   lenghts, the character encoding is necessary because it may influence
+   the character count (for example, a combining a-umlaut character
+   which counts as two characters in Unicode will be collapsed to a
+   single a-umlaut character in ISO 8859 encoding).  Using Unicode
+   terminology, this means that the length of a text/plain MIME entity
+   is computed based on its "code points" (other possibilities would
+   have included "code units", which depend on the encoding, and
+   "graphemes", which require knowledge about code point semantics).
+   For MD5 fingerprints, the character encoding is necessary because the
+   MD5 algorithm works on the binary representation of the text/plain
+   resource.
+
+   The length of a text/plain MIME entity is calculated by using the
+   principles defined in Section 2.1.1.2.  The MD5 fingerprint of a
+   text/plain MIME entity is calculated by using the algorithm presented
+   in [9], encoding the result in 16 hexadecimal digits (using uppercase
+   or lowercase letters) as a representation of the 128 bit which are
+   the result of the MD5 algorithm.
+
+
+4.  Fragment Identifier Processing
+
+4.1.  Handling of position Values
+
+   If any position value (as a position or inside a range) is greater
+   than the value for the actual MIME entity, then it identifies the
+   last character or line position of the MIME entity.  If the first
+   position value in a range is not present, then the range extends from
+   the start of the MIME entity.  If the second position value in a
+
+
+
+Wilde                     Expires July 10, 2006                [Page 11]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   range is not present, then the range extends to the end of the MIME
+   entity.  If a range scheme's positions are not properly ordered (ie,
+   the first number is less than the second), then this scheme part MUST
+   be ignored.
+
+4.2.  Handling of Hash Sums
+
+   Clients are not required to implement the handling of hash sums, so
+   they MAY choose to ignore hash sum information altogether.  However,
+   if they do implement hash sum handling, they MUST implement it as
+   follows:
+
+   If a fragment identifier contains a hash sum, and a client retrieves
+   a MIME entity and detects that the hash sum has changed (observing
+   the character encoding specification as described in Section 3.2, if
+   present), then the client SHOULD NOT interpret any other text/plain
+   fragment identifier scheme part.  A client MAY signal this situation
+   to the user.
+
+4.3.  Syntax Errors in Fragment Identifiers
+
+   If a fragment identifier contains a syntax error (i.e., does not
+   conform to the syntax specified in Section 3), then it MUST be
+   ignored by clients.  Clients SHOULD NOT make any attempt to correct
+   or guess fragment identifiers.  Syntax errors MAY be reported by
+   clients.
+
+
+5.  Examples
+
+   The following examples show some usages for the fragment identifiers
+   defined in this memo.
+
+
+   http://example.com/text.txt#char=100
+
+   This URI identifies the position after the 100th character of the
+   text.txt MIME entity.  It should be noted that it is not clear which
+   octet(s) of the MIME entity this will be without retrieving the MIME
+   entity and thus knowing which character encoding is it using (in case
+   of HTTP, this information will be given in the response's Content-
+   type header).  If the MIME entity has fewer than 100 characters, the
+   URI identifies the position after the MIME entity's last character.
+
+
+   http://example.com/text.txt#line=10,20
+
+   This URI identifies lines 11 to 20 of the text.txt MIME entity.  If
+
+
+
+Wilde                     Expires July 10, 2006                [Page 12]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   the MIME entity has fewer than 11 lines, it identifies the position
+   after last line.  If the MIME entity has less than 20 but at least 11
+   lines, it identifies the lines 11 to the last line of the MIME
+   entity.
+
+
+   http://example.com/text.txt#match=searchterm
+
+   This URI identifies all occurrences of the regular expression
+   'searchterm' in the MIME entity, ie all occurrences of the string
+   'searchterm'.  If there is more than one occurrence, then this URI
+   identifies a disjoint fragment, consisting of all of these
+   occurrences.  If there is no occurrence of the search term, the URI
+   does not identify a fragment.
+
+
+   http://example.com/text.txt#line=,1;match=searchterm
+
+   This URI identifies the first line and all occurrences of the regular
+   expression 'searchterm' in the MIME entity.  If there is an
+   occurrence of 'searchterm' outside of the first line, then this URI
+   identifies a disjoint fragment.
+
+
+   http://example.com/text.txt#match=hello\;
+
+   This URI identifies all occurrences of the regular expression
+   'hello;' in the MIME entity.  The semicolon with the leading
+   backslash has to be interpreted as a literal semicolon inside of the
+   BRE, treating the '\;' as an escaped ';', so that the actual regular
+   expression is 'hello;'.  If there is more than one occurrence of this
+   regular expression, then this URI identifies a disjoint fragment,
+   consisting of all of these occurrences.
+
+
+   http://example.com/text.txt#line=10,20;length=9876,UTF-8
+
+   As in the first example, this URI identifies lines 11 to 20 of the
+   text.txt MIME entity.  The additional length hash sum specifies that
+   the MIME entity has a length of 9876 code points when encoded in
+   UTF-8.  If the client supports the length hash sum scheme, it may
+   test the retrieved MIME entity for its length, but only if the
+   retrieved MIME entity uses the UTF-8 encoding or has been locally
+   trancoded into this encoding.  If the length of the retrieved MIME
+   entity does not match the specified length in the fragment
+   identifier, the client SHOULD NOT interpret the line part and MAY
+   signal this to the user.
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 13]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+6.  Security Considerations
+
+   Regular expression matching code is notoriously vulnerable to buffer
+   overflow security holes, so any implementation supporting text/plain
+   fragment identifiers SHOULD make sure that the code being used has
+   been tested against buffer overflow attacks.
+
+
+7.  Change Log
+
+   This section will not be part of the final RFC text, it serves as a
+   container for collecting the history of the individual draft
+   versions.
+
+7.1.  From -04 to -05
+
+   o  Added some explanatory text to the last paragraph of Section 2.2.
+
+   o  Added a paragraph about the importance of having fragment
+      identification capabilities for out-of-line linking methods such
+      as XLink to Section 1.3.
+
+   o  Added explanation of why the charset is important for length hash
+      sums to Section 3.2.
+
+   o  Added text that makes hash sum handling optional and allows
+      clients to interpret fragment identifiers even if the hash sum did
+      not match (changed MUST NOT to SHOULD NOT) to Section 4.2.
+
+   o  Added example using a length hash sum in Section 5.
+
+   o  RFC 2234 (ABNF) has been obsoleted by [7].
+
+   o  Removed the "Open Issues" section for preparation of final draft
+      before submission as RFC.
+
+7.2.  From -03 to -04
+
+   o  URIs are now defined by RFC 3986 [5], so the text and the
+      references have been updated.  In particular, RFC3986 defines a
+      fragment identifier to be part of the URI, whereas in the
+      obsoleted RFC 2396 URI specification, it was not part of a URI as
+      such, but of a "URI reference".
+
+   o  IRIs are now defined by RFC 3987 [8], so the text and the
+      references have been updated.
+
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 14]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   o  Changed IPR clause from RFC 3667 to RFC 3978 (updated version of
+      RFC 3667).
+
+7.3.  From -02 to -03
+
+   o  Replaced most occurrences of 'resource' with 'MIME entity',
+      because the result of dereferencing a URI is not the resource
+      itself, but some MIME entity (in our case of type text/plain)
+      representing it.  Thanks to Sandro Hawke for pointing this out.
+
+   o  Moved "Open Issues" to the very back of the document.
+
+   o  Added Section 4 to define the processing model for fragment
+      identifiers (moved Section 4.1 from Section 3 to Section 4).
+
+   o  Added hash scheme to make fragment identifiers more robust
+      (Section 2.2).
+
+   o  Changed IPR clause from RFC 2026 to RFC 3667 (updated version of
+      RFC 2026).
+
+7.4.  From -01 to -02
+
+   o  Fundamental change in semantics: counts turn into positions
+      (between characters or lines), so in order to identify a character
+      or line, ranges must be used (which now use positions to specify
+      the upper and lower bounds of the range).
+
+   o  Made the first value of a range optional as well, so that line=,5
+      also is legal, identifying everything from the start of the MIME
+      entity to the 5th line.
+
+   o  Changed the syntax from paranthesis-style to a more traditional
+      style using equals-signs.
+
+7.5.  From -00 to -01
+
+   o  Made the second count value of ranges optional, so that something
+      like line(10,) is legal and properly defined.
+
+   o  Added non-normative reference to Internet draft about non-ASCII
+      characters in search strings.
+
+   o  Added Section 1.4 about incremental deployement.
+
+   o  Added more elaborate examples.
+
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 15]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   o  Added text about regex buffer overflow problems in Section 6.
+
+   o  Added Section 1.1.1 about line endings in text/plain resources.
+
+   o  Added "Open Issues" to collect open issues regarding this memo
+      (will be deleted in final RFC text).
+
+
+8.  References
+
+8.1.  Normative References
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", RFC 2119, March 1997.
+
+   [2]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+        Extensions (MIME) Part One: Format of Internet Message Bodies",
+        RFC 2045, November 1996.
+
+   [3]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
+        Extensions (MIME) Part Two: Media Types", RFC 2046,
+        November 1996.
+
+   [4]  Gellens, R., "The Text/Plain Format and DelSp Parameters",
+        RFC 3676, February 2004.
+
+   [5]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+        Resource Identifier (URI): Generic Syntax", RFC 3986,
+        January 2005.
+
+   [6]  International Organization for Standardization, "Information
+        technology - Portable Operating System Interface (POSIX) - Part
+        2: Shell and Utilities", ISO 9945-2, 1993.
+
+   [7]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+        Specifications: ABNF", RFC 4234, October 2005.
+
+   [8]  Duerst, M. and M. Suignard, "Internationalized Resource
+        Identifiers (IRI)", RFC 3987, January 2005.
+
+   [9]  Rivest, R., "The MD5 Message-Digest Algorithm", RFC 1321,
+        April 1992.
+
+8.2.  Non-Normative References
+
+   [10]  Connolly, D. and L. Masinter, "The 'text/html' Media Type",
+         RFC 2854, June 2000.
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 16]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+   [11]  DeRose, S., Maler, E., and D. Orchard, "XML Linking Language
+         (XLink) Version 1.0", W3C Recommendation REC-xlink-20010627,
+         June 2001.
+
+   [12]  Hoffman, P. and F. Yergeau, "UTF-16, an encoding of ISO 10646",
+         RFC 2781, February 2000.
+
+   [13]  Rose, M., "Writing I-Ds and RFCs using XML", RFC 2629,
+         June 1999.
+
+
+Appendix A.  Where to send Comments
+
+   Please send all comments and questions concerning this document to
+   Erik Wilde.
+
+
+Appendix B.  Acknowledgements
+
+   This document has been prepared using the IETF document DTD described
+   in RFC 2629 [13].
+
+   Thanks for comments and suggestions provided by Marcel Baschnagel,
+   John Cowan, Martin Duerst, Benja Fallenstein, Sandro Hawke, Dan Kohn,
+   and Henrik Levkowetz.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 17]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+Author's Address
+
+   Erik Wilde
+   ETH Zurich
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+
+   Phone: +41-44-6325132
+   Email: net.dret@dret.net
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 18]
+
+Internet-Draft       text/plain Fragment Identifiers            Jan 2006
+
+
+Intellectual Property Statement
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+
+Disclaimer of Validity
+
+   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Copyright Statement
+
+   Copyright (C) The Internet Society (2006).  This document is subject
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+
+Acknowledgment
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+
+
+
+Wilde                     Expires July 10, 2006                [Page 19]
+
+

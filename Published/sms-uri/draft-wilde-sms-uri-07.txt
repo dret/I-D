@@ -1,0 +1,842 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                Swiss Federal Institute of
+Expires: July 11, 2005                                        Technology
+                                                          A. Vaha-Sipila
+                                                                   Nokia
+                                                            Jan 10, 2005
+
+
+                URI scheme for GSM Short Message Service
+                         draft-wilde-sms-uri-07
+
+Status of this Memo
+
+   This document is an Internet-Draft and is subject to all provisions
+   of section 3 of RFC 3667.  By submitting this Internet-Draft, each
+   author represents that any applicable patent or other IPR claims of
+   which he or she is aware have been or will be disclosed, and any of
+   which he or she become aware will be disclosed, in accordance with
+   RFC 3668.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF), its areas, and its working groups.  Note that
+   other groups may also distribute working documents as
+   Internet-Drafts.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   The list of current Internet-Drafts can be accessed at
+   http://www.ietf.org/ietf/1id-abstracts.txt.
+
+   The list of Internet-Draft Shadow Directories can be accessed at
+   http://www.ietf.org/shadow.html.
+
+   This Internet-Draft will expire on July 11, 2005.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2005).
+
+Abstract
+
+   This memo specifies a URI (Universal Resource Identifier) scheme
+   "sms" for specifying a recipient (and optionally a gateway) for an
+   SMS message.  SMS messages are two-way paging messages that can be
+   sent from and received by a mobile phone or a suitably equipped
+   computer.
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 1]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.1   The Short Message Service  . . . . . . . . . . . . . . . .  3
+     1.2   Universal Resource Identifiers . . . . . . . . . . . . . .  3
+     1.3   SMS Messages and the Internet  . . . . . . . . . . . . . .  3
+       1.3.1   SMS Messages and the Web . . . . . . . . . . . . . . .  4
+       1.3.2   SMS Messages and Forms . . . . . . . . . . . . . . . .  5
+   2.  The "sms" URI Scheme . . . . . . . . . . . . . . . . . . . . .  5
+     2.1   Applicability  . . . . . . . . . . . . . . . . . . . . . .  5
+     2.2   Formal Definition  . . . . . . . . . . . . . . . . . . . .  6
+     2.3   Parsing an "sms" URI . . . . . . . . . . . . . . . . . . .  6
+     2.4   Examples of Use  . . . . . . . . . . . . . . . . . . . . .  7
+     2.5   Using "sms" URIs in HTML Forms . . . . . . . . . . . . . .  8
+   3.  "sms" URIs and SMS Web Services  . . . . . . . . . . . . . . .  9
+     3.1   Example  . . . . . . . . . . . . . . . . . . . . . . . . .  9
+   4.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
+   5.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     5.1   From -06 to -07  . . . . . . . . . . . . . . . . . . . . . 11
+     5.2   From -05 to -06  . . . . . . . . . . . . . . . . . . . . . 11
+     5.3   From -04 to -05  . . . . . . . . . . . . . . . . . . . . . 11
+     5.4   From -03 to -04  . . . . . . . . . . . . . . . . . . . . . 11
+     5.5   From -02 to -03  . . . . . . . . . . . . . . . . . . . . . 11
+     5.6   From -01 to -02  . . . . . . . . . . . . . . . . . . . . . 11
+     5.7   From -00 to -01  . . . . . . . . . . . . . . . . . . . . . 11
+   6.  References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+   6.1   Normative References . . . . . . . . . . . . . . . . . . . . 12
+   6.2   Non-Normative References . . . . . . . . . . . . . . . . . . 13
+       Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . 13
+   A.  Where to send Comments . . . . . . . . . . . . . . . . . . . . 13
+   B.  Acknowledgements . . . . . . . . . . . . . . . . . . . . . . . 13
+       Intellectual Property and Copyright Statements . . . . . . . . 15
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 2]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+1.  Introduction
+
+   Compliant software MUST follow this specification.  The capitalized
+   key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+1.1  The Short Message Service
+
+   The Short Message Service (SMS) [SMS] is a rather simple service for
+   sending messages between SMS clients or, using so-called "Telematic
+   Interworking", from an SMS client through a gateway to a receiver
+   using a different service, such as fax or email.  The SMS service is
+   described in more detail in the SMS service registration memo
+   [draft-wilde-sms-service-07].
+
+1.2  Universal Resource Identifiers
+
+   One of the core specifications for identifying resources on the
+   Internet is RFC 2396 [RFC2396], specifying the syntax and semantics
+   of a Universal Resource Identifier (URI).  The most important notion
+   of URIs are "schemes", which define a framework within which
+   resources can be identified (and possibly accessed).  URIs enable
+   users to identify resources, and are used for very diverse schemes
+   such as access protocols (HTTP, FTP), broadcast media (TV channels
+   [RFC2838]), messaging (email [RFC2368]), or even telephone numbers
+   (voice [RFC2806]).
+
+   URIs often are mentioned together with Universal Resource Names
+   (URNs) and/or Uniform Resource Locators (URLs), and it often is
+   unclear how to separate these concepts.  For the purpose of this
+   memo, only the term URI will be used, referring to the most
+   fundamental concept.  The World Wide Web Consortium (W3C) has issued
+   a note [uri-clarification] discussing the topic of URIs, URNs, and
+   URLs in detail.
+
+1.3  SMS Messages and the Internet
+
+   One of the important reasons for the universal access of the Web is
+   the ability to access all information through a unique interface.
+   This kind of integration makes it easy to provide information as well
+   as to consume it.  One aspect of this integration is the support of
+   user agents (in the case of the Web, commonly referred to as
+   browsers) for multiple content formats (such as HTML, GIF, JPEG) and
+   access schemes (such as HTTP, HTTP-S, FTP).
+
+   The "mailto" scheme has proven to be very useful and popular, because
+   most user agents support it by providing an email composition
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 3]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   facility when the user activates (eg, clicks on) the URI.
+   Accordingly, the "sms" scheme could be supported by user agents by
+   providing an SMS message composition facility when the user activates
+   the URI.  Alternatively, in cases where the user agent does not
+   provide a built-in SMS message composition facility, the scheme could
+   still be supported by opening a Web page which provides such a
+   service.  The specific Web page to be used could be configured by the
+   user, so that each user could use the SMS message composition service
+   of his choice.
+
+   The goal of this memo is to specify the "sms" URI scheme, so that
+   user agents (such as Web browsers and email clients) could start to
+   support it.  The "sms" URI scheme identifies SMS message endpoints as
+   resources.  When "sms" URIs are dereferenced, implementations MAY
+   create a message and present it to be edited before being sent, or
+   they MAY use additional services to provide the functionality
+   necessary for composing a message and sending it to the SMS message
+   endpoint.
+
+1.3.1  SMS Messages and the Web
+
+   SMS messages can provide an alternative to a "mailto" URIs [RFC2368],
+   or "tel" or "fax" URIs [RFC2806].  When a "sms" URI is activated, the
+   user agent MAY start a program for sending an SMS message, just as
+   "mailto" may open a mail client.  Unfortunately, most browsers do not
+   support the external handling of internally unsupported URI schemes
+   in the same generalized way as most of them support external handling
+   of additional MIME type content for types which they do not support
+   internally.  Ideally, user agents should implement generic URI
+   parsers and provide a way to associate unsupported schemes with
+   external applications (or Web services).
+
+   The recipient of an SMS message need not be a mobile phone.  It can
+   be a server that can process SMS messages, either by gatewaying them
+   to another messaging system (such as regular electronic mail), or by
+   parsing them for supplementary services.
+
+   SMS messages can be used to transport almost any kind of data (even
+   though there is a very tight size limit), but the only standardized
+   data formats are character-based messages in different character
+   encodings.  SMS messages have a maximum length of 160 characters
+   (when using 7-bit characters from the SMS character set), or 140
+   octets.  However, SMS messages can be concatenated to form longer
+   messages.  It is up to the user agent to decide whether to limit the
+   length of the message, and how to indicate this limit in its user
+   interface, if necessary.  There is one exception to this, see Section
+   2.5.
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 4]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+1.3.2  SMS Messages and Forms
+
+   The Hypertext Markup Language (HTML) [HTML401] provides a way to
+   collect information from a user and pass it to a server for
+   processing.  This functionality is known as "HTML forms".  A
+   filled-in form is usually sent to the destination using the Hypertext
+   Transfer Protocol (HTTP) or email.  However, SMS messages can also be
+   used as the transport mechanism for these forms.  As SMS transport is
+   "out-of-band" as far as normal HTTP over TCP/IP is concerned, this
+   provides a way to fill in forms offline, and send the data without
+   making a TCP connection to the server, as the set-up time, cost, and
+   overhead for a TCP connection are large compared to an SMS message.
+   Also, depending on the network configuration, the sender's telephone
+   number may be included in the SMS message, thus providing a weak form
+   of authentication.
+
+2.  The "sms" URI Scheme
+
+   Syntax definitions are given using the Augmented BNF for Syntax
+   Specifications [RFC2234].
+
+2.1  Applicability
+
+   This URI scheme is intended for sending an SMS message to a certain
+   recipient(s).  The functionality is quite similar to that of the
+   "mailto" URL, which (as per RFC 2368 [RFC2368]) can also be used with
+   a comma-separated list of email addresses.
+
+   In some situations, it may be necessary to guide the sender to send
+   the SMS message via a certain SMSC.  For this purpose, the URI may
+   specify the number of the SMSC.
+
+   SMS messages may be sent through gateways to other services.  These
+   gateways are operated inside SMS centers.  An "SMS" URI may specify
+   that a certain gateway should be used.
+
+   The notation for phone numbers is taken from [RFC3601].  Refer to
+   this document for information on why this particular format was
+   chosen.
+
+   How the SMS message is sent to the SMSC is outside the scope of this
+   specification.  SMS messages can be sent over the GSM air interface,
+   by using a modem and a suitable protocol, or by accessing services
+   over other protocols, such as a Web service for sending SMS messages.
+   Also, SMS message service options like deferred delivery and delivery
+   notification requests are not in the scope of this document.  Such
+   services MAY be requested from the network by the user agent if
+   necessary.
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 5]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   SMS messages sent as a result of this URI MUST be sent as class 1 SMS
+   messages, if the user agent is able to specify the message class.
+
+2.2  Formal Definition
+
+   The URI scheme's keywords specified in the following syntax
+   description are case-insensitive.  The syntax of an "sms" URI is
+   formally described as follows, where the base syntax is taken from
+   RFC 2396 [RFC2396]:
+
+
+   sms-uri               =  scheme ":" scheme-specific-part
+   scheme                =  "sms"
+   scheme-specific-part  =  1*( sms-recipient ) [ sms-body ]
+   sms-recipient         =  gstn-phone sms-qualifier
+                            [ "," sms-recipient ]
+   sms-qualifier         =  *( smsc-qualifier / pid-qualifier )
+   smsc-qualifier        =  ";smsc=" SMSC-sub-addr
+   pid-qualifier         =  ";pid=" PID-sub-addr
+   sms-body              =  "?body=" *urlc
+
+   The syntax definition for "gstn-phone" is taken from [RFC3601],
+   allowing global as well as local telephone numbers.
+
+   The syntax definition for "SMSC-sub-addr" and "PID-sub-addr" is
+   derived from [draft-wilde-sms-service-07], please refer to that
+   document for the syntax of the qualifier values.
+
+   The "sms-body" is used to define the body of the SMS message to be
+   composed.  It consists of URL-encoded UTF-8 characters.
+   Implementations MUST make sure that the sms-body characters are
+   converted to a suitable character encoding before sending, the most
+   popular being the 7-bit SMS character encoding, another variant
+   (though not as universally supported as 7-bit SMS) is the UCS-2
+   character encoding  (both specified in [SMS-CHAR]).  Implementations
+   MAY choose to silently discard (or convert) characters in the
+   sms-body that are not supported by the SMS character set they are
+   using to send the SMS message.
+
+   It should be noted that both the SMSC as well as the PID qualifier
+   may appear only once per sms-recipient.  If multiple qualifiers are
+   present, conforming software MUST interpret the first occurrence and
+   ignore all other occurrences.
+
+2.3  Parsing an "sms" URI
+
+   The following list describes the steps for processing an "sms" URI:
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 6]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   1.  The "gstn-phone" of the first "sms-recipient" is extracted.  It
+       is the phone number of the final recipient and it MUST be written
+       in international form with country code, unless the number only
+       works from inside a certain geographical area or a network.  Note
+       that some numbers may work from several networks but not from the
+       whole world - these SHOULD be written in international form.
+       According to [RFC3601], all international numbers MUST begin with
+       a "+" character.  Hyphens and dots are only to aid readability.
+       They MUST NOT have any other meaning.
+
+   2.  The "smsc-qualifier" of the first "sms-recipient" is extracted,
+       if present.
+
+   3.  The "pid-qualifier" of the first "sms-recipient" is extracted, if
+       present.
+
+   4.  The "sms-body" is extracted, if present.
+
+   5.  The user agent should provide some means for message composition,
+       either by implementing this itself, or by accessing a service
+       providing it.  Message composition SHOULD start with the body
+       extracted from the "sms-body", if present.  If the
+       "pid-qualifier" is set to "pid=SMTP:...", then the user agents
+       must make sure that the email address is correctly set (as
+       defined by the SMS specification [SMS]) in the message being
+       composed.
+
+   6.  After message composition, a user agent SHOULD try to send the
+       message first using the SMSC set in the "smsc-qualifier" (if
+       present).  If that fails, the user agent MAY try another SMSC.
+
+   7.  If the URI consists of a comma-separated list of recipients (ie,
+       contains multiple "sms-recipient" parts), all of them are
+       processed in this manner.  Exactly the same message SHOULD be
+       sent to all of the listed recipients.
+
+
+2.4  Examples of Use
+
+   sms:+41796431851
+
+   This indicates an SMS message capable recipient at the given
+   telephone number.  The message is sent using the user agent's default
+   SMSC.
+
+   sms:+41796431851;smsc=+41794999000
+
+   This indicates that the SMS message should be sent using the SMSC at
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 7]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   the given number.
+
+   sms:+41796431851,+4116321035;pid=fax
+
+   This URI should result in two SMS messages being sent, one to the
+   recipient number as shown in the example above, the other one being
+   sent as a fax to the second number (the fax is sent by the SMSC
+   performing the gatewaying, not by the user agent).
+
+   sms:+41796431851;pid=smtp:erik.wilde@dret.net?body=hello%20there
+
+   In this case, a message (initially being set to "hello there", which
+   may have been modified by the user before sending) will be sent via
+   SMS using the SMS to email functionality in the SMSC, so that it will
+   eventually result in an email being sent to the specified email
+   address.  In this case, the phone number will not be interpreted.
+
+2.5  Using "sms" URIs in HTML Forms
+
+   When using a "sms" type URI as an action URI for HTML form submission
+   [HTML401], the form contents MUST be packaged in the SMS message just
+   as they are packaged when using a "mailto" URL [RFC2368], using the
+   "application/x-www-form-urlencoded" MIME type, effectively packaging
+   all form data into URI compliant syntax [RFC2396].  The SMS message
+   MUST NOT contain any HTTP headers, only the form data.  The MIME type
+   is implicit.  It MUST NOT be transferred in the SMS message.
+
+   The character encoding used for form submissions MUST be UTF-8
+   [RFC2279].  It should be noted, however, that user agents MUST
+   URL-encode form submissions before sending them.
+
+   The user agent SHOULD inform the user about the possible security
+   hazards involved when submitting the form (it is probably being sent
+   as plain text over an air interface).
+
+   If the form submission is longer than the maximum SMS message size,
+   the user agent MAY either concatenate SMS messages, if it is able to
+   do so, or it MAY refuse to send the message.  The user agent MUST NOT
+   send out partial form submissions.
+
+   Form submission via an "sms" URI can be combined with Telematic
+   Interworking to result in form submissions being submitted via an SMS
+   message and finally being sent to an email account.  In this case,
+   all provisions for using the email "pid-qualifier" and using "sms"
+   URIs with HTML forms must be followed.
+
+
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 8]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+3.  "sms" URIs and SMS Web Services
+
+   In many cases, user agents will not be able to directly compose and
+   send SMS messages (because this requires that such a service is
+   accessible to the system the user agent is running on).  However, it
+   is likely that the user has access to a Web service that provides an
+   SMS service, such as a Web site offering form-based SMS composition.
+   Ideally, the user agent should access this Web service when
+   activating an "sms" URI, thus enabling the user to use the Web
+   service.
+
+   One problem with this approach is that the Web service should somehow
+   get the "sms" URI, in order interpret it and set the required
+   parameters (such as the receiver's phone number).  The easiest way to
+   implement this is for the user agent to add the "sms" URI as query
+   string to the Web service's URI.  Consequently, user agents
+   supporting SMS Web services identified by URIs SHOULD append the
+   "sms" URI as query string to the Web services URI when accessing the
+   Web service.  Web services providing SMS composition facilities
+   SHOULD expect to receive an "sms" URI as query string and should
+   process it as described by this memo.  This method only can be
+   applied for Web service URIs which permit query strings (such as
+   "http" and "https" URIs).  For other Web service URIs (such as "ftp"
+   and "mailto"), user agents as well as Web services MUST NOT use the
+   query string.
+
+   It should be noted that RFC 2396 [RFC2396] defines that within query
+   strings, the characters ";", "/", "?", ":", "@", "&", "=", "+", ",",
+   and "$" are reserved.  It is therefore necessary to encode the "sms"
+   URI accordingly before appending it as query string.
+
+3.1  Example
+
+   A document contains this piece of (X)HTML:
+
+   <a href="sms:+41796431851">Send me an SMS!</a>
+
+   The user agent interpreting this document does not internally support
+   SMS message composition, but has been configured to access a Web
+   service for handling "sms" URIs.  This Web service has the following
+   URI:
+
+   http://sms.example.com/sms-form
+
+   When the user activates the "sms" URI (eg, by clicking on the text
+   "Send me an SMS!"), the user agents acts as if the activated URI had
+   been:
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                  [Page 9]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   http://sms.example.com/sms-form?sms%3A%2B41796431851
+
+   The Web service is then responsible for parsing the query string and
+   providing an approriate interface, for example by already filling in
+   the recipient address with the number provided in the "sms" URI.
+
+4.  Security Considerations
+
+   The "Security Considerations" section of the SMS service registration
+   memo [draft-wilde-sms-service-07] MUST be consulted.
+
+   A user agent SHOULD NOT send out SMS messages without the knowledge
+   of the user, because of associated risks, which include sending
+   masses of SMS messages to a subscriber without his consent, and the
+   costs involved in sending an SMS message.
+
+   The user agent SHOULD have some mechanism that the user can use to
+   filter out unwanted destinations for SMS messages.  The user agent
+   SHOULD also have some means of restricting the number of SMS messages
+   being sent as the result of activating one "sms" URI.
+
+   If an "sms" URI contains a pid-qualifier and the user agent supports
+   the qualifier and its value, then the user agent MUST set the SMS
+   message's PID as specified by the qualifier.  User agents MAY inform
+   users about the value and the functional consequences of PID
+   qualifiers (eg, by notifying users that sending the SMS effectively
+   will result in a fax message being delivered, rather than an SMS
+   message).
+
+   The method described in section Section 3 adds another level of
+   indirection to the handling of "sms" URIs.  If this method is
+   combined with the pid-qualifier gateway functionality, SMS
+   composition and reception will probably be distributed over three
+   different protocols (the Web service, SMS transport itself, and the
+   service selected by the pid-qualifier).  User agent SHOULD make this
+   clear to users (either when the Web service is being configured, or
+   when it is accessed).
+
+   The Telematic Interworking functionality of the SMSC addressed by the
+   pid-qualifier is not necessarily implemented by the SMSC being used,
+   and SMSC providers are known for not or not correctly supporting some
+   or all pid-qualifier values.  User agents SHOULD take into account
+   that the success rate of SMS messages being sent using pid-qualifiers
+   is lower than that of "plain" SMS messages.
+
+5.  Change Log
+
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                 [Page 10]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+5.1  From -06 to -07
+
+   o  Changed IPR clause from RFC 2026 to RFC 3667 (updated version of
+      RFC 2026)
+
+
+5.2  From -05 to -06
+
+   o  Updated reference from draft-allocchio-gstn to RFC 3601.
+
+
+5.3  From -04 to -05
+
+   o  Updated reference to SMS spec to the version referenced in the SMS
+      service draft.
+
+
+5.4  From -03 to -04
+
+   o  Updated reference to draft-allocchio-gstn (to revision -05).
+
+
+5.5  From -02 to -03
+
+   o  Changed ordering of "change Log" section (descending to
+      ascending).
+
+   o  Clarified the wording at the beginning of Section Section 2.2
+      about only the keywords of the scheme being case-insensitive.
+
+   o  Changed "sms-body" to be a URI query string.
+
+   o  Added some text describing "sms" URIs as addressing resources.
+
+
+5.6  From -01 to -02
+
+   o  Changed the sms-body field to URL encoded UTF-8 characters.
+
+
+5.7  From -00 to -01
+
+   o  Added the "sms-body" field and its processing rules.
+
+   o  Added Section Section 3 about using "sms" URIs as query strings
+      for SMS Web services.
+
+   o  Fixed typo in ABNF (said "global-phone" instead of "gstn-phone").
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                 [Page 11]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   o  Added some explanatory text about form submissions using email
+      Telematic Interworking.
+
+   o  Added some text about character encoding in form submissions.
+
+
+6.  References
+
+6.1  Normative References
+
+   [HTML401]  Raggett, D., Le Hors, A. and I. Jacobs, "HTML 4.01
+              Specification", W3C REC-html401, December 1999,
+              <http://www.w3.org/TR/html401/>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+   [RFC2234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", RFC 2234, November 1997.
+
+   [RFC2279]  Yergeau, F., "UTF-8, a transformation format of ISO
+              10646", RFC 2279, January 1998.
+
+   [RFC2396]  Berners-Lee, T., Fielding, R. and L. Masinter, "Uniform
+              Resource Identifiers (URI): Generic Syntax", RFC 2396,
+              August 1998.
+
+   [RFC3601]  Allocchio, C., "Text string notation for Dial Sequences
+              and GSTN / E.164 addresses", RFC 3601, September 2003.
+
+   [SMS]      European Telecommunications Standards Institute, "ETSI TS
+              100 901 (GSM 03.40 version 7.3.0 Release 1998): Digital
+              Cellular Telecommunications System (Phase 2+); Technical
+              realization of the Short Message Service (SMS);
+              Point-to-Point (PP)", November 1999,
+              <http://pda.etsi.org/pda/home.asp?wki_id=9942>.
+
+   [SMS-CHAR]
+              European Telecommunications Standards Institute, "ETSI TS
+              100 901 (GSM 03.38 version 7.2.0 Release 1998): Digital
+              Cellular Telecommunications System (Phase 2+); Alphabets
+              and language-specific information", July 1999,
+              <http://pda.etsi.org/pda/home.asp?wki_id=6821>.
+
+   [draft-wilde-sms-service-07]
+              Wilde, E., "Registration of GSTN SMS Service Qualifier",
+              draft-wilde-sms-service-07 (work in progress), Jul 2004.
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                 [Page 12]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+6.2  Non-Normative References
+
+   [RFC2368]  Hoffmann, P., Masinter, L. and J. Zawinski, "The mailto
+              URL scheme", RFC 2368, June 1998.
+
+   [RFC2629]  Rose, M., "Writing I-Ds and RFCs using XML", RFC 2629,
+              June 1999.
+
+   [RFC2806]  Vaha-Sipila, A., "URLs for Telephone Calls", RFC 2806,
+              April 2000.
+
+   [RFC2838]  Zigmond, D. and M. Vickers, "Uniform Resource Identifiers
+              for Television Broadcasts", RFC 2838, May 2000.
+
+   [uri-clarification]
+              World Wide Web Consortium, "URIs, URLs, and URNs:
+              Clarifications and Recommendations 1.0", W3C
+              uri-clarification , September 2001,
+              <http://www.w3.org/TR/uri-clarification/>.
+
+
+Authors' Addresses
+
+   Erik Wilde
+   Swiss Federal Institute of Technology
+   ETH-Zentrum
+   8092 Zurich
+   Switzerland
+
+   Phone: +41-1-6325132
+   EMail: erik.wilde@dret.net
+   URI:   http://dret.net/netdret/
+
+
+   Antti Vaha-Sipila
+   Nokia
+
+   EMail: antti.vaha-sipila@nokia.com
+
+Appendix A.  Where to send Comments
+
+   Please send all comments and questions concerning this document to
+   Erik Wilde.
+
+Appendix B.  Acknowledgements
+
+   This document has been prepared using the IETF document DTD described
+   in RFC 2629 [RFC2629].
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                 [Page 13]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+   Thanks to Claudio Allocchio for his comments.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                 [Page 14]
+
+Internet-Draft    URI scheme for GSM Short Message Service      Jan 2005
+
+
+Intellectual Property Statement
+
+   The IETF takes no position regarding the validity or scope of any
+   Intellectual Property Rights or other rights that might be claimed to
+   pertain to the implementation or use of the technology described in
+   this document or the extent to which any license under such rights
+   might or might not be available; nor does it represent that it has
+   made any independent effort to identify any such rights.  Information
+   on the procedures with respect to rights in RFC documents can be
+   found in BCP 78 and BCP 79.
+
+   Copies of IPR disclosures made to the IETF Secretariat and any
+   assurances of licenses to be made available, or the result of an
+   attempt made to obtain a general license or permission for the use of
+   such proprietary rights by implementers or users of this
+   specification can be obtained from the IETF on-line IPR repository at
+   http://www.ietf.org/ipr.
+
+   The IETF invites any interested party to bring to its attention any
+   copyrights, patents or patent applications, or other proprietary
+   rights that may cover technology that may be required to implement
+   this standard.  Please address the information to the IETF at
+   ietf-ipr@ietf.org.
+
+
+Disclaimer of Validity
+
+   This document and the information contained herein are provided on an
+   "AS IS" basis and THE CONTRIBUTOR, THE ORGANIZATION HE/SHE REPRESENTS
+   OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY AND THE INTERNET
+   ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED,
+   INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE
+   INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED
+   WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Copyright Statement
+
+   Copyright (C) The Internet Society (2005).  This document is subject
+   to the rights, licenses and restrictions contained in BCP 78, and
+   except as set forth therein, the authors retain all their rights.
+
+
+Acknowledgment
+
+   Funding for the RFC Editor function is currently provided by the
+   Internet Society.
+
+
+
+
+Wilde & Vaha-Sipila      Expires July 11, 2005                 [Page 15]
+
+

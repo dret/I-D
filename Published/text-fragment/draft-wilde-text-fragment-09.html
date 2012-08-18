@@ -1,0 +1,955 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>URI Fragment Identifiers for the text/plain Media Type</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="URI Fragment Identifiers for the text/plain Media Type">
+<meta name="generator" content="xml2rfc v1.33 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">UC Berkeley</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc2046'>2046</a> (if&nbsp;approved)</td><td class="header">M. Duerst</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">Aoyama Gakuin University</td></tr>
+<tr><td class="header">Expires: May 4, 2008</td><td class="header">November 1, 2007</td></tr>
+</table></td></tr></table>
+<h1><br />URI Fragment Identifiers for the text/plain Media Type<br />draft-wilde-text-fragment-09</h1>
+
+<h3>Status of this Memo</h3>
+<p>
+By submitting this Internet-Draft,
+each author represents that any applicable patent or other IPR claims of which
+he or she is aware have been or will be disclosed,
+and any of which he or she becomes aware will be disclosed,
+in accordance with Section&nbsp;6 of BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF), its areas, and its working groups.
+Note that other groups may also distribute working documents as
+Internet-Drafts.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+The list of current Internet-Drafts can be accessed at
+<a href='http://www.ietf.org/ietf/1id-abstracts.txt'>http://www.ietf.org/ietf/1id-abstracts.txt</a>.</p>
+<p>
+The list of Internet-Draft Shadow Directories can be accessed at
+<a href='http://www.ietf.org/shadow.html'>http://www.ietf.org/shadow.html</a>.</p>
+<p>
+This Internet-Draft will expire on May 4, 2008.</p>
+
+<h3>Abstract</h3>
+
+<p>This memo defines URI fragment identifiers for text/plain MIME entities. These fragment identifiers make it possible to refer to parts of a text/plain MIME entity, either identified by character position or range, or by line position or range. Fragment identifiers may also contain information for integrity checks to make them more robust.
+</p><a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">1.1.</a>&nbsp;
+What is text/plain?<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">1.2.</a>&nbsp;
+What is a URI Fragment Identifier?<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#why">1.3.</a>&nbsp;
+Why text/plain Fragment Identifiers?<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#incremental">1.4.</a>&nbsp;
+Incremental Deployment<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">1.5.</a>&nbsp;
+Notation Used in this Memo<br />
+<a href="#methods">2.</a>&nbsp;
+Fragment Identification Methods<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">2.1.</a>&nbsp;
+Fragment Identification Principles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#princ-posrang">2.1.1.</a>&nbsp;
+Positions and Ranges<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#char-and-line">2.1.2.</a>&nbsp;
+Characters and Lines<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#comb-principle">2.2.</a>&nbsp;
+Combining the Principles<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#charposi">2.2.1.</a>&nbsp;
+Character Position<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#charrange">2.2.2.</a>&nbsp;
+Character Range<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#lineposi">2.2.3.</a>&nbsp;
+Line Position<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#linerange">2.2.4.</a>&nbsp;
+Line Range<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#robustness">2.3.</a>&nbsp;
+Fragment Identifier Robustness<br />
+<a href="#syntax">3.</a>&nbsp;
+Fragment Identification Syntax<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#hashsums">3.1.</a>&nbsp;
+Integrity Checks<br />
+<a href="#processing">4.</a>&nbsp;
+Fragment Identifier Processing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#lineending">4.1.</a>&nbsp;
+Handling of Line Endings in text/plain MIME Entities<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#position-handling">4.2.</a>&nbsp;
+Handling of Position Values<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#check-handling">4.3.</a>&nbsp;
+Handling of  Integrity Checks<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#error-handling">4.4.</a>&nbsp;
+Syntax Errors in Fragment Identifiers<br />
+<a href="#examples">5.</a>&nbsp;
+Examples<br />
+<a href="#anchor6">6.</a>&nbsp;
+IANA Considerations<br />
+<a href="#security">7.</a>&nbsp;
+Security Considerations<br />
+<a href="#anchor7">8.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">8.1.</a>&nbsp;
+From -08 to -09 (to address IESG comments)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">8.2.</a>&nbsp;
+From -07 to -08 (after IETF Last Call)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">8.3.</a>&nbsp;
+From -06 to -07 (addressing IETF Last Call Comments)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">8.4.</a>&nbsp;
+From -05 to -06<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">8.5.</a>&nbsp;
+From -04 to -05<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor13">8.6.</a>&nbsp;
+From -03 to -04<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor14">8.7.</a>&nbsp;
+From -02 to -03<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor15">8.8.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">8.9.</a>&nbsp;
+From -00 to -01<br />
+<a href="#rfc.references1">9.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">9.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
+Non-Normative References<br />
+<a href="#anchor19">Appendix&nbsp;A.</a>&nbsp;
+Acknowledgements<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Authors' Addresses<br />
+<a href="#rfc.copyright">&#167;</a>&nbsp;
+Intellectual Property and Copyright Statements<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>This memo updates the text/plain media type defined in RFC 2046 <a class='info' href='#RFC2046'>[1]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> by defining URI fragment identifiers for text/plain MIME entities. This makes it possible to refer to parts of a text/plain MIME entity. Such parts can be identified by either character position or range, or by line position or range. Integrity checking information can be added to a fragment identifier to make it more robust, enabling applications to detect changes of the entity.
+</p>
+<p>This section gives an introduction to the general concepts of text/plain MIME entities and URI fragment identifiers, and discusses the need for fragment identifiers for text/plain and deployment issues. <a class='info' href='#methods'>Section&nbsp;2<span> (</span><span class='info'>Fragment Identification Methods</span><span>)</span></a> discusses the principles and methods on which this memo is based. <a class='info' href='#syntax'>Section&nbsp;3<span> (</span><span class='info'>Fragment Identification Syntax</span><span>)</span></a> defines the syntax, and <a class='info' href='#processing'>Section&nbsp;4<span> (</span><span class='info'>Fragment Identifier Processing</span><span>)</span></a> discusses processing of text/plain fragment identifiers. <a class='info' href='#examples'>Section&nbsp;5<span> (</span><span class='info'>Examples</span><span>)</span></a> shows some examples.
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+What is text/plain?</h3>
+
+<p>Internet Media Types (often referred to as "MIME types") as defined in RFC 2045 <a class='info' href='#RFC2045'>[2]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,&rdquo; November&nbsp;1996.</span><span>)</span></a> and RFC 2046 <a class='info' href='#RFC2046'>[1]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> are used to identify different types and sub-types of media. RFC 2046 <a class='info' href='#RFC2046'>[1]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> and RFC 3676 <a class='info' href='#RFC3676'>[3]<span> (</span><span class='info'>Gellens, R., &ldquo;The Text/Plain Format and DelSp Parameters,&rdquo; February&nbsp;2004.</span><span>)</span></a> specify the text/plain media type, which is used for simple, unformatted text. Quoting from RFC 2046 <a class='info' href='#RFC2046'>[1]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a>: "Plain text does not provide for or allow  formatting commands, font attribute specifications, processing instructions, interpretation directives, or content markup. Plain text is seen simply as a linear sequence of characters, possibly interrupted by line breaks or page breaks."
+</p>
+<p>The text/plain media type does not restrict the character encoding; any character encoding may be used. In the absence of an explicit character encoding declaration, US-ASCII <a class='info' href='#ASCII'>[10]<span> (</span><span class='info'>ANSI X3.4-1986, &ldquo;Coded Character Set - 7-Bit American National Standard Code for Information Interchange,&rdquo; 1992.</span><span>)</span></a> is assumed as the default character encoding. This variability of the character encoding makes it impossible to count characters in a text/plain MIME entity without taking the character encoding into account, because there are many character encodings using more than one octet per character.
+</p>
+<p>The biggest advantage of text/plain MIME entities is their ease of use and their portability among different platforms. As long as they use popular character encodings (such as US-ASCII or UTF-8 <a class='info' href='#STD63'>[11]<span> (</span><span class='info'>Yergeau, F., &ldquo;UTF-8, a transformation format of ISO 10646,&rdquo; November&nbsp;2003.</span><span>)</span></a>), they can be displayed and processed on virtually every computer system. The only remaining interoperability issue is the representation of line endings, which is discussed in <a class='info' href='#lineending'>Section&nbsp;4.1<span> (</span><span class='info'>Handling of Line Endings in text/plain MIME Entities</span><span>)</span></a>.
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+What is a URI Fragment Identifier?</h3>
+
+<p>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <a class='info' href='#RFC3986'>[4]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> optionally includes a so-called "fragment identifier", separated by a number sign ('#'). The fragment identifier consists of additional reference information to be interpreted by the user agent after the retrieval action has been successfully completed.  The semantics of a fragment identifier is a property of the data resulting from a retrieval action, regardless of the type of URI used in the reference.  Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.
+</p>
+<p>The most popular fragment identifier is defined for text/html (defined in RFC 2854 <a class='info' href='#RFC2854'>[12]<span> (</span><span class='info'>Connolly, D. and L. Masinter, &ldquo;The 'text/html' Media Type,&rdquo; June&nbsp;2000.</span><span>)</span></a>), and makes it possible to refer to a specific element (identified by the value of a 'name' or 'id' attribute) of an HTML document. This makes it possible to reference a specific part of a Web page, rather than a Web page as a whole.
+</p>
+<a name="why"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
+Why text/plain Fragment Identifiers?</h3>
+
+<p>Referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's MIME registration (see <a class='info' href='#TypeReg'>[13]<span> (</span><span class='info'>Freed, N. and J. Klensin, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; December&nbsp;2005.</span><span>)</span></a>), many media types do not have fragment identification methods associated with them.
+</p>
+<p>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.
+</p>
+<p>Fragment identifiers for text/plain as defined in this memo make it possible to refer to specific parts of a text/plain MIME entity, using concepts of positions and ranges, which may be applied to characters and lines. Thus, text/plain fragment identifiers enable users to exchange information more specifically, thereby reducing time and effort that is necessary to manually search for the relevant part of a text/plain MIME entity.
+</p>
+<p>The text/plain format does not support the embedding of links, so in most environments, text/plain resources can only serve as targets for links, and not as sources. However, when combining the text/plain fragment identifiers specified in this memo with out-of-line linking mechanisms such as XLink <a class='info' href='#XLink'>[14]<span> (</span><span class='info'>DeRose, S., Maler, E., and D. Orchard, &ldquo;XML Linking Language (XLink) Version 1.0,&rdquo; June&nbsp;2001.</span><span>)</span></a>, it becomes possible to "bind" link resources to text/plain resources and thereby "embed" links into text/plain resources. Thus, the text/plain fragment identifiers specified in this memo open a path for text/plain files to become bidirectionally navigable resources in hypermedia systems such as the Web.
+</p>
+<a name="incremental"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
+Incremental Deployment</h3>
+
+<p>As long as text/plain fragment identifiers are not supported universally, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/plain fragment identifier described in this memo will work with URI references to text/plain MIME entities, but they will fail to locate the sub-resource identified by the fragment identifier. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no reliable way for a server to determine whether a requesting client is using a URI containing a fragment identifier.
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.5"></a><h3>1.5.&nbsp;
+Notation Used in this Memo</h3>
+
+<p>The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[5]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+</p>
+<a name="methods"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Fragment Identification Methods</h3>
+
+<p>The identification of fragments of text/plain MIME entities can be based on different foundations. Since it is not possible to insert explicit, invisible identifiers into a text/plain MIME entity (as for example used in HTML documents, implemented through dedicated attributes), fragment identification has to rely on certain inherent properties of the MIME entity. This memo specifies fragment identification using four different methods, which are character positions and ranges, and line positions and ranges, augmented by an integrity check mechanism for improving the robustness of fragment identifiers.
+</p>
+<p> When interpreting character or line numbers, implementations MUST take the character encoding of the MIME entity into account, because character count and octet count may differ for the character encoding being used. For example, a MIME entity using UTF-16 encoding (as specified in RFC 2718 <a class='info' href='#RFC2781'>[15]<span> (</span><span class='info'>Hoffman, P. and F. Yergeau, &ldquo;UTF-16, an encoding of ISO 10646,&rdquo; February&nbsp;2000.</span><span>)</span></a>) uses two octets per character in most cases, and sometimes four octets per character. It can also have a leading BOM (Byte-Order Mark), which does not count as a character and thus also affects the mapping from a simple octet count to a character count.
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
+Fragment Identification Principles</h3>
+
+<p>Fragment identification can be done by combining two orthogonal principles, which are positions and ranges, and characters and lines. This section describes the principles themselves, while <a class='info' href='#comb-principle'>Section&nbsp;2.2<span> (</span><span class='info'>Combining the Principles</span><span>)</span></a> describes the combination of the principles.
+</p>
+<a name="princ-posrang"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1.1"></a><h3>2.1.1.&nbsp;
+Positions and Ranges</h3>
+
+<p>A position does not identify an actual fragment of the MIME entity, but a position inside the MIME entity, which can be regarded as a fragment of length zero. The use case for positions is to provide pointers for applications which may use them to implement functionalities such as "insert some text here", which needs a position rather than a fragment. Positions are counted from zero, position zero being before the first character or line of a text/plain MIME entity. Thus a text/plain MIME entity having one character has two positions, one before the first character (position 0), and one after the first character (position 1).
+</p>
+<p>Since positions are fragments of length zero, applications SHOULD use other methods than highlighting to indicate positions, the most obvious way being the positioning of a cursor (if the application supports the concept of a cursor).
+</p>
+<p>Ranges, on the other hand, identify fragments of a MIME entity that have a length that may be greater than zero. As a general principle for ranges, they specify both a lower and an upper bound. The start or the end of a range specification may be omitted, defaulting to the first respectively last position of the MIME entity. The end of a range must have a value greater than or equal to the start. A range with identical start and end is legal, and identifies a range of length zero, which is equivalent to a position.
+</p>
+<p>Applications that support a concept such as  highlighting SHOULD use such a concept to indicate fragments of lengths greater than zero to the user.
+</p>
+<p>For positions and ranges it is implicitly assumed that if a number is greater than the actual number of elements in the MIME entity, then it is referring to the last element of the MIME entity (see <a class='info' href='#processing'>Section&nbsp;4<span> (</span><span class='info'>Fragment Identifier Processing</span><span>)</span></a> for details).
+</p>
+<a name="char-and-line"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1.2"></a><h3>2.1.2.&nbsp;
+Characters and Lines</h3>
+
+<p>The concept of positions and ranges can be applied to characters or lines. In both cases, positions indicate points between these entities, while ranges identify zero or more of these entities by indicating positions.
+</p>
+<p>Character positions are numbered starting with zero (ignoring initial BOM marks or similar concepts that are not part of the actual textual content of a text/plain MIME entity), and counting each character separately, with the exception of line endings, which are always counted as one character (see <a class='info' href='#lineending'>Section&nbsp;4.1<span> (</span><span class='info'>Handling of Line Endings in text/plain MIME Entities</span><span>)</span></a> for details).
+</p>
+<p>Line positions are numbered starting with zero (with line position zero always being identical with character position zero), with <a class='info' href='#lineending'>Section&nbsp;4.1<span> (</span><span class='info'>Handling of Line Endings in text/plain MIME Entities</span><span>)</span></a> describing how line endings are identified. Fragments identified by lines include the line endings, so applications identifying line-based fragments MUST include the line endings in the fragment identification they are using (e.g., the highlighted selection). If a MIME entity does not contain any line endings, then it consists of a single (the first) line.
+</p>
+<a name="comb-principle"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
+Combining the Principles</h3>
+
+<p>In the following sections, the principles described in the preceding section (positions/ranges and characters/lines) are combined, resulting in four use cases. The schemes mentioned below refer to the fragment identifier syntax,  described in detail in <a class='info' href='#syntax'>Section&nbsp;3<span> (</span><span class='info'>Fragment Identification Syntax</span><span>)</span></a>.
+</p>
+<a name="charposi"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2.1"></a><h3>2.2.1.&nbsp;
+Character Position</h3>
+
+<p>To identify a character position (i.e., a fragment of length zero between two characters), the 'char' scheme followed by a single number is used. This method identifies a position between two characters (or before the first or after the last character), rather than identifying a fragment consisting of a number of characters. Character position counting starts with 0, so the character position before the first character of a text/plain MIME entity has the character position 0, and a MIME entity containing n distinct characters has n+1 distinct character positions, the last one having the character position n.
+</p>
+<a name="charrange"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2.2"></a><h3>2.2.2.&nbsp;
+Character Range</h3>
+
+<p>To  identify a fragment of one or more characters (a character range), the 'char' scheme followed by a range specification is used. A character range is a consecutive region of the MIME entity that extends from the starting character position of the range to the ending character position of the range.
+</p>
+<a name="lineposi"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2.3"></a><h3>2.2.3.&nbsp;
+Line Position</h3>
+
+<p>To identify a line position (i.e., a fragment of length zero between two lines), the 'line' scheme followed by a single number is used.  This method identifies a position between two lines (or before the first or after the last line), rather than identifying a fragment consisting of a number of lines. Line position counting starts with 0, so the line position before the first line of a text/plain MIME entity has the line position 0, and a MIME entity containing n distinct lines has n+1 distinct line positions, the last one having the line position n.
+</p>
+<a name="linerange"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2.4"></a><h3>2.2.4.&nbsp;
+Line Range</h3>
+
+<p>To  identify a fragment of one or more lines (a line range), the 'line' scheme followed by a range specification is used. A line range is a consecutive region of the MIME entity that extends from the starting line position of the range to the ending line position of the range.
+</p>
+<a name="robustness"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
+Fragment Identifier Robustness</h3>
+
+<p>It is easily possible that a modification of the referenced resource will break a fragment identifier. If applications want to create more robust fragment identifiers, they may do so by adding integrity check information to fragment identifiers. Such information is used to detect changes in the resource. Applications can then warn users about the possibility that a fragment identifier might have been broken by a modification of the resource.
+</p>
+<p>Since fragment identifiers are interpreted by clients, integrity check information is defined on MIME entities rather than on the resource itself, and as such is specific to a certain representation of the resource, in case of text/plain resources the character encoding of the MIME entity.
+</p>
+<p>Integrity check information may specify the character encoding that has been used when creating the information, and if such a specification is present, clients MUST check whether the character encoding specified and the character encoding of the retrieved MIME entity are equal, and clients MUST NOT use the integrity check information if these values differ. However, clients MAY choose to transcode the retrieved MIME entity in the case of differing character encodings, and after doing so, apply integrity checks. Please note that this method is inherently unreliable, because certain characters or character sequences may have been lost or normalized due to restrictions in one of the character encodings used.
+</p>
+<a name="syntax"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Fragment Identification Syntax</h3>
+
+<p>The syntax for the text/plain fragment identifiers is straightforward. The syntax defines four schemes, 'char', 'line', and integrity check (which can either be 'length' or 'md5'). The 'char' and 'line' schemes can be used in two different variants, either the position variant (with a single number), or the range variant (with two comma-separated numbers). An integrity check can either use the 'length' or the 'md5' scheme to specify a value. 'length' in this case serves as a very weak but easy to calculate integrity check.
+</p>
+<p>The following syntax definition uses ABNF as defined in RFC 4234 <a class='info' href='#RFC4234'>[6]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>, including the rules DIGIT and HEXDIG. The mime-charset rule is defined in RFC 2978 <a class='info' href='#RFC2978'>[7]<span> (</span><span class='info'>Freed, N. and J. Postel, &ldquo;IANA Charset Registration Procedures,&rdquo; October&nbsp;2000.</span><span>)</span></a>.
+</p>
+<p></p>
+<blockquote class="text"><dl>
+<dt>NOTE:</dt>
+<dd>In the descriptions that follow,
+   specified text values MUST be used exactly as given, using exactly
+   the indicated lower-case letters.  In this respect, the
+   ABNF usage differs from <a class='info' href='#RFC4234'>[6]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+</dd>
+</dl></blockquote>
+
+<p>
+            </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+text-fragment   =  text-scheme 0*( ";" integrity-check )
+text-scheme     =  ( char-scheme / line-scheme )
+char-scheme     =  "char=" ( position / range )
+line-scheme     =  "line=" ( position / range )
+integrity-check =  ( length-scheme / md5-scheme )
+                     [ "," mime-charset ]
+position        =  number
+range           =  ( position "," [ position ] ) / ( "," position )
+number          =  1*( DIGIT )
+length-scheme   =  "length=" number
+md5-scheme      =  "md5=" md5-value
+md5-value       =  32HEXDIG
+</pre></div><p>
+
+         
+</p>
+<a name="hashsums"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+Integrity Checks</h3>
+
+<p>An integrity check can either specify a MIME entity's length, or its MD5 fingerprint. In both cases, it can optionally specify the character encoding which has been used when calculating the integrity check, so that clients interpreting the fragment identifier may check whether they are using the same character encoding for their calculations. For lengths, the character encoding can be necessary because it can influence the character count. As an example,  Unicode includes precomposed characters for writing Vietnamese, but in the windows-1258 encoding, also used for writing Vietnamese, some characters have to be encoded with separate diacritics, which means that two characters will be counted. Applying Unicode terminology, this means that the length of a text/plain MIME entity is computed based on its "code points". For MD5 fingerprints, the character encoding is necessary because the MD5 algorithm works on the binary representation of the text/plain resource.
+</p>
+<p>To allow future changes to this specification to address developments in cryptography, implementations MUST ignore new types of integrity checks, with names other than 'length' and 'md5'. If several integrity checks are present, an application can use whatever integrity checks it understands, and among these, those integrity checks which provide an appropriate tradeoff between performance and the need for integrity checking. Please see <a class='info' href='#check-handling'>Section&nbsp;4.3<span> (</span><span class='info'>Handling of  Integrity Checks</span><span>)</span></a> for further details.
+</p>
+<p>The length of a text/plain MIME entity is calculated by using the principles defined in <a class='info' href='#char-and-line'>Section&nbsp;2.1.2<span> (</span><span class='info'>Characters and Lines</span><span>)</span></a>. The MD5 fingerprint of a text/plain MIME entity is calculated by using the algorithm presented in <a class='info' href='#RFC1321'>[8]<span> (</span><span class='info'>Rivest, R., &ldquo;The MD5 Message-Digest Algorithm,&rdquo; April&nbsp;1992.</span><span>)</span></a>, encoding the result in 16 hexadecimal digits (using uppercase or lowercase letters) as a representation of the 128 bits which are the result of the MD5 algorithm. Calculation of integrity checks is done after stripping any potential content-encodings or content-transfer-encodings of the transport mechanism.
+</p>
+<a name="processing"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Fragment Identifier Processing</h3>
+
+<p>Applications implementing support for the mechanism described in this memo MUST behave as described in the following sections.
+</p>
+<a name="lineending"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Handling of Line Endings in text/plain MIME Entities</h3>
+
+<p>In Internet messages, line endings in text/plain MIME entities are represented by CR+LF character sequences (see RFC 2046 <a class='info' href='#RFC2046'>[1]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> and RFC 3676 <a class='info' href='#RFC3676'>[3]<span> (</span><span class='info'>Gellens, R., &ldquo;The Text/Plain Format and DelSp Parameters,&rdquo; February&nbsp;2004.</span><span>)</span></a>). However, some protocols (such as HTTP) in addition allow other conventions for line endings. Also, some operating systems store text/plain entities locally with different line endings (in most cases, Unix uses LF, MacOS traditionally used CR, and Windows uses CR+LF).
+</p>
+<p>Independent of the number of bytes or characters used to represent a line ending, each line ending MUST be counted as one single character. Implementations interpreting text/plain fragment identifiers MUST take into account the line ending conventions of the protocols and other contexts that they work in.
+</p>
+<p>As an example, an implementation working in the context of a Web browser supporting http: URIs has to support the various line ending conventions permitted by HTTP. As another example, an implementation used on local files (e.g. with the file: URI scheme) has to support the conventions used for local storage. All implementations SHOULD support the Internet-wide CR+LF line ending convention, and MAY support additional conventions not related to the protocols or systems they work with.
+</p>
+<p>Implementers should be aware of the fact that line endings in plain text entities can  be represented by other characters or character sequences than CR+LF. Besides the abovementioned CR and LF, there are also  NEL and CR+NEL. In general, the encoding of line endings can  also depend on the character encoding of the MIME entity, and implementations have to take this into account where necessary.
+</p>
+<a name="position-handling"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+Handling of Position Values</h3>
+
+<p>If any position value (as a position or as part of a range) is greater than the length of the actual MIME entity, then it identifies the last character position or line position of the MIME entity. If the first position value in a range is not present, then the range extends from the start of the MIME entity. If the second position value in a range is not present, then the range extends to the end of the MIME entity. If a range scheme's positions are not properly ordered (ie, the first number is less than the second), then the fragment identifier MUST be ignored.
+</p>
+<a name="check-handling"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+Handling of  Integrity Checks</h3>
+
+<p>Clients are not required to implement the handling of integrity checks, so they MAY choose to ignore integrity check information altogether. However, if they do implement integrity checking, the following applies:
+</p>
+<p>If a fragment identifier contains one or more integrity check(s), and a client retrieves a MIME entity and, using some integrity check(s), detects that the entity  has changed (observing the character encoding specification as described in <a class='info' href='#hashsums'>Section&nbsp;3.1<span> (</span><span class='info'>Integrity Checks</span><span>)</span></a>, if present), then the client SHOULD NOT interpret the text/plain fragment identifier. A client MAY signal this situation to the user.
+</p>
+<a name="error-handling"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
+Syntax Errors in Fragment Identifiers</h3>
+
+<p>If a fragment identifier contains a syntax error (i.e., does not conform to the syntax specified in <a class='info' href='#syntax'>Section&nbsp;3<span> (</span><span class='info'>Fragment Identification Syntax</span><span>)</span></a>), then it MUST be ignored by clients. Clients MUST NOT make any attempt to correct or guess fragment identifiers. Syntax errors MAY be reported by clients.
+</p>
+<a name="examples"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Examples</h3>
+
+<p>The following examples show some usages for the fragment identifiers defined in this memo.
+</p>
+<p>
+            </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+http://example.com/text.txt#char=100
+</pre></div><p>
+
+         
+</p>
+<p>This URI identifies the position after the 100th character of the text.txt MIME entity. It should be noted that it is not clear which octet(s) of the MIME entity this will be without retrieving the MIME entity and thus knowing which character encoding it is using (in case of HTTP, this information will be given in the Content-Type header of the response). If the MIME entity has fewer than 100 characters, the URI identifies the position after the MIME entity's last character.
+</p>
+<p>
+            </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+http://example.com/text.txt#line=10,20
+</pre></div><p>
+
+         
+</p>
+<p>This URI identifies lines 11 to 20 of the text.txt MIME entity. If the MIME entity has fewer than 11 lines, it identifies the position after the last line. If the MIME entity has less than 20 but at least 11 lines, it identifies the range from line 11 to the last line of the MIME entity.
+</p>
+<p>
+            </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+https://example.com/text.txt#line=,1
+</pre></div><p>
+
+         
+</p>
+<p>This URI identifies the first line. Please note that the URI scheme has been changed to https.
+</p>
+<p>
+            </p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+ftp://example.com/text.txt#line=10,20;length=9876,UTF-8
+</pre></div><p>
+
+         
+</p>
+<p>As in the second example, this URI identifies lines 11 to 20 of the text.txt MIME entity. The additional length integrity check specifies that the MIME entity has a length of 9876 characters when encoded in UTF-8. If the client supports the length scheme, it may test the retrieved MIME entity for its length, but only if the retrieved MIME entity uses the UTF-8 encoding or has been locally transcoded into this encoding.
+</p>
+<p>Please note that the FTP protocol, as well as some other protocols underlying some other URI schemes, do not provide explicit information about the media type of the resource being retrieved. Using fragment identifiers with such URI schemes is therefore inherently unreliable. Current user agents use various heuristics to infer some media type for further processing. Processing of the fragment identifier according to this memo is only appropriate if the inferred media type is text/plain.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+IANA Considerations</h3>
+
+<p>Note to RFC Editor: Please change this section to read as follows after the IANA action has been completed: "IANA has added a reference to this specification in the Text/Plain
+   Media Type registration."
+</p>
+<p>IANA is requested to update the registration of the MIME Media type text/plain at http://www.iana.org/assignments/media-types/text/ with the fragment identifier defined in this memo by adding a reference to this memo (with the appropriate RFC number once it is known).
+</p>
+<a name="security"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Security Considerations</h3>
+
+<p>The fact that software implementing fragment identifiers for plain text and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.
+</p>
+<p>In particular, care has to be taken if fragment identifiers are used together with
+a mechanism that allows to show only the part of a document identified
+by a fragment. One scenario may be the use of a fragment identifier to hide small-print legal text.
+Another scenario may be the inclusion of site-key-like material, which may give the user the impression of using the real site rather than a fake site.Other scenarios may also be possible. Possible countermeasures may include but are not limited to displaying the included content within clearly visible boundaries and limiting inclusion to material from the same security realm or from realms that give explicit permission to be included in another realm.
+</p>
+<p>Please note that the above issues all apply to the client side; fragment identifiers are not used when resolving an URI to retreive the representation of a resource, but are only applied on the client side.
+</p>
+<p>Implementers and users of fragment identifiers for plain text should also be aware of the security considerations in RFC 3986 <a class='info' href='#RFC3986'>[4]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> and RFC 3987 <a class='info' href='#RFC3987'>[9]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRI),&rdquo; January&nbsp;2005.</span><span>)</span></a>.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Change Log</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
+From -08 to -09 (to address IESG comments)</h3>
+
+<p>
+				 </p>
+<ul class="text">
+<li>Expanded security section. Added some text re. the danger of displaying of fragments only.
+</li>
+<li>Added clarification that other integrity check schemes might be used in the future.
+</li>
+<li>Changed "hash sum" to "integrity check" to better cover the length check case (not give the impression that a length check is a hash sum).
+</li>
+<li>Changed URI schemes used in examples from 1 http, 3 ftp to 2 http, 1 https, 1 ftp.
+</li>
+<li>Added explanation regarding ftp and absence of media type information.
+</li>
+<li>Minor wording improvements.
+</li>
+</ul><p>
+			
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
+From -07 to -08 (after IETF Last Call)</h3>
+
+<p>
+				</p>
+<ul class="text">
+<li>Changed back 'number' rule from 0*(DIGIT) to 1*(DIGIT), because examples such as "#line=,1" are taken care of in the 'range' production.
+</li>
+</ul><p>
+			
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
+From -06 to -07 (addressing IETF Last Call Comments)</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Completely removed regular expressions to simplify implementations.
+</li>
+<li>Removed the possibility to combine multiple schemes. As a result, fragments will always consist of  consecutive characters.
+</li>
+<li>Changed "MacOS uses CR" to "MacOS traditionally used CR".
+</li>
+<li>Changed 'number' syntax rule from "number = 1*( DIGIT )" to "number = 0*( DIGIT )" to take into account examples such as  "#line=,1".
+</li>
+<li>Added a sentence explaining that lengths are a weak but cheaply calculated hash function.
+</li>
+<li>Moved UTF-8 reference to non-normative.
+</li>
+<li>Moved ABNF from %xdd.dd... back to direct literals, stating that they are case-sensitive (see RFC 3862 for an example of this).
+</li>
+<li>Changed StringWithEscapedSemicolon to &lt;StringWithEscapedSemicolon&gt;, and said that it must not be quoted.
+</li>
+<li>In "Clients SHOULD NOT make any attempt to correct or guess fragment identifiers.", changed "SHOULD NOT" to "MUST NOT".
+</li>
+<li>Removed some redundant normative text in Examples section.
+</li>
+<li>Added "Calculation of hash sums is done after stripping any potential content-encodings or content-transfer-encodings." to section on hash sums.
+</li>
+<li>Wording improvements and updates to Acknowledgements.
+</li>
+<li>Changed abstract for more clarity.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
+From -05 to -06</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Clarified that this is intended as an update of the text/plain media type registration, in newly added IANA consideration section and elsewhere.
+</li>
+<li>Added normative reference to UTF-8 (STD63/RFC3629).
+</li>
+<li>Fixed section about non-ASCII characters in regular expressions to be more accurate re. IRIs.
+</li>
+<li>Fixed some text about decomposition and Unicode.
+</li>
+<li>Clarified that UTF-16 can also use 4 octets per character.
+</li>
+<li>Changed ABNF to make sure schemes are case-sensitive (string literals in ABNF are case-insensitive).
+</li>
+<li>Used HEXDIG from RFC 4234, made clear DIGIT and HEXDIG are from that spec.
+</li>
+<li>Specified order of decoding the various escapings.
+</li>
+<li>Moved section on line endings to the back, and changed requirements to be more in line with practice.
+</li>
+<li>Added IANA Consideration section.
+</li>
+<li>Expanded Security Consideration section.
+</li>
+<li>Removed quote from RFC 3986, because the quoted text does not actually exist there anymore; changed text appropriately.
+</li>
+<li>Reorganized section two to get rid of one section level.
+</li>
+<li>Added overview in introduction, and some glue text here and there.
+</li>
+<li>Changed to more IETF-like wording in some instances (e.g. intro to this section; removing "Compliant software MUST follow this specification." at the start of the Introduction,...).
+</li>
+<li>Removed 'where to send comments' section.
+</li>
+<li>Fixed wording is some cases, tried to make shorter sentences and eliminate parenthesized expressions.
+</li>
+<li>Removed acknowledgement for xml2rfc; we are nevertheless very grateful for this work!
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.5"></a><h3>8.5.&nbsp;
+From -04 to -05</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Added some explanatory text to the last paragraph of <a class='info' href='#robustness'>Section&nbsp;2.3<span> (</span><span class='info'>Fragment Identifier Robustness</span><span>)</span></a>.
+</li>
+<li>Added a paragraph about the importance of having fragment identification capabilities for out-of-line linking methods such as XLink to <a class='info' href='#why'>Section&nbsp;1.3<span> (</span><span class='info'>Why text/plain Fragment Identifiers?</span><span>)</span></a>.
+</li>
+<li>Added explanation of why the charset is important for length hash sums to <a class='info' href='#hashsums'>Section&nbsp;3.1<span> (</span><span class='info'>Integrity Checks</span><span>)</span></a>.
+</li>
+<li>Added text that makes hash sum handling optional and allows clients to interpret fragment identifiers even if the hash sum did not match (changed MUST NOT to SHOULD NOT) to <a class='info' href='#check-handling'>Section&nbsp;4.3<span> (</span><span class='info'>Handling of  Integrity Checks</span><span>)</span></a>.
+</li>
+<li>Added example using a length hash sum in <a class='info' href='#examples'>Section&nbsp;5<span> (</span><span class='info'>Examples</span><span>)</span></a>.
+</li>
+<li>RFC 2234 (ABNF) has been obsoleted by <a class='info' href='#RFC4234'>[6]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+</li>
+<li>Removed the "Open Issues" section for preparation of final draft before submission as RFC.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor13"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.6"></a><h3>8.6.&nbsp;
+From -03 to -04</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>URIs are now defined by RFC 3986 <a class='info' href='#RFC3986'>[4]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>, so the text and the references have been updated. In particular, RFC3986 defines a fragment identifier to be part of the URI, whereas in the obsoleted RFC 2396 URI specification, it was not part of a URI as such, but of a "URI reference".
+</li>
+<li>IRIs are now defined by RFC 3987 <a class='info' href='#RFC3987'>[9]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRI),&rdquo; January&nbsp;2005.</span><span>)</span></a>, so the text and the references have been updated.
+</li>
+<li>Changed IPR clause from RFC 3667 to RFC 3978 (updated version of RFC 3667).
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.7"></a><h3>8.7.&nbsp;
+From -02 to -03</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Replaced most occurrences of 'resource' with 'MIME entity', because the result of dereferencing a URI is not the resource itself, but some MIME entity (in our case of type text/plain) representing it. Thanks to Sandro Hawke for pointing this out.
+</li>
+<li>Moved "Open Issues" to the very back of the document.
+</li>
+<li>Added <a class='info' href='#processing'>Section&nbsp;4<span> (</span><span class='info'>Fragment Identifier Processing</span><span>)</span></a> to define the processing model for fragment identifiers (moved <a class='info' href='#position-handling'>Section&nbsp;4.2<span> (</span><span class='info'>Handling of Position Values</span><span>)</span></a> from <a class='info' href='#syntax'>Section&nbsp;3<span> (</span><span class='info'>Fragment Identification Syntax</span><span>)</span></a> to <a class='info' href='#processing'>Section&nbsp;4<span> (</span><span class='info'>Fragment Identifier Processing</span><span>)</span></a>).
+</li>
+<li>Added hash scheme to make fragment identifiers more robust (<a class='info' href='#robustness'>Section&nbsp;2.3<span> (</span><span class='info'>Fragment Identifier Robustness</span><span>)</span></a>).
+</li>
+<li>Changed IPR clause from RFC 2026 to RFC 3667 (updated version of RFC 2026).
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.8"></a><h3>8.8.&nbsp;
+From -01 to -02</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Fundamental change in semantics: counts turn into positions (between characters or lines), so in order to identify a character or line, ranges must be used (which now use positions to specify the upper and lower bounds of the range).
+</li>
+<li>Made the first value of a range optional as well, so that line=,5 also is legal, identifying everything from the start of the MIME entity to the 5th line.
+</li>
+<li>Changed the syntax from parenthesis-style to a more traditional style using equals-signs.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor16"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.9"></a><h3>8.9.&nbsp;
+From -00 to -01</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Made the second count value of ranges optional, so that something like line(10,) is legal and properly defined.
+</li>
+<li>Added non-normative reference to Internet draft about non-ASCII characters in search strings.
+</li>
+<li>Added <a class='info' href='#incremental'>Section&nbsp;1.4<span> (</span><span class='info'>Incremental Deployment</span><span>)</span></a> about incremental deployment.
+</li>
+<li>Added more elaborate examples.
+</li>
+<li>Added text about regex buffer overflow problems in <a class='info' href='#security'>Section&nbsp;7<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+</li>
+<li>Added <a class='info' href='#lineending'>Section&nbsp;4.1<span> (</span><span class='info'>Handling of Line Endings in text/plain MIME Entities</span><span>)</span></a> about line endings in text/plain resources.
+</li>
+<li>Added "Open Issues" to collect open issues regarding this memo (will be deleted in final RFC text).
+</li>
+</ul><p>
+            
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>9.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC2046">[1]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>,&rdquo; RFC&nbsp;2046, November&nbsp;1996.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2045">[2]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3676">[3]</a></td>
+<td class="author-text"><a href="mailto:randy@qualcomm.com">Gellens, R.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3676">The Text/Plain Format and DelSp Parameters</a>,&rdquo; RFC&nbsp;3676, February&nbsp;2004.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[4]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; RFC&nbsp;3986, January&nbsp;2005.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[5]</a></td>
+<td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4234">[6]</a></td>
+<td class="author-text">Crocker, D. and P. Overell, &ldquo;<a href="http://tools.ietf.org/html/rfc4234">Augmented BNF for Syntax Specifications: ABNF</a>,&rdquo; RFC&nbsp;4234, October&nbsp;2005.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2978">[7]</a></td>
+<td class="author-text">Freed, N. and J. Postel, &ldquo;IANA Charset Registration Procedures,&rdquo; BCP&nbsp;19, October&nbsp;2000.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC1321">[8]</a></td>
+<td class="author-text">Rivest, R., &ldquo;<a href="http://tools.ietf.org/html/rfc1321">The MD5 Message-Digest Algorithm</a>,&rdquo; RFC&nbsp;1321, April&nbsp;1992.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3987">[9]</a></td>
+<td class="author-text">Duerst, M. and M. Suignard, &ldquo;<a href="http://tools.ietf.org/html/rfc3987">Internationalized Resource Identifiers (IRI)</a>,&rdquo; RFC&nbsp;3987, January&nbsp;2005.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>9.2.&nbsp;Non-Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="ASCII">[10]</a></td>
+<td class="author-text">ANSI X3.4-1986, &ldquo;<a href="http://tools.ietf.org/html/rfc3629">Coded Character Set - 7-Bit American National Standard Code for Information Interchange</a>,&rdquo; STD&nbsp;63, RFC&nbsp;3629, 1992.</td></tr>
+<tr><td class="author-text" valign="top"><a name="STD63">[11]</a></td>
+<td class="author-text">Yergeau, F., &ldquo;<a href="http://tools.ietf.org/html/rfc3629">UTF-8, a transformation format of ISO 10646</a>,&rdquo; STD&nbsp;63, RFC&nbsp;3629, November&nbsp;2003.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2854">[12]</a></td>
+<td class="author-text">Connolly, D. and L. Masinter, &ldquo;<a href="http://tools.ietf.org/html/rfc2854">The 'text/html' Media Type</a>,&rdquo; RFC&nbsp;2854, June&nbsp;2000.</td></tr>
+<tr><td class="author-text" valign="top"><a name="TypeReg">[13]</a></td>
+<td class="author-text">Freed, N. and J. Klensin, &ldquo;<a href="http://tools.ietf.org/html/rfc4288">Media Type Specifications and Registration Procedures</a>,&rdquo; RFC&nbsp;4288, December&nbsp;2005.</td></tr>
+<tr><td class="author-text" valign="top"><a name="XLink">[14]</a></td>
+<td class="author-text">DeRose, S., Maler, E., and D. Orchard, &ldquo;XML Linking Language (XLink) Version 1.0,&rdquo; W3C Recommendation&nbsp;REC-xlink-20010627, June&nbsp;2001.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2781">[15]</a></td>
+<td class="author-text"><a href="mailto:phoffman@imc.org">Hoffman, P.</a> and <a href="mailto:fyergeau@alis.com">F. Yergeau</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2781">UTF-16, an encoding of ISO 10646</a>,&rdquo; RFC&nbsp;2781, February&nbsp;2000.</td></tr>
+</table>
+
+<a name="anchor19"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Acknowledgements</h3>
+
+<p>Thanks for comments and suggestions provided by Marcel Baschnagel, Stephane Bortzmeyer, Tim Bray, John Cowan, Spencer Dawkins, Lisa Dusseault, Benja Fallenstein, Ted Hardie, Sam Hartman, Sandro Hawke, Jeffrey Hutzelman, Cullen Jennings, Graham Klyne, Dan Kohn, Henrik Levkowetz, Chris Newman, Mark Nottingham, Conrad Parker and Tim Polk.
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Authors' Addresses</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Erik Wilde</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">UC Berkeley</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">School of Information, 311 South Hall</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Berkeley, CA 94720-4600</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">U.S.A.</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1-510-6432253</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:dret@berkeley.edu">dret@berkeley.edu</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Martin Duerst (Note: Please write "Duerst" with u-umlaut wherever possible, for example as "D&amp;#252;rst" in XML and HTML.)</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Aoyama Gakuin University</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">5-10-1 Fuchinobe</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Sagamihara, Kanagawa  229-8558</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Japan</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+81 42 759 6329</td></tr>
+<tr><td class="author" align="right">Fax:&nbsp;</td>
+<td class="author-text">+81 42 759 6495</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:mailto:duerst@it.aoyama.ac.jp">mailto:duerst@it.aoyama.ac.jp</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://www.sw.it.aoyama.ac.jp/D%C3%BCrst/">http://www.sw.it.aoyama.ac.jp/D%C3%BCrst/</a></td></tr>
+</table>
+<a name="rfc.copyright"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Full Copyright Statement</h3>
+<p class='copyright'>
+Copyright &copy; The IETF Trust (2007).</p>
+<p class='copyright'>
+This document is subject to the rights,
+licenses and restrictions contained in BCP&nbsp;78,
+and except as set forth therein,
+the authors retain all their rights.</p>
+<p class='copyright'>
+This document and the information contained herein are provided
+on an &ldquo;AS IS&rdquo; basis and THE CONTRIBUTOR,
+THE ORGANIZATION HE/SHE REPRESENTS
+OR IS SPONSORED BY (IF ANY), THE INTERNET SOCIETY, THE IETF TRUST
+AND THE INTERNET ENGINEERING TASK FORCE DISCLAIM ALL WARRANTIES,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT
+THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY
+IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR
+PURPOSE.</p>
+<h3>Intellectual Property</h3>
+<p class='copyright'>
+The IETF takes no position regarding the validity or scope of any
+Intellectual Property Rights or other rights that might be claimed
+to pertain to the implementation or use of the technology
+described in this document or the extent to which any license
+under such rights might or might not be available; nor does it
+represent that it has made any independent effort to identify any
+such rights.
+Information on the procedures with respect to
+rights in RFC documents can be found in BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p class='copyright'>
+Copies of IPR disclosures made to the IETF Secretariat and any
+assurances of licenses to be made available,
+or the result of an attempt made to obtain a general license or
+permission for the use of such proprietary rights by implementers or
+users of this specification can be obtained from the IETF on-line IPR
+repository at <a href='http://www.ietf.org/ipr'>http://www.ietf.org/ipr</a>.</p>
+<p class='copyright'>
+The IETF invites any interested party to bring to its attention
+any copyrights,
+patents or patent applications,
+or other
+proprietary rights that may cover technology that may be required
+to implement this standard.
+Please address the information to the IETF at <a href='mailto:ietf-ipr@ietf.org'>ietf-ipr@ietf.org</a>.</p>
+</body></html>
+

@@ -1,0 +1,618 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="info" ipr="full3978" docName="draft-wilde-text-fragment-04">
+	<front>
+		<title abbrev="text/plain Fragment Identifiers">URI Fragment Identifiers for the text/plain Media Type</title>
+		<author initials="E." surname="Wilde" fullname="Erik Wilde">
+			<organization>ETH Zurich</organization>
+			<address>
+				<postal>
+					<street>ETH-Zentrum</street>
+					<city>8092 Zurich</city>
+					<country>Switzerland</country>
+				</postal>
+				<phone>+41-1-6325132</phone>
+				<email>net.dret@dret.net</email>
+				<uri>http://dret.net/netdret/</uri>
+			</address>
+		</author>
+		<date day="8" month="Jun" year="2005"/>
+		<abstract>
+			<t>This memo defines URI fragment identifiers for text/plain MIME entities. These fragment identifiers make it possible to refer to parts of a text MIME entity, identified by character count or range, line count or range, or a regular expression. These identification methods can be combined to identify more than one sub-resource of a text/plain MIME entity. Fragment identifiers may also contain hash information to make them more robust.</t>
+		</abstract>
+	</front>
+	<middle>
+		<section title="Introduction">
+			<t>Compliant software MUST follow this specification. The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+			<section title="What is text/plain?">
+				<t>Internet Media Types as defined in RFC 2045 <xref target="RFC2045"/> and RFC 2046 <xref target="RFC2046"/> are used to identify different types and sub-types of media. RFC 2046 <xref target="RFC2046"/> and RFC 3676 <xref target="RFC3676"/> specify the text/plain media type, which is used for simple, unformatted text. Quoting from RFC 2046 <xref target="RFC2046"/>: "Plain text does not provide for or allow  formatting commands, font attribute specifications, processing instructions, interpretation directives, or content markup. Plain text is seen simply as a linear sequence of characters, possibly interrupted by line breaks or page breaks."</t>
+				<t>The text/plain media type does not restrict the character encoding, any character encoding may be used. In the absence of an explicit character encoding declaration, US-ASCII is assumed as the default character encoding. This variability of the character encoding makes it impossible to count characters in a text/plain MIME entity without taking the character encoding into account, because there are many character encodings using more than one octet per character.</t>
+				<t>The biggest advantage of text/plain MIME entities is their ease of use and their portability among different platforms. As long as they use popular character encodings (such as US-ASCII), they can be displayed and processed on virtually every computer system.</t>
+				<section title="Line Endings in text/plain MIME Entities" anchor="lineending">
+					<t>RFC 2046 <xref target="RFC2046"/> and RFC 3676 <xref target="RFC3676"/> specify that line endings in text/plain MIME entities are represented by CR+LF character sequences. In implementation practice, however, text/plain MIME entities use different conventions, for example depending on the operating system they have been created with (in most cases, Unix uses LF, MacOS uses CR, and Windows uses CR+LF). Because of this diversity of conventions, implementations interpreting text/plain fragment identifiers MUST take different line ending conventions into account.</t>
+					<t>Line endings in text/plain MIME entities MAY be represented by other character (sequences) than CR+LF, specifically CR, LF, NEL, and CR+NEL. All these character (sequences) MUST be interpreted as line endings. This interpretation MUST affect the evaluation of text/plain fragment identifiers. All representations of line endings (CR+LF, CR, LF, NEL, and CR+NEL) MUST be treated as a single character in character counts. For the purpose of regular expression matching, all representations of line endings MUST be treated as single LF characters. The reason for this is that fragment identifiers should not be broken by converting a file from one line ending convention to another.</t>
+					<t>In general, the line ending conventions used in text/plain MIME entities depends on the character encoding of the MIME entity. Implementations SHOULD attempt to be as accurate as possible in recognizing line ending specific to particular character encodings, and MUST treat all these line endings as one character in character counts, and single LF characters for regular expression matching.</t>
+				</section>
+			</section>
+			<section title="What is a URI Fragment Identifier?">
+				<t>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <xref target="RFC3986"/> includes as part of a URI a fragment identifier, which (quoting from RFC 3986 <xref target="RFC3986"/>) "consists of additional reference information to be interpreted by the user agent after the retrieval action has been successfully completed.  As such, it is not part of a URI, but is often used in conjunction with a URI. The semantics of a fragment identifier is a property of the data resulting from a retrieval action, regardless of the type of URI used in the reference.  Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result."</t>
+				<t>The most popular fragment identifier is defined for text/html (defined in RFC 2854 <xref target="RFC2854"/>), and makes it possible to refer to a specific element (identified by a 'name' or 'id' attribute) of an HTML document.</t>
+			</section>
+			<section title="Why text/plain Fragment Identifiers?" anchor="why">
+				<t>Referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Rather than pointing to a whole resource, users can create references to the part they really are interested in or want to talk about. Even though it is suggested that fragment identification methods are specified in a media type's MIME registration, many media types do not have fragment identification methods associated with them.</t>
+				<t>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.</t>
+				<t>Fragment identifiers for text/plain make it possible to refer to specific parts of a text MIME entity, using concepts of positions and ranges, which may be applied to characters and lines. The also support locating a fragment by using a regular expression for searching for a specific character sequence. Thus, text/plain fragment identifiers enable users to exchange information more specifically, thereby reducing time and effort that is necessary to manually search for the relevant part of a text/plain MIME entity.</t>
+			</section>
+			<section title="Incremental Deployment" anchor="incremental">
+				<t>As long as support for text/plain fragment identifiers is not implemented by all programs, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/plain fragment identifier described in this memo will work with URI references to text/plain MIME entities, but they will fail to locate the sub-resource identified by the fragment identifier. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no way for a server to determine whether a requesting client is using a URI containing a fragment identifier.</t>
+			</section>
+		</section>
+		<section title="Fragment Identification Methods">
+			<t>The identification of fragments of text/plain MIME entities can be based on different foundations. Since it is not possible to insert explicit, invisible identifiers into a text/plain MIME entity (as for example used in HTML documents, implemented through special attributes), fragment identification has to rely on certain inherent criteria of the MIME entity. This memo specifies fragment identification using six different methods, which are character positions and ranges, line positions and ranges, regular expression matching, and a mechanism for improving the robustness of fragment identifiers (entity hashes).</t>
+			<t> When interpreting character or line numbers, implementations MUST take the character encoding of the MIME entity into account, because character count and octet count may differ for the character encoding being used. For example, a MIME entity using UTF-16 encoding (as specified in RFC 2718 <xref target="RFC2781"/>) uses two octets per character, and it may have a leading BOM (Byte-Order Mark), which does not count as a character and thus also affects the mapping from a simple octet count to a character count.</t>
+			<section title="Fragment Identification Schemes">
+				<t>Fragment identification can be done using regular expressions or combining two orthogonal principles, which are positions and ranges, and characters and lines. The following section describe the principles themselves, while <xref target="comb-principle"/> describes the combination of the principles.</t>
+				<section title="Principles" anchor="princ">
+					<section title="Positions and Ranges" anchor="princ-posrang">
+						<t>A position does not identify an actual fragment of the MIME entity, but a position inside the MIME entity, which could be regarded as a fragment of zero length. The use case for positions is to provide pointers for applications which may use them to implement functionalities such as "insert some text here", which needs a position rather than a fragment. Positions are counted from zero (position zero being before the first character or line of a text/plain MIME entity), so that a text/plain MIME entity having one character has two positions, one before the first character (position 0), and one after the first character (position 1).</t>
+						<t>Since positions are fragments of length zero, applications SHOULD use other methods than highlighting to indicate positions, the most obvious way being the positioning of a cursor (if the application supports the concept of a cursor).</t>
+						<t>Ranges, on the other hand, identify fragments of a MIME entity that have a length that may be greater than zero. As a general principle for ranges, they specify both a lower and a upper bound. The start or the end of a range specification may be omitted, defaulting to the first repectively last position of the MIME entity. The ending position of a range must have a value greater than or equal to the lower position (consequently, a range with identical lower and upper positions is legal, and identifies a range of length 0, which is equivalent to a position). Counting for ranges uses positions, so that a fragment containing one entity is specified by using a range with two adjacent positions.</t>
+						<t>Since ranges are fragments with a length greater than zero, applications SHOULD use methods like highlighting to indicate ranges (if the application supports the concept of highlighting).</t>
+						<t>For positions and ranges it is implicitly assumed that if a number is greater than the actual number of elements in the MIME entity, then it is referring to the last element of the MIME entity (see <xref target="processing"/> for the processing model).</t>
+					</section>
+					<section title="Characters and Lines" anchor="char-and-line">
+						<t>The concept of positions and ranges may be applied to characters and lines. In both cases, positions indicate points between entities, while ranges identify zero or more entities by indicating positions.</t>
+						<t>Character positions are numbered starting with zero (ignoring initial BOM marks or similar concepts that are not part of the actual textual content of a text/plain MIME entity), and counting each character separately, with the exception of line endings, which are always counted as one character (<xref target="lineending"/> describes how line endings MUST be identified).</t>
+						<t>Line positions are numbered starting with zero (with line position zero always being identical with character position zero), with <xref target="lineending"/> describing how line endings MUST be identified. Fragments identified by lines include the line endings, so applications identifying line-based fragments MUST include the line endings in the fragment identification they are using (eg, the highlighted selection). If a MIME entity does not contain any line endings, then it consists of a single (the first) line.</t>
+					</section>
+				</section>
+				<section title="Combining the Principles" anchor="comb-principle">
+					<t>In the following sections, the principles described in the preceding section (positions/ranges and characters/lines) are combined, resulting in four use cases.</t>
+					<section title="Character Position" anchor="charposi">
+						<t>Using the char scheme followed by a single number, it is possible to point to a character position (ie, a fragment of length zero between two characters). Rather than identifying a fragment consisting of a number of characters, this method identifies a position between two characters (or before the first or after the last character). Character position counting starts with 0, so the character position before the first character of a text/plain MIME entity has the character position 0, and a MIME entity containing n distinct characters has n+1 distinct character positions, the last one having the character position n.</t>
+					</section>
+					<section title="Character Range" anchor="charrange">
+						<t>If it is necessary to identify a fragment of one or more characters using character counting, this can be done by using a character range, using the char scheme followed by a range specification. A character range is a consecutive region of the MIME entity that extends from the starting character position of the range to the ending character position of the range.</t>
+					</section>
+					<section title="Line Position" anchor="lineposi">
+						<t>Using the line scheme followed by a single number, it is possible to point to a line position (ie, a fragment of length zero between two lines). Rather than identifying a fragment consisting of a number of lines, this method identifies a position between two lines (or before the first or after the last line). Line position counting starts with 0, so the line position before the first line of a text/plain MIME entity has the line position 0, and a MIME entity containing n distinct lines has n+1 distinct line positions, the last one having the line position n.</t>
+					</section>
+					<section title="Line Range" anchor="linerange">
+						<t>If it is necessary to identify a fragment of one or more lines using line counting, this can be done by using a line range, using the line scheme followed by a range specification. A line range is a consecutive region of the MIME entity that extends from the starting line position of the range to the ending line position of the range.</t>
+					</section>
+				</section>
+				<section title="Regular Expressions" anchor="regex">
+					<t>A common problem with fragment identifiers is their robustness (to changes in the MIME entity), and character and line counts can break very easily. A more robust way of identifying a fragment is by searching for a specific pattern (another way of making fragment identifiers more robust is described in <xref target="robustness"/> about including entity hash sums in the fragment identifier). Thus, it is possible to use a Basic Regular Expression (BRE) as defined by ISO 9945-2 <xref target="ISO9945-2"/> (the POSIX standard) as a fragment identifier (<xref target="BRE"/> contains a short summary of the POSIX BRE syntax).</t>
+				</section>
+				<section anchor="combining" title="Combining Fragment Identification Scheme Parts">
+					<t>While in most cases only one fragment identification scheme part will be used, it is possible to combine them. By simply concatenating different fragment identification scheme parts, separated by a semicolon, the whole fragment identifier refers to the union of all fragments of the text/plain MIME entity identified by the individual fragment identification scheme parts. This way, it is possible to identify disjoint ranges, such as multiple line ranges.</t>
+					<t>It should be noticed that regular expressions by themselves may identify disjoint fragments, which is true in any case where the regular expression matches more than one occurrence in the MIME entity.</t>
+					<t>Since disjoint fragments can be identified, implementations SHOULD make sure that these fragments are appropriately marked, for example by highlighting the fragment (rather than only scrolling to some line, which only identifies a single position in the MIME entity). If an implementation can not mark disjoint fragments, it MAY resort to marking only the first of the disjoint fragments. However, the exact method of how implementations deal with disjoint fragments depends on the application and interface, and is beyond the scope of this memo.</t>
+				</section>
+			</section>
+			<section anchor="robustness" title="Fragment Identifier Robustness">
+				<t>While regular expressions (as described in <xref target="regex"/>) may make fragment identifiers more robust than character or line counts, it is still possible that modifications of the resource will break the fragment identifier. If applications want to create more robust fragment identifiers, they may do so by adding hash sums to fragment identifiers. These hash sums are used to detect a change in the resource, so that applications may warn users about the possibility that a fragment identifier might have been broken by a modification of the resource. Since fragment identifiers are interpreted by clients, hash sums are defined on MIME entities rather than the resource itself, and as such are specific to a certain representation of the resource, in case of text/plain resources the character encoding of MIME entity.</t>
+				<t>Hash sums may specify the character encoding that has been used when creating the hash sums, and if such a specification is present, clients MUST check whether the character encoding specified for the hash sum and the character encoding of the retrieved MIME entity are equal, and clients MUST NOT check the hash sum if these values differ.</t>
+			</section>
+		</section>
+		<section title="Fragment Identification Syntax" anchor="syntax">
+			<t>The syntax for the fragment identifiers is straightforward. The syntax defines four schemes, 'char', 'line', 'match', and hash (which can either be 'length' or 'md5'). The 'char' and 'line' can be used in two different variants, either the position variant (with a single number), or the range variant (with two comma-separated positions). The 'match' scheme has a regular expression as parameter, which must be specified as a string with escaped semicolons (because the semicolon is used to concatenate multiple fragment identification scheme parts). The hash scheme can either use the 'length' or the 'md5' scheme to specify a hash value.</t>
+			<t>The following syntax definition uses ABNF as defined in RFC 2234 <xref target="RFC2234"/>.</t>
+			<t>
+				<figure>
+					<artwork>
+text-fragment =  text-scheme 0*( ";" text-scheme) 0*( ";" hash-scheme)
+text-scheme   =  ( char-scheme / line-scheme / match-scheme )
+hash-scheme   =  ( length-scheme / md5-scheme ) [ "," charenc ]
+char-scheme   =  "char=" ( position / range )
+line-scheme   =  "line=" ( position / range )
+match-scheme  =  "match=" regex
+position      =  number
+range         =  (position "," [ position ]) / ("," position )
+number        =  1*( DIGIT )
+regex         =  StringWithEscapedSemicolon
+length-scheme =  "length=" number
+md5-scheme    =  "md5=" md5-value
+md5-value     =  32( hexdigit )
+hexdigit      =  (DIGIT / "a" / "A" / "b" / "B" / "c" / "C" / "d" / "D" / "e" / "E" / "f" / "F" )
+charenc       =  StringWithEscapedSemicolon
+					</artwork>
+				</figure>
+			</t>
+			<t>The StringWithEscapedSemicolon is a string where all characters may appear literally (except the characters which are required by the URI syntax to be escaped), with the exception of a semicolon. A semicolon that should be part of the regular expression must be escaped with a leading backslash, and implementations MUST make sure to properly interpret regular expressions, properly dereferencing all escape mechanisms that apply (ie, URI encoding, semicolon escaping, and BRE escaping, as well as any additional escaping that may be present due to the context of the URI).</t>
+			<section title="Non-ASCII Characters in Regular Expressions">
+				<t>RFC 3986 <xref target="RFC3986"/> only allows a subset of ASCII as characters in URIs. Consequently, it is not possible to use non-ASCII characters in URIs. However, using Internationalized Resource Identifiers (IRI) as defined by RFC 3987 <xref target="RFC3987"/>, it is possible to use non-ASCII characters, using the encoding defined by IRI. Thus, using IRIs it is possible to use non-ASCII characters in regular expressions, and implementations MUST make sure to correctly handle any non-ASCII characters in regular expressions, if they accept IRI-encoded text/plain fragment identifiers.</t>
+			</section>
+			<section title="Hash Sums">
+				<t>A hash sum can either specify a MIME entity's length, or its MD5 fingerprint. In both cases, it can optionally specify the character encoding which had been used when calculating the hash sum, so that clients interpreting the fragment identifier may check whether they are using the same character encoding for their calculations. The length of a text/plain MIME entity is calculated by using the principles defined in <xref target="char-and-line"/>. The MD5 fingerprint of a text/plain MIME entity is calculated by using the algorithm presented in <xref target="RFC1321"/>, encoding the result in 16 hexadecimal digits (using uppercase or lowercase letters) as a representation of the 128 bit which are the result of the MD5 algorithm.</t>
+			</section>
+		</section>
+		<section title="Fragment Identifier Processing" anchor="processing">
+			<section title="Handling of position Values" anchor="position-handling">
+				<t>If any position value (as a position or inside a range) is greater than the value for the actual MIME entity, then it identifies the last character or line position of the MIME entity. If the first position value in a range is not present, then the range extends from the start of the MIME entity. If the second position value in a range is not present, then the range extends to the end of the MIME entity. If a range scheme's positions are not properly ordered (ie, the first number is less than the second), then this scheme part MUST be ignored.</t>
+			</section>
+			<section title="Handling of Hash Sums" anchor="hash-handling">
+				<t>If a fragment identifier contains a hash sum, and a client retrieves a MIME entity and detects that the hash sum has changed (observing the character encoding specification, if present), then the client MUST NOT interpret any other text/plain fragment identifier scheme part. A client MAY signal this situation to the user.</t>
+			</section>
+			<section title="Syntax Errors in Fragment Identifiers" anchor="error-handling">
+				<t>If a fragment identifier contains a syntax error (i.e., does not conform to the syntax specified in <xref target="syntax"/>), then it MUST be ignored by clients. Clients SHOULD NOT make any attempt to correct or guess fragment identifiers. Syntax errors MAY be reported by clients.</t>
+			</section>
+		</section>
+		<section title="Examples">
+			<t>The following examples show some usages for the fragment identifiers defined in this memo.</t>
+			<t>
+				<figure>
+					<artwork>
+http://example.com/text.txt#char=100
+					</artwork>
+				</figure>
+			</t>
+			<t>This URI identifies the position after the 100th character of the text.txt MIME entity. It should be noted that it is not clear which octet(s) of the MIME entity this will be without retrieving the MIME entity and thus knowing which character encoding is it using (in case of HTTP, this information will be given in the response's Content-type header). If the MIME entity has fewer than 100 characters, the URI identifies the position after the MIME entity's last character.</t>
+			<t>
+				<figure>
+					<artwork>
+http://example.com/text.txt#line=10,20
+					</artwork>
+				</figure>
+			</t>
+			<t>This URI identifies lines 11 to 20 of the text.txt MIME entity. If the MIME entity has fewer than 11 lines, it identifies the position after last line. If the MIME entity has less than 20 but at least 11 lines, it identifies the lines 11 to the last line of the MIME entity.</t>
+			<t>
+				<figure>
+					<artwork>
+http://example.com/text.txt#match=searchterm
+					</artwork>
+				</figure>
+			</t>
+			<t>This URI identifies all occurrences of the regular expression 'searchterm' in the MIME entity, ie all occurrences of the string 'searchterm'. If there is more than one occurrence, then this URI identifies a disjoint fragment, consisting of all of these occurrences. If there is no occurrence of the search term, the URI does not identify a fragment.</t>
+			<t>
+				<figure>
+					<artwork>
+http://example.com/text.txt#line=,1;match=searchterm
+					</artwork>
+				</figure>
+			</t>
+			<t>This URI identifies the first line and all occurrences of the regular expression 'searchterm' in the MIME entity. If there is an occurrence of 'searchterm' outside of the first line, then this URI identifies a disjoint fragment.</t>
+			<t>
+				<figure>
+					<artwork>
+http://example.com/text.txt#match=hello\;
+					</artwork>
+				</figure>
+			</t>
+			<t>This URI identifies all occurrences of the regular expression 'hello;' in the MIME entity. The semicolon with the leading backslash has to be interpreted as a literal semicolon inside of the BRE, treating the '\;' as an escaped ';', so that the actual regular expression is 'hello;'.  If there is more than one occurrence of this regular expression, then this URI identifies a disjoint fragment, consisting of all of these occurrences.</t>
+			<t>
+				<figure>
+					<artwork>
+...
+					</artwork>
+				</figure>
+			</t>
+			<t>(more complex example...)</t>
+		</section>
+		<section title="Security Considerations" anchor="security">
+			<t>Regular expression matching code is notoriously vulnerable to buffer overflow security holes, so any implementation supporting text/plain fragment identifiers SHOULD make sure that the code being used has been tested against buffer overflow attacks.</t>
+		</section>
+		<section title="Change Log">
+		<t>This section will not be part of the final RFC text, it serves as a container to collect the history of the individual draft versions.</t>
+			<section title="From -03 to -04">
+				<t>
+					<list style="symbols">
+						<t>URIs are now defined by RFC 3986 <xref target="RFC3986"/>, so the text and the references have been updated. In particular, RFC3986 defines a fragment identifier to be part of the URI, whereas in the obsoleted RFC 2396 URI specification, it was not part of a URI as such, but of a "URI reference".</t>
+						<t>IRIs are now defined by RFC 3987 <xref target="RFC3987"/>, so the text and the references have been updated.</t>
+						<t>Changed IPR clause from RFC 3667 to RFC 3978 (updated version of RFC 3667)</t>
+					</list>
+				</t>
+			</section>
+			<section title="From -02 to -03">
+				<t>
+					<list style="symbols">
+						<t>Replaced most occurrences of 'resource' with 'MIME entity', because the result of dereferencing a URI is not the resource itself, but some MIME entity (in our case of type text/plain) representing it. Thanks to Sandro Hawke for pointing this out.</t>
+						<t>Moved <xref target="issues"/> to the very back of the document.</t>
+						<t>Added <xref target="processing"/> to define the processing model for fragment identifiers (moved <xref target="position-handling"/> from <xref target="syntax"/> to <xref target="processing"/>).</t>
+						<t>Added hash scheme to make fragment identifiers more robust (<xref target="robustness"/>).</t>
+						<t>Changed IPR clause from RFC 2026 to RFC 3667 (updated version of RFC 2026)</t>
+					</list>
+				</t>
+			</section>
+			<section title="From -01 to -02">
+				<t>
+					<list style="symbols">
+						<t>Fundamental change in semantics: counts turn into positions (between characters or lines), so in order to identify a character or line, ranges must be used (which now use positions to specify the upper and lower bounds of the range).</t>
+						<t>Made the first value of a range optional as well, so that line=,5 also is legal, identifying everything from the start of the MIME entity to the 5th line.</t>
+						<t>Changed the syntax from paranthesis-style to a more traditional style using equals-signs.</t>
+					</list>
+				</t>
+			</section>
+			<section title="From -00 to -01">
+				<t>
+					<list style="symbols">
+						<t>Made the second count value of ranges optional, so that something like line(10,) is legal and properly defined.</t>
+						<t>Added non-normative reference to Internet draft about non-ASCII characters in search strings.</t>
+						<t>Added <xref target="incremental"/> about incremental deployement.</t>
+						<t>Added more elaborate examples.</t>
+						<t>Added text about regex buffer overflow problems in <xref target="security"/>.</t>
+						<t>Added <xref target="lineending"/> about line endings in text/plain resources.</t>
+						<t>Added <xref target="issues"/> to collect open issues regarding this memo (will be deleted in final RFC text).</t>
+					</list>
+				</t>
+			</section>
+		</section>
+		<section anchor="issues" title="Open Issues">
+			<t>This section will not be part of the final RFC text, it serves as a container to collect to-dos (<xref target="todo"/>) and open questions (<xref target="questions"/>) regarding this memo.</t>
+			<section anchor="todo" title="To Do">
+				<t>
+					<list style="symbols">
+						<t>Allow negative numbers for positions, which are interpreted as counting backwards from the MIME entity's end.</t>
+						<t>Provide more complex example(s).</t>
+						<t>Provide short BRE syntax and description in <xref target="BRE"/> (by inclusion or by reference).</t>
+						<t>Add some text about the importance of having fragment identification capabilities for out-of-line linking methods such as XLink to <xref target="why"/>.</t>
+					</list>
+				</t>
+			</section>
+			<section anchor="questions" title="Open Questions">
+				<t>
+					<list style="symbols">
+						<t>Escaping a semicolon in a regex (so that it is interpreted literally) is now done by using a leading backslash. Shouldn't that be changed to the more URI-style way of percent-encoding it, if it should appear literally?</t>
+						<t>Should regex ranges be allowed (ie, a fragment ranging from one regex match to another regex match)?</t>
+						<t>Should a more sophisticated regex mechanism than BREs be used?</t>
+						<t>Regexes by themselves may identify disjoint sub-resources. Should there be a mechanism to say something like "the 5th appearance of the following regex"? Or are users responsible for composing regexes which do not need this kind of additional mechanism?</t>
+						<t>Is the concatenation of scheme parts (<xref target="combining"/>) and its semantics of joining the individual fragments a good thing? Or a bad thing?</t>
+						<t>Should there be more schemes? Or less?</t>
+						<t>Is it necessary to mention that applications must be able to transcode characters, because the text file and the fragment identifier may use different character encodings? What about character normalization? Should that be addressed or at least mentioned as being out of scope?</t>
+						<t>MD5 values are now specified as 32 hex digits. An alternative would be the representation as specified by <xref target="RFC1864"/>, which defines base64 encoding for the 128 bits of the checksum. Should both forms be allowed (hex and base64) or is one enough? If only one, is hex the right choice?</t>
+					</list>
+				</t>
+			</section>
+		</section>
+	</middle>
+	<back>
+		<references title="Normative References">
+			<reference anchor="ISO9945-2">
+				<front>
+					<title>Information technology - Portable Operating System Interface (POSIX) - Part 2: Shell and Utilities</title>
+					<author>
+						<organization>International Organization for Standardization</organization>
+					</author>
+					<date year="1993"/>
+				</front>
+				<seriesInfo name="ISO" value="9945-2"/>
+			</reference>
+			<reference anchor="RFC2045">
+				<front>
+					<title abbrev="Internet Message Bodies">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</title>
+					<author initials="N." surname="Freed" fullname="Ned Freed">
+						<organization>Innosoft International, Inc.</organization>
+						<address>
+							<postal>
+								<street>1050 East Garvey Avenue South</street>
+								<city>West Covina</city>
+								<region>CA</region>
+								<code>91790</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 818 919 3600</phone>
+							<facsimile>+1 818 919 3614</facsimile>
+							<email>ned@innosoft.com</email>
+						</address>
+					</author>
+					<author initials="N.S." surname="Borenstein" fullname="Nathaniel S. Borenstein">
+						<organization>First Virtual Holdings</organization>
+						<address>
+							<postal>
+								<street>25 Washington Avenue</street>
+								<city>Morristown</city>
+								<region>NJ</region>
+								<code>07960</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 201 540 8967</phone>
+							<facsimile>+1 201 993 3032</facsimile>
+							<email>nsb@nsb.fv.com</email>
+						</address>
+					</author>
+					<date month="November" year="1996"/>
+				</front>
+				<seriesInfo name="RFC" value="2045"/>
+			</reference>
+			<reference anchor="RFC2046">
+				<front>
+					<title abbrev="Media Types">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</title>
+					<author initials="N." surname="Freed" fullname="Ned Freed">
+						<organization>Innosoft International, Inc.</organization>
+						<address>
+							<postal>
+								<street>1050 East Garvey Avenue South</street>
+								<city>West Covina</city>
+								<region>CA</region>
+								<code>91790</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 818 919 3600</phone>
+							<facsimile>+1 818 919 3614</facsimile>
+							<email>ned@innosoft.com</email>
+						</address>
+					</author>
+					<author initials="N." surname="Borenstein" fullname="Nathaniel S. Borenstein">
+						<organization>First Virtual Holdings</organization>
+						<address>
+							<postal>
+								<street>25 Washington Avenue</street>
+								<city>Morristown</city>
+								<region>NJ</region>
+								<code>07960</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 201 540 8967</phone>
+							<facsimile>+1 201 993 3032</facsimile>
+							<email>nsb@nsb.fv.com</email>
+						</address>
+					</author>
+					<date month="November" year="1996"/>
+				</front>
+				<seriesInfo name="RFC" value="2046"/>
+			</reference>
+			<reference anchor="RFC3676">
+				<front>
+					<title>The Text/Plain Format and DelSp Parameters</title>
+					<author initials="R." surname="Gellens" fullname="Randall Gellens">
+						<organization>QUALCOMM Incorporated</organization>
+						<address>
+							<postal>
+								<street>5775 Morehouse Drive</street>
+								<city>San Diego</city>
+								<region>CA</region>
+								<code>92121-2779</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 619 651 5115</phone>
+							<email>randy@qualcomm.com</email>
+						</address>
+					</author>
+					<date month="February" year="2004"/>
+				</front>
+				<seriesInfo name="RFC" value="3676"/>
+			</reference>
+			<reference anchor="RFC3986">
+				<front>
+					<title abbrev="URI Generic Syntax">Uniform Resource Identifier (URI): Generic Syntax</title>
+					<author initials="T." surname="Berners-Lee" fullname="Tim Berners-Lee">
+						<organization>World Wide Web Consortium</organization>
+						<address>
+							<postal>
+								<street>Massachusetts Institute of Technology</street>
+								<street>77 Massachusetts Avenue</street>
+								<city>Cambridge</city>
+								<region>MA</region>
+								<code>02139</code>
+							</postal>
+							<phone>+1-617-253-5702</phone>
+							<facsimile>+1-617-258-5999</facsimile>
+							<email>timbl@w3.org</email>
+						</address>
+					</author>
+					<author initials="R.T." surname="Fielding" fullname="Roy T. Fielding">
+						<organization>Day Software</organization>
+						<address>
+							<postal>
+								<street>5251 California Ave., Suite 110</street>
+								<city>Irvine</city>
+								<region>CA</region>
+								<code>92617</code>
+							</postal>
+							<phone>+1-949-679-2960</phone>
+							<facsimile>+1-949-679-2972</facsimile>
+							<email>fielding@gbiv.com</email>
+						</address>
+					</author>
+					<author initials="L." surname="Masinter" fullname="Larry Masinter">
+						<organization>Adobe Systems Incorporated</organization>
+						<address>
+							<postal>
+								<street>345 Park Ave</street>
+								<city>San Jose</city>
+								<region>CA</region>
+								<code>95110</code>
+							</postal>
+							<phone>+1-408-536-3024</phone>
+							<email>LMM@acm.org</email>
+						</address>
+					</author>
+					<date month="January" year="2005"/>
+				</front>
+				<seriesInfo name="RFC" value="3986"/>
+			</reference>
+			<reference anchor="RFC2234">
+				<front>
+					<title>Augmented BNF for Syntax Specifications: ABNF</title>
+					<author initials="D. H." surname="Crocker" fullname="David H. Crocker">
+						<organization>Internet Mail Consortium</organization>
+						<address>
+							<postal>
+								<street>675 Spruce Dr.</street>
+								<city>Sunnyvale</city>
+								<region>CA</region>
+								<code>94086</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 408 246 8253</phone>
+							<facsimile>+1 408 249 6205</facsimile>
+							<email>dcrocker@imc.org</email>
+						</address>
+					</author>
+					<author initials="P." surname="Overell" fullname="Paul Overell">
+						<organization>Demon Internet Ltd</organization>
+						<address>
+							<postal>
+								<street>Dorking Business Park</street>
+								<street>Dorking</street>
+								<city>Surrey</city>
+								<region>England</region>
+								<code>RH4 1HN</code>
+								<country>UK</country>
+							</postal>
+							<phone/>
+							<email>paulo@turnpike.com</email>
+						</address>
+					</author>
+					<date month="November" year="1997"/>
+				</front>
+				<seriesInfo name="RFC" value="2234"/>
+			</reference>
+			<reference anchor="RFC2119">
+				<front>
+					<title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
+					<author initials="S." surname="Bradner" fullname="Scott Bradner">
+						<organization>Harvard University</organization>
+						<address>
+							<postal>
+								<street>1350 Mass. Ave.</street>
+								<street>Cambridge</street>
+								<street>MA 02138</street>
+							</postal>
+							<phone>- +1 617 495 3864</phone>
+						</address>
+					</author>
+					<date month="March" year="1997"/>
+				</front>
+				<seriesInfo name="RFC" value="2119"/>
+			</reference>
+			<reference anchor="RFC1321">
+				<front>
+					<title abbrev="MD5">The MD5 Message-Digest Algorithm</title>
+					<author initials="R. L." surname="Rivest" fullname="Ronald L. Rivest">
+						<organization/>
+					</author>
+					<date month="April" year="1992"/>
+				</front>
+				<seriesInfo name="RFC" value="1321"/>
+			</reference>
+			<reference anchor="RFC3987">
+				<front>
+					<title>Internationalized Resource Identifiers (IRI)</title>
+					<author initials="M." surname="Duerst" fullname="Martin Duerst">
+						<organization/>
+					</author>
+					<author initials="M." surname="Suignard" fullname="Michel Suignard">
+						<organization/>
+					</author>
+					<date month="January" year="2005"/>
+				</front>
+				<seriesInfo name="RFC" value="3987"/>
+			</reference>
+		</references>
+		<references title="Non-Normative References">
+			<reference anchor="RFC2854">
+				<front>
+					<title>The 'text/html' Media Type</title>
+					<author initials="D." surname="Connolly" fullname="D. Connolly">
+						<organization/>
+					</author>
+					<author initials="L." surname="Masinter" fullname="L. Masinter">
+						<organization/>
+					</author>
+					<date month="June" year="2000"/>
+				</front>
+				<seriesInfo name="RFC" value="2854"/>
+			</reference>
+			<reference anchor="RFC2629">
+				<front>
+					<title>Writing I-Ds and RFCs using XML</title>
+					<author initials="M. T." surname="Rose" fullname="Marshall T. Rose">
+						<organization>Invisible Worlds, Inc.</organization>
+						<address>
+							<postal>
+								<street>660 York Street</street>
+								<city>San Francisco</city>
+								<region>CA</region>
+								<code>94110</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 415 695 3975</phone>
+							<email>mrose@not.invisible.net</email>
+							<uri>http://invisible.net/</uri>
+						</address>
+					</author>
+					<date month="June" year="1999"/>
+				</front>
+				<seriesInfo name="RFC" value="2629"/>
+			</reference>
+			<reference anchor="RFC2781">
+				<front>
+					<title>UTF-16, an encoding of ISO 10646</title>
+					<author initials="P." surname="Hoffman" fullname="Paul Hoffman">
+						<organization>Internet Mail Consortium</organization>
+						<address>
+							<postal>
+								<street>127 Segre Place</street>
+								<city>Santa Cruz</city>
+								<region>CA</region>
+								<code>95060</code>
+								<country>US</country>
+							</postal>
+							<phone/>
+							<email>phoffman@imc.org</email>
+						</address>
+					</author>
+					<author initials="F." surname="Yergeau" fullname="Francois Yergeau">
+						<organization>Alis Technologies</organization>
+						<address>
+							<postal>
+								<street>100, boul. Alexis-Nihon</street>
+								<street>Suite 600</street>
+								<city>Montreal</city>
+								<region>Quebec</region>
+								<code>H4M 2P2</code>
+								<country>CA</country>
+							</postal>
+							<phone/>
+							<email>fyergeau@alis.com</email>
+						</address>
+					</author>
+					<date month="February" year="2000"/>
+				</front>
+				<seriesInfo name="RFC" value="2781"/>
+			</reference>
+			<reference anchor="RFC1864">
+				<front>
+					<title abbrev="Content-MD5">The Content-MD5 Header Field</title>
+					<author initials="J. G." surname="Myers" fullname="John Gardiner Myers">
+						<organization/>
+					</author>
+					<author initials="M. T." surname="Rose" fullname="Marshall T. Rose">
+						<organization>Invisible Worlds, Inc.</organization>
+						<address>
+							<postal>
+								<street>660 York Street</street>
+								<city>San Francisco</city>
+								<region>CA</region>
+								<code>94110</code>
+								<country>US</country>
+							</postal>
+							<phone>+1 415 695 3975</phone>
+							<email>mrose@not.invisible.net</email>
+							<uri>http://invisible.net/</uri>
+						</address>
+					</author>
+					<date month="October" year="1995"/>
+				</front>
+				<seriesInfo name="RFC" value="1864"/>
+			</reference>
+		</references>
+		<section anchor="BRE" title="POSIX BRE Syntax">
+			<t>This section contains a short (and non-normative) summary of the POSIX BRE syntax defined in ISO 9945-2 <xref target="ISO9945-2"/>. The definition of BRE syntax in ISO 9945-2 <xref target="ISO9945-2"/> is the normative reference, and the following summary is for informative purposes only.</t>
+			<t>(tbd - is there some rfc that could be referenced instead?)</t>
+		</section>
+		<section title="Where to send Comments">
+			<t>Please send all comments and questions concerning this document to Erik Wilde.</t>
+		</section>
+		<section title="Acknowledgements">
+			<t>This document has been prepared using the IETF document DTD described in RFC 2629 <xref target="RFC2629"/>.</t>
+			<t>Thanks for comments and suggestions provided by Dan Kohn, John Cowan, Benja Fallenstein, Henrik Levkowetz, Sandro Hawke, Marcel Baschnagel, and Martin Duerst.</t>
+		</section>
+	</back>
+</rfc>
