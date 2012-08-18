@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- $Id: draft-hausenblas-csv-fragment-00.xml 1638 2011-04-26 17:52:07Z dret $ -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="std" ipr="trust200902" docName="draft-hausenblas-csv-fragment-00" updates="4180">
+   <front>
+      <title abbrev="text/csv Fragment Identifiers">URI Fragment Identifiers for the text/csv Media Type</title>
+      <author initials="M." surname="Hausenblas" fullname="Michael Hausenblas">
+         <organization>DERI, NUI Galway</organization>
+         <address>
+            <postal>
+               <street>IDA Business Park</street>
+               <city>Galway</city>
+               <country>Ireland</country>
+            </postal>
+            <phone>+353-91-495730</phone>
+            <email>michael.hausenblas@deri.org</email>
+            <uri>http://sw-app.org/about.html</uri>
+         </address>
+      </author>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>UC Berkeley</organization>
+         <address>
+            <postal>
+               <street>School of Information, 311 South Hall</street>
+               <city>Berkeley, CA 94720-4600</city>
+               <country>U.S.A.</country>
+            </postal>
+            <phone>+1-510-6432253</phone>
+            <email>dret@berkeley.edu</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="26" month="April" year="2011"/>
+      <abstract>
+         <t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by cell, row, column, or slice.</t>
+      </abstract>
+   </front>
+   <middle>
+      <section title="Introduction">
+         <t>This memo updates the text/csv media type defined in RFC 4180 <xref target="RFC4180"/> by defining URI fragment identifiers for text/csv MIME entities.</t>
+         <t>This section gives an introduction to the general concepts of text/csv MIME entities and URI fragment identifiers, and discusses the need for fragment identifiers for text/csv and deployment issues. <xref target="methods"/> discusses the principles and methods on which this memo is based. <xref target="syntax"/> defines the syntax, and <xref target="processing"/> discusses processing of text/csv fragment identifiers.</t>
+         <section title="What is text/csv?">
+            <t>Internet Media Types (often referred to as "MIME types") as defined in RFC 2045 <xref target="RFC2045"/> and RFC 2046 <xref target="RFC2046"/> are used to identify different types and sub-types of media. The text/csv media type is defined in RFC 4180 <xref target="RFC4180"/>, using US-ASCII <xref target="ASCII"/> as the default character encoding (other character encodings can be used as well).</t>
+         </section>
+         <section title="Why text/csv Fragment Identifiers?" anchor="why">
+            <t>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <xref target="RFC3986"/> optionally includes a so-called "fragment identifier", separated by a number sign ('#'). The fragment identifier consists of additional reference information to be interpreted by the user agent after the retrieval action has been successfully completed.  The semantics of a fragment identifier is a property of the data resulting from a retrieval action, regardless of the type of URI used in the reference.  Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.</t>
+            <section title="Motivation">
+               <t>Similar to the motivation in RFC 5147 <xref target="RFC5147"/>, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's MIME registration (see <xref target="TypeReg"/>), many media types do not have fragment identification methods associated with them.</t>
+               <t>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.</t>
+            </section>
+            <section title="Use Cases">
+               <t>Fragment identifiers for text/csv as defined in this memo make it possible to refer to specific parts of a text/csv MIME entity. Use cases include, but are not limited to, discovery (what column headings or how many rows are available), selecting a part for visual rendering, stream processing, making assertions about a certain value (provenance, confidence, etc.), or data integration.</t> 
+            </section>
+         </section>
+         <section title="Incremental Deployment" anchor="incremental">
+            <t>As long as text/csv fragment identifiers are not supported universally, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/csv fragment identifier described in this memo will work with URI references to text/csv MIME entities, but they will fail to to understand the identification of the sub-resource specified by the fragment identifier, and thus will behave as if the complete resource was referenced. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no reliable way for a server to determine whether a requesting client is using a URI containing a fragment identifier.</t>
+         </section>
+         <section title="Notation Used in this Memo">
+            <t>The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+         </section>
+      </section>
+      <section title="Fragment Identification Methods" anchor="methods">
+         <t>This memo specifies fragment identification using following methods: header, row, column and slice. As of RFC 4180 <xref target="RFC4180"/> the header line is optional and hence the application of the method is dependent on the actual format of the text/csv MIME entity.</t>
+        <t>Throughout the sections below the following table in CSV is used:</t>
+         <figure>
+            <artwork>
+date,temperature,place
+2011-01-01,1,Galway
+2011-01-02,-1,Galway
+2011-01-03,0,Galway
+2011-01-01,6,Berkeley
+2011-01-02,8,Berkeley
+2011-01-03,5,Berkeley
+            </artwork>
+         </figure>
+         <section title="Header" anchor="method-header">
+            <t>For discovery purposes, the "head" scheme is used, returning the first row. If the "header" parameter per RFC 4180 <xref target="RFC4180"/> is available and its value is "present" the client can reliable determine that it is a header.</t>
+            <figure>
+               <artwork>
+  http://example.com/data.csv#head
+               </artwork>
+            </figure>
+            <t>Applied to the reference table, the above CSV fragment would select the header row, yielding:</t>
+            <figure>
+               <artwork>
+date,temperature,place
+               </artwork>
+            </figure>
+         </section>
+         <section title="Row-based selection" anchor="method-row">
+            <t>To select a specific record, the "row" scheme followed by a single number is used (the first record has the index 0). If the fragment is given in the form row:*, then no record is selected but the overall number of records is returned.</t>
+            <figure>
+               <artwork>
+  http://example.com/data.csv#row:2
+               </artwork>
+            </figure>
+            <t>The above CSV fragment yields: while the following computes the number of records (which equals 6, in the reference table)</t>
+            <figure>
+               <artwork>
+2011-01-03,0,Galway
+               </artwork>
+            </figure>
+            <t>The following computes the number of records (which equals 6, in the reference table):</t>
+            <figure>
+               <artwork>
+  http://example.com/data.csv#row:*
+               </artwork>
+            </figure>
+         </section>
+         <section title="Column-based selection" anchor="method-column">
+            <t>To select values from a certain column, the "col" scheme, followed either by a single number or the value of a header field is used.</t>
+            <figure>
+               <artwork>
+  http://example.com/data.csv#col:temperature
+               </artwork>
+            </figure>
+            <t>The above CSV fragment addresses a column by name, yielding:</t>
+            <figure>
+               <artwork>
+1,-1,0,6,8,5
+               </artwork>
+            </figure>
+            <t>A column can also be addressed by position as shown in the next example:</t>
+            <figure>
+               <artwork>
+  http://example.com/data.csv#col:2
+               </artwork>
+            </figure>
+            <t>The above CSV fragment selects the third column:</t>
+            <figure>
+               <artwork>
+Galway,Galway,Galway,Berkeley,Berkeley,Berkeley
+               </artwork>
+            </figure>
+         </section>
+         <section title="Slice-based selection" anchor="method-slice">
+            <t>To select a part of table, called a slice in the following, the "where" scheme is used. The allowed values are a comma-separated list of header fields with corresponding field values in the table.</t>
+            <figure>
+               <artwork>
+  http://example.com/data.csv#where:date=2011-01-01
+               </artwork>
+            </figure>
+            <t>The above CSV fragment selects a slice, yielding another CSV table as follows:</t>
+            <figure>
+               <artwork>
+temperature,place
+1,Galway
+6,Berkeley
+               </artwork>
+            </figure>
+         </section>
+      </section>
+      <section title="Fragment Identification Syntax" anchor="syntax">
+         <t>The syntax for the text/csv fragment identifiers is as follows.</t>
+         <t>The following syntax definition uses ABNF as defined in RFC 4234 <xref target="RFC4234"/>, including the rules DIGIT and HEXDIG. The mime-charset rule is defined in RFC 2978 <xref target="RFC2978"/>.</t>
+         <t><list style="hanging"><t hangText="NOTE:">In the descriptions that follow,
+   specified text values MUST be used exactly as given, using exactly
+   the indicated lower-case letters.  In this respect, the
+   ABNF usage differs from <xref target="RFC4234"/>.</t></list></t>
+         <t>
+            <figure>
+               <artwork>
+csv-fragment =  headersel / wheresel / colsel / rowsel
+headersel = "head"
+rowsel   = "row:" rowspec
+colsel   = "col:" colspec
+wheresel = "where:" kvpairs 
+kvpairs = 1*( col "=" val 0*1(",") ) 
+col = 1*TEXTDATA
+val = 1*TEXTDATA
+colspec = column 
+rowspec = "*" / rownum
+column = 1*TEXTDATA / 1*DIGIT
+rownum = 1*DIGIT
+TEXTDATA =  %x23-2B / %x2D-3C / %x3E-7E 
+DIGIT =  %x30-39 
+               </artwork>
+            </figure>
+         </t>
+      </section>
+      <section title="Fragment Identifier Processing" anchor="processing">
+         <t>Applications implementing support for the mechanism described in this memo MUST behave as described in the following sections.</t>
+         <section title="Syntax Errors in Fragment Identifiers" anchor="error-handling">
+            <t>If a fragment identifier contains a syntax error (i.e., does not conform to the syntax specified in <xref target="syntax"/>), then it MUST be ignored by clients. Clients MUST NOT make any attempt to correct or guess fragment identifiers. Syntax errors MAY be reported by clients.</t>
+         </section>
+      </section>
+      <section title="IANA Considerations">
+         <t>Note to RFC Editor: Please change this section to read as follows after the IANA action has been completed: "IANA has added a reference to this specification in the Text/Plain
+   Media Type registration."</t>
+         <t>IANA is requested to update the registration of the MIME Media type text/csv at http://www.iana.org/assignments/media-types/text/ with the fragment identifier defined in this memo by adding a reference to this memo (with the appropriate RFC number once it is known).</t>
+      </section>
+      <section title="Security Considerations" anchor="security">
+         <t>The fact that software implementing fragment identifiers for plain text and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.</t><t>In particular, care has to be taken if fragment identifiers are used together with
+a mechanism that allows to show only the part of a document identified
+by a fragment. One scenario may be the use of a fragment identifier to hide small-print legal text.
+Another scenario may be the inclusion of site-key-like material, which may give the user the impression of using the real site rather than a fake site.Other scenarios may also be possible. Possible countermeasures may include but are not limited to displaying the included content within clearly visible boundaries and limiting inclusion to material from the same security realm or from realms that give explicit permission to be included in another realm.</t><t>Please note that the above issues all apply to the client side; fragment identifiers are not used when resolving an URI to retrieve the representation of a resource, but are only applied on the client side.</t>
+         <t>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <xref target="RFC3986"/> and RFC 3987 <xref target="RFC3987"/>.</t>
+      </section>
+      <section title="Change Log">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+<!--
+         <section title="From -00 to -01">
+            <t>
+               <list style="symbols">
+                  <t>...</t>
+               </list>
+            </t>
+         </section>
+-->
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+        <reference anchor="RFC2045">
+            <front>
+               <title abbrev="Internet Message Bodies">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</title>
+               <author initials="N." surname="Freed" fullname="Ned Freed">
+                  <organization>Innosoft International, Inc.</organization>
+                  <address>
+                     <postal>
+                        <street>1050 East Garvey Avenue South</street>
+                        <city>West Covina</city>
+                        <region>CA</region>
+                        <code>91790</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 818 919 3600</phone>
+                     <facsimile>+1 818 919 3614</facsimile>
+                     <email>ned@innosoft.com</email>
+                  </address>
+               </author>
+               <author initials="N. S." surname="Borenstein" fullname="Nathaniel S. Borenstein">
+                  <organization>First Virtual Holdings</organization>
+                  <address>
+                     <postal>
+                        <street>25 Washington Avenue</street>
+                        <city>Morristown</city>
+                        <region>NJ</region>
+                        <code>07960</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 201 540 8967</phone>
+                     <facsimile>+1 201 993 3032</facsimile>
+                     <email>nsb@nsb.fv.com</email>
+                  </address>
+               </author>
+               <date month="November" year="1996"/>
+            </front>
+            <seriesInfo name="RFC" value="2045"/>
+         </reference>
+         <reference anchor="RFC2046">
+            <front>
+               <title abbrev="Media Types">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</title>
+               <author initials="N." surname="Freed" fullname="Ned Freed">
+                  <organization>Innosoft International, Inc.</organization>
+                  <address>
+                     <postal>
+                        <street>1050 East Garvey Avenue South</street>
+                        <city>West Covina</city>
+                        <region>CA</region>
+                        <code>91790</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 818 919 3600</phone>
+                     <facsimile>+1 818 919 3614</facsimile>
+                     <email>ned@innosoft.com</email>
+                  </address>
+               </author>
+               <author initials="N." surname="Borenstein" fullname="Nathaniel S. Borenstein">
+                  <organization>First Virtual Holdings</organization>
+                  <address>
+                     <postal>
+                        <street>25 Washington Avenue</street>
+                        <city>Morristown</city>
+                        <region>NJ</region>
+                        <code>07960</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 201 540 8967</phone>
+                     <facsimile>+1 201 993 3032</facsimile>
+                     <email>nsb@nsb.fv.com</email>
+                  </address>
+               </author>
+               <date month="November" year="1996"/>
+            </front>
+            <seriesInfo name="RFC" value="2046"/>
+         </reference>
+         <reference anchor="RFC4180">
+            <front>
+               <title abbrev="Common Format and MIME Type for CSV Files">Common Format and MIME Type for Comma-Separated Values (CSV) Files</title>
+               <author initials="Y." surname="Shafranovich" fullname="Yakov Shafranovich">
+                  <organization>SolidMatrix Technologies, Inc.</organization>
+                  <address>
+                     <email>ietf@shaftek.org</email>
+                  </address>
+               </author>
+               <date month="October" year="2005"/>
+            </front>
+            <seriesInfo name="RFC" value="4180"/>
+         </reference>
+         <reference anchor="RFC2119">
+            <front>
+               <title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
+               <author initials="S." surname="Bradner" fullname="Scott Bradner">
+                  <organization>Harvard University</organization>
+                  <address>
+                     <postal>
+                        <street>1350 Mass. Ave.</street>
+                        <street>Cambridge</street>
+                        <street>MA 02138</street>
+                     </postal>
+                     <phone>- +1 617 495 3864</phone>
+                  </address>
+               </author>
+               <date month="March" year="1997"/>
+            </front>
+            <seriesInfo name="RFC" value="2119"/>
+         </reference><reference anchor="RFC2978">
+           <front>
+             <title>IANA Charset Registration Procedures</title>
+             <author initials="N." surname="Freed" fullname="Ned Freed"><organization/></author>
+             <author initials="J." surname="Postel" fullname="John Postel"><organization/></author>
+             <date month="October" year="2000"/>
+           </front>
+           <seriesInfo name="BCP" value="19"/>          
+         </reference>
+         <reference anchor="RFC3986">
+            <front>
+               <title abbrev="URI Generic Syntax">Uniform Resource Identifier (URI): Generic Syntax</title>
+               <author initials="T." surname="Berners-Lee" fullname="Tim Berners-Lee">
+                  <organization>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                        <street>Massachusetts Institute of Technology</street>
+                        <street>77 Massachusetts Avenue</street>
+                        <city>Cambridge</city>
+                        <region>MA</region>
+                        <code>02139</code>
+                     </postal>
+                     <phone>+1-617-253-5702</phone>
+                     <facsimile>+1-617-258-5999</facsimile>
+                     <email>timbl@w3.org</email>
+                  </address>
+               </author>
+               <author initials="R. T." surname="Fielding" fullname="Roy T. Fielding">
+                  <organization>Day Software</organization>
+                  <address>
+                     <postal>
+                        <street>5251 California Ave., Suite 110</street>
+                        <city>Irvine</city>
+                        <region>CA</region>
+                        <code>92617</code>
+                     </postal>
+                     <phone>+1-949-679-2960</phone>
+                     <facsimile>+1-949-679-2972</facsimile>
+                     <email>fielding@gbiv.com</email>
+                  </address>
+               </author>
+               <author initials="L." surname="Masinter" fullname="Larry Masinter">
+                  <organization>Adobe Systems Incorporated</organization>
+                  <address>
+                     <postal>
+                        <street>345 Park Ave</street>
+                        <city>San Jose</city>
+                        <region>CA</region>
+                        <code>95110</code>
+                     </postal>
+                     <phone>+1-408-536-3024</phone>
+                     <email>LMM@acm.org</email>
+                  </address>
+               </author>
+               <date month="January" year="2005"/>
+            </front>
+            <seriesInfo name="RFC" value="3986"/>
+         </reference>
+         <reference anchor="RFC3987">
+            <front>
+               <title>Internationalized Resource Identifiers (IRI)</title>
+               <author initials="M." surname="Duerst" fullname="Martin Duerst">
+                  <organization/>
+               </author>
+               <author initials="M." surname="Suignard" fullname="Michel Suignard">
+                  <organization/>
+               </author>
+               <date month="January" year="2005"/>
+            </front>
+            <seriesInfo name="RFC" value="3987"/>
+         </reference>
+         <reference anchor="RFC4234">
+            <front>
+               <title>Augmented BNF for Syntax Specifications: ABNF</title>
+               <author initials="D. H." surname="Crocker" fullname="David H. Crocker">
+                  <organization>Brandenburg InternetWorking</organization>
+               </author>
+               <author initials="P." surname="Overell" fullname="Paul Overell">
+                  <organization>THUS plc.</organization>
+               </author>
+               <date month="October" year="2005"/>
+            </front>
+            <seriesInfo name="RFC" value="4234"/>
+         </reference>
+      </references>
+      <references title="Non-Normative References">
+         <reference anchor="ASCII">
+            <front>
+               <title>Coded Character Set - 7-Bit American National Standard Code for Information Interchange</title>
+               <author>
+                  <organization>ANSI X3.4-1986</organization>
+               </author>
+               <date year="1992"/>
+            </front>
+            <seriesInfo name="STD" value="63"/>
+            <seriesInfo name="RFC" value="3629"/>
+         </reference>
+         <reference anchor="RFC5147">
+            <front>
+               <title abbrev="text/plain Fragment Identifiers">URI Fragment Identifiers for the text/plain Media Type</title>
+               <author initials="E." surname="Wilde" fullname="Erik Wilde">
+                  <organization>UC Berkeley</organization>
+                  <address>
+                     <postal>
+                        <street>School of Information, 311 South Hall</street>
+                        <city>Berkeley, CA 94720-4600</city>
+                        <country>U.S.A.</country>
+                     </postal>
+                    <phone>+1-510-6432253</phone>
+                    <email>dret@berkeley.edu</email>
+                    <uri>http://dret.net/netdret/</uri>
+                  </address>
+               </author>
+               <author initials="M. J." surname="Duerst" fullname="Martin Duerst">
+                  <organization>Aoyama Gakuin University</organization>
+                  <address>
+                     <postal>
+                        <street>5-10-1 Fuchinobe</street>
+                        <city>Sagamihara</city>
+                        <region>Kanagawa</region>
+                        <code>229-8558</code>
+                        <country>Japan</country>
+                     </postal>
+                     <phone>+81 42 759 6329</phone>
+                     <facsimile>+81 42 759 6495</facsimile>
+                     <email>mailto:duerst@it.aoyama.ac.jp</email>
+                     <uri>http://www.sw.it.aoyama.ac.jp/D%C3%BCrst/</uri>
+                  </address>
+               </author>
+               <date month="April" year="2008"/>
+            </front>
+            <seriesInfo name="RFC" value="5147"/>
+         </reference>
+         <reference anchor="TypeReg">
+            <front>
+               <title abbrev="Media Type Registration">Media Type Specifications and Registration Procedures</title>
+               <author initials="N." surname="Freed" fullname="Ned Freed">
+                  <organization>Sun Microsystems</organization>
+               </author>
+               <author initials="J." surname="Klensin" fullname="John C. Klensin">
+                  <organization/>
+               </author>
+               <date month="December" year="2005"/>
+            </front>
+            <seriesInfo name="RFC" value="4288"/>
+         </reference>
+      </references>
+      <section title="Acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+   </back>
+</rfc>
