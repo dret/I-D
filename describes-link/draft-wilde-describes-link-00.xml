@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!-- $Id: draft-wilde-describes-link-00.xml 1851 2012-04-04 06:01:31Z dret $ -->
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="std" ipr="trust200902" docName="draft-wilde-describes-link-00">
+   <front>
+      <title abbrev="&quot;describes&quot; Link Type">The 'describes' Link Relation Type</title>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>EMC Corporation</organization>
+         <address>
+            <postal>
+               <street>6801 Koll Center Parkway</street>
+               <city>Pleasanton, CA 94566</city>
+               <country>U.S.A.</country>
+            </postal>
+            <phone>+1-925-6006244</phone>
+            <email>erik.wilde@emc.com</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="3" month="April" year="2012"/>
+      <abstract>
+         <t>This specification defines the 'describes' link relation type that allows resource representations to indicate that they are describing another resource. In contexts where applications want to associate described resources and description resources, and want to build services based on these associations, the 'describes' link relation type provides the opposite direction of the 'describedby' link relation type, which already is a registered link relation type.</t>
+      </abstract>
+   </front>
+   <middle>
+      <section title="Introduction">
+         <t>Resources on the Web can be identified by an (registered) URI scheme and can be represented by any (registered) media type. In many cases, applications establish specific (i.e., typed) relations between the resources they are concerned with, which can be under their control or controlled by another authority. A common pattern for associating resources is to have resources which are descriptions of other resources. This specification registers the 'describes' link relation which allows applications to represent the fact that one resource is a description of another resource.</t>
+         <t>RFC 5988 <xref target="RFC5988"/> "defines a framework for typed links that isn't specific to a particular serialisation or application. It does so by redefining the link relation registry established by Atom to have a broader domain, and adding to it the relations that are defined by HTML."</t>
+      </section>
+      <section title="Terminology">
+         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+      </section>
+      <section title="Resource Descriptions">
+         <t>Associating resources with descriptions of these resources is a recurring pattern on the Web. The IANA link relation registry established by RFC 5988 <xref target="RFC5988"/> currently contains a 'describedby' link relation type, which has been registered by POWDER <xref target="POWDER"/>. The definition given in that registration is as follows: "The relationship A 'describedby' B asserts that resource B provides a description of resource A. There are no constraints on the format or representation of either A or B, neither are there any further constraints on either resource."</t>
+         <t>Since many scenarios using resource descriptions need to represent the fact that some resource describes a resource (the opposite of the 'describedby' relation), this document registers a 'describes' link relation type. Establishing a link A 'describes' B asserts that the resource identified by A is a description of the resource identified by B, without constraining in any way the identifiers being used for A and B, and the media types for the representations being provided, when those identifiers are dereferenced. Specifically, it is  possible that identifiers A and/or B have no associated interaction method (they could be URNs, for example), but it still is valid to establish the A 'describes' B link.</t>
+         <t>Another design freedom is to use "chains" of 'describes' (or 'describedby') links, so that one resource is a description of another resource, which in turn is a description of yet another resource. The "levels" of descriptions can go as deep as required by an application, and are not constrained by this specification.</t>
+      </section>
+      <section title="IANA Considerations">
+         <t>The link relation type below has been registered by IANA per Section 6.2.1 of RFC 5988 <xref target="RFC5988"/>:</t>
+         <t>
+            <list>
+               <t>Relation Name: describes</t>
+               <t>Description: Identifying that a resource describes another resource, without making additional claims of the described or description resource.</t>
+               <t>Reference: RFC xxxx (this draft's eventual RFC number)</t>
+               <t>Notes: This link relation type is intended to be the inverse of the already 'describedby' relation type, thus allowing links to be established in both directions.</t>
+            </list>
+         </t>
+      </section>
+      <section title="Security Considerations">
+         <t>Resource descriptions SHOULD never be treated as authoritative or exclusive without relying on additional mechanisms for trust and security. Resources can have many (possible conflicting) descriptions, and the 'describes' link relation type makes no claim whatsoever about the authority of the party providing the association between the two resources, or about the authority of the party providing the description resource.</t>
+      </section>
+      <section title="Change Log">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <!--
+         <section title="From -00 to -01">
+            <t>
+               <list style="symbols">
+                  <t>...</t>
+               </list>
+            </t>
+         </section>
+-->
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor="RFC2119">
+            <front>
+               <title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
+               <author initials="S." surname="Bradner" fullname="Scott Bradner"/>
+               <date month="March" year="1997"/>
+            </front>
+            <seriesInfo name="RFC" value="2119"/>
+         </reference>
+         <reference anchor="RFC5988">
+            <front>
+               <title>Web Linking</title>
+               <author initials="M." surname="Nottingham" fullname="Mark Nottingham"/>
+               <date month="October" year="2010"/>
+            </front>
+            <seriesInfo name="RFC" value="5988"/>
+         </reference>
+      </references>
+      <references title="Informative References">
+         <reference anchor="POWDER" target="http://www.w3.org/TR/2009/REC-powder-dr-20090901/">
+            <front>
+               <title>Protocol for Web Description Resources (POWDER): Description Resources</title>
+               <author initials="P." surname="Archer" fullname="Phil Archer">
+                  <organization/>
+               </author>
+               <author initials="K." surname="Smith" fullname="Kevin Smith">
+                  <organization/>
+               </author>
+               <author initials="A." surname="Perego" fullname="Andrea Perego">
+                  <organization/>
+               </author>
+               <date month="September" day="1" year="2009"/>
+            </front>
+            <seriesInfo name="World Wide Web Consortium Recommendation" value="REC-powder-dr-20090901"/>
+            <format type="HTML" target="http://www.w3.org/TR/2009/REC-powder-dr-20090901/"/>
+         </reference>
+      </references>
+      <section title="Acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+   </back>
+</rfc>
