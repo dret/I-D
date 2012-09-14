@@ -5,7 +5,7 @@
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="yes" ?>
-<rfc category="std" ipr="trust200902" docName="draft-wilde-profile-link-02">
+<rfc category="std" ipr="trust200902" docName="draft-wilde-profile-link-03">
    <front>
       <title abbrev="&quot;profile&quot; Link Type">The 'profile' Link Relation Type</title>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
@@ -21,7 +21,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="7" month="June" year="2012"/>
+      <date day="14" month="September" year="2012"/>
       <abstract>
          <t>This specification defines the 'profile' link relation type that allows resource representations to indicate that they are following one or more profiles. A profile is defined to not alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms.</t>
       </abstract>
@@ -74,9 +74,6 @@
          <section title="Podcasts" anchor="podcasts">
             <t>Podcasts are an extension of feed formats, and define a substantial set of additional attributes to reflect the fact that the resources in podcast feeds are time-based media formats such as audio and video. While there is no profile URI for podcasts, the current definition (maintained by Apple) at http://www.apple.com/itunes/podcasts/specs.html could serve as such a URI, or it could by updated to include such a URI. Podcasts are feeds with special behavior, and while it is possible to follow a podcast feed using a generic feed reader, a podcast-aware feed reader will be able to extract additional information from the feed, and thus can implement more sophisticated services or present a more sophisticated UI for podcast feeds. The Apple page referenced above describes the implementation of one such specialized podcast feed reader, Apple iTunes.</t>
          </section>
-         <section title="Atom Publishing Protocol (AtomPub)" anchor="atompub">
-            <t>The Atom Publishing Protocol (AtomPub) <xref target="RFC5023"/> has no mechanism for signalling to clients that a feed supports AtomPub, this is only discoverable for clients if they know that a feed's URI appears in a service document (because they have found that service document through some means outside of the AtomPub specification). By adding a profile link to a feed supporting AtomPub (using Atom's generic link element), an AtomPub feed could be self-describing in the sense that clients could discover a feed's support for AtomPub just by looking at the feed itself. While this approach would require an update of the AtomPub specification, future specifications could easily include such a profile URI as part of the specification itself, and profile links then could serve as the generic discovery mechanism for these extensions of a feed's capabilities.</t>
-         </section>
       </section>
       <section title="Security Considerations">
          <t>The 'profile' relation type is not known to introduce any new security issues not already discussed in RFC 5988 <xref target="RFC5988"/> for generic use of Web linking mechanisms.</t>
@@ -86,7 +83,7 @@
          <section title="From -02 to -03">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Removed the AtomPub example, which seemed to cause more confusion than clarification.</t>
                </list>
             </t>
          </section>
@@ -138,21 +135,6 @@
          </reference>
       </references>
       <references title="Informative References">
-         <reference anchor="RFC5023">
-            <front>
-               <title>The Atom Publishing Protocol</title>
-               <author initials="J." surname="Gregorio" fullname="Joe Gregorio">
-                  <organization/>
-                  <address/>
-               </author>
-               <author initials="B." surname="Hóra" fullname="Bill de Hóra">
-                  <organization/>
-                  <address/>
-               </author>
-               <date month="October" year="2010"/>
-            </front>
-            <seriesInfo name="RFC" value="5023"/>
-         </reference>
          <reference anchor="RFC6350">
             <front>
                <title>vCard Format Specification</title>
