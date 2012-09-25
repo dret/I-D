@@ -186,50 +186,52 @@ described in the Simplified BSD License.</p>
 <a name="toc"></a><br /><hr />
 <h3>Table of Contents</h3>
 <p class="toc">
-<a href="#anchor1">1.</a>&nbsp;
+<a href="#introduction">1.</a>&nbsp;
 Introduction<br />
-<a href="#anchor2">2.</a>&nbsp;
+<a href="#terminology">2.</a>&nbsp;
 Terminology<br />
-<a href="#anchor3">3.</a>&nbsp;
+<a href="#resource-descriptions">3.</a>&nbsp;
 Resource Descriptions<br />
-<a href="#anchor4">4.</a>&nbsp;
+<a href="#use-case">4.</a>&nbsp;
+Use Case<br />
+<a href="#security-considerations">5.</a>&nbsp;
 IANA Considerations<br />
-<a href="#anchor5">5.</a>&nbsp;
+<a href="#anchor1">6.</a>&nbsp;
 Security Considerations<br />
-<a href="#anchor6">6.</a>&nbsp;
+<a href="#change-log">7.</a>&nbsp;
 Change Log<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">7.1.</a>&nbsp;
 From -00 to -01<br />
-<a href="#rfc.references1">7.</a>&nbsp;
+<a href="#rfc.references1">8.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor10">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor5">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
 </p>
 <br clear="all" />
 
-<a name="anchor1"></a><br /><hr />
+<a name="introduction"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>Resources on the Web can be identified by an (registered) URI scheme and can be represented by any (registered) media type. In many cases, applications establish specific (i.e., typed) relations between the resources they are concerned with, which can be under their control or controlled by another authority. A common pattern for associating resources is to have resources which are descriptions of other resources. This specification registers the 'describes' link relation which allows applications to represent the fact that one resource is a description of another resource.
+<p>Resources on the Web can be identified by any (registered) URI scheme and can be represented by any (registered) media type. In many cases, applications establish specific (i.e., typed) relations between the resources they are concerned with, which can either be under their control, or controlled by another authority. A common usage pattern for associating resources is to have resources which are descriptions of other resources. This specification registers the 'describes' link relation, which allows applications to represent the fact that one resource is a description of another resource.
 </p>
-<p>RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> "defines a framework for typed links that isn't specific to a particular serialisation or application. It does so by redefining the link relation registry established by Atom to have a broader domain, and adding to it the relations that are defined by HTML."
+<p>RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> "defines a framework for typed links that isn't specific to a particular serialisation or application. It does so by redefining the link relation registry established by Atom to have a broader domain, and adding to it the relations that are defined by HTML." This registration request intends to augment the link relation registry with a link relation that is the inverse of the already registered 'describedby' relation, so that links between described resources and describing resources can be represented in both directions.
 </p>
-<a name="anchor2"></a><br /><hr />
+<a name="terminology"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Terminology</h3>
 
 <p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[2]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
 </p>
-<a name="anchor3"></a><br /><hr />
+<a name="resource-descriptions"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Resource Descriptions</h3>
@@ -240,9 +242,20 @@ Resource Descriptions</h3>
 </p>
 <p>Another design freedom is to use "chains" of 'describes' (or 'describedby') links, so that one resource is a description of another resource, which in turn is a description of yet another resource. The "levels" of descriptions can go as deep as required by an application, and are not constrained by this specification.
 </p>
-<a name="anchor4"></a><br /><hr />
+<a name="use-case"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
+Use Case</h3>
+
+<p>Starting from the POWDER document specifying the 'describedby' link relation <a class='info' href='#POWDER'>[3]<span> (</span><span class='info'>Archer, P., Smith, K., and A. Perego, &ldquo;Protocol for Web Description Resources (POWDER): Description Resources,&rdquo; September&nbsp;2009.</span><span>)</span></a>, the use case for the 'describedby' link relation is that a described resource, such as a HTML Web page, can specify a link where clients can find a description of this resource. While the 'describedby' link relation is defined to be independent of specific formats and representations, within the context of POWDER, the assumption is that the linked resources most often will provide an RDF-based description, for example providing metadata about a document's author and other provenance information.
+</p>
+<p>The 'describes' link relation allows servers hosting description resources to associate those description resources with the resources that they are describing. In the RDF-oriented scenario of POWDER, this means that a service managing description resources would use 'describes' links to represent the fact that the description resources it exposes provide some description of the described resource, very likely in some RDF representation. However, since link relations are independent of resource formats or representations, such an association could also be made in other formats such as XML or JSON, allowing servers to use a single and consistent link relation to associate description resources with described resources.
+</p>
+<p>Generally speaking, the idea of the 'describes' relation is the same as the idea of the 'describedby' relation: to be independent of specific formats and representations of both described resources and description resources. The 'describes' link relation (together with the already registered 'describedby' link relation) thus serves as a general foundation of how described resources and description resources can be associated.
+</p>
+<a name="security-considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
 IANA Considerations</h3>
 
 <p>The link relation type below has been registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[1]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
@@ -252,7 +265,7 @@ IANA Considerations</h3>
 <blockquote class="text">
 <p>Relation Name: describes
 </p>
-<p>Description: Identifying that a resource describes another resource, without making additional claims of the described or description resource.
+<p>Description: The relationship A 'describes' B asserts that resource A provides a description of resource B. There are no constraints on the format or representation of either A or B, neither are there any further constraints on either resource.
 </p>
 <p>Reference: [[ This document ]]
 </p>
@@ -261,28 +274,30 @@ IANA Considerations</h3>
 </blockquote><p>
          
 </p>
-<a name="anchor5"></a><br /><hr />
+<a name="anchor1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5"></a><h3>5.&nbsp;
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 Security Considerations</h3>
 
 <p>Resource descriptions SHOULD never be treated as authoritative or exclusive without relying on additional mechanisms for trust and security. Resources can have many (possible conflicting) descriptions, and the 'describes' link relation type makes no claim whatsoever about the authority of the party providing the association between the two resources, or about the authority of the party providing the description resource. Before making any assumptions about the authority of the description resource (both the accuracy of the description contained in the description resource, and the authority to provide a description of the described resource), clients need a context that allows them to understand both the authority of the description itself, and the authority to establish the 'describes' relation. Nobody can stop clients from providing misleading unauthorized and/or descriptions, and clients need to have both a security and trust framework to allow them to choose between trusted and untrusted descriptions.
 </p>
-<a name="anchor6"></a><br /><hr />
+<a name="change-log"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.7"></a><h3>7.&nbsp;
 Change Log</h3>
 
 <p>Note to RFC Editor: Please remove this section before publication.
 </p>
-<a name="anchor7"></a><br /><hr />
+<a name="anchor2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
 From -00 to -01</h3>
 
 <p>
                </p>
 <ul class="text">
+<li>Added "Use Case" section (<a class='info' href='#use-case'>Section&nbsp;4<span> (</span><span class='info'>Use Case</span><span>)</span></a>).
+</li>
 <li>Improved Security Considerations
 </li>
 <li>Minor textual improvements
@@ -292,12 +307,12 @@ From -00 to -01</h3>
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.8"></a><h3>8.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>7.1.&nbsp;Normative References</h3>
+<h3>8.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC5988">[1]</a></td>
 <td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010.</td></tr>
@@ -307,18 +322,18 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>7.2.&nbsp;Informative References</h3>
+<h3>8.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="POWDER">[3]</a></td>
 <td class="author-text">Archer, P., Smith, K., and A. Perego, &ldquo;<a href="http://www.w3.org/TR/2009/REC-powder-dr-20090901/">Protocol for Web Description Resources (POWDER): Description Resources</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-powder-dr-20090901, September&nbsp;2009 (<a href="http://www.w3.org/TR/2009/REC-powder-dr-20090901/">HTML</a>).</td></tr>
 </table>
 
-<a name="anchor10"></a><br /><hr />
+<a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>
 
-<p>Thanks for comments and suggestions provided by ...
+<p>Thanks for comments and suggestions provided by Mark Nottingham.
 </p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
