@@ -21,7 +21,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="21" month="October" year="2012"/>
+      <date day="17" month="October" year="2012"/>
       <abstract>
          <t>This specification defines the 'profile' link relation type that allows resource representations to indicate that they are following one or more profiles. A profile is defined to not alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms.</t>
       </abstract>
@@ -33,7 +33,7 @@
       <section title="Introduction">
          <t>One of the foundations of the Internet and Web Architecture is the fact that resource representations communicated through protocols such as SMTP or HTTP are labeled with a 'media type', which allows a client to understand at run time what 'type' of resource representation it is handling. Sometimes, it would be useful for servers and clients to include additional information about the nature of the resource, so that a client understanding this additional information could react in a way specific to that specialization of the resource, where the specialization can be about constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. HTML 4 <xref target="HTML401"/> has such a mechanism built into the language, which is the 'profile' attribute of the 'head' element. This mechanism, however, is specific to HTML alone, and at the time of writing it seems as if HTML 5 will drop support for this mechanism entirely.</t>
          <t>RFC 5988 <xref target="RFC5988"/> "defines a framework for typed links that is not specific to a particular serialization or application. It does so by redefining the link relation registry established by Atom to have a broader domain, and adding to it the relations that are defined by HTML."</t>
-         <t>This specification registers a 'profile' link relation type according to the rules of RFC 5988 <xref target="RFC5988"/>. This link relation type is independent of the context in which it is used (however, the representation must support typed links for this mechanism to work) and does not constrain in any way the target of the linked URI. In fact, for the purpose of this specification, the target URI does not necessarily have to identify a dereferencable resource (or even use a dereferencable URI scheme), and clients can treat the occurrence of a specific URI in the same way as an XML namespace URI and invoke specific behavior based on the assumption that a specific profile target URI signals that a resource representation follows a specific profile. Note that at the same time, it is possible for profile target URIs to use referencable URIs and use a representation (which is outside the scope of this specification) which represents the information about the profile in a human- or machine-readable way.</t>
+         <t>This specification registers a 'profile' link relation type according to the rules of RFC 5988 <xref target="RFC5988"/>. This link relation type is independent of the context in which it is used (however, the representation must support typed links for this mechanism to work) and does not constrain in any way the target of the linked URI. In fact, for the purpose of this specification, the target URI does not necessarily have to identify a dereferencable resource (or even use a dereferencable URI scheme), and clients can treat the occurrence of a specific URI in the same way as an XML namespace URI and invoke specific behavior based on the assumption that a specific profile target URI signals that a resource representation follows a specific profile. Note that at the same time, it is possible for profile target URIs to use dereferencable URIs and use a representation (which is outside the scope of this specification) which represents the information about the profile in a human- or machine-readable way.</t>
          <t>As one example, consider the case of podcasts, a specific kind of feed using additional fields for media-related metadata. Using a 'profile' link, it would be easily possible for clients to understand that a specific feed is supposed to be a podcast feed, and that it may contain entries using podcast-specific fields. This may allow a client to behave differently when handling such a feed (such as rendering a podcast-specific UI), even when the current set of entries in the feed may not contain any podcast entries.</t>
       </section>
       <section title="Terminology">
@@ -83,6 +83,7 @@
          <section title="From -03 to -04">
             <t>
                <list style="symbols">
+                  <t>Changed category from "Standard" to "Informational".</t>
                   <t>Minor textual changes.</t>
                </list>
             </t>
@@ -90,8 +91,8 @@
          <section title="From -02 to -03">
             <t>
                <list style="symbols">
-                  <t>Minor textual changes.</t>
                   <t>Removed the AtomPub example, which seemed to cause more confusion than clarification.</t>
+                  <t>Minor textual changes.</t>
                </list>
             </t>
          </section>
@@ -109,9 +110,9 @@
             <t>
                <list style="symbols">
                   <t>Updated security considerations.</t>
-                  <t>Minor textual changes.</t>
                   <t>Made it clear that profiles are about resource representations, and not about resources.</t>
                   <t>Added examples section (<xref target="profiles-media-types"/>) with four examples (Dublin Core, HCard, AtomPub, and Podcasts).</t>
+                  <t>Minor textual changes.</t>
                </list>
             </t>
          </section>

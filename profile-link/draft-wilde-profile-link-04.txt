@@ -3,8 +3,8 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                           EMC Corporation
-Intended status: Informational                          October 21, 2012
-Expires: April 24, 2013
+Intended status: Informational                          October 17, 2012
+Expires: April 20, 2013
 
 
                     The 'profile' Link Relation Type
@@ -40,7 +40,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 24, 2013.
+   This Internet-Draft will expire on April 20, 2013.
 
 Copyright Notice
 
@@ -52,7 +52,7 @@ Copyright Notice
 
 
 
-Wilde                    Expires April 24, 2013                 [Page 1]
+Wilde                    Expires April 20, 2013                 [Page 1]
 
 Internet-Draft             "profile" Link Type              October 2012
 
@@ -75,17 +75,17 @@ Table of Contents
      3.2.  Profile Context . . . . . . . . . . . . . . . . . . . . . . 6
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 6
    5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     5.1.  hCard . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     5.1.  hCard . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
      5.2.  Dublin Core . . . . . . . . . . . . . . . . . . . . . . . . 7
      5.3.  Podcasts  . . . . . . . . . . . . . . . . . . . . . . . . . 7
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . . . 7
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . . . 8
    7.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 8
      7.1.  From -03 to -04 . . . . . . . . . . . . . . . . . . . . . . 8
      7.2.  From -02 to -03 . . . . . . . . . . . . . . . . . . . . . . 8
      7.3.  From -01 to -02 . . . . . . . . . . . . . . . . . . . . . . 8
      7.4.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 8
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 8
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 8
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 9
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 9
      8.2.  Informative References  . . . . . . . . . . . . . . . . . . 9
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 9
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 9
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Wilde                    Expires April 24, 2013                 [Page 2]
+Wilde                    Expires April 20, 2013                 [Page 2]
 
 Internet-Draft             "profile" Link Type              October 2012
 
@@ -149,9 +149,10 @@ Internet-Draft             "profile" Link Type              October 2012
    specific behavior based on the assumption that a specific profile
    target URI signals that a resource representation follows a specific
    profile.  Note that at the same time, it is possible for profile
-   target URIs to use referencable URIs and use a representation (which
-   is outside the scope of this specification) which represents the
-   information about the profile in a human- or machine-readable way.
+   target URIs to use dereferencable URIs and use a representation
+   (which is outside the scope of this specification) which represents
+   the information about the profile in a human- or machine-readable
+   way.
 
    As one example, consider the case of podcasts, a specific kind of
    feed using additional fields for media-related metadata.  Using a
@@ -160,13 +161,15 @@ Internet-Draft             "profile" Link Type              October 2012
    may contain entries using podcast-specific fields.  This may allow a
    client to behave differently when handling such a feed (such as
    rendering a podcast-specific UI), even when the current set of
-   entries in the feed may not contain any podcast entries.
 
 
 
-Wilde                    Expires April 24, 2013                 [Page 3]
+Wilde                    Expires April 20, 2013                 [Page 3]
 
 Internet-Draft             "profile" Link Type              October 2012
+
+
+   entries in the feed may not contain any podcast entries.
 
 
 2.  Terminology
@@ -214,16 +217,15 @@ Internet-Draft             "profile" Link Type              October 2012
    profile maintainers SHOULD consider to make the profile URI
    dereferencable and provide useful documentation at that URI.  The
    design and representation of such profile descriptions, however, is
-   outside the scope of this specification.
 
 
 
-
-
-Wilde                    Expires April 24, 2013                 [Page 4]
+Wilde                    Expires April 20, 2013                 [Page 4]
 
 Internet-Draft             "profile" Link Type              October 2012
 
+
+   outside the scope of this specification.
 
 3.1.  Profiles and Media Types
 
@@ -271,16 +273,16 @@ Internet-Draft             "profile" Link Type              October 2012
    representation can easily get lost when it is taken out of its
    conversational context.
 
-   Since a representation can link to more than one profile, the same
-   has to be possible for the corresponding media type parameter (if a
 
 
 
-Wilde                    Expires April 24, 2013                 [Page 5]
+Wilde                    Expires April 20, 2013                 [Page 5]
 
 Internet-Draft             "profile" Link Type              October 2012
 
 
+   Since a representation can link to more than one profile, the same
+   has to be possible for the corresponding media type parameter (if a
    media type defines such a parameter).  Media types defining a
    "profile" parameter SHOULD define it as a whitespace-separated list
    of profile URIs.
@@ -325,18 +327,20 @@ Internet-Draft             "profile" Link Type              October 2012
    the two examples of existing profiles are HTML profiles, and the two
    hypothetical examples are non-HTML examples.
 
-5.1.  hCard
-
-   The hCard profile uses http://microformats.org/profile/hcard as its
-   defining URI and is essentially a mechanism how vCard [RFC6350]
 
 
 
-Wilde                    Expires April 24, 2013                 [Page 6]
+
+
+Wilde                    Expires April 20, 2013                 [Page 6]
 
 Internet-Draft             "profile" Link Type              October 2012
 
 
+5.1.  hCard
+
+   The hCard profile uses http://microformats.org/profile/hcard as its
+   defining URI and is essentially a mechanism how vCard [RFC6350]
    information can be embedded in an HTML page using the mechanisms
    provided by microformats.  It is thus a good example for how profiles
    might on the one hand define a model-based extension of the original
@@ -380,17 +384,20 @@ Internet-Draft             "profile" Link Type              October 2012
    reader, Apple iTunes.
 
 
+
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 7]
+
+Internet-Draft             "profile" Link Type              October 2012
+
+
 6.  Security Considerations
 
    The 'profile' relation type is not known to introduce any new
    security issues not already discussed in RFC 5988 [RFC5988] for
    generic use of Web linking mechanisms.
-
-
-
-Wilde                    Expires April 24, 2013                 [Page 7]
-
-Internet-Draft             "profile" Link Type              October 2012
 
 
 7.  Change Log
@@ -399,14 +406,16 @@ Internet-Draft             "profile" Link Type              October 2012
 
 7.1.  From -03 to -04
 
+   o  Changed category from "Standard" to "Informational".
+
    o  Minor textual changes.
 
 7.2.  From -02 to -03
 
-   o  Minor textual changes.
-
    o  Removed the AtomPub example, which seemed to cause more confusion
       than clarification.
+
+   o  Minor textual changes.
 
 7.3.  From -01 to -02
 
@@ -423,13 +432,21 @@ Internet-Draft             "profile" Link Type              October 2012
 
    o  Updated security considerations.
 
-   o  Minor textual changes.
-
    o  Made it clear that profiles are about resource representations,
       and not about resources.
 
    o  Added examples section (Section 3.1) with four examples (Dublin
       Core, HCard, AtomPub, and Podcasts).
+
+   o  Minor textual changes.
+
+
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 8]
+
+Internet-Draft             "profile" Link Type              October 2012
 
 
 8.  References
@@ -440,14 +457,6 @@ Internet-Draft             "profile" Link Type              October 2012
               Requirement Levels", RFC 2119, March 1997.
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
-
-
-
-
-Wilde                    Expires April 24, 2013                 [Page 8]
-
-Internet-Draft             "profile" Link Type              October 2012
-
 
 8.2.  Informative References
 
@@ -491,14 +500,5 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-Wilde                    Expires April 24, 2013                 [Page 9]
+Wilde                    Expires April 20, 2013                 [Page 9]
 
