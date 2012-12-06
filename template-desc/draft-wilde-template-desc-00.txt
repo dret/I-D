@@ -1,0 +1,392 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                                  C. Davis
+Intended status: Standards Track                         EMC Corporation
+Expires: July 3, 2013                                             Y. Liu
+                                                             UC Berkeley
+                                                       December 30, 2012
+
+
+             Describing URI Templates with Query Templates
+                     draft-wilde-query-templates-00
+
+Abstract
+
+   Interactions with many resources on the Web are driven by and/or can
+   be described by URI Templates.  RFC 6570 says that "a URI Template is
+   a compact sequence of characters for describing a range of Uniform
+   Resource Identifiers through variable expansion."  This specification
+   describes Query Templates, a schema and a media type that can be used
+   to document and describe a URI Template by supporting descriptive
+   markup that allows variables to be associated with documentation
+   (human-oriented) and/or descriptions (machine-oriented).  Query
+   Templates can be used by media types (by inclusion or by reference)
+   that seek to make URI Templates self-describing, without having to
+   create their own representation.
+
+Note to Readers
+
+   Please discuss this draft on the apps-discuss mailing list [8].
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on July 3, 2013.
+
+Copyright Notice
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 1]
+
+Internet-Draft               Query Templates               December 2012
+
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
+     1.1.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . 3
+     1.2.  Describing Variables  . . . . . . . . . . . . . . . . . . . 4
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+   3.  Query Template Structure  . . . . . . . . . . . . . . . . . . . 4
+   4.  Variable Description Structure  . . . . . . . . . . . . . . . . 4
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 4
+     5.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . . . 4
+     5.2.  Link Relation . . . . . . . . . . . . . . . . . . . . . . . 5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
+   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     7.1.  OpenSearch  . . . . . . . . . . . . . . . . . . . . . . . . 6
+     7.2.  Atom Feeds  . . . . . . . . . . . . . . . . . . . . . . . . 6
+   8.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . . . 6
+     9.2.  Informative References  . . . . . . . . . . . . . . . . . . 7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 2]
+
+Internet-Draft               Query Templates               December 2012
+
+
+1.  Introduction
+
+   Simple interactions with resources on the Web often are driven by
+   simply following links, but in many other cases, interactions with
+   resources require clients to provide information in addition to just
+   using a fixed URI in a request.  In these cases, information can
+   provided in any way supported by the interaction protocol, and in
+   case of HTTP, this often means that information is either embedded in
+   the URI, and/or in the body of the request.  For the first case, the
+   "URI Template" standard Section 1.1 provides a standard that allows
+   servers and clients to exchange information about the URIs that a
+   service accepts.
+
+1.1.  URI Template
+
+   The "URI Template" standard RFC 6570 [1] specifies "a compact
+   sequence of characters for describing a range of Uniform Resource
+   Identifiers through variable expansion."  It allows servers to
+   publish their expectation how a URI should be created by substituting
+   variables with values.  Consider the following URI Template:
+   http://www.example.com/feed{?pagesize,page}
+
+   This URI Template allows clients to expand two variables to end up
+   with a concrete URI such as the following:
+   http://www.example.com/feed?pagesize=10&page=42
+
+   URI Templates cover the aspect of starting with a template with
+   variables in it, assigning values to these variables, and then
+   expanding the template into a URI that can be used for sending a
+   request.  URI Templates make no assumptions or statements about the
+   value range of the variables, except for those aspects which are
+   required to cover the process of expanding the template.  In
+   particular, for the example given above, there is no indication that
+   the values are supposed to be positive integers (the simple data
+   type), nor is there any indication that the service may apply certain
+   limits such as a maximum page size (which may change depending on
+   which paged resource is being accessed).  As a side note, even if
+   this information was known, URI template expansion could still result
+   in URIs that would not yield successful requests, such as when asking
+   for a page that is beyond the number of pages that a feed has (in a
+   given page size).
+
+   The goal of Query Templates as described here is to allow servers to
+   expose a description resource that provides support both at
+   development time (when a developer looks at a media type that uses
+   URI Templates) and at runtime (when a client wants to use a URI
+   template as part of its application flow).
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 3]
+
+Internet-Draft               Query Templates               December 2012
+
+
+1.2.  Describing Variables
+
+   Variables can be described in a variety of ways when using Query
+   Templates.  For each variable in the URI Template, it is possible to
+   use the following description methods:
+
+      Domain Concept:
+
+      Datatype: XML Schema Part 2 [2]
+
+      Documentation: XML Schema Part 1 [3]
+
+      Application Information: XML Schema Part 1 [3]
+
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [4].
+
+
+3.  Query Template Structure
+
+   ...
+
+
+4.  Variable Description Structure
+
+   ...
+
+
+5.  IANA Considerations
+
+5.1.  Media Type
+
+   The Internet media type for a Query Template document is application/
+   qt+xml.
+
+      Type name: application
+
+      Subtype name: qt+xml
+
+      Required parameters: none
+
+      Optional parameters: none
+
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 4]
+
+Internet-Draft               Query Templates               December 2012
+
+
+      Encoding considerations: binary
+
+      Security considerations: See Security Considerations in Section 6.
+
+      Interoperability considerations: N/A
+
+      Published specification: [[ This document ]]
+
+      Applications that use this media type: Applications that publish
+      descriptions of URI Templates.
+
+      Additional information:
+
+         Magic number(s): N/A
+
+         File extension(s): .qtx
+
+         Macintosh file type code(s): TEXT
+
+      Person & email address to contact for further information: Erik
+      Wilde <erik.wilde@emc.com>
+
+      Intended usage: COMMON
+
+      Restrictions on usage: none
+
+      Author: Erik Wilde <erik.wilde@emc.com>
+
+      Change controller: IETF
+
+5.2.  Link Relation
+
+   The link relation type below will be registered by IANA per Section
+   6.2.1 of RFC 5988 [5]:
+
+      Relation Name: query-template
+
+      Description: Linking to a resource that can be used as a query
+      template for querying the context resource.
+
+      Reference: [[ This document ]]
+
+      Notes: Query templates can be used in all scenarios where clients
+      want to create requests that represent a query into the context
+      resource.  The media type of the context resource and the media
+      type of the query template resource are not constrained by this
+      specification.
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 5]
+
+Internet-Draft               Query Templates               December 2012
+
+
+6.  Security Considerations
+
+   ...
+
+
+7.  Examples
+
+   ...
+
+7.1.  OpenSearch
+
+   ...
+
+7.2.  Atom Feeds
+
+   ...
+
+   "Feed Paging and Archiving" specified in RFC 5005 [7]
+
+   Maybe suggest to use profiles?
+
+
+8.  Open Issues
+
+      If and how to use profiles (example in Section 7); if profile use
+      is recommended, define a suggested profile URI for other specs to
+      use?
+
+      Should we support other ways how URIs could be generated, most
+      importantly the application/x-www-form-urlencoded method of HTML
+      forms?
+
+
+9.  References
+
+9.1.  Normative References
+
+   [1]  Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D.
+        Orchard, "URI Template", RFC 6570, March 2012.
+
+   [2]  Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes Second
+        Edition", World Wide Web Consortium Recommendation REC-
+        xmlschema-2-20041028, October 2004,
+        <http://www.w3.org/TR/2004/REC-xmlschema-2-20041028>.
+
+   [3]  Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
+        Schema Part 1: Structures Second Edition", World Wide Web
+        Consortium Recommendation REC-xmlschema-1-20041028,
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 6]
+
+Internet-Draft               Query Templates               December 2012
+
+
+        October 2004,
+        <http://www.w3.org/TR/2004/REC-xmlschema-1-20041028>.
+
+   [4]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", RFC 2119, March 1997.
+
+   [5]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+   [6]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
+        Format", RFC 4287, December 2005.
+
+9.2.  Informative References
+
+   [7]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
+        September 2007.
+
+URIs
+
+   [8]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
+
+
+Authors' Addresses
+
+   Erik Wilde
+   EMC Corporation
+   6801 Koll Center Parkway
+   Pleasanton, CA 94566
+   U.S.A.
+
+   Phone: +1-925-6006244
+   Email: erik.wilde@emc.com
+   URI:   http://dret.net/netdret/
+
+
+   Cornelia Davis
+   EMC Corporation
+
+   Email: cornelia.davis@emc.com
+
+
+   Yiming Liu
+   UC Berkeley
+   South Hall
+   Berkeley, CA 94720
+   U.S.A.
+
+   Email: yliu@ischool.berkeley.edu
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 7]
+
