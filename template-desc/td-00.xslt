@@ -13,16 +13,32 @@
             </head>
             <body>
                 <h1>
-                    <xsl:value-of select="@hreft"/>
+                    <code>
+                        <xsl:value-of select="@hreft"/>
+                    </code>
                 </h1>
+                <table rules="none" style="margin : 15px">
+                    <tr>
+                        <th align="right">Documentation:</th>
+                        <td>
+                            <xsl:call-template name="documentation"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th align="right">Appinfo:</th>
+                        <td>
+                            <xsl:call-template name="appinfo"/>
+                        </td>
+                    </tr>
+                </table>
                 <table rules="all" border="1" cellpadding="5">
                     <thead>
                         <tr>
                             <th>Variable</th>
                             <th>Concept</th>
                             <th>Value Range</th>
-                            <th>Description(s)</th>
-                            <th>Annotation(s)</th>
+                            <th>Documentation</th>
+                            <th>Appinfo</th>
                         </tr>
                     </thead>
                     <xsl:for-each select="td:variable">
@@ -92,42 +108,60 @@
                                 </xsl:choose>
                             </td>
                             <td>
-                                <xsl:choose>
-                                    <xsl:when test="td:documentation">
-                                        <ul>
-                                            <xsl:for-each select="td:documentation">
-                                                <li>
-                                                    <xsl:copy-of select="node()"/>
-                                                </li>
-                                            </xsl:for-each>
-                                        </ul>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <span class="msg">n/a</span>
-                                    </xsl:otherwise>
-                                </xsl:choose>
+                                <xsl:call-template name="documentation"/>
                             </td>
                             <td>
-                                <xsl:choose>
-                                    <xsl:when test="td:appinfo">
-                                        <ul>
-                                            <xsl:for-each select="td:appinfo">
-                                                <li>
-                                                    <xsl:text>Source: </xsl:text>
-                                                    <xsl:value-of select="@source"/>
-                                                </li>
-                                            </xsl:for-each>
-                                        </ul>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <span class="msg">n/a</span>
-                                    </xsl:otherwise>
-                                </xsl:choose>
+                                <xsl:call-template name="appinfo"/>
                             </td>
                         </tr>
                     </xsl:for-each>
                 </table>
             </body>
         </html>
+    </xsl:template>
+    <xsl:template name="documentation">
+        <xsl:choose>
+            <xsl:when test="td:documentation">
+                <ul>
+                    <xsl:for-each select="td:documentation">
+                        <li>
+                            <xsl:value-of select="node()"/>
+                            <xsl:if test="@xml:lang">
+                                <xsl:text> </xsl:text>
+                                <span class="msg">
+                                    <xsl:text>(</xsl:text>
+                                        <code>
+                                            <xsl:text>xml:lang="</xsl:text>
+                                            <xsl:value-of select="@xml:lang"/>
+                                            <xsl:text>"</xsl:text>
+                                        </code>
+                                    <xsl:text>)</xsl:text>
+                                </span>
+                            </xsl:if>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="msg">n/a</span>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+    <xsl:template name="appinfo">
+        <xsl:choose>
+            <xsl:when test="td:appinfo">
+                <ul>
+                    <xsl:for-each select="td:appinfo">
+                        <li>
+                            <xsl:text>Source: </xsl:text>
+                            <xsl:value-of select="@source"/>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="msg">n/a</span>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 </xsl:stylesheet>
