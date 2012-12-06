@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en"><head><title>Describing URI Templates with Query Templates</title>
+<html lang="en"><head><title>URI Template Descriptions</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="Describing URI Templates with Query Templates">
+<meta name="description" content="URI Template Descriptions">
 <meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
 <style type='text/css'><!--
         body {
@@ -148,11 +148,11 @@
 <tr><td class="header">&nbsp;</td><td class="header">UC Berkeley</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">December 30, 2012</td></tr>
 </table></td></tr></table>
-<h1><br />Describing URI Templates with Query Templates<br />draft-wilde-query-templates-00</h1>
+<h1><br />URI Template Descriptions<br />draft-wilde-template-desc-00</h1>
 
 <h3>Abstract</h3>
 
-<p>Interactions with many resources on the Web are driven by and/or can be described by URI Templates. RFC 6570 says that "a URI Template is a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion." This specification describes Query Templates, a schema and a media type that can be used to document and describe a URI Template by supporting descriptive markup that allows variables to be associated with documentation (human-oriented) and/or descriptions (machine-oriented). Query Templates can be used by media types (by inclusion or by reference) that seek to make URI Templates self-describing, without having to create their own representation.
+<p>Interactions with many resources on the Web are driven by and/or can be described by URI Templates. RFC 6570 says that "a URI Template is a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion." This specification defines Template Descriptions, a schema and a media type that can be used to document and describe a URI Template by supporting descriptive markup that allows variables to be associated with documentation (human-oriented) and/or descriptions (machine-oriented). Template Descriptions can be used by media types (by inclusion or by reference) that seek to make URI Templates self-describing, without having to create their own representation.
 </p>
 <h3>Note to Readers</h3>
 
@@ -200,31 +200,35 @@ URI Template<br />
 Describing Variables<br />
 <a href="#terminology">2.</a>&nbsp;
 Terminology<br />
-<a href="#query-templates">3.</a>&nbsp;
-Query Template Structure<br />
-<a href="#variables">4.</a>&nbsp;
+<a href="#template-desc">3.</a>&nbsp;
+Template Descriptions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#concepts">3.1.</a>&nbsp;
+General Concepts<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#template-struct">3.2.</a>&nbsp;
+Template Description Structure<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#variable-struct">3.3.</a>&nbsp;
 Variable Description Structure<br />
-<a href="#iana">5.</a>&nbsp;
+<a href="#iana">4.</a>&nbsp;
 IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-media-type">5.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-media-type">4.1.</a>&nbsp;
 Media Type<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-link-relation">5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-link-relation">4.2.</a>&nbsp;
 Link Relation<br />
-<a href="#security-considerations">6.</a>&nbsp;
+<a href="#security-considerations">5.</a>&nbsp;
 Security Considerations<br />
-<a href="#examples">7.</a>&nbsp;
+<a href="#examples">6.</a>&nbsp;
 Examples<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#opensearch">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#opensearch">6.1.</a>&nbsp;
 OpenSearch<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed-queries">7.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed-queries">6.2.</a>&nbsp;
 Atom Feeds<br />
-<a href="#open-issues">8.</a>&nbsp;
+<a href="#open-issues">7.</a>&nbsp;
 Open Issues<br />
-<a href="#rfc.references1">9.</a>&nbsp;
+<a href="#rfc.references1">8.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">9.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
 Informative References<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -249,14 +253,14 @@ URI Template</h3>
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://www.example.com/feed?pagesize=10&amp;page=42</pre></div>
 <p>URI Templates cover the aspect of starting with a template with variables in it, assigning values to these variables, and then expanding the template into a URI that can be used for sending a request. URI Templates make no assumptions or statements about the value range of the variables, except for those aspects which are required to cover the process of expanding the template. In particular, for the example given above, there is no indication that the values are supposed to be positive integers (the simple data type), nor is there any indication that the service may apply certain limits such as a maximum page size (which may change depending on which paged resource is being accessed). As a side note, even if this information was known, URI template expansion could still result in URIs that would not yield successful requests, such as when asking for a page that is beyond the number of pages that a feed has (in a given page size).
 </p>
-<p>The goal of Query Templates as described here is to allow servers to expose a description resource that provides support both at development time (when a developer looks at a media type that uses URI Templates) and at runtime (when a client wants to use a URI template as part of its application flow).
+<p>The goal of Templates Descriptions as defined here is to allow servers to expose a description resource that provides support both at development time (when a developer looks at a media type that uses URI Templates) and at runtime (when a client wants to use a URI template as part of its application flow).
 </p>
 <a name="intro-variables"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
 Describing Variables</h3>
 
-<p>Variables can be described in a variety of ways when using Query Templates. For each variable in the URI Template, it is possible to use the following description methods:
+<p>Variables can be described in a variety of ways when using Template Descriptions. For each variable in the URI Template, it is possible to use the following description methods:
 </p>
 <p>
                </p>
@@ -279,31 +283,45 @@ Terminology</h3>
 
 <p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[4]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
 </p>
-<a name="query-templates"></a><br /><hr />
+<a name="template-desc"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
-Query Template Structure</h3>
+Template Descriptions</h3>
 
 <p>...
 </p>
-<a name="variables"></a><br /><hr />
+<a name="concepts"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4"></a><h3>4.&nbsp;
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+General Concepts</h3>
+
+<p>...
+</p>
+<a name="template-struct"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+Template Description Structure</h3>
+
+<p>...
+</p>
+<a name="variable-struct"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
 Variable Description Structure</h3>
 
 <p>...
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5"></a><h3>5.&nbsp;
+<a name="rfc.section.4"></a><h3>4.&nbsp;
 IANA Considerations</h3>
 
 <a name="iana-media-type"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 Media Type</h3>
 
-<p>The Internet media type for a Query Template document is application/qt+xml.
+<p>The Internet media type for a Template Description document is application/td+xml.
             
 </p>
 <p>
@@ -311,7 +329,7 @@ Media Type</h3>
 <blockquote class="text">
 <p>Type name: application
 </p>
-<p>Subtype name: qt+xml
+<p>Subtype name: td+xml
 </p>
 <p>Required parameters: none
 </p>
@@ -319,7 +337,7 @@ Media Type</h3>
 </p>
 <p>Encoding considerations: binary
 </p>
-<p>Security considerations: See Security Considerations in <a class='info' href='#security-considerations'>Section&nbsp;6<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+<p>Security considerations: See Security Considerations in <a class='info' href='#security-considerations'>Section&nbsp;5<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
 </p>
 <p>Interoperability considerations: N/A
 </p>
@@ -332,7 +350,7 @@ Media Type</h3>
 <blockquote class="text">
 <p>Magic number(s): N/A
 </p>
-<p>File extension(s): .qtx
+<p>File extension(s): .tdx
 </p>
 <p>Macintosh file type code(s): TEXT
 </p>
@@ -354,7 +372,7 @@ Media Type</h3>
 </p>
 <a name="iana-link-relation"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
 Link Relation</h3>
 
 <p>The link relation type below will be registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[5]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
@@ -364,39 +382,39 @@ Link Relation</h3>
 <blockquote class="text">
 <p>Relation Name: query-template
 </p>
-<p>Description: Linking to a resource that can be used as a query template for querying the context resource.
+<p>Description: Linking to a resource that can be used as a template description for creating a request URI for the context resource.
 </p>
 <p>Reference: [[ This document ]]
 </p>
-<p>Notes: Query templates can be used in all scenarios where clients want to create requests that represent a query into the context resource. The media type of the context resource and the media type of the query template resource are not constrained by this specification.
+<p>Notes: Template Descriptions can be used in all scenarios where clients want to create requests that represent a query into the context resource. The media type of the context resource and the media type of the template description resource are not constrained by this specification.
 </p>
 </blockquote><p>
             
 </p>
 <a name="security-considerations"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.5"></a><h3>5.&nbsp;
 Security Considerations</h3>
 
 <p>...
 </p>
 <a name="examples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 Examples</h3>
 
 <p>...
 </p>
 <a name="opensearch"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 OpenSearch</h3>
 
 <p>...
 </p>
 <a name="feed-queries"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7.2"></a><h3>7.2.&nbsp;
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
 Atom Feeds</h3>
 
 <p>...
@@ -407,27 +425,29 @@ Atom Feeds</h3>
 </p>
 <a name="open-issues"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8"></a><h3>8.&nbsp;
+<a name="rfc.section.7"></a><h3>7.&nbsp;
 Open Issues</h3>
 
 <p>
             </p>
 <blockquote class="text">
-<p>If and how to use profiles (example in <a class='info' href='#examples'>Section&nbsp;7<span> (</span><span class='info'>Examples</span><span>)</span></a>); if profile use is recommended, define a suggested profile URI for other specs to use?
+<p>If and how to use profiles (example in <a class='info' href='#examples'>Section&nbsp;6<span> (</span><span class='info'>Examples</span><span>)</span></a>); if profile use is recommended, define a suggested profile URI for other specs to use?
 </p>
 <p>Should we support other ways how URIs could be generated, most importantly the application/x-www-form-urlencoded method of HTML forms?
+</p>
+<p>How to handle variables in Level 4 templates that are supposed to have composite values?
 </p>
 </blockquote><p>
          
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.9"></a><h3>9.&nbsp;
+<a name="rfc.section.8"></a><h3>8.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>9.1.&nbsp;Normative References</h3>
+<h3>8.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC6570">[1]</a></td>
 <td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
@@ -445,7 +465,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>9.2.&nbsp;Informative References</h3>
+<h3>8.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC5005">[7]</a></td>
 <td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5005">Feed Paging and Archiving</a>,&rdquo; RFC&nbsp;5005, September&nbsp;2007 (<a href="http://www.rfc-editor.org/rfc/rfc5005.txt">TXT</a>).</td></tr>

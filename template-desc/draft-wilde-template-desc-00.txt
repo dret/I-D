@@ -9,8 +9,8 @@ Expires: July 3, 2013                                             Y. Liu
                                                        December 30, 2012
 
 
-             Describing URI Templates with Query Templates
-                     draft-wilde-query-templates-00
+                       URI Template Descriptions
+                      draft-wilde-template-desc-00
 
 Abstract
 
@@ -18,13 +18,13 @@ Abstract
    be described by URI Templates.  RFC 6570 says that "a URI Template is
    a compact sequence of characters for describing a range of Uniform
    Resource Identifiers through variable expansion."  This specification
-   describes Query Templates, a schema and a media type that can be used
-   to document and describe a URI Template by supporting descriptive
-   markup that allows variables to be associated with documentation
-   (human-oriented) and/or descriptions (machine-oriented).  Query
-   Templates can be used by media types (by inclusion or by reference)
-   that seek to make URI Templates self-describing, without having to
-   create their own representation.
+   defines Template Descriptions, a schema and a media type that can be
+   used to document and describe a URI Template by supporting
+   descriptive markup that allows variables to be associated with
+   documentation (human-oriented) and/or descriptions (machine-
+   oriented).  Template Descriptions can be used by media types (by
+   inclusion or by reference) that seek to make URI Templates self-
+   describing, without having to create their own representation.
 
 Note to Readers
 
@@ -54,7 +54,7 @@ Copyright Notice
 
 Wilde, et al.             Expires July 3, 2013                  [Page 1]
 
-Internet-Draft               Query Templates               December 2012
+Internet-Draft          URI Template Descriptions          December 2012
 
 
    Copyright (c) 2012 IETF Trust and the persons identified as the
@@ -77,22 +77,22 @@ Table of Contents
      1.1.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . 3
      1.2.  Describing Variables  . . . . . . . . . . . . . . . . . . . 4
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-   3.  Query Template Structure  . . . . . . . . . . . . . . . . . . . 4
-   4.  Variable Description Structure  . . . . . . . . . . . . . . . . 4
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 4
-     5.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . . . 4
-     5.2.  Link Relation . . . . . . . . . . . . . . . . . . . . . . . 5
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
-   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     7.1.  OpenSearch  . . . . . . . . . . . . . . . . . . . . . . . . 6
-     7.2.  Atom Feeds  . . . . . . . . . . . . . . . . . . . . . . . . 6
-   8.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . . . 6
-     9.2.  Informative References  . . . . . . . . . . . . . . . . . . 7
+   3.  Template Descriptions . . . . . . . . . . . . . . . . . . . . . 4
+     3.1.  General Concepts  . . . . . . . . . . . . . . . . . . . . . 4
+     3.2.  Template Description Structure  . . . . . . . . . . . . . . 4
+     3.3.  Variable Description Structure  . . . . . . . . . . . . . . 4
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 4
+     4.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . . . 4
+     4.2.  Link Relation . . . . . . . . . . . . . . . . . . . . . . . 5
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     6.1.  OpenSearch  . . . . . . . . . . . . . . . . . . . . . . . . 6
+     6.2.  Atom Feeds  . . . . . . . . . . . . . . . . . . . . . . . . 6
+   7.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . . . 7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 7
-
-
 
 
 
@@ -110,7 +110,7 @@ Table of Contents
 
 Wilde, et al.             Expires July 3, 2013                  [Page 2]
 
-Internet-Draft               Query Templates               December 2012
+Internet-Draft          URI Template Descriptions          December 2012
 
 
 1.  Introduction
@@ -155,9 +155,9 @@ Internet-Draft               Query Templates               December 2012
    for a page that is beyond the number of pages that a feed has (in a
    given page size).
 
-   The goal of Query Templates as described here is to allow servers to
-   expose a description resource that provides support both at
-   development time (when a developer looks at a media type that uses
+   The goal of Templates Descriptions as defined here is to allow
+   servers to expose a description resource that provides support both
+   at development time (when a developer looks at a media type that uses
    URI Templates) and at runtime (when a client wants to use a URI
    template as part of its application flow).
 
@@ -166,14 +166,14 @@ Internet-Draft               Query Templates               December 2012
 
 Wilde, et al.             Expires July 3, 2013                  [Page 3]
 
-Internet-Draft               Query Templates               December 2012
+Internet-Draft          URI Template Descriptions          December 2012
 
 
 1.2.  Describing Variables
 
-   Variables can be described in a variety of ways when using Query
-   Templates.  For each variable in the URI Template, it is possible to
-   use the following description methods:
+   Variables can be described in a variety of ways when using Template
+   Descriptions.  For each variable in the URI Template, it is possible
+   to use the following description methods:
 
       Domain Concept:
 
@@ -191,30 +191,30 @@ Internet-Draft               Query Templates               December 2012
    document are to be interpreted as described in RFC 2119 [4].
 
 
-3.  Query Template Structure
+3.  Template Descriptions
+
+   ...
+
+3.1.  General Concepts
+
+   ...
+
+3.2.  Template Description Structure
+
+   ...
+
+3.3.  Variable Description Structure
 
    ...
 
 
-4.  Variable Description Structure
+4.  IANA Considerations
 
-   ...
+4.1.  Media Type
 
+   The Internet media type for a Template Description document is
+   application/td+xml.
 
-5.  IANA Considerations
-
-5.1.  Media Type
-
-   The Internet media type for a Query Template document is application/
-   qt+xml.
-
-      Type name: application
-
-      Subtype name: qt+xml
-
-      Required parameters: none
-
-      Optional parameters: none
 
 
 
@@ -222,12 +222,20 @@ Internet-Draft               Query Templates               December 2012
 
 Wilde, et al.             Expires July 3, 2013                  [Page 4]
 
-Internet-Draft               Query Templates               December 2012
+Internet-Draft          URI Template Descriptions          December 2012
 
+
+      Type name: application
+
+      Subtype name: td+xml
+
+      Required parameters: none
+
+      Optional parameters: none
 
       Encoding considerations: binary
 
-      Security considerations: See Security Considerations in Section 6.
+      Security considerations: See Security Considerations in Section 5.
 
       Interoperability considerations: N/A
 
@@ -240,7 +248,7 @@ Internet-Draft               Query Templates               December 2012
 
          Magic number(s): N/A
 
-         File extension(s): .qtx
+         File extension(s): .tdx
 
          Macintosh file type code(s): TEXT
 
@@ -255,46 +263,47 @@ Internet-Draft               Query Templates               December 2012
 
       Change controller: IETF
 
-5.2.  Link Relation
+4.2.  Link Relation
 
    The link relation type below will be registered by IANA per Section
    6.2.1 of RFC 5988 [5]:
 
       Relation Name: query-template
 
-      Description: Linking to a resource that can be used as a query
-      template for querying the context resource.
-
-      Reference: [[ This document ]]
-
-      Notes: Query templates can be used in all scenarios where clients
-      want to create requests that represent a query into the context
-      resource.  The media type of the context resource and the media
-      type of the query template resource are not constrained by this
-      specification.
+      Description: Linking to a resource that can be used as a template
+      description for creating a request URI for the context resource.
 
 
 
 
 Wilde, et al.             Expires July 3, 2013                  [Page 5]
 
-Internet-Draft               Query Templates               December 2012
+Internet-Draft          URI Template Descriptions          December 2012
 
 
-6.  Security Considerations
+      Reference: [[ This document ]]
+
+      Notes: Template Descriptions can be used in all scenarios where
+      clients want to create requests that represent a query into the
+      context resource.  The media type of the context resource and the
+      media type of the template description resource are not
+      constrained by this specification.
+
+
+5.  Security Considerations
 
    ...
 
 
-7.  Examples
+6.  Examples
 
    ...
 
-7.1.  OpenSearch
+6.1.  OpenSearch
 
    ...
 
-7.2.  Atom Feeds
+6.2.  Atom Feeds
 
    ...
 
@@ -303,9 +312,9 @@ Internet-Draft               Query Templates               December 2012
    Maybe suggest to use profiles?
 
 
-8.  Open Issues
+7.  Open Issues
 
-      If and how to use profiles (example in Section 7); if profile use
+      If and how to use profiles (example in Section 6); if profile use
       is recommended, define a suggested profile URI for other specs to
       use?
 
@@ -313,10 +322,22 @@ Internet-Draft               Query Templates               December 2012
       importantly the application/x-www-form-urlencoded method of HTML
       forms?
 
+      How to handle variables in Level 4 templates that are supposed to
+      have composite values?
 
-9.  References
 
-9.1.  Normative References
+8.  References
+
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 6]
+
+Internet-Draft          URI Template Descriptions          December 2012
+
+
+8.1.  Normative References
 
    [1]  Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D.
         Orchard, "URI Template", RFC 6570, March 2012.
@@ -329,14 +350,6 @@ Internet-Draft               Query Templates               December 2012
    [3]  Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
         Schema Part 1: Structures Second Edition", World Wide Web
         Consortium Recommendation REC-xmlschema-1-20041028,
-
-
-
-Wilde, et al.             Expires July 3, 2013                  [Page 6]
-
-Internet-Draft               Query Templates               December 2012
-
-
         October 2004,
         <http://www.w3.org/TR/2004/REC-xmlschema-1-20041028>.
 
@@ -348,7 +361,7 @@ Internet-Draft               Query Templates               December 2012
    [6]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
         Format", RFC 4287, December 2005.
 
-9.2.  Informative References
+8.2.  Informative References
 
    [7]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
         September 2007.
@@ -371,6 +384,15 @@ Authors' Addresses
    URI:   http://dret.net/netdret/
 
 
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 7]
+
+Internet-Draft          URI Template Descriptions          December 2012
+
+
    Cornelia Davis
    EMC Corporation
 
@@ -388,5 +410,39 @@ Authors' Addresses
 
 
 
-Wilde, et al.             Expires July 3, 2013                  [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde, et al.             Expires July 3, 2013                  [Page 8]
 
