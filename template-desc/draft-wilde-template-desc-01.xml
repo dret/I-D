@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="std" ipr="trust200902" docName="draft-wilde-template-desc-01">
+   <front>
+      <title>URI Template Descriptions</title>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>EMC Corporation</organization>
+         <address>
+            <postal>
+               <street>6801 Koll Center Parkway</street>
+               <city>Pleasanton, CA 94566</city>
+               <country>U.S.A.</country>
+            </postal>
+            <phone>+1-925-6006244</phone>
+            <email>erik.wilde@emc.com</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <author initials="C." surname="Davis" fullname="Cornelia Davis">
+         <organization>EMC Corporation</organization>
+         <address>
+            <email>cornelia.davis@emc.com</email>
+         </address>
+      </author>
+      <author initials="Y." surname="Liu" fullname="Yiming Liu">
+         <organization>UC Berkeley</organization>
+         <address>
+            <postal>
+               <street>South Hall</street>
+               <city>Berkeley, CA 94720</city>
+               <country>U.S.A.</country>
+            </postal>
+            <email>yliu@ischool.berkeley.edu</email>
+         </address>
+      </author>
+      <date day="7" month="December" year="2012"/>
+      <abstract>
+         <t>Interactions with many resources on the Web are driven by and/or can be described by URI Templates. RFC 6570 says that "a URI Template is a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion." This specification defines Template Descriptions, a schema and a media type that can be used to document and describe a URI Template by supporting descriptive markup that allows variables to be associated with documentation (human-oriented) and/or descriptions (machine-oriented). Template Descriptions can be used by media types (by inclusion or by reference) that seek to make URI Templates self-describing, without having to create their own representation.</t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>Please discuss this draft on the <eref target="http://tech.groups.yahoo.com/group/rest-discuss/">rest-discuss mailing list</eref>.</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction" anchor="intro">
+         <t>Simple interactions with resources on the Web often are driven by simply following links, but in many other cases, interactions with resources require clients to provide information in addition to just using a fixed URI in a request. In these cases, information can provided in any way supported by the interaction protocol, and in case of HTTP, this often means that information is either embedded in the URI, and/or in the body of the request. For the first case, the "URI Template" standard <xref target="intro-templates"/> provides a standard that allows servers and clients to exchange information about the URIs that a service accepts.</t>
+         <section title="URI Template" anchor="intro-templates">
+            <t>The "URI Template" standard RFC 6570 <xref target="RFC6570"/> specifies "a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion." It allows servers to publish their expectation how a URI should be created by substituting variables with values. Consider the following URI Template:</t> 
+            <figure>
+               <artwork>http://www.example.com/feed{?pagesize,page}</artwork>
+            </figure>
+            <t>This URI Template allows clients to expand two variables to end up with a concrete URI such as the following:</t>
+            <figure>
+               <artwork>http://www.example.com/feed?pagesize=10&amp;page=42</artwork>
+            </figure>
+            <t>URI Templates cover the aspect of starting with a template with variables in it, assigning values to these variables, and then expanding the template into a URI that can be used for sending a request. URI Templates make no assumptions or statements about the value range of the variables, except for those aspects which are required to cover the process of expanding the template. In particular, for the example given above, there is no indication that the values are supposed to be positive integers (the simple data type), nor is there any indication that the service may apply certain limits such as a maximum page size (which may change depending on which paged resource is being accessed). As a side note, even if this information was known, URI template expansion could still result in URIs that would not yield successful requests, such as when asking for a page that is beyond the number of pages that a feed has (in a given page size).</t>
+             <t>The goal of Templates Descriptions as defined here is to allow servers to expose a description resource that provides support both at development time (when a developer looks at a media type that uses URI Templates) and at runtime (when a client wants to use a URI template as part of its application flow).</t>
+         </section>
+         <section title="Describing Variables" anchor="intro-variables">
+            <t>Variables can be described in a variety of ways when using Template Descriptions. For each variable in the URI Template, it is possible to use the following description methods:</t>
+            <t>
+               <list>
+                  <t>Domain Concept: It is possible to associate a variable with a domain concept, so that media types and applications can make an association between the concepts they are defining/exposing, and where they are represented in URI Tenplates. Concepts can be referred to by URI, or by using a QName <xref target="XMLNS"/>.</t>
+                  <t>Datatype: Variables can be described in terms of using certain datatypes, and the datatype vocabulary is that of XML Schema Part 2 <xref target="XSD-2"/>, plus all of the applicable facets of those datatypes. This allows Template Descriptions to constrain the set of allowed values.</t>
+                  <t>Documentation: Documentation constructs can be associated with variables, which allows Template Descriptions to attach human-readable information to individual variables. The documentation constructs use the documentation design of XML Schema Part 1 <xref target="XSD-1"/>.</t>
+                  <t>Application Information: Application information constructs can be associated with variables, which allows Template Descriptions to attach machine-readable information to individual variables. The application information constructs use the application information design of XML Schema Part 1 <xref target="XSD-1"/>.</t>
+               </list>
+            </t>
+            <t>For the purpose of this specification, the term "description" should be interpreted loosely. Some aspects of descriptions can be formal, such as the datatypes of variables. Thus, such a description can be used to drive general-purpose logic that knows nothing but this specification. However, for most other description aspects (domain concepts, documentation, and application information), this specification does not prescribe a description framework; it simply provides a structure how to deliver these descriptions.</t>
+         </section>
+      </section>
+      <section title="Terminology" anchor="terminology">
+         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+      </section>
+      <section title="Template Descriptions" anchor="template-desc">
+         <t>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template.</t>
+         <section title="General Concepts" anchor="concepts">
+            <t>As mentioned in <xref target="intro-templates"/>, most of the descriptions in this spec to not prescribe a specific description framework. While variables (<xref target="variable-struct"/>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <xref target="XSD-1"/>. These elements carry a "source" attribute which is used (quoting from <xref target="XSD-1"/>) "to supplement the local information."</t>
+         </section>
+         <section title="Template Description Structure" anchor="template-struct">
+            <t>A template is described by including the URI Template itself, and optionally adding documentation and/or appinfo elements to add human- or machine-readable descriptions.</t>
+         </section>
+         <section title="Variable Description Structure" anchor="variable-struct">
+            <t>A variable is described by specifying the variable name. Variables can refer to a "concept" associated with a variable, which can by identified by URI, or by a QName (at most one of these SHALL be present). This specification makes no provision how such a concept is defined or described, but it allows consumers of a Template Description to match their understanding of certain concepts to those identifiers, which then establishes a binding between the concept, and the variable it has been bound to.</t>
+            <t>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.</t>
+         </section>
+      </section>
+      <section title="IANA Considerations" anchor="iana">
+         <section title="Media Type" anchor="iana-media-type">
+            <t>The Internet media type for a Template Description document is application/td+xml.
+            </t>
+            <t>
+               <list>
+                  <t>Type name: application</t>
+                  <t>Subtype name: td+xml</t>
+                  <t>Required parameters: none</t>
+                  <t>Optional parameters: none</t>
+                  <t>Encoding considerations: binary</t>
+                  <t>Security considerations: See Security Considerations in <xref target="security-considerations"/>.</t>
+                  <t>Interoperability considerations: N/A</t>
+                  <t>Published specification: [[ This document ]]</t>
+                  <t>Applications that use this media type: Applications that publish descriptions of URI Templates.</t>
+                  <t>Additional information:
+                     <list>
+                        <t>Magic number(s): N/A</t>
+                        <t>File extension(s): .tdx</t>
+                        <t>Macintosh file type code(s): TEXT</t>
+                     </list>
+                  </t>
+                  <t>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com></t>
+                  <t>Intended usage: COMMON</t>
+                  <t>Restrictions on usage: none</t>
+                  <t>Author: Erik Wilde &lt;erik.wilde@emc.com></t>
+                  <t>Change controller: IETF</t>
+               </list>
+            </t>
+         </section>
+         <section title="Link Relation" anchor="iana-link-relation">
+            <t>The link relation type below will be registered by IANA per Section 6.2.1 of RFC 5988 <xref target="RFC5988"/>:</t>
+            <t>
+               <list>
+                  <t>Relation Name: query-template</t>
+                  <t>Description: Linking to a resource that can be used as a template description for creating a request URI for the context resource.</t>
+                  <t>Reference: [[ This document ]]</t>
+                  <t>Notes: Template Descriptions can be used in all scenarios where clients want to create requests that represent a query into the context resource. The media type of the context resource and the media type of the template description resource are not constrained by this specification.</t>
+               </list>
+            </t>
+         </section>
+      </section>
+      <section title="Security Considerations" anchor="security-considerations">
+         <t>...</t>
+      </section>
+      <section title="Examples" anchor="examples">
+         <t>...</t>
+         <section title="OpenSearch" anchor="opensearch">
+            <t>...</t>
+         </section>
+         <section title="Atom Feeds" anchor="feed-queries">
+            <t>...</t>
+            <t>"Feed Paging and Archiving" specified in RFC 5005 <xref target="RFC5005"/> </t>
+            <t>Maybe suggest to use profiles?</t>
+         </section>
+      </section>
+      <section title="Open Issues" anchor="open-issues">
+         <t>
+            <list>
+               <t>If and how to use profiles (example in <xref target="examples"/>); if profile use is recommended, define a suggested profile URI for other specs to use?</t>
+               <t>Should we support other ways how URIs could be generated, most importantly the application/x-www-form-urlencoded method of HTML forms?</t>
+               <t>How to handle variables in Level 4 templates that are supposed to have composite values?</t>
+               <t>Should there be some way how default values can be exposed/documented?</t>
+               <t>If a template is refined in an incremental process, does it make sense to be able to add a "back" link and/or "home" link, so that clients can find the "most general" version easily?</t>
+               <t>How does this interact with "faceted search" scenarios? Does incremental refinement of URI Template Descriptions somehow nicely and naturally map into faceted search scenarios?</t>
+            </list>
+         </t>
+      </section>
+      <section title="Change Log">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <section title="From -00 to -01">
+            <t>
+               <list style="symbols">
+                  <t>Added more open issues.</t>
+               </list>
+            </t>
+         </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor="RFC2119">
+            <front>
+               <title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
+               <author initials="S." surname="Bradner" fullname="Scott Bradner">
+                  <organization />
+               </author>
+               <date month="March" year="1997"/>
+            </front>
+            <seriesInfo name="RFC" value="2119"/>
+         </reference>
+         <reference anchor='RFC4287'>
+            <front>
+               <title abbrev='Atom Format'>The Atom Syndication Format</title>
+               <author initials='M.' surname='Nottingham' fullname='Mark Nottingham' role='editor'>
+                  <organization />
+                  <address>
+                     <email>mnot@pobox.com</email>
+                     <uri>http://www.mnot.net/</uri>
+                  </address>
+               </author>
+               <author initials='R.' surname='Sayre' fullname='Robert Sayre' role='editor'>
+                  <organization />
+                  <address>
+                     <email>rfsayre@boswijck.com</email>
+                     <uri>http://boswijck.com</uri>
+                  </address>
+               </author>
+               <date year='2005' month='December' />
+               <abstract>
+                  <t>This document specifies Atom, an XML-based Web content and metadata syndication format.</t>
+               </abstract>
+            </front>            
+            <seriesInfo name='RFC' value='4287' />
+            <format type='TXT' octets='81922' target='http://www.rfc-editor.org/rfc/rfc4287.txt' />
+            <format type='HTML' octets='150786' target='http://xml.resource.org/public/rfc/html/rfc4287.html' />
+            <format type='XML' octets='108706' target='http://xml.resource.org/public/rfc/xml/rfc4287.xml' />
+         </reference>
+         <reference anchor="RFC5988">
+            <front>
+               <title>Web Linking</title>
+               <author initials="M." surname="Nottingham" fullname="Mark Nottingham">
+                  <organization/>
+                  <address/>
+               </author>
+               <date month="October" year="2010"/>
+            </front>
+            <seriesInfo name="RFC" value="5988"/>
+         </reference>
+         <reference anchor='RFC6570'>
+            <front>
+               <title>URI Template</title>
+               <author initials='J.' surname='Gregorio' fullname='J. Gregorio'>
+                  <organization /></author>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding'>
+                  <organization /></author>
+               <author initials='M.' surname='Hadley' fullname='M. Hadley'>
+                  <organization /></author>
+               <author initials='M.' surname='Nottingham' fullname='M. Nottingham'>
+                  <organization /></author>
+               <author initials='D.' surname='Orchard' fullname='D. Orchard'>
+                  <organization /></author>
+               <date year='2012' month='March' />
+               <abstract>
+                  <t>A URI Template is a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion. This specification defines the URI Template syntax and the process for expanding a URI Template into a URI reference, along with guidelines for the use of URI Templates on the Internet. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='6570' />
+            <format type='TXT' octets='79813' target='http://www.rfc-editor.org/rfc/rfc6570.txt' />
+         </reference>
+         <reference anchor='XSD-1' target='http://www.w3.org/TR/2004/REC-xmlschema-1-20041028'>
+            <front>
+               <title>XML Schema Part 1: Structures Second Edition</title>
+               <author initials='H.' surname='Thompson' fullname='Henry S. Thompson'>
+                  <organization />
+               </author>
+               <author initials='D.' surname='Beech' fullname='David Beech'>
+                  <organization />
+               </author>
+               <author initials='N.' surname='Mendelsohn' fullname='Noah Mendelsohn'>
+                  <organization />
+               </author>
+               <author initials='M.' surname='Maloney' fullname='Murray Maloney'>
+                  <organization />
+               </author>
+               <date month='October' day='28' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xmlschema-1-20041028' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-xmlschema-1-20041028' />
+         </reference>
+         <reference anchor='XSD-2' target='http://www.w3.org/TR/2004/REC-xmlschema-2-20041028'>
+            <front>
+               <title>XML Schema Part 2: Datatypes Second Edition</title>
+               <author initials='A.' surname='Malhotra' fullname='Ashok Malhotra'>
+                  <organization />
+               </author>
+               <author initials='P.' surname='Biron' fullname='Paul V. Biron'>
+                  <organization />
+               </author>
+               <date month='October' day='28' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xmlschema-2-20041028' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-xmlschema-2-20041028' />
+         </reference>
+         <reference anchor='XMLNS'
+            target='http://www.w3.org/TR/2009/REC-xml-names-20091208'>
+            <front>
+               <title>Namespaces in XML 1.0 (Third Edition)</title>
+               <author initials='D.' surname='Hollander' fullname='Dave Hollander'>
+                  <organization />
+               </author>
+               <author initials='A.' surname='Layman' fullname='Andrew Layman'>
+                  <organization />
+               </author>
+               <author initials='H.' surname='Thompson' fullname='Henry S. Thompson'>
+                  <organization />
+               </author>
+               <author initials='R.' surname='Tobin' fullname='Richard Tobin'>
+                  <organization />
+               </author>
+               <author initials='T.' surname='Bray' fullname='Tim Bray'>
+                  <organization />
+               </author>
+               <date month='December' day='8' year='2009' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xml-names-20091208' />
+            <format type='HTML' target='http://www.w3.org/TR/2009/REC-xml-names-20091208' />
+         </reference>
+      </references>
+      <references title="Informative References">
+         <reference anchor='RFC5005'>
+            <front>
+               <title>Feed Paging and Archiving</title>
+               <author initials='M.' surname='Nottingham' fullname='M. Nottingham'>
+                  <organization /></author>
+               <date year='2007' month='September' />
+               <abstract>
+                  <t>This specification defines three types of syndicated Web feeds that enable publication of entries across one or more feed documents. This includes "paged" feeds for piecemeal access, "archived" feeds that allow reconstruction of the feed's contents, and feeds that are explicitly "complete". [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='5005' />
+            <format type='TXT' octets='28937' target='http://www.rfc-editor.org/rfc/rfc5005.txt' />
+         </reference>
+      </references>
+      <!-- 
+      <section title="Acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+-->
+   </back>
+</rfc>
