@@ -4,9 +4,9 @@
 Network Working Group                                           E. Wilde
 Internet-Draft                                                  C. Davis
 Intended status: Standards Track                         EMC Corporation
-Expires: July 3, 2013                                             Y. Liu
+Expires: June 10, 2013                                            Y. Liu
                                                              UC Berkeley
-                                                       December 30, 2012
+                                                        December 7, 2012
 
 
                        URI Template Descriptions
@@ -28,7 +28,7 @@ Abstract
 
 Note to Readers
 
-   Please discuss this draft on the apps-discuss mailing list [9].
+   Please discuss this draft on the rest-discuss mailing list [9].
 
 Status of this Memo
 
@@ -45,14 +45,14 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 3, 2013.
+   This Internet-Draft will expire on June 10, 2013.
 
 Copyright Notice
 
 
 
 
-Wilde, et al.             Expires July 3, 2013                  [Page 1]
+Wilde, et al.             Expires June 10, 2013                 [Page 1]
 
 Internet-Draft          URI Template Descriptions          December 2012
 
@@ -77,20 +77,20 @@ Table of Contents
      1.1.  URI Template  . . . . . . . . . . . . . . . . . . . . . . . 3
      1.2.  Describing Variables  . . . . . . . . . . . . . . . . . . . 4
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-   3.  Template Descriptions . . . . . . . . . . . . . . . . . . . . . 4
-     3.1.  General Concepts  . . . . . . . . . . . . . . . . . . . . . 4
+   3.  Template Descriptions . . . . . . . . . . . . . . . . . . . . . 5
+     3.1.  General Concepts  . . . . . . . . . . . . . . . . . . . . . 5
      3.2.  Template Description Structure  . . . . . . . . . . . . . . 5
      3.3.  Variable Description Structure  . . . . . . . . . . . . . . 5
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 5
      4.1.  Media Type  . . . . . . . . . . . . . . . . . . . . . . . . 5
      4.2.  Link Relation . . . . . . . . . . . . . . . . . . . . . . . 6
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
-   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     6.1.  OpenSearch  . . . . . . . . . . . . . . . . . . . . . . . . 6
-     6.2.  Atom Feeds  . . . . . . . . . . . . . . . . . . . . . . . . 6
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . . . 7
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+     6.1.  OpenSearch  . . . . . . . . . . . . . . . . . . . . . . . . 7
+     6.2.  Atom Feeds  . . . . . . . . . . . . . . . . . . . . . . . . 7
    7.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 7
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 8
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 8
      8.2.  Informative References  . . . . . . . . . . . . . . . . . . 8
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 8
 
@@ -108,7 +108,7 @@ Table of Contents
 
 
 
-Wilde, et al.             Expires July 3, 2013                  [Page 2]
+Wilde, et al.             Expires June 10, 2013                 [Page 2]
 
 Internet-Draft          URI Template Descriptions          December 2012
 
@@ -164,7 +164,7 @@ Internet-Draft          URI Template Descriptions          December 2012
 
 
 
-Wilde, et al.             Expires July 3, 2013                  [Page 3]
+Wilde, et al.             Expires June 10, 2013                 [Page 3]
 
 Internet-Draft          URI Template Descriptions          December 2012
 
@@ -198,6 +198,15 @@ Internet-Draft          URI Template Descriptions          December 2012
       application information constructs use the application information
       design of XML Schema Part 1 [4].
 
+   For the purpose of this specification, the term "description" should
+   be interpreted loosely.  Some aspects of descriptions can be formal,
+   such as the datatypes of variables.  Thus, such a description can be
+   used to drive general-purpose logic that knows nothing but this
+   specification.  However, for most other description aspects (domain
+   concepts, documentation, and application information), this
+   specification does not prescribe a description framework; it simply
+   provides a structure how to deliver these descriptions.
+
 
 2.  Terminology
 
@@ -206,32 +215,55 @@ Internet-Draft          URI Template Descriptions          December 2012
    document are to be interpreted as described in RFC 2119 [5].
 
 
-3.  Template Descriptions
-
-   Template Descriptions are based on a URI Template, and add
-   descriptive elements that allow publishers of URI Templates to
-   describe the URI Template as a whole, and add individual descriptions
-   of all variables in the template.
-
-3.1.  General Concepts
-
-   reuses the "appinfo" and "documentation" elements from XML Schema
-   Part 1 [4]
 
 
 
-Wilde, et al.             Expires July 3, 2013                  [Page 4]
+
+
+Wilde, et al.             Expires June 10, 2013                 [Page 4]
 
 Internet-Draft          URI Template Descriptions          December 2012
 
 
+3.  Template Descriptions
+
+   Template Descriptions are based on a URI Template, and add
+   descriptive elements that allow publishers of URI Templates to
+   describe the URI Template as a whole, and to add individual
+   descriptions of all variables in the template.
+
+3.1.  General Concepts
+
+   As mentioned in Section 1.1, most of the descriptions in this spec to
+   not prescribe a specific description framework.  While variables
+   (Section 3.3) can be described with a built-in vocabulary of
+   datatypes, most other descriptions are either for human consumption,
+   or do rely on some external description framework.  To attach these
+   descriptions to both the template as a whole, and individual
+   variables, this specification reuses the "appinfo" and
+   "documentation" elements from XML Schema Part 1 [4].  These elements
+   carry a "source" attribute which is used (quoting from [4]) "to
+   supplement the local information."
+
 3.2.  Template Description Structure
 
-   ...
+   A template is described by including the URI Template itself, and
+   optionally adding documentation and/or appinfo elements to add human-
+   or machine-readable descriptions.
 
 3.3.  Variable Description Structure
 
-   ...
+   A variable is described by specifying the variable name.  Variables
+   can refer to a "concept" associated with a variable, which can by
+   identified by URI, or by a QName (at most one of these SHALL be
+   present).  This specification makes no provision how such a concept
+   is defined or described, but it allows consumers of a Template
+   Description to match their understanding of certain concepts to those
+   identifiers, which then establishes a binding between the concept,
+   and the variable it has been bound to.
+
+   Variable descriptions can optionally add documentation and/or appinfo
+   elements to add human- or machine-readable descriptions.
 
 
 4.  IANA Considerations
@@ -240,6 +272,14 @@ Internet-Draft          URI Template Descriptions          December 2012
 
    The Internet media type for a Template Description document is
    application/td+xml.
+
+
+
+
+Wilde, et al.             Expires June 10, 2013                 [Page 5]
+
+Internet-Draft          URI Template Descriptions          December 2012
+
 
       Type name: application
 
@@ -273,14 +313,6 @@ Internet-Draft          URI Template Descriptions          December 2012
 
       Intended usage: COMMON
 
-
-
-
-Wilde, et al.             Expires July 3, 2013                  [Page 5]
-
-Internet-Draft          URI Template Descriptions          December 2012
-
-
       Restrictions on usage: none
 
       Author: Erik Wilde <erik.wilde@emc.com>
@@ -296,6 +328,14 @@ Internet-Draft          URI Template Descriptions          December 2012
 
       Description: Linking to a resource that can be used as a template
       description for creating a request URI for the context resource.
+
+
+
+
+Wilde, et al.             Expires June 10, 2013                 [Page 6]
+
+Internet-Draft          URI Template Descriptions          December 2012
+
 
       Reference: [[ This document ]]
 
@@ -328,15 +368,6 @@ Internet-Draft          URI Template Descriptions          December 2012
    Maybe suggest to use profiles?
 
 
-
-
-
-
-Wilde, et al.             Expires July 3, 2013                  [Page 6]
-
-Internet-Draft          URI Template Descriptions          December 2012
-
-
 7.  Open Issues
 
       If and how to use profiles (example in Section 6); if profile use
@@ -352,6 +383,19 @@ Internet-Draft          URI Template Descriptions          December 2012
 
       Should there be some way how default values can be exposed/
       documented?
+
+
+
+
+
+Wilde, et al.             Expires June 10, 2013                 [Page 7]
+
+Internet-Draft          URI Template Descriptions          December 2012
+
+
+      If a template is refined in an incremental process, does it make
+      sense to be able to add a "back" link and/or "home" link, so that
+      clients can find the "most general" version easily?
 
 
 8.  References
@@ -385,14 +429,6 @@ Internet-Draft          URI Template Descriptions          December 2012
    [7]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
         Format", RFC 4287, December 2005.
 
-
-
-
-Wilde, et al.             Expires July 3, 2013                  [Page 7]
-
-Internet-Draft          URI Template Descriptions          December 2012
-
-
 8.2.  Informative References
 
    [8]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
@@ -400,7 +436,17 @@ Internet-Draft          URI Template Descriptions          December 2012
 
 URIs
 
-   [9]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
+   [9]  <http://tech.groups.yahoo.com/group/rest-discuss/>
+
+
+
+
+
+
+
+Wilde, et al.             Expires June 10, 2013                 [Page 8]
+
+Internet-Draft          URI Template Descriptions          December 2012
 
 
 Authors' Addresses
@@ -444,5 +490,15 @@ Authors' Addresses
 
 
 
-Wilde, et al.             Expires July 3, 2013                  [Page 8]
+
+
+
+
+
+
+
+
+
+
+Wilde, et al.             Expires June 10, 2013                 [Page 9]
 

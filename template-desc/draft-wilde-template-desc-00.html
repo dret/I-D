@@ -144,9 +144,9 @@
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">C. Davis</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">Expires: July 3, 2013</td><td class="header">Y. Liu</td></tr>
+<tr><td class="header">Expires: June 10, 2013</td><td class="header">Y. Liu</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">UC Berkeley</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">December 30, 2012</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">December 7, 2012</td></tr>
 </table></td></tr></table>
 <h1><br />URI Template Descriptions<br />draft-wilde-template-desc-00</h1>
 
@@ -156,7 +156,7 @@
 </p>
 <h3>Note to Readers</h3>
 
-<p>Please discuss this draft on the <a href='https://www.ietf.org/mailman/listinfo/apps-discuss'>apps-discuss mailing list</a>.
+<p>Please discuss this draft on the <a href='http://tech.groups.yahoo.com/group/rest-discuss/'>rest-discuss mailing list</a>.
 </p>
 <h3>Status of this Memo</h3>
 <p>
@@ -173,7 +173,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 3, 2013.</p>
+This Internet-Draft will expire on June 10, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -276,6 +276,8 @@ Describing Variables</h3>
 </blockquote><p>
             
 </p>
+<p>For the purpose of this specification, the term "description" should be interpreted loosely. Some aspects of descriptions can be formal, such as the datatypes of variables. Thus, such a description can be used to drive general-purpose logic that knows nothing but this specification. However, for most other description aspects (domain concepts, documentation, and application information), this specification does not prescribe a description framework; it simply provides a structure how to deliver these descriptions.
+</p>
 <a name="terminology"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
@@ -288,28 +290,30 @@ Terminology</h3>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Template Descriptions</h3>
 
-<p>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and add individual descriptions of all variables in the template.
+<p>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template.
 </p>
 <a name="concepts"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
 General Concepts</h3>
 
-<p>reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <a class='info' href='#XSD-1'>[4]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>
+<p>As mentioned in <a class='info' href='#intro-templates'>Section&nbsp;1.1<span> (</span><span class='info'>URI Template</span><span>)</span></a>, most of the descriptions in this spec to not prescribe a specific description framework. While variables (<a class='info' href='#variable-struct'>Section&nbsp;3.3<span> (</span><span class='info'>Variable Description Structure</span><span>)</span></a>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <a class='info' href='#XSD-1'>[4]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. These elements carry a "source" attribute which is used (quoting from <a class='info' href='#XSD-1'>[4]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>) "to supplement the local information."
 </p>
 <a name="template-struct"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
 Template Description Structure</h3>
 
-<p>...
+<p>A template is described by including the URI Template itself, and optionally adding documentation and/or appinfo elements to add human- or machine-readable descriptions.
 </p>
 <a name="variable-struct"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.3"></a><h3>3.3.&nbsp;
 Variable Description Structure</h3>
 
-<p>...
+<p>A variable is described by specifying the variable name. Variables can refer to a "concept" associated with a variable, which can by identified by URI, or by a QName (at most one of these SHALL be present). This specification makes no provision how such a concept is defined or described, but it allows consumers of a Template Description to match their understanding of certain concepts to those identifiers, which then establishes a binding between the concept, and the variable it has been bound to.
+</p>
+<p>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -438,6 +442,8 @@ Open Issues</h3>
 <p>How to handle variables in Level 4 templates that are supposed to have composite values?
 </p>
 <p>Should there be some way how default values can be exposed/documented?
+</p>
+<p>If a template is refined in an incremental process, does it make sense to be able to add a "back" link and/or "home" link, so that clients can find the "most general" version easily?
 </p>
 </blockquote><p>
          
