@@ -34,7 +34,20 @@
 				<uri>http://dret.net/netdret/</uri>
 			</address>
 		</author>
-		<date day="26" month="September" year="2012"/>
+		<author initials="J." surname="Tennison" fullname="Jeni Tennison">
+			<organization>Open Data Institute</organization>
+			<address>
+				<postal>
+					<street>65 Clifton Street</street>
+					<city>London EC2A 4JE</city>
+					<country>U.K.</country>
+				</postal>
+				<phone>+44-797-4420482</phone>
+				<email>jeni@jenitennison.com</email>
+				<uri>http://www.jenitennison.com/blog/</uri>
+			</address>
+		</author>
+		<date day="29" month="December" year="2012"/>
 		<abstract>
 			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by cell, row, column, or slice.</t>
 		</abstract>
@@ -64,7 +77,7 @@
 			</section>
 		</section>
 		<section title="Fragment Identification Methods" anchor="methods">
-			<t>This memo specifies fragment identification using following methods: header, row, column and slice. As of RFC 4180 <xref target="RFC4180"/> the header line is optional and hence the application of the method is dependent on the actual format of the text/csv MIME entity.</t>
+			<t>This memo specifies fragment identification using following methods: header, row, column, cell and slice. As of RFC 4180 <xref target="RFC4180"/> the header line is optional and hence the application of the method is dependent on the actual format of the text/csv MIME entity.</t>
 			<t>Throughout the sections below the following table in CSV is used:</t>
 			<figure>
 				<artwork>date,temperature,place
@@ -117,6 +130,24 @@
 					<artwork>Galway,Galway,Galway,Berkeley,Berkeley,Berkeley</artwork>
 				</figure>
 			</section>
+			<section title="Cell-based selection" anchor="method-cell">
+				<t>To select a particular field within a row, use the "cell" scheme, followed by a row number, a comma, and either a single number or the value of a header field.</t>
+				<figure>
+					<artwork>http://example.com/data.csv#cell:2,date</artwork>
+				</figure>
+				<t>The above CSV fragment addresses the field in the date column within the third row, yeilding:</t>
+				<figure>
+					<artwork>2011-01-03</artwork>
+				</figure>
+				<t>A field can also be addressed by position as shown in the next example:</t>
+				<figure>
+					<artwork>http://example.com/data.csv#cell:3,1</artwork>
+				</figure>
+				<t>The above CSV fragment selects the second column in the fourth row:</t>
+				<figure>
+					<artwork>6</artwork>
+				</figure>
+			</section>
 			<section title="Slice-based selection" anchor="method-slice">
 				<t>To select a part of table, called a slice in the following, the "where" scheme is used. The allowed values are a comma-separated list of header fields with corresponding field values in the table.</t>
 				<figure>
@@ -143,16 +174,18 @@
 			</t>
 			<t>
 				<figure>
-					<artwork>csv-fragment =  headersel / wheresel / colsel / rowsel
+					<artwork>csv-fragment =  headersel / wheresel / colsel / rowsel / cellsel
 headersel = "head"
 rowsel   = "row:" rowspec
 colsel   = "col:" colspec
+cellsel  = "cell:" cellspec
 wheresel = "where:" kvpairs 
 kvpairs = 1*( col "=" val 0*1(",") ) 
 col = 1*TEXTDATA
 val = 1*TEXTDATA
 colspec = column 
 rowspec = "*" / rownum
+cellspec = rownum "," column
 column = 1*TEXTDATA / 1*DIGIT
 rownum = 1*DIGIT
 TEXTDATA =  %x23-2B / %x2D-3C / %x3E-7E 
@@ -180,7 +213,7 @@ DIGIT =  %x30-39</artwork>
 			<section title="From -00 to -01">
 				<t>
 					<list style="symbols">
-						<t>...</t>
+						<t>Added cell-based selections.</t>
 					</list>
 				</t>
 			</section>
