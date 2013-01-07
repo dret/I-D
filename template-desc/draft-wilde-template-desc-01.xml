@@ -38,7 +38,7 @@
             <email>yliu@ischool.berkeley.edu</email>
          </address>
       </author>
-      <date day="7" month="December" year="2012"/>
+      <date day="8" month="January" year="2013"/>
       <abstract>
          <t>Interactions with many resources on the Web are driven by and/or can be described by URI Templates. RFC 6570 says that "a URI Template is a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion." This specification defines Template Descriptions, a schema and a media type that can be used to document and describe a URI Template by supporting descriptive markup that allows variables to be associated with documentation (human-oriented) and/or descriptions (machine-oriented). Template Descriptions can be used by media types (by inclusion or by reference) that seek to make URI Templates self-describing, without having to create their own representation.</t>
       </abstract>
@@ -93,23 +93,26 @@
       </section>
       <section title="IANA Considerations" anchor="iana">
          <section title="Media Type" anchor="iana-media-type">
-            <t>The Internet media type for a Template Description document is application/td+xml.
-            </t>
+            <t>The Internet media type <xref target="RFC4288"/> for a Template Description document is application/td+xml.</t>
             <t>
                <list>
                   <t>Type name: application</t>
                   <t>Subtype name: td+xml</t>
                   <t>Required parameters: none</t>
-                  <t>Optional parameters: none</t>
-                  <t>Encoding considerations: binary</t>
-                  <t>Security considerations: See Security Considerations in <xref target="security-considerations"/>.</t>
+                  <t>Optional parameters: profile
+                     <list>
+                        <t>...</t>
+                     </list>
+                  </t>
+                  <t>Encoding considerations: Same as encoding considerations of application/xml as specified in <xref target="RFC3023"/>.</t>
+                  <t>Security considerations: This media type has all of the security considerations described in <xref target="RFC3023"/>, plus those listed in <xref target="security-considerations"/>.</t>
                   <t>Interoperability considerations: N/A</t>
                   <t>Published specification: [[ This document ]]</t>
                   <t>Applications that use this media type: Applications that publish descriptions of URI Templates.</t>
                   <t>Additional information:
                      <list>
-                        <t>Magic number(s): N/A</t>
-                        <t>File extension(s): .tdx</t>
+                        <t>Magic number(s): none</t>
+                        <t>File extension(s): XML data should use ".xml" as the file extension.</t>
                         <t>Macintosh file type code(s): TEXT</t>
                      </list>
                   </t>
@@ -166,6 +169,7 @@
             <t>
                <list style="symbols">
                   <t>Added more open issues.</t>
+                  <t>Added profile media type parameter.</t>
                </list>
             </t>
          </section>
@@ -182,6 +186,26 @@
                <date month="March" year="1997"/>
             </front>
             <seriesInfo name="RFC" value="2119"/>
+         </reference>
+         <reference anchor='RFC3023'>
+            <front>
+               <title>XML Media Types</title>
+               <author initials='M.' surname='Murata' fullname='M. Murata'>
+                  <organization />
+               </author>
+               <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
+                  <organization />
+               </author>
+               <author initials='D.' surname='Kohn' fullname='D. Kohn'>
+                  <organization />
+               </author>
+               <date year='2001' month='January' />
+               <abstract>
+                  <t>This document standardizes five new media types -- text/xml, application/xml, text/xml-external-parsed-entity, application/xml- external-parsed-entity, and application/xml-dtd -- for use in exchanging network entities that are related to the Extensible Markup Language (XML).  This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='3023' />
+            <format type='TXT' octets='86011' target='http://www.rfc-editor.org/rfc/rfc3023.txt' />
          </reference>
          <reference anchor='RFC4287'>
             <front>
@@ -302,6 +326,24 @@
          </reference>
       </references>
       <references title="Informative References">
+         <reference anchor='RFC4288'>
+            <front>
+               <title>Media Type Specifications and Registration Procedures</title>
+               <author initials='N.' surname='Freed' fullname='N. Freed'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Klensin' fullname='J. Klensin'>
+                  <organization />
+               </author>
+               <date year='2005' month='December' />
+               <abstract>
+                  <t>This document defines procedures for the specification and registration of media types for use in MIME and other Internet protocols.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='BCP' value='13' />
+            <seriesInfo name='RFC' value='4288' />
+            <format type='TXT' octets='52667' target='http://www.rfc-editor.org/rfc/rfc4288.txt' />
+         </reference>
          <reference anchor='RFC5005'>
             <front>
                <title>Feed Paging and Archiving</title>
