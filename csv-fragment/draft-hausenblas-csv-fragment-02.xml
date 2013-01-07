@@ -49,7 +49,7 @@
 		</author>
 		<date day="29" month="December" year="2012"/>
 		<abstract>
-			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by cell, row, column, or slice.</t>
+			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell.</t>
 		</abstract>
 		<note title="Note to Readers">
 			<t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
@@ -81,7 +81,7 @@
 			</section>
 		</section>
 		<section title="Fragment Identification Methods" anchor="methods">
-			<t>This memo specifies fragment identification using following methods: header, row, column, cell and slice. As of RFC 4180 <xref target="RFC4180"/> the header line is optional and hence the application of the method is dependent on the actual format of the text/csv MIME entity.</t>
+			<t>This memo specifies fragment identification using following methods: header, row, column, and cell. As of RFC 4180 <xref target="RFC4180"/> the header line is optional and hence the application of the method is dependent on the actual format of the text/csv MIME entity.</t>
 			<t>Throughout the sections below the following table in CSV is used:</t>
 			<figure>
 				<artwork>date,temperature,place
@@ -152,18 +152,6 @@
 					<artwork>6</artwork>
 				</figure>
 			</section>
-			<section title="Slice-based selection" anchor="method-slice">
-				<t>To select a part of table, called a slice in the following, the "where" scheme is used. The allowed values are a comma-separated list of header fields with corresponding field values in the table.</t>
-				<figure>
-					<artwork>http://example.com/data.csv#where:date=2011-01-01</artwork>
-				</figure>
-				<t>The above CSV fragment selects a slice, yielding another CSV table as follows:</t>
-				<figure>
-					<artwork>temperature,place
-1,Galway
-6,Berkeley</artwork>
-				</figure>
-			</section>
 		</section>
 		<section title="Fragment Identification Syntax" anchor="syntax">
 			<t>The syntax for the text/csv fragment identifiers is as follows.</t>
@@ -178,22 +166,21 @@
 			</t>
 			<t>
 				<figure>
-					<artwork>csv-fragment =  headersel / wheresel / colsel / rowsel / cellsel
+					<artwork>csv-fragment =  headersel / colsel / rowsel / cellsel
 headersel = "head"
-rowsel   = "row:" rowspec
-colsel   = "col:" colspec
-cellsel  = "cell:" cellspec
-wheresel = "where:" kvpairs 
-kvpairs = 1*( col "=" val 0*1(",") ) 
-col = 1*TEXTDATA
-val = 1*TEXTDATA
-colspec = column 
-rowspec = "*" / rownum
-cellspec = rownum "," column
-column = 1*TEXTDATA / 1*DIGIT
-rownum = 1*DIGIT
-TEXTDATA =  %x23-2B / %x2D-3C / %x3E-7E 
-DIGIT =  %x30-39</artwork>
+rowsel    = "row:" rowspec
+colsel    = "col:" colspec
+cellsel   = "cell:" cellspec
+kvpairs   = 1*( col "=" val 0*1(",") ) 
+col       = 1*TEXTDATA
+val       = 1*TEXTDATA
+colspec   = column 
+rowspec   = "*" / rownum
+cellspec  = rownum "," column
+column    = 1*TEXTDATA / 1*DIGIT
+rownum    = 1*DIGIT
+TEXTDATA  = %x23-2B / %x2D-3C / %x3E-7E 
+DIGIT     = %x30-39</artwork>
 				</figure>
 			</t>
 		</section>
@@ -214,6 +201,13 @@ DIGIT =  %x30-39</artwork>
 		</section>
 		<section title="Change Log">
 			<t>Note to RFC Editor: Please remove this section before publication.</t>
+			<section title="From -01 to -02">
+				<t>
+					<list style="symbols">
+						<t>Removed slices ("#where:") as fragment identification method.</t>
+					</list>
+				</t>
+			</section>
 			<section title="From -00 to -01">
 				<t>
 					<list style="symbols">
