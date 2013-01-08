@@ -5,7 +5,7 @@
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="no" ?>
-<rfc category="std" ipr="trust200902" docName="draft-hausenblas-csv-fragment-01" updates="4180">
+<rfc category="std" ipr="trust200902" docName="draft-hausenblas-csv-fragment-02" updates="4180">
 	<front>
 		<title abbrev="text/csv Fragment Identifiers">URI Fragment Identifiers for the text/csv Media Type</title>
 		<author initials="M." surname="Hausenblas" fullname="Michael Hausenblas">
@@ -47,9 +47,9 @@
 				<uri>http://www.jenitennison.com/blog/</uri>
 			</address>
 		</author>
-		<date day="29" month="December" year="2012"/>
+		<date day="10" month="January" year="2013"/>
 		<abstract>
-			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell.</t>
+			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell. Fragment identification can use single items, or ranges.</t>
 		</abstract>
 		<note title="Note to Readers">
 			<t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
@@ -61,27 +61,27 @@
 			<t>This memo updates the text/csv media type defined in RFC 4180 <xref target="RFC4180"/> by defining URI fragment identifiers for text/csv MIME entities.</t>
 			<t>This section gives an introduction to the general concepts of text/csv MIME entities and URI fragment identifiers, and discusses the need for fragment identifiers for text/csv and deployment issues. <xref target="methods"/> discusses the principles and methods on which this memo is based. <xref target="syntax"/> defines the syntax, and <xref target="processing"/> discusses processing of text/csv fragment identifiers.</t>
 			<section title="What is text/csv?">
-				<t>Internet Media Types (often referred to as "MIME types") as defined in RFC 2045 <xref target="RFC2045"/> and RFC 2046 <xref target="RFC2046"/> are used to identify different types and sub-types of media. The text/csv media type is defined in RFC 4180 <xref target="RFC4180"/>, using US-ASCII <xref target="ASCII"/> as the default character encoding (other character encodings can be used as well).</t>
+				<t>Internet Media Types (often referred to as "MIME types") as defined in RFC 2045 <xref target="RFC2045"/> and RFC 2046 <xref target="RFC2046"/> are used to identify different types and sub-types of media. The text/csv media type is defined in RFC 4180 <xref target="RFC4180"/>, using US-ASCII <xref target="ASCII"/> as the default character encoding (other character encodings can be used as well). Apart from a media type parameter for specifying the character encoding ("charset"), there is a second media type parameter ("header") that indicates whether there is a header row in the CSV document or not.</t>
 			</section>
 			<section title="Why text/csv Fragment Identifiers?" anchor="why">
-				<t>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <xref target="RFC3986"/> optionally includes a so-called "fragment identifier", separated by a number sign ('#'). The fragment identifier consists of additional reference information to be interpreted by the user agent after the retrieval action has been successfully completed.  The semantics of a fragment identifier is a property of the data resulting from a retrieval action, regardless of the type of URI used in the reference.  Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.</t>
+				<t>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <xref target="RFC3986"/> optionally includes a so-called "fragment identifier", separated by a number sign ("#"). The fragment identifier consists of additional reference information to be interpreted by the client after the retrieval action has been successfully completed. The semantics of a fragment identifier is a property of the media type resulting from a retrieval action, regardless of the URI scheme used in the URI reference. Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.</t>
 				<section title="Motivation">
-					<t>Similar to the motivation in RFC 5147 <xref target="RFC5147"/>, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's MIME registration (see <xref target="TypeReg"/>), many media types do not have fragment identification methods associated with them.</t>
+					<t>Similar to the motivation in RFC 5147 <xref target="RFC5147"/>, which defines fragment identifiers for plain text files, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's MIME registration (see <xref target="TypeReg"/>), many media types do not have fragment identification methods associated with them.</t>
 					<t>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.</t>
 				</section>
 				<section title="Use Cases">
-					<t>Fragment identifiers for text/csv as defined in this memo make it possible to refer to specific parts of a text/csv MIME entity. Use cases include, but are not limited to, discovery (what column headings or how many rows are available), selecting a part for visual rendering, stream processing, making assertions about a certain value (provenance, confidence, etc.), or data integration.</t>
+					<t>Fragment identifiers for text/csv as defined in this memo make it possible to refer to specific parts of a text/csv MIME entity. Use cases include, but are not limited to, selecting a part for visual rendering, stream processing, making assertions about a certain value (provenance, confidence, comments, etc.), or data integration.</t>
 				</section>
 			</section>
 			<section title="Incremental Deployment" anchor="incremental">
-				<t>As long as text/csv fragment identifiers are not supported universally, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/csv fragment identifier described in this memo will work with URI references to text/csv MIME entities, but they will fail to to understand the identification of the sub-resource specified by the fragment identifier, and thus will behave as if the complete resource was referenced. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no reliable way for a server to determine whether a requesting client is using a URI containing a fragment identifier.</t>
+				<t>As long as text/csv fragment identifiers are not supported universally, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/csv fragment identifier described in this memo will work with URI references to text/csv MIME entities, but they will fail to understand the identification of the sub-resource specified by the fragment identifier, and thus will behave as if the complete resource was referenced. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no reliable way for a server to determine whether a requesting client is using a URI containing a fragment identifier.</t>
 			</section>
 			<section title="Notation Used in this Memo">
 				<t>The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
 			</section>
 		</section>
 		<section title="Fragment Identification Methods" anchor="methods">
-			<t>This memo specifies fragment identification using following methods: header, row, column, and cell. As of RFC 4180 <xref target="RFC4180"/> the header line is optional and hence the application of the method is dependent on the actual format of the text/csv MIME entity.</t>
+			<t>This memo specifies fragment identification using following methods: row, column, and cell.</t>
 			<t>Throughout the sections below the following table in CSV is used:</t>
 			<figure>
 				<artwork>date,temperature,place
@@ -92,16 +92,6 @@
 2011-01-02,8,Berkeley
 2011-01-03,5,Berkeley</artwork>
 			</figure>
-			<section title="Header" anchor="method-header">
-				<t>For discovery purposes, the "head" scheme is used, returning the first row. If the "header" parameter per RFC 4180 <xref target="RFC4180"/> is available and its value is "present" the client can reliable determine that it is a header.</t>
-				<figure>
-					<artwork>http://example.com/data.csv#head</artwork>
-				</figure>
-				<t>Applied to the reference table, the above CSV fragment would select the header row, yielding:</t>
-				<figure>
-					<artwork>date,temperature,place</artwork>
-				</figure>
-			</section>
 			<section title="Row-based selection" anchor="method-row">
 				<t>To select a specific record, the "row" scheme followed by a single number is used (the first record has the index 0).</t>
 				<figure>
@@ -113,7 +103,7 @@
 				</figure>
 			</section>
 			<section title="Column-based selection" anchor="method-column">
-				<t>To select values from a certain column, the "col" scheme, followed either by a single number or the value of a header field is used.</t>
+				<t>To select values from a certain column, the "col" scheme, followed by a single number.</t>
 				<figure>
 					<artwork>http://example.com/data.csv#col:temperature</artwork>
 				</figure>
@@ -131,7 +121,7 @@
 				</figure>
 			</section>
 			<section title="Cell-based selection" anchor="method-cell">
-				<t>To select a particular field within a row, use the "cell" scheme, followed by a row number, a comma, and either a single number or the value of a header field.</t>
+				<t>To select a particular field within a row, use the "cell" scheme, followed by a row number, a comma, and a single number.</t>
 				<figure>
 					<artwork>http://example.com/data.csv#cell:2,date</artwork>
 				</figure>
@@ -156,14 +146,13 @@
 				<list style="hanging">
 					<t hangText="NOTE:">In the descriptions that follow,
    specified text values MUST be used exactly as given, using exactly
-   the indicated lower-case letters.  In this respect, the
+   the indicated lower-case letters. In this respect, the
    ABNF usage differs from <xref target="RFC4234"/>.</t>
 				</list>
 			</t>
 			<t>
 				<figure>
-					<artwork>csv-fragment =  headersel / colsel / rowsel / cellsel
-headersel = "head"
+					<artwork>csv-fragment =  rowsel / colsel / cellsel
 rowsel    = "row:" rowspec
 colsel    = "col:" colspec
 cellsel   = "cell:" cellspec
@@ -201,6 +190,7 @@ DIGIT     = %x30-39</artwork>
 				<t>
 					<list style="symbols">
 						<t>Removed slices ("#where:") as fragment identification method.</t>
+						<t>Removed any special support for headers, which means that they are now treated as a regular (the first) row (if a header row is present).</t>
 					</list>
 				</t>
 			</section>
