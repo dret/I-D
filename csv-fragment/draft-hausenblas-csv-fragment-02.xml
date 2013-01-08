@@ -103,17 +103,13 @@
 				</figure>
 			</section>
 			<section title="Row-based selection" anchor="method-row">
-				<t>To select a specific record, the "row" scheme followed by a single number is used (the first record has the index 0). If the fragment is given in the form row:*, then no record is selected but the overall number of records is returned.</t>
+				<t>To select a specific record, the "row" scheme followed by a single number is used (the first record has the index 0).</t>
 				<figure>
 					<artwork>http://example.com/data.csv#row:2</artwork>
 				</figure>
-				<t>The above CSV fragment yields: while the following computes the number of records (which equals 6, in the reference table)</t>
+				<t>The above CSV fragment yields:</t>
 				<figure>
 					<artwork>2011-01-03,0,Galway</artwork>
-				</figure>
-				<t>The following computes the number of records (which equals 6, in the reference table):</t>
-				<figure>
-					<artwork>http://example.com/data.csv#row:*</artwork>
 				</figure>
 			</section>
 			<section title="Column-based selection" anchor="method-column">
@@ -175,7 +171,7 @@ kvpairs   = 1*( col "=" val 0*1(",") )
 col       = 1*TEXTDATA
 val       = 1*TEXTDATA
 colspec   = column 
-rowspec   = "*" / rownum
+rowspec   = rownum
 cellspec  = rownum "," column
 column    = 1*TEXTDATA / 1*DIGIT
 rownum    = 1*DIGIT
