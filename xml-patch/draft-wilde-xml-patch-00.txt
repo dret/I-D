@@ -4,10 +4,8 @@
 Network Working Group                                           E. Wilde
 Internet-Draft                                                       EMC
 Intended status: Standards Track                           M. Nottingham
-Expires: April 3, 2013                                            Akamai
-                                                                N. Walsh
-                                                               MarkLogic
-                                                      September 30, 2012
+Expires: July 18, 2013                                            Akamai
+                                                        January 14, 2013
 
 
                  A Media Type for XML Patch Operations
@@ -16,11 +14,12 @@ Expires: April 3, 2013                                            Akamai
 Abstract
 
    The XML Patch media type "application/xml-patch" defines an XML
-   document structure for expressing a sequence of operations to apply
-   to an XML document.  The XML Patch document format is defined in RFC
-   5261, this specification simply is a media type registration, so that
-   XML Patch documents can be labeled with a media type, for example in
-   HTTP conversations.
+   document structure for expressing a sequence of patch operations that
+   are applied to an XML document.  The XML Patch document format's
+   foundations are defined in RFC 5261, this specification defines a
+   document format and a media type registration, so that XML Patch
+   documents can be labeled with a media type, for example in HTTP
+   conversations.
 
 Note to Readers
 
@@ -43,18 +42,19 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 3, 2013.
+   This Internet-Draft will expire on July 18, 2013.
 
 Copyright Notice
 
-   Copyright (c) 2012 IETF Trust and the persons identified as the
+   Copyright (c) 2013 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
 
 
-Wilde, et al.             Expires April 3, 2013                 [Page 1]
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 1]
 
-Internet-Draft                  XML Patch                 September 2012
+Internet-Draft                  XML Patch                   January 2013
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -72,11 +72,14 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
    2.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 3
-   3.  Security Considerations . . . . . . . . . . . . . . . . . . . . 4
-   4.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-     4.1.  Normative References  . . . . . . . . . . . . . . . . . . . 4
-     4.2.  Informative References  . . . . . . . . . . . . . . . . . . 4
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 5
+   3.  Patch Document Format . . . . . . . . . . . . . . . . . . . . . 4
+   4.  Patch Examples  . . . . . . . . . . . . . . . . . . . . . . . . 4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . . . 4
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . . . 4
+     6.2.  Informative References  . . . . . . . . . . . . . . . . . . 5
+   Appendix A.  XSD from RFC 5261  . . . . . . . . . . . . . . . . . . 5
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 7
 
 
 
@@ -105,12 +108,9 @@ Table of Contents
 
 
 
-
-
-
-Wilde, et al.             Expires April 3, 2013                 [Page 2]
+Wilde & Nottingham        Expires July 18, 2013                 [Page 2]
 
-Internet-Draft                  XML Patch                 September 2012
+Internet-Draft                  XML Patch                   January 2013
 
 
 1.  Introduction
@@ -118,15 +118,25 @@ Internet-Draft                  XML Patch                 September 2012
    The Extensible Markup Language (XML) [1] is a common format for the
    exchange and storage of structured data.  HTTP PATCH [6] extends HTTP
    [7] with a method to perform partial modifications to resources.
+   HTTP PATCH requires that patch documents are being sent along with
+   the request, and it is therefore useful if there are standardized
+   patch document formats (identified by media types) for popular media
+   types.
 
    The XML Patch media type "application/xml-patch" is an XML document
    structure for expressing a sequence of operations to apply to a
-   target XML document, suitable for use with the HTTP PATCH method.  It
-   also defines an error document structure that allows servers to
-   communicate problems within patch documents.
+   target XML document, suitable for use with the HTTP PATCH method.
+   Servers can freely choose which patch formats they want to accept,
+   and "application/xml-patch" could be a simple default format that can
+   be used unless a server decides to use a different (maybe more
+   sophisticated) patch format for XML.
 
-   The formats for the patch and error documents are based on the XML
-   Parch Framework defined in RFC 5261 [2].
+   The format for patch documents is based on the XML Patch Framework
+   defined in RFC 5261 [2].  While RFC 5261 does define a concrete
+   syntax as well as the media type "application/patch-ops-error+xml"
+   for error documents, it only defines XSD types for patch operations,
+   and thus the concrete document format and the media type for patch
+   operations are defined in an XSD defined in this specification.
 
 
 2.  IANA Considerations
@@ -140,17 +150,26 @@ Internet-Draft                  XML Patch                 September 2012
 
       Required parameters: none
 
-      Optional parameters: none
+      Optional parameters: Same as charset parameter for the media type
+      "application/xml" as specified in RFC 3023 [1].
 
-      Encoding considerations: Same as encoding considerations of
-      application/xml as specified in [1].
+      Encoding considerations: Same as encoding considerations of media
+      type "application/xml" as specified in [1].
 
       Security considerations: This media type has all of the security
-      considerations described in [1], plus those listed in Section 3.
+      considerations described in [1], plus those listed in Section 5.
 
       Interoperability considerations: N/A
 
-      Published specification: [[ This document ]]
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 3]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
+      Published specification: RFC XXXX
 
       Applications that use this media type: Applications that
       manipulate XML documents.
@@ -161,13 +180,6 @@ Internet-Draft                  XML Patch                 September 2012
 
          File extension(s): XML data should use ".xml" as the file
          extension.
-
-
-
-Wilde, et al.             Expires April 3, 2013                 [Page 3]
-
-Internet-Draft                  XML Patch                 September 2012
-
 
          Macintosh file type code(s): TEXT
 
@@ -183,17 +195,35 @@ Internet-Draft                  XML Patch                 September 2012
       Change controller: IETF
 
 
-3.  Security Considerations
+3.  Patch Document Format
 
    ...
 
 
-4.  References
+4.  Patch Examples
 
-4.1.  Normative References
+   ...
+
+
+5.  Security Considerations
+
+   ...
+
+
+6.  References
+
+6.1.  Normative References
 
    [1]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
         RFC 3023, January 2001.
+
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 4]
+
+Internet-Draft                  XML Patch                   January 2013
+
 
    [2]  Urpalainen, J., "An Extensible Markup Language (XML) Patch
         Operations Framework Utilizing XML Path Language (XPath)
@@ -210,21 +240,13 @@ Internet-Draft                  XML Patch                 September 2012
         Extensions (MIME) Part Two: Media Types", RFC 2046,
         November 1996.
 
-4.2.  Informative References
+6.2.  Informative References
 
    [6]  Dusseault, L. and J. Snell, "PATCH Method for HTTP", RFC 5789,
         March 2010.
 
    [7]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L.,
         Leach, P., and T. Berners-Lee, "Hypertext Transfer Protocol --
-
-
-
-Wilde, et al.             Expires April 3, 2013                 [Page 4]
-
-Internet-Draft                  XML Patch                 September 2012
-
-
         HTTP/1.1", RFC 2616, June 1999.
 
 URIs
@@ -232,6 +254,124 @@ URIs
    [8]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
 
    [9]  <https://github.com/dret/I-D/tree/master/xml-patch>
+
+
+Appendix A.  XSD from RFC 5261
+
+   For reference, this section contains a copy of the XSD defining the
+   add, replace, and remove types in RFC 5261 [2].  This section is
+   informational only, and the definitive version of the schema is the
+   one listed in RFC 5261.
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE schema [
+    <!ENTITY ncname "\i\c*">
+    <!ENTITY qname  "(&ncname;:)?&ncname;">
+    <!ENTITY aname  "@&qname;">
+    <!ENTITY pos    "\[\d+\]">
+    <!ENTITY attr   "\[&aname;='(.)*'\]|\[&aname;=&quot;(.)*&quot;\]">
+    <!ENTITY valueq "\[(&qname;|\.)=&quot;(.)*&quot;\]">
+    <!ENTITY value  "\[(&qname;|\.)='(.)*'\]|&valueq;">
+    <!ENTITY cond   "&attr;|&value;|&pos;">
+    <!ENTITY step   "(&qname;|\*)(&cond;)*">
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 5]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
+    <!ENTITY piq    "processing-instruction\((&quot;&ncname;&quot;)\)">
+    <!ENTITY pi     "processing-instruction\(('&ncname;')?\)|&piq;">
+    <!ENTITY id     "id\(('&ncname;')?\)|id\((&quot;&ncname;&quot;)?\)">
+    <!ENTITY com    "comment\(\)">
+    <!ENTITY text   "text\(\)">
+    <!ENTITY nspa   "namespace::&ncname;">
+    <!ENTITY cnodes "(&text;(&pos;)?)|(&com;(&pos;)?)|((&pi;)(&pos;)?)">
+    <!ENTITY child  "&cnodes;|&step;">
+    <!ENTITY last   "(&child;|&aname;|&nspa;)">
+    ]>
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+    <xsd:simpleType name="xpath">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern
+                value="(/)?((&id;)((/&step;)*(/&last;))?|(&step;/)*(&last;))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="xpath-add">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern
+                value="(/)?((&id;)((/&step;)*(/&child;))?|(&step;/)*(&child;))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="pos">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="before"/>
+            <xsd:enumeration value="after"/>
+            <xsd:enumeration value="prepend"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="type">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="&aname;|&nspa;"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="add">
+        <xsd:complexContent mixed="true">
+            <xsd:restriction base="xsd:anyType">
+                <xsd:sequence>
+                    <xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="unbounded"/>
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 6]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
+                </xsd:sequence>
+                <xsd:attribute name="sel" type="xpath-add"
+                    use="required"/>
+                <xsd:attribute name="pos" type="pos"/>
+                <xsd:attribute name="type" type="type"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="replace">
+        <xsd:complexContent mixed="true">
+            <xsd:restriction base="xsd:anyType">
+                <xsd:sequence>
+                    <xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+                <xsd:attribute name="sel" type="xpath" use="required"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="ws">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="before"/>
+            <xsd:enumeration value="after"/>
+            <xsd:enumeration value="both"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="remove">
+        <xsd:attribute name="sel" type="xpath" use="required"/>
+        <xsd:attribute name="ws" type="ws"/>
+    </xsd:complexType>
+
+</xsd:schema>
 
 
 Authors' Addresses
@@ -242,16 +382,23 @@ Authors' Addresses
    Email: erik.wilde@emc.com
 
 
+
+
+
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 7]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
    Mark Nottingham
    Akamai
 
    Email: mnot@mnot.net
 
 
-   Norm Walsh
-   MarkLogic
-
-   Email: ndw@nwalsh.com
 
 
 
@@ -276,5 +423,26 @@ Authors' Addresses
 
 
 
-Wilde, et al.             Expires April 3, 2013                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 8]
 

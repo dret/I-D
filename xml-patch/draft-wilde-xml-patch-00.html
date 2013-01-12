@@ -144,16 +144,14 @@
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">M. Nottingham</td></tr>
-<tr><td class="header">Expires: April 3, 2013</td><td class="header">Akamai</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">N. Walsh</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">MarkLogic</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">September 30, 2012</td></tr>
+<tr><td class="header">Expires: July 18, 2013</td><td class="header">Akamai</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">January 14, 2013</td></tr>
 </table></td></tr></table>
 <h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-00</h1>
 
 <h3>Abstract</h3>
 
-<p>The XML Patch media type "application/xml-patch" defines an XML document structure for expressing a sequence of operations to apply to an XML document. The XML Patch document format is defined in RFC 5261, this specification simply is a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.
+<p>The XML Patch media type "application/xml-patch" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.
 </p>
 <h3>Note to Readers</h3>
 
@@ -176,11 +174,11 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on April 3, 2013.</p>
+This Internet-Draft will expire on July 18, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
-Copyright (c) 2012 IETF Trust and the persons identified as the
+Copyright (c) 2013 IETF Trust and the persons identified as the
 document authors.  All rights reserved.</p>
 <p>
 This document is subject to BCP 78 and the IETF Trust's Legal
@@ -199,14 +197,20 @@ described in the Simplified BSD License.</p>
 Introduction<br />
 <a href="#iana">2.</a>&nbsp;
 IANA Considerations<br />
-<a href="#security-considerations">3.</a>&nbsp;
+<a href="#schema">3.</a>&nbsp;
+Patch Document Format<br />
+<a href="#examples">4.</a>&nbsp;
+Patch Examples<br />
+<a href="#security-considerations">5.</a>&nbsp;
 Security Considerations<br />
-<a href="#rfc.references1">4.</a>&nbsp;
+<a href="#rfc.references1">6.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">6.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">4.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">6.2.</a>&nbsp;
 Informative References<br />
+<a href="#anchor4">Appendix&nbsp;A.</a>&nbsp;
+XSD from RFC 5261<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
 </p>
@@ -217,11 +221,11 @@ Authors' Addresses<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>The Extensible Markup Language (XML) <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a> is a common format for the exchange and storage of structured data. HTTP PATCH <a class='info' href='#RFC5789'>[6]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a> extends HTTP <a class='info' href='#RFC2616'>[7]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> with a method to perform partial modifications to resources.
+<p>The Extensible Markup Language (XML) <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a> is a common format for the exchange and storage of structured data. HTTP PATCH <a class='info' href='#RFC5789'>[6]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a> extends HTTP <a class='info' href='#RFC2616'>[7]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> with a method to perform partial modifications to resources. HTTP PATCH requires that patch documents are being sent along with the request, and it is therefore useful if there are standardized patch document formats (identified by media types) for popular media types.
 </p>
-<p>The XML Patch media type "application/xml-patch" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. It also defines an error document structure that allows servers to communicate problems within patch documents.
+<p>The XML Patch media type "application/xml-patch" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. Servers can freely choose which patch formats they want to accept, and "application/xml-patch" could be a simple default format that can be used unless a server decides to use a different (maybe more sophisticated) patch format for XML.
 </p>
-<p>The formats for the patch and error documents are based on the XML Parch Framework defined in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>.
+<p>The format for patch documents is based on the XML Patch Framework defined in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XSD types for patch operations, and thus the concrete document format and the media type for patch operations are defined in an XSD defined in this specification.
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -239,15 +243,15 @@ IANA Considerations</h3>
 </p>
 <p>Required parameters: none
 </p>
-<p>Optional parameters: none
+<p>Optional parameters: Same as charset parameter for the media type "application/xml" as specified in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
 </p>
-<p>Encoding considerations: Same as encoding considerations of application/xml as specified in <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
+<p>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
 </p>
-<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;3<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;5<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
 </p>
 <p>Interoperability considerations: N/A
 </p>
-<p>Published specification: [[ This document ]]
+<p>Published specification: RFC XXXX
 </p>
 <p>Applications that use this media type: Applications that manipulate XML documents.
 </p>
@@ -276,21 +280,35 @@ IANA Considerations</h3>
 </blockquote><p>
          
 </p>
-<a name="security-considerations"></a><br /><hr />
+<a name="schema"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
+Patch Document Format</h3>
+
+<p>...
+</p>
+<a name="examples"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Patch Examples</h3>
+
+<p>...
+</p>
+<a name="security-considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
 Security Considerations</h3>
 
 <p>...
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4"></a><h3>4.&nbsp;
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>4.1.&nbsp;Normative References</h3>
+<h3>6.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC3023">[1]</a></td>
 <td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
@@ -306,7 +324,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>4.2.&nbsp;Informative References</h3>
+<h3>6.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC5789">[6]</a></td>
 <td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
@@ -314,6 +332,106 @@ References</h3>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
 </table>
 
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+XSD from RFC 5261</h3>
+
+<p>For reference, this section contains a copy of the XSD defining the add, replace, and remove types in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE schema [
+    &lt;!ENTITY ncname "\i\c*"&gt;
+    &lt;!ENTITY qname  "(&amp;ncname;:)?&amp;ncname;"&gt;
+    &lt;!ENTITY aname  "@&amp;qname;"&gt;
+    &lt;!ENTITY pos    "\[\d+\]"&gt;
+    &lt;!ENTITY attr   "\[&amp;aname;='(.)*'\]|\[&amp;aname;=&amp;quot;(.)*&amp;quot;\]"&gt;
+    &lt;!ENTITY valueq "\[(&amp;qname;|\.)=&amp;quot;(.)*&amp;quot;\]"&gt;
+    &lt;!ENTITY value  "\[(&amp;qname;|\.)='(.)*'\]|&amp;valueq;"&gt;
+    &lt;!ENTITY cond   "&amp;attr;|&amp;value;|&amp;pos;"&gt;
+    &lt;!ENTITY step   "(&amp;qname;|\*)(&amp;cond;)*"&gt;
+    &lt;!ENTITY piq    "processing-instruction\((&amp;quot;&amp;ncname;&amp;quot;)\)"&gt;
+    &lt;!ENTITY pi     "processing-instruction\(('&amp;ncname;')?\)|&amp;piq;"&gt;
+    &lt;!ENTITY id     "id\(('&amp;ncname;')?\)|id\((&amp;quot;&amp;ncname;&amp;quot;)?\)"&gt;
+    &lt;!ENTITY com    "comment\(\)"&gt;
+    &lt;!ENTITY text   "text\(\)"&gt;
+    &lt;!ENTITY nspa   "namespace::&amp;ncname;"&gt;
+    &lt;!ENTITY cnodes "(&amp;text;(&amp;pos;)?)|(&amp;com;(&amp;pos;)?)|((&amp;pi;)(&amp;pos;)?)"&gt;
+    &lt;!ENTITY child  "&amp;cnodes;|&amp;step;"&gt;
+    &lt;!ENTITY last   "(&amp;child;|&amp;aname;|&amp;nspa;)"&gt;
+    ]&gt;
+&lt;xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"&gt;
+
+    &lt;xsd:simpleType name="xpath"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:pattern
+                value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;last;))?|(&amp;step;/)*(&amp;last;))"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:simpleType name="xpath-add"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:pattern
+                value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;child;))?|(&amp;step;/)*(&amp;child;))"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:simpleType name="pos"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:enumeration value="before"/&gt;
+            &lt;xsd:enumeration value="after"/&gt;
+            &lt;xsd:enumeration value="prepend"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:simpleType name="type"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:pattern value="&amp;aname;|&amp;nspa;"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:complexType name="add"&gt;
+        &lt;xsd:complexContent mixed="true"&gt;
+            &lt;xsd:restriction base="xsd:anyType"&gt;
+                &lt;xsd:sequence&gt;
+                    &lt;xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="unbounded"/&gt;
+                &lt;/xsd:sequence&gt;
+                &lt;xsd:attribute name="sel" type="xpath-add"
+                    use="required"/&gt;
+                &lt;xsd:attribute name="pos" type="pos"/&gt;
+                &lt;xsd:attribute name="type" type="type"/&gt;
+            &lt;/xsd:restriction&gt;
+        &lt;/xsd:complexContent&gt;
+    &lt;/xsd:complexType&gt;
+
+    &lt;xsd:complexType name="replace"&gt;
+        &lt;xsd:complexContent mixed="true"&gt;
+            &lt;xsd:restriction base="xsd:anyType"&gt;
+                &lt;xsd:sequence&gt;
+                    &lt;xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="1"/&gt;
+                &lt;/xsd:sequence&gt;
+                &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
+            &lt;/xsd:restriction&gt;
+        &lt;/xsd:complexContent&gt;
+    &lt;/xsd:complexType&gt;
+
+    &lt;xsd:simpleType name="ws"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:enumeration value="before"/&gt;
+            &lt;xsd:enumeration value="after"/&gt;
+            &lt;xsd:enumeration value="both"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:complexType name="remove"&gt;
+        &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
+        &lt;xsd:attribute name="ws" type="ws"/&gt;
+    &lt;/xsd:complexType&gt;
+
+&lt;/xsd:schema&gt;</pre></div>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>Authors' Addresses</h3>
@@ -331,12 +449,5 @@ References</h3>
 <td class="author-text">Akamai</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
 <td class="author-text"><a href="mailto:mnot@mnot.net">mnot@mnot.net</a></td></tr>
-<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Norm Walsh</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">MarkLogic</td></tr>
-<tr><td class="author" align="right">Email:&nbsp;</td>
-<td class="author-text"><a href="mailto:ndw@nwalsh.com">ndw@nwalsh.com</a></td></tr>
 </table>
 </body></html>
