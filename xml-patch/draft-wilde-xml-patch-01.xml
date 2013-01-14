@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="std" ipr="trust200902" docName="draft-wilde-xml-patch-00">
+   <front>
+      <title abbrev="XML Patch">A Media Type for XML Patch Operations</title>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>EMC</organization>
+         <address>
+            <email>erik.wilde@emc.com</email>
+         </address>
+      </author>
+      <author initials="M." surname="Nottingham" fullname="Mark Nottingham">
+         <organization>Akamai</organization>
+         <address>
+            <email>mnot@mnot.net</email>
+         </address>
+      </author>
+<!-- 
+         <author initials="N." surname="Walsh" fullname="Norman Walsh">
+         <organization>MarkLogic</organization>
+         <address>
+            <email>ndw@nwalsh.com</email>
+         </address>
+      </author>
+-->
+      <date day="14" month="January" year="2013"/>
+      <abstract>
+         <t>The XML Patch media type "application/xml-patch" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.</t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
+         <t>Online access to all versions and files is available at <eref target="https://github.com/dret/I-D/tree/master/xml-patch">github</eref>.</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction">
+         <t>The Extensible Markup Language (XML) <xref target="RFC3023"/> is a common format for the exchange and storage of structured data. HTTP PATCH <xref target="RFC5789"/> extends HTTP <xref target="RFC2616"/> with a method to perform partial modifications to resources. HTTP PATCH requires that patch documents are being sent along with the request, and it is therefore useful if there are standardized patch document formats (identified by media types) for popular media types.</t>
+         <t>The XML Patch media type "application/xml-patch" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. Servers can freely choose which patch formats they want to accept, and "application/xml-patch" could be a simple default format that can be used unless a server decides to use a different (maybe more sophisticated) patch format for XML.</t>
+         <t>The format for patch documents is based on the XML Patch Framework defined in RFC 5261 <xref target="RFC5261"/>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XSD types for patch operations, and thus the concrete document format and the media type for patch operations are defined in an XSD defined in this specification.</t>
+      </section>
+      <section title="IANA Considerations" anchor="iana">
+         <t>The Internet media type <xref target="RFC4288"/> for an XML Patch Document is application/xml-patch.</t>
+         <t>
+            <list>
+               <t>Type name: application</t>
+               <t>Subtype name: xml-patch</t>
+               <t>Required parameters: none</t>
+               <t>Optional parameters: Same as charset parameter for the media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+               <t>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+               <t>Security considerations: This media type has all of the security considerations described in RFC 3023 <xref target="RFC3023"/> and  RFC 5261 <xref target="RFC5261"/>, plus those listed in <xref target="security-considerations"/>.</t>
+               <t>Interoperability considerations: N/A</t>
+               <t>Published specification: RFC XXXX</t>
+               <t>Applications that use this media type: Applications that manipulate XML documents.</t>
+               <t>Additional information:
+                  <list>
+                     <t>Magic number(s): N/A</t>
+                     <t>File extension(s): XML documents should use ".xml" as the file extension.</t>
+                     <t>Macintosh file type code(s): TEXT</t>
+                  </list>
+               </t>
+               <t>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com></t>
+               <t>Intended usage: COMMON</t>
+               <t>Restrictions on usage: none</t>
+               <t>Author: Erik Wilde &lt;erik.wilde@emc.com></t>
+               <t>Change controller: IETF</t>
+            </list>
+         </t>
+      </section>
+      <section title="Patch Document Format" anchor="schema">
+         <t>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows a arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.</t>
+         <t>The following example patch document uses the example from RFC 5261, and simply uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example for each operation.</t>
+         <figure>
+            <artwork><![CDATA[<p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
+    xmlns:p="urn:ietf:rfc:XXXX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:ietf:rfc:XXXX patch-document-00.xsd">
+    <p:add sel="doc/elem[@a='foo']">
+        <!-- This is a new child -->
+        <child id="ert4773">
+            <y:node/>
+        </child>
+    </p:add>
+    <p:replace sel="doc/note/text()">Patched doc</p:replace>
+    <p:remove sel="*/elem[@a='bar']/y:child" ws="both"/>
+    <p:add sel="*/elem[@a='bar']" type="@b">new attr</p:add>
+</p:patch>]]></artwork>
+         </figure>
+         <t>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.</t>
+         <t>RFC 5261 defines an XML Schema (XSD) for the patch operation types, which is included for reference in <xref target="rfc5261-xsd"/>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possible empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
+         <figure>
+            <artwork><![CDATA[<xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:import schemaLocation="rfc5261.xsd"/>
+    <xs:element name="patch">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="add" type="add"/>
+                <xs:element name="remove" type="remove"/>
+                <xs:element name="replace" type="replace"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>]]></artwork>
+         </figure>
+      </section>
+      <section title="Patch Examples" anchor="examples">
+         <t>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for concrete XML patch document examples. Most importantly, the examples in RFC 5261 can be taken literally as examples for the XML Patch media type, as long as it is assumed that the XML namespace for the operation elements in these examples is the URI "urn:ietf:rfc:XXXX".</t>
+      </section>
+      <section title="Security Considerations" anchor="security-considerations">
+         <t>...</t>
+      </section>
+<!--
+      <section title="Change Log">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <section title="From -00 to -01">
+            <t>
+               <list style="symbols">
+                  <t>...</t>
+               </list>
+            </t>
+         </section>
+      </section>
+-->
+   </middle>
+   <back>
+      <references title="Normative References">
+        <reference anchor="RFC2045">
+            <front>
+               <title abbrev="Internet Message Bodies">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</title>
+               <author initials="N." surname="Freed" fullname="Ned Freed">
+                  <organization>Innosoft International, Inc.</organization>
+                  <address>
+                     <postal>
+                        <street>1050 East Garvey Avenue South</street>
+                        <city>West Covina</city>
+                        <region>CA</region>
+                        <code>91790</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 818 919 3600</phone>
+                     <facsimile>+1 818 919 3614</facsimile>
+                     <email>ned@innosoft.com</email>
+                  </address>
+               </author>
+               <author initials="N. S." surname="Borenstein" fullname="Nathaniel S. Borenstein">
+                  <organization>First Virtual Holdings</organization>
+                  <address>
+                     <postal>
+                        <street>25 Washington Avenue</street>
+                        <city>Morristown</city>
+                        <region>NJ</region>
+                        <code>07960</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 201 540 8967</phone>
+                     <facsimile>+1 201 993 3032</facsimile>
+                     <email>nsb@nsb.fv.com</email>
+                  </address>
+               </author>
+               <date month="November" year="1996"/>
+            </front>
+            <seriesInfo name="RFC" value="2045"/>
+         </reference>
+         <reference anchor="RFC2046">
+            <front>
+               <title abbrev="Media Types">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</title>
+               <author initials="N." surname="Freed" fullname="Ned Freed">
+                  <organization>Innosoft International, Inc.</organization>
+                  <address>
+                     <postal>
+                        <street>1050 East Garvey Avenue South</street>
+                        <city>West Covina</city>
+                        <region>CA</region>
+                        <code>91790</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 818 919 3600</phone>
+                     <facsimile>+1 818 919 3614</facsimile>
+                     <email>ned@innosoft.com</email>
+                  </address>
+               </author>
+               <author initials="N." surname="Borenstein" fullname="Nathaniel S. Borenstein">
+                  <organization>First Virtual Holdings</organization>
+                  <address>
+                     <postal>
+                        <street>25 Washington Avenue</street>
+                        <city>Morristown</city>
+                        <region>NJ</region>
+                        <code>07960</code>
+                        <country>US</country>
+                     </postal>
+                     <phone>+1 201 540 8967</phone>
+                     <facsimile>+1 201 993 3032</facsimile>
+                     <email>nsb@nsb.fv.com</email>
+                  </address>
+               </author>
+               <date month="November" year="1996"/>
+            </front>
+            <seriesInfo name="RFC" value="2046"/>
+         </reference>
+         <reference anchor='RFC3023'>
+            <front>
+               <title>XML Media Types</title>
+               <author initials='M.' surname='Murata' fullname='M. Murata'>
+                  <organization /></author>
+               <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
+                  <organization /></author>
+               <author initials='D.' surname='Kohn' fullname='D. Kohn'>
+                  <organization /></author>
+               <date year='2001' month='January' />
+               <abstract>
+                  <t>This document standardizes five new media types - text/xml, application/xml, text/xml-external-parsed-entity, application/xml- external-parsed-entity, and application/xml-dtd - for use in exchanging network entities that are related to the Extensible Markup Language (XML). This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t></abstract>
+            </front>
+            <seriesInfo name='RFC' value='3023' />
+            <format type='TXT' octets='86011' target='http://www.rfc-editor.org/rfc/rfc3023.txt' />
+         </reference>
+         <reference anchor='RFC4288'>
+            <front>
+               <title>Media Type Specifications and Registration Procedures</title>
+               <author initials='N.' surname='Freed' fullname='N. Freed'>
+                  <organization /></author>
+               <author initials='J.' surname='Klensin' fullname='J. Klensin'>
+                  <organization /></author>
+               <date year='2005' month='December' />
+               <abstract>
+                  <t>This document defines procedures for the specification and registration of media types for use in MIME and other Internet protocols. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract></front>
+            
+            <seriesInfo name='BCP' value='13' />
+            <seriesInfo name='RFC' value='4288' />
+            <format type='TXT' octets='52667' target='http://www.rfc-editor.org/rfc/rfc4288.txt' />
+         </reference>
+         <reference anchor='RFC5261'>
+            <front>
+               <title>An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors</title>
+               <author initials='J.' surname='Urpalainen' fullname='J. Urpalainen'>
+                  <organization />
+               </author>
+               <date year='2008' month='September' />
+               <abstract>
+                  <t>Extensible Markup Language (XML) documents are widely used as containers for the exchange and storage of arbitrary data in today's systems.  In order to send changes to an XML document, an entire copy of the new version must be sent, unless there is a means of indicating only the portions that have changed.  This document describes an XML patch framework utilizing XML Path language (XPath) selectors.  These selector values and updated new data content constitute the basis of patch operations described in this document.  In addition to them, with basic &amp;amp;lt;add&amp;amp;gt;, &amp;amp;lt;replace&amp;amp;gt;, and &amp;amp;lt;remove&amp;amp;gt; directives a set of patches can then be applied to update an existing XML document. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>            
+            <seriesInfo name='RFC' value='5261' />
+            <format type='TXT' octets='78036' target='http://www.rfc-editor.org/rfc/rfc5261.txt' />
+         </reference>      
+      </references>
+      <references title="Informative References">
+         <reference anchor='RFC2616'>
+            <front>
+               <title abbrev='HTTP/1.1'>Hypertext Transfer Protocol -- HTTP/1.1</title>
+               <author initials='R.' surname='Fielding' fullname='Roy T. Fielding'>
+                  <organization abbrev='UC Irvine'>Department of Information and Computer Science</organization>
+                  <address>
+                     <postal>
+                     <street>University of California, Irvine</street>
+                     <city>Irvine</city>
+                     <region>CA</region>
+                     <code>92697-3425</code></postal>
+                     <facsimile>+1(949)824-1715</facsimile>
+                     <email>fielding@ics.uci.edu</email>
+                  </address>
+               </author>
+               <author initials='J.' surname='Gettys' fullname='James Gettys'>
+                  <organization abbrev='Compaq/W3C'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>545 Technology Square</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code></postal>
+                     <facsimile>+1(617)258-8682</facsimile>
+                     <email>jg@w3.org</email>
+                  </address>
+               </author>
+               <author initials='J.' surname='Mogul' fullname='Jeffrey C. Mogul'>
+                  <organization abbrev='Compaq'>Compaq Computer Corporation</organization>
+                  <address>
+                     <postal>
+                     <street>Western Research Laboratory</street>
+                     <street>250 University Avenue</street>
+                     <city>Palo Alto</city>
+                     <region>CA</region>
+                     <code>94305</code></postal>
+                     <email>mogul@wrl.dec.com</email>
+                  </address>
+               </author>
+               <author initials='H.' surname='Frystyk' fullname='Henrik Frystyk Nielsen'>
+                  <organization abbrev='W3C/MIT'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>545 Technology Square</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code></postal>
+                     <facsimile>+1(617)258-8682</facsimile>
+                     <email>frystyk@w3.org</email>
+                  </address>
+               </author>
+               <author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+                  <organization abbrev='Xerox'>Xerox Corporation</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>3333 Coyote Hill Road</street>
+                     <city>Palo Alto</city>
+                     <region>CA</region>
+                     <code>94034</code></postal>
+                     <email>masinter@parc.xerox.com</email>
+                  </address>
+               </author>
+               <author initials='P.' surname='Leach' fullname='Paul J. Leach'>
+                  <organization abbrev='Microsoft'>Microsoft Corporation</organization>
+                  <address>
+                     <postal>
+                     <street>1 Microsoft Way</street>
+                     <city>Redmond</city>
+                     <region>WA</region>
+                     <code>98052</code></postal>
+                     <email>paulle@microsoft.com</email>
+                  </address>
+               </author>
+               <author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
+                  <organization abbrev='W3C/MIT'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>545 Technology Square</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code></postal>
+                     <facsimile>+1(617)258-8682</facsimile>
+                     <email>timbl@w3.org</email>
+                  </address>
+               </author>
+               <date year='1999' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is an application-level protocol for distributed, collaborative, hypermedia information systems. It is a generic, stateless, protocol which can be used for many tasks beyond its use for hypertext, such as name servers and distributed object management systems, through extension of its request methods, error codes and headers. A feature of HTTP is the typing and negotiation of data representation, allowing systems to be built independently of the data being transferred.</t>
+                  <t>HTTP has been in use by the World-Wide Web global information initiative since 1990. This specification defines the protocol referred to as "HTTP/1.1", and is an update to RFC 2068.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='2616' />
+            <format type='TXT' octets='422317' target='http://www.rfc-editor.org/rfc/rfc2616.txt' />
+            <format type='PS' octets='5529857' target='http://www.rfc-editor.org/rfc/rfc2616.ps' />
+            <format type='PDF' octets='550558' target='http://www.rfc-editor.org/rfc/rfc2616.pdf' />
+            <format type='HTML' octets='637302' target='http://xml.resource.org/public/rfc/html/rfc2616.html' />
+            <format type='XML' octets='493420' target='http://xml.resource.org/public/rfc/xml/rfc2616.xml' />
+         </reference>
+         <reference anchor='RFC5789'>
+            <front>
+               <title>PATCH Method for HTTP</title>
+               <author initials='L.' surname='Dusseault' fullname='L. Dusseault'>
+                  <organization /></author>
+               <author initials='J.' surname='Snell' fullname='J. Snell'>
+                  <organization /></author>
+               <date year='2010' month='March' />
+               <abstract>
+                  <t>Several applications extending the Hypertext Transfer Protocol (HTTP) require a feature to do partial resource modification.  The existing HTTP PUT method only allows a complete replacement of a document.  This proposal adds a new HTTP method, PATCH, to modify an existing HTTP resource. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='5789' />
+            <format type='TXT' octets='21706' target='http://www.rfc-editor.org/rfc/rfc5789.txt' />
+         </reference>
+      </references>
+      <section title="XSD from RFC 5261" anchor="rfc5261-xsd">
+         <t>For reference, this section contains a copy of the XSD defining the add, replace, and remove types in RFC 5261 <xref target="RFC5261"/>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.</t>
+         <figure>
+            <artwork><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE schema [
+    <!ENTITY ncname "\i\c*">
+    <!ENTITY qname  "(&ncname;:)?&ncname;">
+    <!ENTITY aname  "@&qname;">
+    <!ENTITY pos    "\[\d+\]">
+    <!ENTITY attr   "\[&aname;='(.)*'\]|\[&aname;=&quot;(.)*&quot;\]">
+    <!ENTITY valueq "\[(&qname;|\.)=&quot;(.)*&quot;\]">
+    <!ENTITY value  "\[(&qname;|\.)='(.)*'\]|&valueq;">
+    <!ENTITY cond   "&attr;|&value;|&pos;">
+    <!ENTITY step   "(&qname;|\*)(&cond;)*">
+    <!ENTITY piq    "processing-instruction\((&quot;&ncname;&quot;)\)">
+    <!ENTITY pi     "processing-instruction\(('&ncname;')?\)|&piq;">
+    <!ENTITY id     "id\(('&ncname;')?\)|id\((&quot;&ncname;&quot;)?\)">
+    <!ENTITY com    "comment\(\)">
+    <!ENTITY text   "text\(\)">
+    <!ENTITY nspa   "namespace::&ncname;">
+    <!ENTITY cnodes "(&text;(&pos;)?)|(&com;(&pos;)?)|((&pi;)(&pos;)?)">
+    <!ENTITY child  "&cnodes;|&step;">
+    <!ENTITY last   "(&child;|&aname;|&nspa;)">
+    ]>
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+    
+    <xsd:simpleType name="xpath">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern
+                value="(/)?((&id;)((/&step;)*(/&last;))?|(&step;/)*(&last;))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="xpath-add">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern
+                value="(/)?((&id;)((/&step;)*(/&child;))?|(&step;/)*(&child;))"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="pos">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="before"/>
+            <xsd:enumeration value="after"/>
+            <xsd:enumeration value="prepend"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="type">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="&aname;|&nspa;"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="add">
+        <xsd:complexContent mixed="true">
+            <xsd:restriction base="xsd:anyType">
+                <xsd:sequence>
+                    <xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sel" type="xpath-add"
+                    use="required"/>
+                <xsd:attribute name="pos" type="pos"/>
+                <xsd:attribute name="type" type="type"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:complexType name="replace">
+        <xsd:complexContent mixed="true">
+            <xsd:restriction base="xsd:anyType">
+                <xsd:sequence>
+                    <xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+                <xsd:attribute name="sel" type="xpath" use="required"/>
+            </xsd:restriction>
+        </xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:simpleType name="ws">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="before"/>
+            <xsd:enumeration value="after"/>
+            <xsd:enumeration value="both"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:complexType name="remove">
+        <xsd:attribute name="sel" type="xpath" use="required"/>
+        <xsd:attribute name="ws" type="ws"/>
+    </xsd:complexType>
+    
+</xsd:schema>]]></artwork>
+         </figure>
+      </section>
+<!--
+      <section title="Acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+-->
+</back>
+</rfc>
