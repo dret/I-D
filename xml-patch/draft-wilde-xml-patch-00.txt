@@ -73,13 +73,13 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
    2.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 3
    3.  Patch Document Format . . . . . . . . . . . . . . . . . . . . . 4
-   4.  Patch Examples  . . . . . . . . . . . . . . . . . . . . . . . . 4
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . . . 4
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . . . 4
-     6.2.  Informative References  . . . . . . . . . . . . . . . . . . 5
-   Appendix A.  XSD from RFC 5261  . . . . . . . . . . . . . . . . . . 5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 7
+   4.  Patch Examples  . . . . . . . . . . . . . . . . . . . . . . . . 5
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . . . 6
+     6.2.  Informative References  . . . . . . . . . . . . . . . . . . 6
+   Appendix A.  XSD from RFC 5261  . . . . . . . . . . . . . . . . . . 7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 9
 
 
 
@@ -154,12 +154,12 @@ Internet-Draft                  XML Patch                   January 2013
       "application/xml" as specified in RFC 3023 [1].
 
       Encoding considerations: Same as encoding considerations of media
-      type "application/xml" as specified in [1].
+      type "application/xml" as specified in RFC 3023 [1].
 
       Security considerations: This media type has all of the security
-      considerations described in [1], plus those listed in Section 5.
+      considerations described in RFC 3023 [1] and RFC 5261 [2], plus
+      those listed in Section 5.
 
-      Interoperability considerations: N/A
 
 
 
@@ -168,6 +168,8 @@ Wilde & Nottingham        Expires July 18, 2013                 [Page 3]
 
 Internet-Draft                  XML Patch                   January 2013
 
+
+      Interoperability considerations: N/A
 
       Published specification: RFC XXXX
 
@@ -178,7 +180,7 @@ Internet-Draft                  XML Patch                   January 2013
 
          Magic number(s): N/A
 
-         File extension(s): XML data should use ".xml" as the file
+         File extension(s): XML documents should use ".xml" as the file
          extension.
 
          Macintosh file type code(s): TEXT
@@ -197,12 +199,92 @@ Internet-Draft                  XML Patch                   January 2013
 
 3.  Patch Document Format
 
-   ...
+   The XML patch document format is based on a simple schema that uses a
+   "patch" element as the document element, and allows a arbitrary
+   sequence of "add", "remove", and "replace" elements as the children
+   of the document element.  These children follow the semantics defined
+   in RFC 5261, which means that each element is treated as an
+   individual patch operation, and the result of each patch operation is
+   a patched XML document that is the target XML document for the next
+   patch operation.
+
+   The following example patch document uses the example from RFC 5261,
+   and simply uses a "patch" element and a new XML namespace.  It shows
+   the general structure of an XML patch document, as well as an example
+   for each operation.
+
+
+
+
+
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 4]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
+<p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
+    xmlns:p="urn:ietf:rfc:XXXX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:ietf:rfc:XXXX patch-document-00.xsd">
+    <p:add sel="doc/elem[@a='foo']">
+        <!-- This is a new child -->
+        <child id="ert4773">
+            <y:node/>
+        </child>
+    </p:add>
+    <p:replace sel="doc/note/text()">Patched doc</p:replace>
+    <p:remove sel="*/elem[@a='bar']/y:child" ws="both"/>
+    <p:add sel="*/elem[@a='bar']" type="@b">new attr</p:add>
+</p:patch>
+
+   As this example demonstrates, both the document element "patch" and
+   the patch operation elements are in the same XML namespace.  This is
+   the result of RFC 5261 only defining types for the patch operation
+   elements, which then can be reused in schemas to define concrete
+   patch elements.
+
+   RFC 5261 defines an XML Schema (XSD) for the patch operation types,
+   which is included for reference Appendix A.  The normative version of
+   this schema is the one given in RFC 5261.  The following schema for
+   the XML Patch media type is based on the types defined in RFC 5261,
+   which are imported as "rfc5261.xsd" in the following schema.  The
+   schema defines a "patch" document element, and then allows an
+   unlimited (and possible empty) sequence of the "add", "remove", and
+   "replace" operation elements, which are directly based on the
+   respective types from the schema defined in RFC 5261.
+<xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:import schemaLocation="rfc5261.xsd"/>
+    <xs:element name="patch">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="add" type="add"/>
+                <xs:element name="remove" type="remove"/>
+                <xs:element name="replace" type="replace"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
 
 
 4.  Patch Examples
 
-   ...
+   Since the semantics of the XML patch operations are defined by RFC
+   5261, please refer to the numerous examples in that specification for
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 5]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
+   concrete XML patch document examples.  Most importantly, the examples
+   in RFC 5261 can be taken literally as examples for the XML Patch
+   media type, as long as it is assumed that the XML namespace for the
+   operation elements in these examples is the URI "urn:ietf:rfc:XXXX".
 
 
 5.  Security Considerations
@@ -216,14 +298,6 @@ Internet-Draft                  XML Patch                   January 2013
 
    [1]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
         RFC 3023, January 2001.
-
-
-
-
-Wilde & Nottingham        Expires July 18, 2013                 [Page 4]
-
-Internet-Draft                  XML Patch                   January 2013
-
 
    [2]  Urpalainen, J., "An Extensible Markup Language (XML) Patch
         Operations Framework Utilizing XML Path Language (XPath)
@@ -256,6 +330,13 @@ URIs
    [9]  <https://github.com/dret/I-D/tree/master/xml-patch>
 
 
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 6]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
 Appendix A.  XSD from RFC 5261
 
    For reference, this section contains a copy of the XSD defining the
@@ -273,14 +354,6 @@ Appendix A.  XSD from RFC 5261
     <!ENTITY value  "\[(&qname;|\.)='(.)*'\]|&valueq;">
     <!ENTITY cond   "&attr;|&value;|&pos;">
     <!ENTITY step   "(&qname;|\*)(&cond;)*">
-
-
-
-Wilde & Nottingham        Expires July 18, 2013                 [Page 5]
-
-Internet-Draft                  XML Patch                   January 2013
-
-
     <!ENTITY piq    "processing-instruction\((&quot;&ncname;&quot;)\)">
     <!ENTITY pi     "processing-instruction\(('&ncname;')?\)|&piq;">
     <!ENTITY id     "id\(('&ncname;')?\)|id\((&quot;&ncname;&quot;)?\)">
@@ -312,6 +385,14 @@ Internet-Draft                  XML Patch                   January 2013
     <xsd:simpleType name="pos">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="before"/>
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 7]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
             <xsd:enumeration value="after"/>
             <xsd:enumeration value="prepend"/>
         </xsd:restriction>
@@ -329,14 +410,6 @@ Internet-Draft                  XML Patch                   January 2013
                 <xsd:sequence>
                     <xsd:any processContents="lax" namespace="##any"
                         minOccurs="0" maxOccurs="unbounded"/>
-
-
-
-Wilde & Nottingham        Expires July 18, 2013                 [Page 6]
-
-Internet-Draft                  XML Patch                   January 2013
-
-
                 </xsd:sequence>
                 <xsd:attribute name="sel" type="xpath-add"
                     use="required"/>
@@ -368,6 +441,14 @@ Internet-Draft                  XML Patch                   January 2013
 
     <xsd:complexType name="remove">
         <xsd:attribute name="sel" type="xpath" use="required"/>
+
+
+
+Wilde & Nottingham        Expires July 18, 2013                 [Page 8]
+
+Internet-Draft                  XML Patch                   January 2013
+
+
         <xsd:attribute name="ws" type="ws"/>
     </xsd:complexType>
 
@@ -380,17 +461,6 @@ Authors' Addresses
    EMC
 
    Email: erik.wilde@emc.com
-
-
-
-
-
-
-
-
-Wilde & Nottingham        Expires July 18, 2013                 [Page 7]
-
-Internet-Draft                  XML Patch                   January 2013
 
 
    Mark Nottingham
@@ -430,19 +500,5 @@ Internet-Draft                  XML Patch                   January 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wilde & Nottingham        Expires July 18, 2013                 [Page 8]
+Wilde & Nottingham        Expires July 18, 2013                 [Page 9]
 

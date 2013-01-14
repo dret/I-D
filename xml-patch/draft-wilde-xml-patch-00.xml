@@ -51,15 +51,15 @@
                <t>Subtype name: xml-patch</t>
                <t>Required parameters: none</t>
                <t>Optional parameters: Same as charset parameter for the media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
-               <t>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in <xref target="RFC3023"/>.</t>
-               <t>Security considerations: This media type has all of the security considerations described in <xref target="RFC3023"/>, plus those listed in <xref target="security-considerations"/>.</t>
+               <t>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+               <t>Security considerations: This media type has all of the security considerations described in RFC 3023 <xref target="RFC3023"/> and  RFC 5261 <xref target="RFC5261"/>, plus those listed in <xref target="security-considerations"/>.</t>
                <t>Interoperability considerations: N/A</t>
                <t>Published specification: RFC XXXX</t>
                <t>Applications that use this media type: Applications that manipulate XML documents.</t>
                <t>Additional information:
                   <list>
                      <t>Magic number(s): N/A</t>
-                     <t>File extension(s): XML data should use ".xml" as the file extension.</t>
+                     <t>File extension(s): XML documents should use ".xml" as the file extension.</t>
                      <t>Macintosh file type code(s): TEXT</t>
                   </list>
                </t>
@@ -72,20 +72,48 @@
          </t>
       </section>
       <section title="Patch Document Format" anchor="schema">
-         <t>...</t>
-         <section title="Schema Definition" anchor="schema-definition">
-            <t>... <xref target="rfc5261-xsd"/></t>
-            <figure>
-               <artwork><![CDATA[...]]></artwork>
-            </figure>
+         <t>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows a arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.</t>
+         <t>The following example patch document uses the example from RFC 5261, and simply uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example for each operation.</t>
+         <figure>
+            <artwork><![CDATA[<p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
+    xmlns:p="urn:ietf:rfc:XXXX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:ietf:rfc:XXXX patch-document-00.xsd">
+    <p:add sel="doc/elem[@a='foo']">
+        <!-- This is a new child -->
+        <child id="ert4773">
+            <y:node/>
+        </child>
+    </p:add>
+    <p:replace sel="doc/note/text()">Patched doc</p:replace>
+    <p:remove sel="*/elem[@a='bar']/y:child" ws="both"/>
+    <p:add sel="*/elem[@a='bar']" type="@b">new attr</p:add>
+</p:patch>]]></artwork>
+         </figure>
+         <t>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.</t>
+         <t>RFC 5261 defines an XML Schema (XSD) for the patch operation types, which is included for reference in <xref target="rfc5261-xsd"/>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possible empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
+         <figure>
+            <artwork><![CDATA[<xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:import schemaLocation="rfc5261.xsd"/>
+    <xs:element name="patch">
+        <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="add" type="add"/>
+                <xs:element name="remove" type="remove"/>
+                <xs:element name="replace" type="replace"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>]]></artwork>
+         </figure>
       </section>
       <section title="Patch Examples" anchor="examples">
-         <t>...</t>
+         <t>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for concrete XML patch document examples. Most importantly, the examples in RFC 5261 can be taken literally as examples for the XML Patch media type, as long as it is assumed that the XML namespace for the operation elements in these examples is the URI "urn:ietf:rfc:XXXX".</t>
       </section>
       <section title="Security Considerations" anchor="security-considerations">
          <t>...</t>
       </section>
-      <!--
+<!--
       <section title="Change Log">
          <t>Note to RFC Editor: Please remove this section before publication.</t>
          <section title="From -00 to -01">
