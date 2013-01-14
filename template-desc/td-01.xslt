@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:td="urn:ietf:rfc:9999">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:td="urn:ietf:rfc:XXXX" exclude-result-prefixes="td">
+    <xsl:output method="html"/>
     <xsl:template match="td:td">
         <html>
             <head>
