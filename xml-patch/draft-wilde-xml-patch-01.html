@@ -1,0 +1,531 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>A Media Type for XML Patch Operations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="A Media Type for XML Patch Operations">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">January 16, 2013</td></tr>
+<tr><td class="header">Expires: July 20, 2013</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-01</h1>
+
+<h3>Abstract</h3>
+
+<p>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.
+</p>
+<h3>Note to Readers</h3>
+
+<p>This draft should be discussed on the <a href='https://www.ietf.org/mailman/listinfo/apps-discuss'>apps-discuss mailing list</a>.
+</p>
+<p>Online access to all versions and files is available at <a href='https://github.com/dret/I-D/tree/master/xml-patch'>github</a>.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on July 20, 2013.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2013 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+<a href="#iana">2.</a>&nbsp;
+IANA Considerations<br />
+<a href="#schema">3.</a>&nbsp;
+Patch Document Format<br />
+<a href="#examples">4.</a>&nbsp;
+Patch Examples<br />
+<a href="#security-considerations">5.</a>&nbsp;
+Security Considerations<br />
+<a href="#anchor2">6.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">6.1.</a>&nbsp;
+From -00 to -01<br />
+<a href="#rfc.references1">7.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
+Informative References<br />
+<a href="#rfc5261-xsd">Appendix&nbsp;A.</a>&nbsp;
+XSD from RFC 5261<br />
+<a href="#rfc5261-abnf">Appendix&nbsp;B.</a>&nbsp;
+ABNF for RFC 5261<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Author's Address<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>The Extensible Markup Language (XML) <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a> is a common format for the exchange and storage of structured data. HTTP PATCH <a class='info' href='#RFC5789'>[6]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a> extends HTTP <a class='info' href='#RFC2616'>[7]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a> with a method to perform partial modifications to resources. HTTP PATCH requires that patch documents are being sent along with the request, and it is therefore useful if there are standardized patch document formats (identified by media types) for popular media types.
+</p>
+<p>The XML Patch media type "application/xml-patch+xml" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. Servers can freely choose which patch formats they want to accept, and "application/xml-patch+xml" could be a simple default format that can be used unless a server decides to use a different (maybe more sophisticated) patch format for XML.
+</p>
+<p>The format for patch documents is based on the XML Patch Framework defined in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XSD types for patch operations, and thus the concrete document format and the media type for patch operations are defined in an XSD defined in this specification.
+</p>
+<a name="iana"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+IANA Considerations</h3>
+
+<p>The Internet media type <a class='info' href='#RFC4288'>[3]<span> (</span><span class='info'>Freed, N. and J. Klensin, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; December&nbsp;2005.</span><span>)</span></a> for an XML Patch Document is application/xml-patch+xml.
+</p>
+<p>
+            </p>
+<blockquote class="text">
+<p>Type name: application
+</p>
+<p>Subtype name: xml-patch+xml
+</p>
+<p>Required parameters: none
+</p>
+<p>Optional parameters: Same as charset parameter for the media type "application/xml" as specified in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
+</p>
+<p>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
+</p>
+<p>Security considerations: This media type has all of the security considerations described in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a> and  RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;5<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+</p>
+<p>Interoperability considerations: N/A
+</p>
+<p>Published specification: RFC XXXX
+</p>
+<p>Applications that use this media type: Applications that manipulate XML documents.
+</p>
+<p>Additional information:
+                  </p>
+<blockquote class="text">
+<p>Magic number(s): N/A
+</p>
+<p>File extension(s): XML documents should use ".xml" as the file extension.
+</p>
+<p>Macintosh file type code(s): TEXT
+</p>
+</blockquote>
+               
+
+<p>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com>
+</p>
+<p>Intended usage: COMMON
+</p>
+<p>Restrictions on usage: none
+</p>
+<p>Author: Erik Wilde &lt;erik.wilde@emc.com>
+</p>
+<p>Change controller: IETF
+</p>
+</blockquote><p>
+         
+</p>
+<a name="schema"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Patch Document Format</h3>
+
+<p>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows a arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.
+</p>
+<p>The following example patch document uses the example from RFC 5261, and simply uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example for each operation.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
+    xmlns:p="urn:ietf:rfc:XXXX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:ietf:rfc:XXXX patch-document-00.xsd"&gt;
+    &lt;p:add sel="doc/elem[@a='foo']"&gt;
+        &lt;!-- This is a new child --&gt;
+        &lt;child id="ert4773"&gt;
+            &lt;y:node/&gt;
+        &lt;/child&gt;
+    &lt;/p:add&gt;
+    &lt;p:replace sel="doc/note/text()"&gt;Patched doc&lt;/p:replace&gt;
+    &lt;p:remove sel="*/elem[@a='bar']/y:child" ws="both"/&gt;
+    &lt;p:add sel="*/elem[@a='bar']" type="@b"&gt;new attr&lt;/p:add&gt;
+&lt;/p:patch&gt;</pre></div>
+<p>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.
+</p>
+<p>RFC 5261 defines an XML Schema (XSD) for the patch operation types, which is included for reference in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A<span> (</span><span class='info'>XSD from RFC 5261</span><span>)</span></a>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possible empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"&gt;
+    &lt;xs:import schemaLocation="rfc5261.xsd"/&gt;
+    &lt;xs:element name="patch"&gt;
+        &lt;xs:complexType&gt;
+            &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
+                &lt;xs:element name="add" type="add"/&gt;
+                &lt;xs:element name="remove" type="remove"/&gt;
+                &lt;xs:element name="replace" type="replace"/&gt;
+            &lt;/xs:choice&gt;
+        &lt;/xs:complexType&gt;
+    &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</pre></div>
+<a name="examples"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Patch Examples</h3>
+
+<p>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for concrete XML patch document examples. Most importantly, the examples in RFC 5261 can be taken literally as examples for the XML Patch media type, as long as it is assumed that the XML namespace for the operation elements in these examples is the URI "urn:ietf:rfc:XXXX".
+</p>
+<a name="security-considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Security Considerations</h3>
+
+<p>...
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+Change Log</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+From -00 to -01</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Removed Mark Nottingham from author list.
+</li>
+<li>Changed media type name to application/xml-patch+xml (added suffix per draft-ietf-appsawg-media-type-suffix-regs)
+</li>
+<li>Added ABNF grammar derived from XSD (<a class='info' href='#rfc5261-abnf'>Appendix&nbsp;B<span> (</span><span class='info'>ABNF for RFC 5261</span><span>)</span></a>)
+</li>
+</ul><p>
+            
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC3023">[1]</a></td>
+<td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5261">[2]</a></td>
+<td class="author-text">Urpalainen, J., &ldquo;<a href="http://tools.ietf.org/html/rfc5261">An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors</a>,&rdquo; RFC&nbsp;5261, September&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5261.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4288">[3]</a></td>
+<td class="author-text">Freed, N. and J. Klensin, &ldquo;<a href="http://tools.ietf.org/html/rfc4288">Media Type Specifications and Registration Procedures</a>,&rdquo; BCP&nbsp;13, RFC&nbsp;4288, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4288.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2045">[4]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2046">[5]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>,&rdquo; RFC&nbsp;2046, November&nbsp;1996.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>7.2.&nbsp;Informative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC5789">[6]</a></td>
+<td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2616">[7]</a></td>
+<td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
+</table>
+
+<a name="rfc5261-xsd"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+XSD from RFC 5261</h3>
+
+<p>For reference, this section contains a copy of the XSD defining the add, replace, and remove types in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE schema [
+    &lt;!ENTITY ncname "\i\c*"&gt;
+    &lt;!ENTITY qname  "(&amp;ncname;:)?&amp;ncname;"&gt;
+    &lt;!ENTITY aname  "@&amp;qname;"&gt;
+    &lt;!ENTITY pos    "\[\d+\]"&gt;
+    &lt;!ENTITY attr   "\[&amp;aname;='(.)*'\]|\[&amp;aname;=&amp;quot;(.)*&amp;quot;\]"&gt;
+    &lt;!ENTITY valueq "\[(&amp;qname;|\.)=&amp;quot;(.)*&amp;quot;\]"&gt;
+    &lt;!ENTITY value  "\[(&amp;qname;|\.)='(.)*'\]|&amp;valueq;"&gt;
+    &lt;!ENTITY cond   "&amp;attr;|&amp;value;|&amp;pos;"&gt;
+    &lt;!ENTITY step   "(&amp;qname;|\*)(&amp;cond;)*"&gt;
+    &lt;!ENTITY piq    "processing-instruction\((&amp;quot;&amp;ncname;&amp;quot;)\)"&gt;
+    &lt;!ENTITY pi     "processing-instruction\(('&amp;ncname;')?\)|&amp;piq;"&gt;
+    &lt;!ENTITY id     "id\(('&amp;ncname;')?\)|id\((&amp;quot;&amp;ncname;&amp;quot;)?\)"&gt;
+    &lt;!ENTITY com    "comment\(\)"&gt;
+    &lt;!ENTITY text   "text\(\)"&gt;
+    &lt;!ENTITY nspa   "namespace::&amp;ncname;"&gt;
+    &lt;!ENTITY cnodes "(&amp;text;(&amp;pos;)?)|(&amp;com;(&amp;pos;)?)|((&amp;pi;)(&amp;pos;)?)"&gt;
+    &lt;!ENTITY child  "&amp;cnodes;|&amp;step;"&gt;
+    &lt;!ENTITY last   "(&amp;child;|&amp;aname;|&amp;nspa;)"&gt;
+    ]&gt;
+&lt;xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"&gt;
+
+    &lt;xsd:simpleType name="xpath"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:pattern
+                value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;last;))?|(&amp;step;/)*(&amp;last;))"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:simpleType name="xpath-add"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:pattern
+                value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;child;))?|(&amp;step;/)*(&amp;child;))"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:simpleType name="pos"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:enumeration value="before"/&gt;
+            &lt;xsd:enumeration value="after"/&gt;
+            &lt;xsd:enumeration value="prepend"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:simpleType name="type"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:pattern value="&amp;aname;|&amp;nspa;"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:complexType name="add"&gt;
+        &lt;xsd:complexContent mixed="true"&gt;
+            &lt;xsd:restriction base="xsd:anyType"&gt;
+                &lt;xsd:sequence&gt;
+                    &lt;xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="unbounded"/&gt;
+                &lt;/xsd:sequence&gt;
+                &lt;xsd:attribute name="sel" type="xpath-add"
+                    use="required"/&gt;
+                &lt;xsd:attribute name="pos" type="pos"/&gt;
+                &lt;xsd:attribute name="type" type="type"/&gt;
+            &lt;/xsd:restriction&gt;
+        &lt;/xsd:complexContent&gt;
+    &lt;/xsd:complexType&gt;
+
+    &lt;xsd:complexType name="replace"&gt;
+        &lt;xsd:complexContent mixed="true"&gt;
+            &lt;xsd:restriction base="xsd:anyType"&gt;
+                &lt;xsd:sequence&gt;
+                    &lt;xsd:any processContents="lax" namespace="##any"
+                        minOccurs="0" maxOccurs="1"/&gt;
+                &lt;/xsd:sequence&gt;
+                &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
+            &lt;/xsd:restriction&gt;
+        &lt;/xsd:complexContent&gt;
+    &lt;/xsd:complexType&gt;
+
+    &lt;xsd:simpleType name="ws"&gt;
+        &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:enumeration value="before"/&gt;
+            &lt;xsd:enumeration value="after"/&gt;
+            &lt;xsd:enumeration value="both"/&gt;
+        &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+
+    &lt;xsd:complexType name="remove"&gt;
+        &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
+        &lt;xsd:attribute name="ws" type="ws"/&gt;
+    &lt;/xsd:complexType&gt;
+
+&lt;/xsd:schema&gt;</pre></div>
+<a name="rfc5261-abnf"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+ABNF for RFC 5261</h3>
+
+<p>RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types (which is shown in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A<span> (</span><span class='info'>XSD from RFC 5261</span><span>)</span></a>). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions given in RFC 5261. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>ncname     =  1*%x00-ffffffff
+qname      =  [ ncname ":" ] ncname
+aname      =  "@" qname
+pos        =  "[" 1*DIGIT "]"
+attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) / ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
+valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
+value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
+cond       =  attr / value / pos
+step       =  ( qname / "*" ) 0*( cond )
+piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
+pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
+id         =  ( "id(" [ "'" ncname "'" ] ")" ) / ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
+com        =  "comment()"
+text       =  "text()"
+nspa       =  "namespace::" ncname
+cnodes     =  ( text / com / pi ) [ pos ]
+child      =  cnodes / step
+last       =  child / aname / nspa
+xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) / ( 0*( step "/" ) last ) )
+xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) / ( 0*( step "/" ) child ) )</pre></div>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Erik Wilde</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">EMC</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+</table>
+</body></html>
