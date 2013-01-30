@@ -1,0 +1,336 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                           EMC Corporation
+Intended status: Informational                          October 17, 2012
+Expires: April 20, 2013
+
+
+                   The 'describes' Link Relation Type
+                     draft-wilde-describes-link-02
+
+Abstract
+
+   This specification defines the 'describes' link relation type that
+   allows resource representations to indicate that they are describing
+   another resource.  In contexts where applications want to associate
+   described resources and description resources, and want to build
+   services based on these associations, the 'describes' link relation
+   type provides the opposite direction of the 'describedby' link
+   relation type, which already is a registered link relation type.
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on April 20, 2013.
+
+Copyright Notice
+
+   Copyright (c) 2012 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 1]
+
+Internet-Draft            "describes" Link Type             October 2012
+
+
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+   3.  Resource Descriptions . . . . . . . . . . . . . . . . . . . . . 3
+   4.  Use Case  . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . . . 5
+   7.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+     7.1.  From -01 to -02 . . . . . . . . . . . . . . . . . . . . . . 5
+     7.2.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 6
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 6
+     8.2.  Informative References  . . . . . . . . . . . . . . . . . . 6
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 6
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 2]
+
+Internet-Draft            "describes" Link Type             October 2012
+
+
+1.  Introduction
+
+   Resources on the Web can be identified by any (registered) URI scheme
+   and can be represented by any (registered) media type.  In many
+   cases, applications establish specific (i.e., typed) relations
+   between the resources they are concerned with, which can either be
+   under their control, or controlled by another authority.  A common
+   usage pattern for associating resources is to have resources which
+   are descriptions of other resources.  This specification registers
+   the 'describes' link relation, which allows applications to represent
+   the fact that one resource is a description of another resource.
+
+   RFC 5988 [1] "defines a framework for typed links that isn't specific
+   to a particular serialisation or application.  It does so by
+   redefining the link relation registry established by Atom to have a
+   broader domain, and adding to it the relations that are defined by
+   HTML."  This registration request intends to augment the link
+   relation registry with a link relation that is the inverse of the
+   already registered 'describedby' relation, so that links between
+   described resources and describing resources can be represented in
+   both directions.
+
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [2].
+
+
+3.  Resource Descriptions
+
+   Associating resources with descriptions of these resources is a
+   recurring pattern on the Web. The IANA link relation registry
+   established by RFC 5988 [1] currently contains a 'describedby' link
+   relation type, which has been registered by POWDER [3].  The
+   definition given in that registration is as follows: "The
+   relationship A 'describedby' B asserts that resource B provides a
+   description of resource A. There are no constraints on the format or
+   representation of either A or B, neither are there any further
+   constraints on either resource."
+
+   Since many scenarios using resource descriptions need to represent
+   the fact that some resource describes a resource (the opposite of the
+   'describedby' relation), this document registers a 'describes' link
+   relation type.  Establishing a link A 'describes' B asserts that the
+   resource identified by A is a description of the resource identified
+   by B, without constraining in any way the identifiers being used for
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 3]
+
+Internet-Draft            "describes" Link Type             October 2012
+
+
+   A and B, and the media types for the representations being provided,
+   when those identifiers are dereferenced.  Specifically, it is
+   possible that identifiers A and/or B have no associated interaction
+   method (they could be URNs, for example), but it still is valid to
+   establish the A 'describes' B link.
+
+   Another design freedom is to use "chains" of 'describes' (or
+   'describedby') links, so that one resource is a description of
+   another resource, which in turn is a description of yet another
+   resource.  The "levels" of descriptions can go as deep as required by
+   an application, and are not constrained by this specification.
+
+
+4.  Use Case
+
+   Starting from the POWDER document specifying the 'describedby' link
+   relation [3], the use case for the 'describedby' link relation is
+   that a described resource, such as a HTML Web page, can specify a
+   link where clients can find a description of this resource.  While
+   the 'describedby' link relation is defined to be independent of
+   specific formats and representations, within the context of POWDER,
+   the assumption is that the linked resources most often will provide
+   an RDF-based description, for example providing metadata about a
+   document's author and other provenance information.
+
+   The 'describes' link relation allows servers hosting description
+   resources to associate those description resources with the resources
+   that they are describing.  In the RDF-oriented scenario of POWDER,
+   this means that a service managing description resources would use
+   'describes' links to represent the fact that the description
+   resources it exposes provide some description of the described
+   resource, very likely in some RDF representation.  However, since
+   link relations are independent of resource formats or
+   representations, such an association could also be made in other
+   formats such as XML or JSON, allowing servers to use a single and
+   consistent link relation to associate description resources with
+   described resources.
+
+   Generally speaking, the idea of the 'describes' relation is the same
+   as the idea of the 'describedby' relation: to be independent of
+   specific formats and representations of both described resources and
+   description resources.  The 'describes' link relation (together with
+   the already registered 'describedby' link relation) thus serves as a
+   general foundation of how described resources and description
+   resources can be associated.
+
+
+
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 4]
+
+Internet-Draft            "describes" Link Type             October 2012
+
+
+5.  IANA Considerations
+
+   The link relation type below has been registered by IANA per Section
+   6.2.1 of RFC 5988 [1]:
+
+      Relation Name: describes
+
+      Description: The relationship A 'describes' B asserts that
+      resource A provides a description of resource B. There are no
+      constraints on the format or representation of either A or B,
+      neither are there any further constraints on either resource.
+
+      Reference: [[ This document ]]
+
+      Notes: This link relation type is intended to be the inverse of
+      the already existing 'describedby' relation type, thus allowing
+      links to be established from the describing resource to the
+      described resource.
+
+
+6.  Security Considerations
+
+   Resource descriptions SHOULD never be treated as authoritative or
+   exclusive without relying on additional mechanisms for trust and
+   security.  Resources can have many (possible conflicting)
+   descriptions, and the 'describes' link relation type makes no claim
+   whatsoever about the authority of the party providing the association
+   between the two resources, or about the authority of the party
+   providing the description resource.  Before making any assumptions
+   about the authority of the description resource (both the accuracy of
+   the description contained in the description resource, and the
+   authority to provide a description of the described resource),
+   clients need a context that allows them to understand both the
+   authority of the description itself, and the authority to establish
+   the 'describes' relation.  Nobody can stop clients from providing
+   misleading unauthorized and/or descriptions, and clients need to have
+   both a security and trust framework to allow them to choose between
+   trusted and untrusted descriptions.
+
+
+7.  Change Log
+
+   Note to RFC Editor: Please remove this section before publication.
+
+7.1.  From -01 to -02
+
+
+
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 5]
+
+Internet-Draft            "describes" Link Type             October 2012
+
+
+   o  Changed category from "Standard" to "Informational".
+
+   o  Minor textual changes.
+
+7.2.  From -00 to -01
+
+   o  Added "Use Case" section (Section 4).
+
+   o  Improved Security Considerations.
+
+   o  Minor textual improvements.
+
+
+8.  References
+
+8.1.  Normative References
+
+   [1]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+   [2]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", RFC 2119, March 1997.
+
+8.2.  Informative References
+
+   [3]  Archer, P., Smith, K., and A. Perego, "Protocol for Web
+        Description Resources (POWDER): Description Resources", World
+        Wide Web Consortium Recommendation REC-powder-dr-20090901,
+        September 2009,
+        <http://www.w3.org/TR/2009/REC-powder-dr-20090901/>.
+
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by Mark Nottingham.
+
+
+Author's Address
+
+   Erik Wilde
+   EMC Corporation
+   6801 Koll Center Parkway
+   Pleasanton, CA 94566
+   U.S.A.
+
+   Phone: +1-925-6006244
+   Email: erik.wilde@emc.com
+   URI:   http://dret.net/netdret/
+
+
+
+
+Wilde                    Expires April 20, 2013                 [Page 6]
+
