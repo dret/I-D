@@ -66,7 +66,7 @@
 			<section title="Why text/csv Fragment Identifiers?" anchor="why">
 				<t>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <xref target="RFC3986"/> optionally includes a so-called "fragment identifier", separated by a number sign ("#"). The fragment identifier consists of additional reference information to be interpreted by the client after the retrieval action has been successfully completed. The semantics of a fragment identifier is a property of the media type resulting from a retrieval action, regardless of the URI scheme used in the URI reference. Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.</t>
 				<section title="Motivation">
-					<t>Similar to the motivation in RFC 5147 <xref target="RFC5147"/>, which defines fragment identifiers for plain text files, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's MIME registration (see <xref target="TypeReg"/>), many media types do not have fragment identification methods associated with them.</t>
+					<t>Similar to the motivation in RFC 5147 <xref target="RFC5147"/>, which defines fragment identifiers for plain text files, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's registration (see <xref target="RFC6838"/>), many media types do not have fragment identification methods associated with them.</t>
 					<t>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.</t>
 				</section>
 				<section title="Use Cases">
@@ -443,18 +443,26 @@ number       =  1*( DIGIT )</artwork>
 				</front>
 				<seriesInfo name="RFC" value="5147"/>
 			</reference>
-			<reference anchor="TypeReg">
+			<reference anchor='RFC6838'>
 				<front>
-					<title abbrev="Media Type Registration">Media Type Specifications and Registration Procedures</title>
-					<author initials="N." surname="Freed" fullname="Ned Freed">
-						<organization>Sun Microsystems</organization>
+					<title>Media Type Specifications and Registration Procedures</title>
+					<author initials='N.' surname='Freed' fullname='N. Freed'>
+						<organization />
 					</author>
-					<author initials="J." surname="Klensin" fullname="John C. Klensin">
-						<organization/>
+					<author initials='J.' surname='Klensin' fullname='J. Klensin'>
+						<organization />
 					</author>
-					<date month="December" year="2005"/>
+					<author initials='T.' surname='Hansen' fullname='T. Hansen'>
+						<organization />
+					</author>
+					<date year='2013' month='January' />
+					<abstract>
+						<t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols.  This memo documents an Internet Best Current Practice.</t>
+					</abstract>
 				</front>
-				<seriesInfo name="RFC" value="4288"/>
+				<seriesInfo name='BCP' value='13' />
+				<seriesInfo name='RFC' value='6838' />
+				<format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
 			</reference>
 		</references>
 		<section title="Acknowledgements">
