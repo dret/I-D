@@ -219,7 +219,7 @@ References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
-Informative References<br />
+Non-Normative References<br />
 <a href="#rfc5261-xsd">Appendix&nbsp;A.</a>&nbsp;
 XSD from RFC 5261<br />
 <a href="#rfc5261-abnf">Appendix&nbsp;B.</a>&nbsp;
@@ -300,7 +300,7 @@ IANA Considerations</h3>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Patch Document Format</h3>
 
-<p>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows a arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.
+<p>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.
 </p>
 <p>The following example patch document uses the example from RFC 5261, and simply uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example for each operation.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
@@ -318,7 +318,7 @@ Patch Document Format</h3>
 &lt;/p:patch&gt;</pre></div>
 <p>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.
 </p>
-<p>RFC 5261 defines an XML Schema (XSD) for the patch operation types, which is included for reference in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A<span> (</span><span class='info'>XSD from RFC 5261</span><span>)</span></a>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possible empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.
+<p>RFC 5261 defines an XML Schema (XSD) for the patch operation types, which is included for reference in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A<span> (</span><span class='info'>XSD from RFC 5261</span><span>)</span></a>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;xs:schema targetNamespace="urn:ietf:rfc:XXXX"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"&gt;
     &lt;xs:import schemaLocation="rfc5261.xsd"/&gt;
@@ -360,9 +360,9 @@ Namespace Matching Rules</h3>
 
 <p>RFC 5261 defines standard rules for matching prefixed names in expressions: Any prefixes are interpreted according to the namespace bindings of the diff document (the document that the expression is applied against). This means that each prefixed name can be interpreted in the context of the diff document.
 </p>
-<p>For unprefixed names in expressions, the rules depart from XPath 1.0 <a class='info' href='#W3C.REC-xpath-19991116'>[8]<span> (</span><span class='info'>DeRose, S. and J. Clark, &ldquo;XML Path Language (XPath) Version 1.0,&rdquo; November&nbsp;1999.</span><span>)</span></a>. XPath 1.0 requires that unprefixed names in expressions match unprefixed names in the document. However, RFC 5261 requires that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate selectors in the context of the diff document.
+<p>For unprefixed names in expressions, the rules depart from XPath 1.0 <a class='info' href='#W3C.REC-xpath-19991116'>[8]<span> (</span><span class='info'>DeRose, S. and J. Clark, &ldquo;XML Path Language (XPath) Version 1.0,&rdquo; November&nbsp;1999.</span><span>)</span></a>. XPath 1.0 defines that unprefixed names in expressions match namespace-less names (i.e., there is no "default namespace" for names used in XPath 1.0 expressions). RFC 5261 requires, however, that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate XMPL Patch selectors in the context of the diff document.
 </p>
-<p>As an alternative, XPath 2.0 <a class='info' href='#W3C.REC-xpath20-20101214'>[9]<span> (</span><span class='info'>Boag, S., Berglund, A., Kay, M., Simeon, J., Robie, J., Chamberlin, D., and M. Fernandez, &ldquo;XML Path Language (XPath) 2.0 (Second Edition),&rdquo; December&nbsp;2010.</span><span>)</span></a> specifies different processing rules for unprefixed names: They are matched against the URI of the "default element/type namespace", which is defined as part of an expression's static context. In some XPath 2.0 applications this can be set; XSLT 2.0 for example has the ability to define an "xpath-default-namespace", which then will be used to match unprefixed names. Thus, by using an XPath 2.0 implementation that allows to set this URI, and setting it to the default namespace of the diff document (or leaving it undefined if there is no such default namespace), it is possible to use an out-of-the-box XPath 2.0 implementation for evaluating XML Patch selectors.
+<p>As an extension of XPath 1.0's simple model, XPath 2.0 <a class='info' href='#W3C.REC-xpath20-20101214'>[9]<span> (</span><span class='info'>Boag, S., Berglund, A., Kay, M., Simeon, J., Robie, J., Chamberlin, D., and M. Fernandez, &ldquo;XML Path Language (XPath) 2.0 (Second Edition),&rdquo; December&nbsp;2010.</span><span>)</span></a> specifies different processing rules for unprefixed names: They are matched against the URI of the "default element/type namespace", which is defined as part of an expression's static context. In some XPath 2.0 applications this can be set; XSLT 2.0 for example has the ability to define an "xpath-default-namespace", which then will be used to match unprefixed names in expressions. Thus, by using an XPath 2.0 implementation that allows to set this URI, and setting it to the default namespace of the diff document (or leaving it undefined if there is no such default namespace), it is possible to use an out-of-the-box XPath 2.0 implementation for evaluating XML Patch selectors.
 </p>
 <p>[[[ Currently, RFC 5261's section on namespace matching explains XPath 2.0's rules incorrectly <a href='http://tools.ietf.org/html/rfc5261#section-4.2.2'>http://tools.ietf.org/html/rfc5261#section-4.2.2</a>. An erratum has been filed <a href='http://www.rfc-editor.org/errata_search.php?rfc=5261&amp;eid=3477'>http://www.rfc-editor.org/errata_search.php?rfc=5261&amp;eid=3477</a> which, upon verification, will be linked to from here. ]]]
 </p>
@@ -371,7 +371,23 @@ Namespace Matching Rules</h3>
 <a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
 Patching Namespaces</h3>
 
-<p>... changing namespace nodes (and the relation to namespace declarations) 
+<p>One of the issues when patching namespaces based on XPath is that XPath exposes namespaces different than the XML 1.0 <a class='info' href='#W3C.REC-xml-20081126'>[10]<span> (</span><span class='info'>Sperberg-McQueen, C., Yergeau, F., Paoli, J., Maler, E., and T. Bray, &ldquo;Extensible Markup Language (XML) 1.0 (Fifth Edition),&rdquo; November&nbsp;2008.</span><span>)</span></a> syntax for XML Namespaces <a class='info' href='#W3C.REC-xml-names-20091208'>[11]<span> (</span><span class='info'>Hollander, D., Layman, A., Bray, T., Tobin, R., and H. Thompson, &ldquo;Namespaces in XML 1.0 (Third Edition),&rdquo; December&nbsp;2009.</span><span>)</span></a>. In the XML syntax, a namespace is declared with an attribute using the reserved name or prefix "xmlns", and this results in this namespace being available recursively through the document tree. In XPath, the namespace declaration is not exposed as an attribute (i.e., the attribute, although syntactically an XML attribute, is not accessible in XPath), but the namespace nodes are exposed recursively through the tree.
+</p>
+<p>RFC 5261 uses the terms "namespace declaration" and "namespace" almost interchangeably, but it is important to keep in mind that the namespace declaration is an XML syntax construct that is unavailable in XPath, while the namespace itself is a logical construct that is not visible in the XML syntax, but a result of a namespace declaration. The intent of RFC 5261 is to patch namespaces as if namespace declarations were patched, and thus it only allows to patch namespace nodes on the element nodes where the namespace has been declared.
+</p>
+<p>Patching namespaces in XML Patch is supposed to "emulate" the effect of actually changing the namespace declaration (which is why a namespace can only be patched at the element where it has been declared). Therefore, when patching a namespace, even though XPath's "namespace" axis is used, implementations have to make sure that not only the one selected namespace node is being patched, but that all namespaces nodes resulting from the namespace declaration of this namespace are patched accordingly.
+</p>
+<p>This means that an implementation might have to descend into the tree, matching all namespace nodes with the selected prefix/URI pair recursively, until it encounters namespace declarations with the same prefix it is patching. Determining this requires access to the diff document beyond XPath, because in XPath itself namespace declarations are not represented, and thus such a recursive algorithm wouldn't know when to stop. Consider the following document:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;x xmlns:a="tag:42"&gt;
+    &lt;y xmlns:a="tag:42"/&gt;
+&lt;/x&gt;</pre></div>
+<p>If this document is patched with a selector of /x/namespace::a, then only the namespace node on element x should be patched, even though the namespace node on element y has the same prefix/URI combination than the one on element x. Determining that the repeated namespace declaration was present at all on element y is impossible when using XPath alone, so implementations must have an alternative way to determine the difference between the document above, and this one:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;x xmlns:a="tag:42"&gt;
+    &lt;y/&gt;
+&lt;/x&gt;</pre></div>
+<p>In this second example, patching with a selector of /x/namespace::a should indeed change the namespace nodes on elements x and y, because they both have been derived from the same namespace declaration.
+</p>
+<p>[[[ Currently, RFC 5261's section on replacing namespaces mixes the terms "namespace declaration" and "namespace" <a href='http://tools.ietf.org/html/rfc5261#section-4.4.3'>http://tools.ietf.org/html/rfc5261#section-4.4.3</a>. An erratum has been filed <a href='http://www.rfc-editor.org/errata_search.php?eid=3478'>http://www.rfc-editor.org/errata_search.php?eid=3478</a> which, upon verification, will be linked to from here. ]]]
 </p>
 <a name="anchor4"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -388,6 +404,8 @@ From -01 to -02</h3>
 <p>
                </p>
 <ul class="text">
+<li>Textual edits.
+</li>
 <li>Added section on "Implementation Hints" (<a class='info' href='#implementation-hints'>Section&nbsp;6<span> (</span><span class='info'>Implementation Hints</span><span>)</span></a>).
 </li>
 </ul><p>
@@ -433,7 +451,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.2.&nbsp;Informative References</h3>
+<h3>8.2.&nbsp;Non-Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC5789">[6]</a></td>
 <td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
@@ -443,6 +461,10 @@ References</h3>
 <td class="author-text">DeRose, S. and J. Clark, &ldquo;<a href="http://www.w3.org/TR/1999/REC-xpath-19991116">XML Path Language (XPath) Version 1.0</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xpath-19991116, November&nbsp;1999 (<a href="http://www.w3.org/TR/1999/REC-xpath-19991116">HTML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="W3C.REC-xpath20-20101214">[9]</a></td>
 <td class="author-text">Boag, S., Berglund, A., Kay, M., Simeon, J., Robie, J., Chamberlin, D., and M. Fernandez, &ldquo;<a href="http://www.w3.org/TR/2010/REC-xpath20-20101214">XML Path Language (XPath) 2.0 (Second Edition)</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xpath20-20101214, December&nbsp;2010 (<a href="http://www.w3.org/TR/2010/REC-xpath20-20101214">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.REC-xml-20081126">[10]</a></td>
+<td class="author-text">Sperberg-McQueen, C., Yergeau, F., Paoli, J., Maler, E., and T. Bray, &ldquo;<a href="http://www.w3.org/TR/2008/REC-xml-20081126">Extensible Markup Language (XML) 1.0 (Fifth Edition)</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xml-20081126, November&nbsp;2008 (<a href="http://www.w3.org/TR/2008/REC-xml-20081126">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.REC-xml-names-20091208">[11]</a></td>
+<td class="author-text">Hollander, D., Layman, A., Bray, T., Tobin, R., and H. Thompson, &ldquo;<a href="http://www.w3.org/TR/2009/REC-xml-names-20091208">Namespaces in XML 1.0 (Third Edition)</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xml-names-20091208, December&nbsp;2009 (<a href="http://www.w3.org/TR/2009/REC-xml-names-20091208">HTML</a>).</td></tr>
 </table>
 
 <a name="rfc5261-xsd"></a><br /><hr />
