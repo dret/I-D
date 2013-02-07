@@ -110,6 +110,13 @@
          <section title="Patching Namespaces">
             <t>One of the issues when patching namespaces based on XPath is that XPath exposes namespaces different than the XML 1.0 <xref target="W3C.REC-xml-20081126"/> syntax for XML Namespaces <xref target="W3C.REC-xml-names-20091208"/>. In the XML syntax, a namespace is declared with an attribute using the reserved name or prefix "xmlns", and this results in this namespace being available recursively throught the document tree. In XPath, the namespace declaration is not exposed as an attribute (i.e., the attribute, although syntactically an XML attribute, is not accessible in XPath), but the namespace nodes are exposed recursively through the tree.</t>
             <t>RFC 5261 uses the terms "namespace declaration" and "namespace" almost interchangeably, but it is important to keep in mind that the namespace declaration is an XML syntax construct that is unavailable in XPath, while the namespace itself is a logical construct that is not visible in the XML syntax, but a result of a namespace declaration. The intent of RFC 5261 is to patch namespaces as if namespace declarations were patched, and thus it only allows to patch namespace nodes on the element nodes where the namespace has been declared.</t>
+            <t>Patching namespaces in XML Patch is supposed to "emulate" the effect of actually changing the namespace declaration (which is why a namespace can only be patched at the element where it has been declared). Therefore, when patching a namespace, even though XPath's "namespace" axis is used, implementations have to make sure that not only the one selected namespace node is being patched, but that all namespaces nodes resulting from the namespace declaration of this namespace are patched accordingly.</t>
+            <t>This means that an implementation might have to descend into the tree, matching all namespace nodes with the selected prefix/URI pair recursively, until it encounters namespace declarations with the same prefix it is patching. Determining this requires access to the diff document beyond XPath, because in XPath itself namespace declarations are not represented, and thus ...</t>
+            <figure>
+               <artwork><![CDATA[<?xml version="1.0" encoding="UTF-8"?>]]>
+               </artwork>
+            </figure>
+            <t>[[[ Currently, RFC 5261's section on replacing namespaces mixes the terms "namespace declaration" and "namespace" <eref target="http://tools.ietf.org/html/rfc5261#section-4.4.3"/>. An erratum has been filed <eref target="http://www.rfc-editor.org/errata_search.php?eid=3478"/> which, upon verification, will be linked to from here. ]]]</t>
          </section>
       </section>
       <section title="Change Log">
