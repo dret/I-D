@@ -27,7 +27,7 @@
       <section title="Introduction">
          <t>The Extensible Markup Language (XML) <xref target="RFC3023"/> is a common format for the exchange and storage of structured data. HTTP PATCH <xref target="RFC5789"/> extends HTTP <xref target="RFC2616"/> with a method to perform partial modifications to resources. HTTP PATCH requires that patch documents are being sent along with the request, and it is therefore useful if there are standardized patch document formats (identified by media types) for popular media types.</t>
          <t>The XML Patch media type "application/xml-patch+xml" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. Servers can freely choose which patch formats they want to accept, and "application/xml-patch+xml" could be a simple default format that can be used unless a server decides to use a different (maybe more sophisticated) patch format for XML.</t>
-         <t>The format for patch documents is based on the XML Patch Framework defined in RFC 5261 <xref target="RFC5261"/>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XSD types for patch operations, and thus the concrete document format and the media type for patch operations are defined in an XSD defined in this specification.</t>
+         <t>The format for patch documents is based on the XML Patch Framework defined in RFC 5261 <xref target="RFC5261"/>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> types for patch operations, and thus the concrete document format and the media type for patch operations are defined in an XSD defined in this specification.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
          <t>The Internet media type <xref target="RFC6838"/> for an XML Patch Document is application/xml-patch+xml.</t>
@@ -76,7 +76,7 @@
 </p:patch>]]></artwork>
          </figure>
          <t>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.</t>
-         <t>RFC 5261 defines an XML Schema (XSD) for the patch operation types, which is included for reference in <xref target="rfc5261-xsd"/>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
+         <t>RFC 5261 defines an XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> for the patch operation types, which is included for reference in <xref target="rfc5261-xsd"/>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
          <figure>
             <artwork><![CDATA[<xs:schema targetNamespace="urn:ietf:rfc:XXXX"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
@@ -484,9 +484,30 @@
             <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xpath20-20101214' />
             <format type='HTML' target='http://www.w3.org/TR/2010/REC-xpath20-20101214' />
          </reference>
+         <reference anchor='W3C.REC-xmlschema-1-20041028'
+            target='http://www.w3.org/TR/2004/REC-xmlschema-1-20041028'>
+            <front>
+               <title>XML Schema Part 1: Structures Second Edition</title>
+               <author initials='H.' surname='Thompson' fullname='Henry S. Thompson'>
+                  <organization />
+               </author>
+               <author initials='D.' surname='Beech' fullname='David Beech'>
+                  <organization />
+               </author>
+               <author initials='M.' surname='Maloney' fullname='Murray Maloney'>
+                  <organization />
+               </author>
+               <author initials='N.' surname='Mendelsohn' fullname='Noah Mendelsohn'>
+                  <organization />
+               </author>
+               <date month='October' day='28' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xmlschema-1-20041028' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-xmlschema-1-20041028' />
+         </reference>
       </references>
       <section title="XSD from RFC 5261" anchor="rfc5261-xsd">
-         <t>For reference, this section contains a copy of the XSD defining the add, replace, and remove types in RFC 5261 <xref target="RFC5261"/>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.</t>
+         <t>For reference, this section contains a copy of the XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> defining the add, replace, and remove types in RFC 5261 <xref target="RFC5261"/>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.</t>
          <figure>
             <artwork><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE schema [
