@@ -30,7 +30,7 @@ Note to Readers
 
    Please discuss this draft on the rest-discuss mailing list [12].
 
-   Online access to all versions and files is available at github [13].
+   Online access to all versions and files is available on github [13].
 
 Status of this Memo
 
@@ -81,21 +81,21 @@ Table of Contents
    2.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  5
    3.  Template Descriptions  . . . . . . . . . . . . . . . . . . . .  5
      3.1.  General Concepts . . . . . . . . . . . . . . . . . . . . .  5
-     3.2.  Template Description Structure . . . . . . . . . . . . . .  5
-     3.3.  Variable Description Structure . . . . . . . . . . . . . .  5
+     3.2.  Template Description Structure . . . . . . . . . . . . . .  6
+     3.3.  Variable Description Structure . . . . . . . . . . . . . .  6
    4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
      4.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . .  6
      4.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . .  7
-   5.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
-   6.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     6.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . .  7
-     6.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . .  7
+   5.  Security Considerations  . . . . . . . . . . . . . . . . . . .  8
+   6.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     6.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . .  8
+     6.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . .  8
    7.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  8
-   8.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     8.1.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  8
+   8.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     8.1.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  9
    9.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
      9.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
-     9.2.  Informative References . . . . . . . . . . . . . . . . . .  9
+     9.2.  Informative References . . . . . . . . . . . . . . . . . . 10
    Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 10
 
 
@@ -141,7 +141,7 @@ Internet-Draft          URI Template Descriptions          February 2013
 
    URI Templates cover the aspect of starting with a template with
    variables in it, assigning values to these variables, and then
-   expanding the template into a URI that can be used for sending a
+   expanding the template into a URI that can be used for issuing a
    request.  URI Templates make no assumptions or statements about the
    value range of the variables, except for those aspects which are
    required to cover the process of expanding the template.  In
@@ -159,8 +159,8 @@ Internet-Draft          URI Template Descriptions          February 2013
    servers to expose a description resource that provides support both
    at development time (when a developer looks at a media type that uses
    URI Templates) and at runtime (when a client wants to use a URI
-   template as part of its application flow).
-
+   template as part of its application flow).  Template Descriptions are
+   intended to provide additional information that is not communicated
 
 
 
@@ -169,28 +169,39 @@ Wilde, et al.            Expires August 5, 2013                 [Page 3]
 Internet-Draft          URI Template Descriptions          February 2013
 
 
+   by publishing URI Templates alone.  The additional information is
+   both targeted at machines and at humans.  On the human-oriented Web,
+   a Template Description can be seen as the equivalent of a help or
+   documentation page that is linked to from a form, where users can
+   learn more about the values they are supposed to submit within the
+   form.
+
 1.2.  Describing Variables
 
    Variables can be described in a variety of ways when using Template
-   Descriptions.  For each variable in the URI Template, it is possible
-   to use the following description methods:
+   Descriptions.  For each variable contained in the URI Template, it is
+   possible to use the following description methods:
 
       Domain Concept: It is possible to associate a variable with a
       domain concept, so that media types and applications can make an
       association between the concepts they are defining/exposing, and
-      how they are represented in URI Templates.  Concepts can be
-      referred to by URI, or by using a QName [2].
+      how they are exposed in URI Templates.  Concepts can be referred
+      to by URI, or by using a QName [2].
 
       Datatype: Variables can be described in terms of using certain
-      datatypes, and the datatype vocabulary is that of XML Schema Part
-      2 [3], plus all of the applicable facets of those datatypes.  This
+      datatypes.  The datatype vocabulary is that of XML Schema Part 2
+      [3], plus all of the applicable facets of those datatypes.  This
       allows Template Descriptions to constrain the set of allowed
-      values.
+      values.  (This model does not cover any "co-constraints", i.e.
+      dependencies across variables, or between variables and externally
+      defined values.)
 
       Documentation: Documentation constructs can be associated with
       variables, which allows Template Descriptions to attach human-
       readable information to individual variables.  The documentation
       constructs use the documentation design of XML Schema Part 1 [4].
+      XML Schema's documentation model has the ability to support multi-
+      lingual human-oriented documentation.
 
       Application Information: Application information constructs can be
       associated with variables, which allows Template Descriptions to
@@ -201,11 +212,20 @@ Internet-Draft          URI Template Descriptions          February 2013
    For the purpose of this specification, the term "description" should
    be interpreted loosely.  Some aspects of descriptions can be formal,
    such as the datatypes of variables.  Thus, such a description can be
-   used to drive general-purpose logic that knows nothing but this
-   specification.  However, for most other description aspects (domain
-   concepts, documentation, and application information), this
-   specification does not prescribe a description framework; it simply
-   provides a structure how to deliver these descriptions.
+   used to drive general-purpose logic that knows no additional
+   framework other than this specification.  However, for most other
+   description aspects (domain concepts, documentation, and application
+   information), this specification does not prescribe a description
+   framework; it simply provides a structure how to deliver these
+
+
+
+Wilde, et al.            Expires August 5, 2013                 [Page 4]
+
+Internet-Draft          URI Template Descriptions          February 2013
+
+
+   descriptions.
 
    The descriptions of "domain concepts" and "datatypes" are not
    mutually exclusive.  On the contrary, a domain concept often will
@@ -217,14 +237,6 @@ Internet-Draft          URI Template Descriptions          February 2013
    datatype description.  As a consequence, when a consumer encounters
    an unknown domain concept, it adds little to the knowledge of the
    consumer, whereas a datatype description can always be interpreted
-
-
-
-Wilde, et al.            Expires August 5, 2013                 [Page 4]
-
-Internet-Draft          URI Template Descriptions          February 2013
-
-
    and allows the consumer to learn about constraints of the associated
    variable.
 
@@ -241,7 +253,16 @@ Internet-Draft          URI Template Descriptions          February 2013
    Template Descriptions are based on a URI Template, and add
    descriptive elements that allow publishers of URI Templates to
    describe the URI Template as a whole, and to add individual
-   descriptions of all variables in the template.
+   descriptions of all variables in the template.  The idea of Template
+   Descriptions is that they are made available at design time and/or at
+   runtime, so that clients encountering URI Templates as part of HTTP
+   APIs can find more information about the template itself.
+
+   Ideally, every URI template exposed in an HTTP API should be
+   accompanied by a link to a Template Description.  In those HTTP APIs
+   where URI Templates are exposed in XML attributes named "hreft", the
+   suggestion is to add a link to the corresponding Template Description
+   in an "hreftd" XML attribute.
 
 3.1.  General Concepts
 
@@ -252,9 +273,23 @@ Internet-Draft          URI Template Descriptions          February 2013
    or do rely on some external description framework.  To attach these
    descriptions to both the template as a whole, and individual
    variables, this specification reuses the "appinfo" and
+
+
+
+Wilde, et al.            Expires August 5, 2013                 [Page 5]
+
+Internet-Draft          URI Template Descriptions          February 2013
+
+
    "documentation" elements from XML Schema Part 1 [4].  These elements
-   carry a "source" attribute which is used (quoting from [4]) "to
-   supplement the local information."
+   carry a "source" attribute, which is used (quoting from [4]) "to
+   supplement the local information."  For example, when a description
+   of a variable is done formally using a specific description
+   framework, this would best translate to use appinfo elements, and to
+   add an identifier to them which would identify the description
+   framework in question.  As a result, any client knowing this
+   particular description framework would be able to interpret the
+   variable description in the Template Description.
 
 3.2.  Template Description Structure
 
@@ -272,14 +307,6 @@ Internet-Draft          URI Template Descriptions          February 2013
    Description to match their understanding of certain concepts to those
    identifiers, which then establishes a binding between the concept,
    and the variable it has been bound to.
-
-
-
-
-Wilde, et al.            Expires August 5, 2013                 [Page 5]
-
-Internet-Draft          URI Template Descriptions          February 2013
-
 
    Variable descriptions can optionally add documentation and/or appinfo
    elements to add human- or machine-readable descriptions.
@@ -300,6 +327,15 @@ Internet-Draft          URI Template Descriptions          February 2013
       Required parameters: none
 
       Optional parameters: profile
+
+
+
+
+
+Wilde, et al.            Expires August 5, 2013                 [Page 6]
+
+Internet-Draft          URI Template Descriptions          February 2013
+
 
          ...
 
@@ -328,15 +364,6 @@ Internet-Draft          URI Template Descriptions          February 2013
       Person & email address to contact for further information: Erik
       Wilde <erik.wilde@emc.com>
 
-
-
-
-
-Wilde, et al.            Expires August 5, 2013                 [Page 6]
-
-Internet-Draft          URI Template Descriptions          February 2013
-
-
       Intended usage: COMMON
 
       Restrictions on usage: none
@@ -356,6 +383,15 @@ Internet-Draft          URI Template Descriptions          February 2013
       description for creating a request URI for the context resource.
 
       Reference: RFC XXXX
+
+
+
+
+
+Wilde, et al.            Expires August 5, 2013                 [Page 7]
+
+Internet-Draft          URI Template Descriptions          February 2013
+
 
       Notes: Template Descriptions can be used in all scenarios where
       clients want to create requests that represent a query into the
@@ -386,13 +422,6 @@ Internet-Draft          URI Template Descriptions          February 2013
    Maybe suggest to use profiles?
 
 
-
-
-Wilde, et al.            Expires August 5, 2013                 [Page 7]
-
-Internet-Draft          URI Template Descriptions          February 2013
-
-
 7.  Open Issues
 
       If and how to use profiles (example in Section 6); if profile use
@@ -412,6 +441,14 @@ Internet-Draft          URI Template Descriptions          February 2013
       If a template is refined in an incremental process (such as for
       example faceted search services), does it make sense to be able to
       add a "back" link and/or "home" link, so that clients can find the
+
+
+
+Wilde, et al.            Expires August 5, 2013                 [Page 8]
+
+Internet-Draft          URI Template Descriptions          February 2013
+
+
       "most general" version easily?
 
       How does this interact with "faceted search" scenarios?  Does
@@ -422,6 +459,10 @@ Internet-Draft          URI Template Descriptions          February 2013
       Templates) can be reused?  Should there be an inclusion facility
       or something along those lines?  If so, what's the model for that?
       Initial thoughts on possibilities can be found on this page [14]
+
+      Should there be some recommended link relation to use when linking
+      to a Template Description from within the context of a URI
+      Template?
 
 
 8.  Change Log
@@ -440,15 +481,6 @@ Internet-Draft          URI Template Descriptions          February 2013
 
 9.  References
 
-
-
-
-
-Wilde, et al.            Expires August 5, 2013                 [Page 8]
-
-Internet-Draft          URI Template Descriptions          February 2013
-
-
 9.1.  Normative References
 
    [1]   Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D.
@@ -464,6 +496,14 @@ Internet-Draft          URI Template Descriptions          February 2013
          Edition", World Wide Web Consortium Recommendation REC-
          xmlschema-2-20041028, October 2004,
          <http://www.w3.org/TR/2004/REC-xmlschema-2-20041028>.
+
+
+
+
+Wilde, et al.            Expires August 5, 2013                 [Page 9]
+
+Internet-Draft          URI Template Descriptions          February 2013
+
 
    [4]   Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
          Schema Part 1: Structures Second Edition", World Wide Web
@@ -498,17 +538,27 @@ URIs
 
    [12]  <http://tech.groups.yahoo.com/group/rest-discuss/>
 
-
-
-Wilde, et al.            Expires August 5, 2013                 [Page 9]
-
-Internet-Draft          URI Template Descriptions          February 2013
-
-
    [13]  <https://github.com/dret/I-D/tree/master/template-desc>
 
    [14]  <http://dret.typepad.com/dretblog/2012/12/
          structuring-uri-templates.html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde, et al.            Expires August 5, 2013                [Page 10]
+
+Internet-Draft          URI Template Descriptions          February 2013
 
 
 Authors' Addresses
@@ -556,5 +606,11 @@ Authors' Addresses
 
 
 
-Wilde, et al.            Expires August 5, 2013                [Page 10]
+
+
+
+
+
+
+Wilde, et al.            Expires August 5, 2013                [Page 11]
 
