@@ -61,9 +61,11 @@
                         <xs:attribute name="name" use="required"/>
                         <xs:attribute name="concept-uri" type="xs:anyURI" use="optional"/>
                         <xs:attribute name="concept-qname" type="xs:QName" use="optional"/>
-                        <!--
-                        <xs:assert test="count((@concept-uri, @concept-qname)) le 1"/>
--->
+                        <xs:assert test="count((@concept-uri, @concept-qname)) le 1">
+                            <xs:annotation>
+                                <xs:documentation>Make sure that @concept-uri and @concept-qname are mutually exclusive, i.e. it's not allowed for both to occur at the same time.</xs:documentation>
+                            </xs:annotation>
+                        </xs:assert>
                     </xs:complexType>
                 </xs:element>
                 <xs:group ref="td:descriptions" maxOccurs="unbounded" minOccurs="0"/>
