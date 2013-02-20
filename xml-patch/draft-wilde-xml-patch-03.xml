@@ -14,7 +14,7 @@
             <email>erik.wilde@emc.com</email>
          </address>
       </author>
-      <date day="25" month="February" year="2013"/>
+      <date day="20" month="February" year="2013"/>
       <abstract>
          <t>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.</t>
       </abstract>
@@ -130,6 +130,7 @@
             </figure>
             <t>In this second example, patching with a selector of /x/namespace::a should indeed change the namespace nodes on elements x and y, because they both have been derived from the same namespace declaration.</t>
             <t>The conclusion of these considerations is that for implementing XML Patch, access to the XML syntax (specifically: namespace declarations) is necessary. As a result, implementations attempting to exclusively use the XPath model for implementing XML Patch will fail to correctly address certain edge cases (as the one shown above).</t>
+            <t>Note that XPath's specific limitations do not mean that it is impossible to use XML technologies other than XPath. The Document Object Model (DOM) <xref target="W3C.REC-DOM-Level-3-Core-20040407"/>, for example, does expose namespace declaration attributes as regular attributes in the document tree, and thus could be used to differentiate between the two variants shown above.</t>
             <t>[[[ Currently, RFC 5261's section on replacing namespaces mixes the terms "namespace declaration" and "namespace" <eref target="http://tools.ietf.org/html/rfc5261#section-4.4.3"/>. An erratum has been filed <eref target="http://www.rfc-editor.org/errata_search.php?eid=3478"/> which, upon verification, will be linked to from here. ]]]</t>
          </section>
       </section>
@@ -139,6 +140,7 @@
             <t>
                <list style="symbols">
                   <t>Added section on "Implementation Status" (<xref target="implementation-status"/>).</t>
+                  <t>Improved "Implementation Hints" (<xref target="implementation-hints"/>).</t>
                </list>
             </t>
          </section>
@@ -517,6 +519,35 @@
             </front>
             <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xmlschema-1-20041028' />
             <format type='HTML' target='http://www.w3.org/TR/2004/REC-xmlschema-1-20041028' />
+         </reference>
+         <reference anchor='W3C.REC-DOM-Level-3-Core-20040407' target='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407'>
+            <front>
+               <title>Document Object Model (DOM) Level 3 Core Specification</title>
+               <author initials='J.' surname='Robie' fullname='Jonathan Robie'>
+                  <organization />
+               </author>
+               <author initials='L.' surname='Wood' fullname='Lauren Wood'>
+                  <organization />
+               </author>
+               <author initials='M.' surname='Champion' fullname='Mike Champion'>
+                  <organization />
+               </author>
+               <author initials='P.' surname='Hegaret' fullname='Philippe Le Hegaret'>
+                  <organization />
+               </author>
+               <author initials='G.' surname='Nicol' fullname='Gavin Nicol'>
+                  <organization />
+               </author>
+               <author initials='A.' surname='Le Hors' fullname='Arnaud Le Hors'>
+                  <organization />
+               </author>
+               <author initials='S.' surname='Byrne' fullname='Steve Byrne'>
+                  <organization />
+               </author>
+               <date month='April' day='7' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-DOM-Level-3-Core-20040407' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407' />
          </reference>
       </references>
       <section title="XSD from RFC 5261" anchor="rfc5261-xsd">
