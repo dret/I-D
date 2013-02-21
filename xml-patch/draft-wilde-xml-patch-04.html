@@ -143,14 +143,17 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">February 20, 2013</td></tr>
-<tr><td class="header">Expires: August 24, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc5261'>5261</a> (if&nbsp;approved)</td><td class="header">February 21, 2013</td></tr>
+<tr><td class="header">Intended status: Standards Track</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: August 25, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-03</h1>
+<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-04</h1>
 
 <h3>Abstract</h3>
 
 <p>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.
+</p>
+<p>In addition to the media type registration, this specification also updates RFC 5261 in some aspects, limiting these updates to cases where RFC 5261 needed to be fixed, or was hard to understand.
 </p>
 <h3>Note to Readers</h3>
 
@@ -173,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on August 24, 2013.</p>
+This Internet-Draft will expire on August 25, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -200,23 +203,25 @@ Patch Document Format<br />
 Patch Examples<br />
 <a href="#iana">4.</a>&nbsp;
 IANA Considerations<br />
-<a href="#implementation-status">5.</a>&nbsp;
-Implementation Status<br />
-<a href="#security-considerations">6.</a>&nbsp;
+<a href="#security-considerations">5.</a>&nbsp;
 Security Considerations<br />
-<a href="#implementation-hints">7.</a>&nbsp;
+<a href="#implementation-hints">6.</a>&nbsp;
 Implementation Hints<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#namespace-matching">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#namespace-matching">6.1.</a>&nbsp;
 Matching Namespaces<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#namespace-patching">7.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#namespace-patching">6.2.</a>&nbsp;
 Patching Namespaces<br />
+<a href="#implementation-status">7.</a>&nbsp;
+Implementation Status<br />
 <a href="#anchor2">8.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">8.1.</a>&nbsp;
-From -02 to -03<br />
+From -03 to -04<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">8.2.</a>&nbsp;
-From -01 to -02<br />
+From -02 to -03<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">8.3.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">8.4.</a>&nbsp;
 From -00 to -01<br />
 <a href="#rfc.references1">9.</a>&nbsp;
 References<br />
@@ -224,11 +229,19 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
 Non-Normative References<br />
-<a href="#rfc5261-xsd">Appendix&nbsp;A.</a>&nbsp;
-XSD from RFC 5261<br />
-<a href="#rfc5261-abnf">Appendix&nbsp;B.</a>&nbsp;
+<a href="#rfc5261-updates">Appendix&nbsp;A.</a>&nbsp;
+Updates to RFC 5261<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update-section-4-2-2">A.1.</a>&nbsp;
+Section 4.2.2<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update-section-4-4-3">A.2.</a>&nbsp;
+Section 4.4.3<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#update-section-8">A.3.</a>&nbsp;
+Section 8<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc5261-xsd">A.4.</a>&nbsp;
+XSD for RFC 5261<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc5261-abnf">A.5.</a>&nbsp;
 ABNF for RFC 5261<br />
-<a href="#anchor8">Appendix&nbsp;C.</a>&nbsp;
+<a href="#anchor9">Appendix&nbsp;B.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
@@ -245,6 +258,8 @@ Introduction</h3>
 <p>The XML Patch media type "application/xml-patch+xml" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. Servers can freely choose which patch formats they want to accept, and "application/xml-patch+xml" could be a simple default format that can be used unless a server decides to use a different (maybe more sophisticated) patch format for XML.
 </p>
 <p>The format for patch documents is based on the XML Patch Framework defined in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> types for patch operations, and thus the concrete document format and the media type for patch operations are defined in an XSD defined in this specification.
+</p>
+<p>Since RFC 5261 contains sections that need to be fixed, or are hard to understand, this specification updates RFC 5261. The updates are listed in <a class='info' href='#rfc5261-updates'>Appendix&nbsp;A<span> (</span><span class='info'>Updates to RFC 5261</span><span>)</span></a>, and all references to RFC 5261 made in this specification should be read as referring to the updated version. The main reason for the changes are the problematic ways in which RFC 5261 relies on XPath as the expression language for selecting the location of a patch, while at the same time XPath's data model does not contain sufficient information to determine whether such a selector indeed can be used for a patch operation, or should result in an error. Specifically, the problem occurs with namespaces, where XPath does not expose namespace decalration attributes, while the patch model needs them to determine whether a namespace patch is allowed or not. <a class='info' href='#implementation-hints'>Section&nbsp;6<span> (</span><span class='info'>Implementation Hints</span><span>)</span></a> contains more information about the general problem, and <a class='info' href='#rfc5261-updates'>Appendix&nbsp;A<span> (</span><span class='info'>Updates to RFC 5261</span><span>)</span></a> lists the resulting updates to RFC 5261 to make the model well-defined and the text easier to read and understand.
 </p>
 <a name="schema"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -269,7 +284,7 @@ Patch Document Format</h3>
 &lt;/p:patch&gt;</pre></div>
 <p>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.
 </p>
-<p>RFC 5261 defines an XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> for the patch operation types, which is included for reference in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A<span> (</span><span class='info'>XSD from RFC 5261</span><span>)</span></a>. The normative version of this schema is the one given in RFC 5261. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.
+<p>RFC 5261 defines an XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> for the patch operation types, which is shown in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A.4<span> (</span><span class='info'>XSD for RFC 5261</span><span>)</span></a>. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;xs:schema targetNamespace="urn:ietf:rfc:XXXX"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"&gt;
     &lt;xs:import schemaLocation="rfc5261.xsd"/&gt;
@@ -310,7 +325,7 @@ IANA Considerations</h3>
 </p>
 <p>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
 </p>
-<p>Security considerations: This media type has all of the security considerations described in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a> and RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;6<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+<p>Security considerations: This media type has all of the security considerations described in RFC 3023 <a class='info' href='#RFC3023'>[1]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a> and RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;5<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
 </p>
 <p>Interoperability considerations: N/A
 </p>
@@ -343,40 +358,23 @@ IANA Considerations</h3>
 </blockquote><p>
          
 </p>
-<a name="implementation-status"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5"></a><h3>5.&nbsp;
-Implementation Status</h3>
-
-<p>Note to RFC Editor: Please remove this section before publication.
-</p>
-<p>As explained in a draft currently under development <a href='http://tools.ietf.org/html/draft-sheffer-running-code'>http://tools.ietf.org/html/draft-sheffer-running-code</a>, this section contains information about implementation status, so that reviews of the draft document can take implementation reports into account as well. If you are implementing this draft, please contact this draft's author. Any implementation status reports are intended for draft publications only; the section will be removed when the draft is published in RFC form.
-</p>
-<p>
-            </p>
-<blockquote class="text">
-<p>EMC: We have implemented the selector part of the spec, which is the trickiest part (see <a class='info' href='#namespace-matching'>Section&nbsp;7.1<span> (</span><span class='info'>Matching Namespaces</span><span>)</span></a> for an explanation). By reusing an existing XPath 1.0 implementation and changing it to match the changed default namespace processing model, the required behavior is fairly easy to implement. This does, however, require that the implementation is available in source code, and also does require some changes to the implementation's code. The resulting implementation is closed source and will be made available, if released, as part of EMC's XML database product xDB <a href='http://www.emc.com/products/detail/software2/documentum-xdb.htm'>http://www.emc.com/products/detail/software2/documentum-xdb.htm</a>.
-</p>
-</blockquote><p>
-         
-</p>
 <a name="security-considerations"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.5"></a><h3>5.&nbsp;
 Security Considerations</h3>
 
 <p>Parsing XML may entail including information from external sources through XML's mechanism of external entities. Implementations therefore should be aware of the fact that standard parsers may resolve external entities, and thus include external information as a result of applying patch operations to an XML document.
 </p>
 <a name="implementation-hints"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 Implementation Hints</h3>
 
 <p>This section is informative. It described some issues that might be interesting for implementers, but it might also be interesting for users of XML Patch that want to understand some of the differences between standard XPath 1.0 processing, and the processing model of selectors in RFC 5261.
 </p>
 <a name="namespace-matching"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7.1"></a><h3>7.1.&nbsp;
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 Matching Namespaces</h3>
 
 <p>RFC 5261 defines standard rules for matching prefixed names in expressions: Any prefixes are interpreted according to the namespace bindings of the diff document (the document that the expression is applied against). This means that each prefixed name can be interpreted in the context of the diff document.
@@ -387,11 +385,11 @@ Matching Namespaces</h3>
 </p>
 <p>Please keep in mind, however, that evaluating selectors is only one part of applying patches. When it comes to applying the actual patch operation, neither XPath 1.0 nor XPath 2.0 are sufficient, because they are not preserving some of the information from the XML syntax (specifically: namespace declarations) that is required to correctly apply patch operations. The following section described this issue in more detail.
 </p>
-<p>[[[ Currently, RFC 5261's section on namespace matching explains XPath 2.0's rules incorrectly <a href='http://tools.ietf.org/html/rfc5261#section-4.2.2'>http://tools.ietf.org/html/rfc5261#section-4.2.2</a>. An erratum has been filed <a href='http://www.rfc-editor.org/errata_search.php?rfc=5261&amp;eid=3477'>http://www.rfc-editor.org/errata_search.php?rfc=5261&amp;eid=3477</a> which, upon verification, will be linked to from here. ]]]
+<p>Please note that RFC 5261's Section 4.2.2 on namespace matching explains XPath 2.0's rules incorrectly <a href='http://tools.ietf.org/html/rfc5261#section-4.2.2'>http://tools.ietf.org/html/rfc5261#section-4.2.2</a>. For this reason, <a class='info' href='#update-section-4-2-2'>Appendix&nbsp;A.1<span> (</span><span class='info'>Section 4.2.2</span><span>)</span></a> updates Section 4.2.2 of RFC 5261.
 </p>
 <a name="namespace-patching"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7.2"></a><h3>7.2.&nbsp;
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
 Patching Namespaces</h3>
 
 <p>One of the issues when patching namespaces based on XPath is that XPath exposes namespaces different than the XML 1.0 <a class='info' href='#W3C.REC-xml-20081126'>[11]<span> (</span><span class='info'>Sperberg-McQueen, C., Yergeau, F., Paoli, J., Maler, E., and T. Bray, &ldquo;Extensible Markup Language (XML) 1.0 (Fifth Edition),&rdquo; November&nbsp;2008.</span><span>)</span></a> syntax for XML Namespaces <a class='info' href='#W3C.REC-xml-names-20091208'>[12]<span> (</span><span class='info'>Hollander, D., Layman, A., Bray, T., Tobin, R., and H. Thompson, &ldquo;Namespaces in XML 1.0 (Third Edition),&rdquo; December&nbsp;2009.</span><span>)</span></a>. In the XML syntax, a namespace is declared with an attribute using the reserved name or prefix "xmlns", and this results in this namespace being available recursively through the document tree. In XPath, the namespace declaration is not exposed as an attribute (i.e., the attribute, although syntactically an XML attribute, is not accessible in XPath), but the resulting namespace nodes are exposed recursively through the tree.
@@ -414,7 +412,24 @@ Patching Namespaces</h3>
 </p>
 <p>Note that XPath's specific limitations do not mean that it is impossible to use XML technologies other than XPath. The Document Object Model (DOM) <a class='info' href='#W3C.REC-DOM-Level-3-Core-20040407'>[13]<span> (</span><span class='info'>Robie, J., Wood, L., Champion, M., Hegaret, P., Nicol, G., Le Hors, A., and S. Byrne, &ldquo;Document Object Model (DOM) Level 3 Core Specification,&rdquo; April&nbsp;2004.</span><span>)</span></a>, for example, does expose namespace declaration attributes as regular attributes in the document tree, and thus could be used to differentiate between the two variants shown above.
 </p>
-<p>[[[ Currently, RFC 5261's section on replacing namespaces mixes the terms "namespace declaration" and "namespace" <a href='http://tools.ietf.org/html/rfc5261#section-4.4.3'>http://tools.ietf.org/html/rfc5261#section-4.4.3</a>. An erratum has been filed <a href='http://www.rfc-editor.org/errata_search.php?eid=3478'>http://www.rfc-editor.org/errata_search.php?eid=3478</a> which, upon verification, will be linked to from here. ]]]
+<p>Please note that RFC 5261's Section 4.4.3 on replacing namespaces mixes the terms "namespace declaration" and "namespace". For this reason, <a class='info' href='#update-section-4-4-3'>Appendix&nbsp;A.2<span> (</span><span class='info'>Section 4.4.3</span><span>)</span></a> updates Section 4.4.3 of RFC 5261.
+</p>
+<a name="implementation-status"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Implementation Status</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<p>As explained in a draft currently under development <a href='http://tools.ietf.org/html/draft-sheffer-running-code'>http://tools.ietf.org/html/draft-sheffer-running-code</a>, this section contains information about implementation status, so that reviews of the draft document can take implementation reports into account as well. If you are implementing this draft, please contact this draft's author. Any implementation status reports are intended for draft publications only; the section will be removed when the draft is published in RFC form.
+</p>
+<p>
+            </p>
+<blockquote class="text">
+<p>EMC: We have implemented the selector part of the spec, which is the trickiest part (see <a class='info' href='#namespace-matching'>Section&nbsp;6.1<span> (</span><span class='info'>Matching Namespaces</span><span>)</span></a> for an explanation). By reusing an existing XPath 1.0 implementation and changing it to match the changed default namespace processing model, the required behavior is fairly easy to implement. This does, however, require that the implementation is available in source code, and also does require some changes to the implementation's code. The resulting implementation is closed source and will be made available, if released, as part of EMC's XML database product xDB <a href='http://www.emc.com/products/detail/software2/documentum-xdb.htm'>http://www.emc.com/products/detail/software2/documentum-xdb.htm</a>.
+</p>
+</blockquote><p>
+         
 </p>
 <a name="anchor2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -426,14 +441,12 @@ Change Log</h3>
 <a name="anchor3"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
-From -02 to -03</h3>
+From -03 to -04</h3>
 
 <p>
                </p>
 <ul class="text">
-<li>Added section on "Implementation Status" (<a class='info' href='#implementation-status'>Section&nbsp;5<span> (</span><span class='info'>Implementation Status</span><span>)</span></a>).
-</li>
-<li>Improved "Implementation Hints" (<a class='info' href='#implementation-hints'>Section&nbsp;7<span> (</span><span class='info'>Implementation Hints</span><span>)</span></a>).
+<li>Added text and section <a class='info' href='#rfc5261-updates'>Appendix&nbsp;A<span> (</span><span class='info'>Updates to RFC 5261</span><span>)</span></a> about updating RFC 5261 (instead of relying on errata).
 </li>
 </ul><p>
             
@@ -441,14 +454,14 @@ From -02 to -03</h3>
 <a name="anchor4"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
-From -01 to -02</h3>
+From -02 to -03</h3>
 
 <p>
                </p>
 <ul class="text">
-<li>Textual edits.
+<li>Added section on "Implementation Status" (<a class='info' href='#implementation-status'>Section&nbsp;7<span> (</span><span class='info'>Implementation Status</span><span>)</span></a>).
 </li>
-<li>Added section on "Implementation Hints" (<a class='info' href='#implementation-hints'>Section&nbsp;7<span> (</span><span class='info'>Implementation Hints</span><span>)</span></a>).
+<li>Improved "Implementation Hints" (<a class='info' href='#implementation-hints'>Section&nbsp;6<span> (</span><span class='info'>Implementation Hints</span><span>)</span></a>).
 </li>
 </ul><p>
             
@@ -456,6 +469,21 @@ From -01 to -02</h3>
 <a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
+From -01 to -02</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Textual edits.
+</li>
+<li>Added section on "Implementation Hints" (<a class='info' href='#implementation-hints'>Section&nbsp;6<span> (</span><span class='info'>Implementation Hints</span><span>)</span></a>).
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -465,7 +493,7 @@ From -00 to -01</h3>
 </li>
 <li>Changed media type name to application/xml-patch+xml (added suffix per draft-ietf-appsawg-media-type-suffix-regs)
 </li>
-<li>Added ABNF grammar derived from XSD (<a class='info' href='#rfc5261-abnf'>Appendix&nbsp;B<span> (</span><span class='info'>ABNF for RFC 5261</span><span>)</span></a>)
+<li>Added ABNF grammar derived from XSD (<a class='info' href='#rfc5261-abnf'>Appendix&nbsp;A.5<span> (</span><span class='info'>ABNF for RFC 5261</span><span>)</span></a>)
 </li>
 </ul><p>
             
@@ -513,12 +541,106 @@ References</h3>
 <td class="author-text">Robie, J., Wood, L., Champion, M., Hegaret, P., Nicol, G., Le Hors, A., and S. Byrne, &ldquo;<a href="http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407">Document Object Model (DOM) Level 3 Core Specification</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-DOM-Level-3-Core-20040407, April&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407">HTML</a>).</td></tr>
 </table>
 
-<a name="rfc5261-xsd"></a><br /><hr />
+<a name="rfc5261-updates"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
-XSD from RFC 5261</h3>
+Updates to RFC 5261</h3>
 
-<p>For reference, this section contains a copy of the XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> defining the add, replace, and remove types in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.
+<p>This section is normative. It contains a list of updates to RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. These updates are limited to cases where RFC 5261 needed to be fixed, or was hard to understand.
+</p>
+<a name="update-section-4-2-2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.1"></a><h3>A.1.&nbsp;
+Section 4.2.2</h3>
+
+<p>Section 4.2.2 of RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> says:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>In XPath 2.0, a "bar" selector not only matches an unqualified &lt;bar> element, but also matches a qualified &lt;bar> element that is in scope of a default namespace declaration.  In contrast, in this specification, a selector without a prefix only matches one element, and it may match an element with or without a prefix but only if the namespace it's qualified with (or none) is an exact match.
+</p>
+</blockquote><p>
+            
+</p>
+<p>It should say:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>In XPath 2.0, a "bar" selector matches elements that have the URI of the "default element/type namespace", which is part of an XPath's static context. By setting this URI to the default namespace of the diff document (or leave it empty, if there is none), XPath 2.0's behavior matches the requirements of the previous section.
+</p>
+</blockquote><p>
+            
+</p>
+<p>Explanation: The original text is not easy to understand, but seems to assume that an unprefixed name in XPath 2.0 matches both unprefixed names, and prefixed ones that have the same namespace as the default namespace of the XPath static context. This is not the case: Matching depends on how the "default element/type namespace" of the XPath static context is defined, and then matches either namespace-less elements, or those in the "default element/type namespace", but never both. This context, however, is defined by the XPath itself, not by the document. Thus, it can be set externally and could be set to the diff document's default namespace (if there is one). In that case, XPath 2.0 can be used to evaluate XML Patch selectors.
+</p>
+<a name="update-section-4-4-3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.2"></a><h3>A.2.&nbsp;
+Section 4.4.3</h3>
+
+<p>Section 4.4.3 of RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> says:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>4.4.3. Replacing a Namespace Declaration URI
+</p>
+<p>An example for a replacement of a namespace URI: &lt;replace sel="doc/namespace::pref">urn:new:xxx&lt;/replace> This will replace the URI value of 'pref' prefixed namespace node with "urn:new:xxx". The parent node of the namespace declaration MUST be the &lt;doc> element, otherwise an error occurs.
+</p>
+</blockquote><p>
+            
+</p>
+<p>It should say:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>4.4.3. Replacing a Namespace URI
+</p>
+<p>An example for a replacement of a namespace URI: &lt;replace sel="doc/namespace::pref">urn:new:xxx&lt;/replace> This will replace the URI of the namespace associated with the 'pref' prefix with "urn:new:xxx". The parent node of the namespace declaration MUST be the &lt;doc> element, otherwise an error occurs. Replacing the namespace at the element where it is declared MUST also change all namespace nodes derived from this declaration in descendant elements.
+</p>
+</blockquote><p>
+            
+</p>
+<p>Explanation: The spec uses the terms "namespace declaration" and "namespace" almost interchangeably, which is incorrect. It is impossible to select namespace declarations using XPath. When selecting and replacing a namespace, then it should be taken into account that its associated namespace declaration very likely has resulted in numerous namespace nodes, attached to child elements of the element where the namespace was declared. It is likely that RFC 5261 intended to specify a "recursive replace" of the resulting namespace nodes of a namespace declaration, and this is what the corrected text suggests. The original text is mixing terminology, hard to read, and ambiguous in its meaning.
+</p>
+<p>Side note: If the original text indeed tried to specify that really only this one namespace node should be changed, then this could lead to rather strange effects in the resulting document, since the XPath tree now would have "orphan" namespace nodes, which then would need to be serialized, and there would be resulting namespace declarations in locations where previously no namespace declarations occurred.
+</p>
+<a name="update-section-8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.3"></a><h3>A.3.&nbsp;
+Section 8</h3>
+
+<p>Section 8 of RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> says:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>&lt;!ENTITY id     "id\(('&amp;ncname;')?\)|id\((&amp;quot;&amp;ncname;&amp;quot;)?\)">
+</p>
+</blockquote><p>
+            
+</p>
+<p>It should say:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>&lt;!ENTITY id     "id\('&amp;ncname;'\)|id\(&amp;quot;&amp;ncname;&amp;quot;\)">
+</p>
+</blockquote><p>
+            
+</p>
+<p>Explanation: The regex in the XSD suggests that "id()" would be a valid selector for a patch, but it would not make sense to specify such a selector, since it never would select a node (there's no identifier to locate in the document). This means that while "id()" is a valid XPath expression, it should not be allowed as a selector expression within an XML patch document. 
+</p>
+<a name="rfc5261-xsd"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A.4"></a><h3>A.4.&nbsp;
+XSD for RFC 5261</h3>
+
+<p>This section contains a modified copy of the XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> defining the add, replace, and remove types in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. The modification is based on the grammar change made in <a class='info' href='#update-section-8'>Appendix&nbsp;A.3<span> (</span><span class='info'>Section 8</span><span>)</span></a>.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE schema [
     &lt;!ENTITY ncname "\i\c*"&gt;
@@ -532,7 +654,7 @@ XSD from RFC 5261</h3>
     &lt;!ENTITY step   "(&amp;qname;|\*)(&amp;cond;)*"&gt;
     &lt;!ENTITY piq    "processing-instruction\((&amp;quot;&amp;ncname;&amp;quot;)\)"&gt;
     &lt;!ENTITY pi     "processing-instruction\(('&amp;ncname;')?\)|&amp;piq;"&gt;
-    &lt;!ENTITY id     "id\(('&amp;ncname;')?\)|id\((&amp;quot;&amp;ncname;&amp;quot;)?\)"&gt;
+    &lt;!ENTITY id     "id\('&amp;ncname;'\)|id\(&amp;quot;&amp;ncname;&amp;quot;\)"&gt;
     &lt;!ENTITY com    "comment\(\)"&gt;
     &lt;!ENTITY text   "text\(\)"&gt;
     &lt;!ENTITY nspa   "namespace::&amp;ncname;"&gt;
@@ -615,33 +737,33 @@ XSD from RFC 5261</h3>
 &lt;/xsd:schema&gt;</pre></div>
 <a name="rfc5261-abnf"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+<a name="rfc.section.A.5"></a><h3>A.5.&nbsp;
 ABNF for RFC 5261</h3>
 
-<p>RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types (which is shown in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A<span> (</span><span class='info'>XSD from RFC 5261</span><span>)</span></a>). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions given in RFC 5261. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.
+<p>RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types (which is shown in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A.4<span> (</span><span class='info'>XSD for RFC 5261</span><span>)</span></a>). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions given in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A.4<span> (</span><span class='info'>XSD for RFC 5261</span><span>)</span></a>. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>ncname     =  1*%x00-ffffffff
-qname      =  [ ncname ":" ] ncname
-aname      =  "@" qname
-pos        =  "[" 1*DIGIT "]"
-attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) / ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
-valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
-value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
-cond       =  attr / value / pos
-step       =  ( qname / "*" ) 0*( cond )
-piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
-pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
-id         =  ( "id(" [ "'" ncname "'" ] ")" ) / ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
-com        =  "comment()"
-text       =  "text()"
-nspa       =  "namespace::" ncname
-cnodes     =  ( text / com / pi ) [ pos ]
-child      =  cnodes / step
-last       =  child / aname / nspa
-xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) / ( 0*( step "/" ) last ) )
-xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) / ( 0*( step "/" ) child ) )</pre></div>
-<a name="anchor8"></a><br /><hr />
+                  qname      =  [ ncname ":" ] ncname
+                  aname      =  "@" qname
+                  pos        =  "[" 1*DIGIT "]"
+                  attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) / ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
+                  valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
+                  value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
+                  cond       =  attr / value / pos
+                  step       =  ( qname / "*" ) 0*( cond )
+                  piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
+                  pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
+                  id         =  ( "id(" [ "'" ncname "'" ] ")" ) / ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
+                  com        =  "comment()"
+                  text       =  "text()"
+                  nspa       =  "namespace::" ncname
+                  cnodes     =  ( text / com / pi ) [ pos ]
+                  child      =  cnodes / step
+                  last       =  child / aname / nspa
+                  xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) / ( 0*( step "/" ) last ) )
+                  xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) / ( 0*( step "/" ) child ) )</pre></div>
+<a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.C"></a><h3>Appendix C.&nbsp;
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
 Acknowledgements</h3>
 
 <p>Thanks for comments and suggestions provided by Bas de Bakker.
