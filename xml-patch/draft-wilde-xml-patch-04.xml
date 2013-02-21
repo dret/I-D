@@ -5,7 +5,7 @@
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="no" ?>
-<rfc category="std" ipr="trust200902" docName="draft-wilde-xml-patch-04">
+<rfc category="std" ipr="trust200902" docName="draft-wilde-xml-patch-04" updates="5261">
    <front>
       <title abbrev="XML Patch">A Media Type for XML Patch Operations</title>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
@@ -14,9 +14,10 @@
             <email>erik.wilde@emc.com</email>
          </address>
       </author>
-      <date day="20" month="February" year="2013"/>
+      <date day="21" month="February" year="2013"/>
       <abstract>
          <t>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.</t>
+         <t>In addition to the media type registration, this specification also updates RFC 5261 in some aspects, limiting these updates to cases where RFC 5261 needed to be fixed, or was hard to understand.</t>
       </abstract>
       <note title="Note to Readers">
          <t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
@@ -96,15 +97,6 @@
             </list>
          </t>
       </section>
-      <section title="Implementation Status" anchor="implementation-status">
-         <t>Note to RFC Editor: Please remove this section before publication.</t>
-         <t>As explained in a draft currently under development <eref target="http://tools.ietf.org/html/draft-sheffer-running-code"/>, this section contains information about implementation status, so that reviews of the draft document can take implementation reports into account as well. If you are implementing this draft, please contact this draft's author. Any implementation status reports are intended for draft publications only; the section will be removed when the draft is published in RFC form.</t>
-         <t>
-            <list>
-               <t>EMC: We have implemented the selector part of the spec, which is the trickiest part (see <xref target="namespace-matching"/> for an explanation). By reusing an existing XPath 1.0 implementation and changing it to match the changed default namespace processing model, the required behavior is fairly easy to implement. This does, however, require that the implementation is available in source code, and also does require some changes to the implementation's code. The resulting implementation is closed source and will be made available, if released, as part of EMC's XML database product xDB <eref target="http://www.emc.com/products/detail/software2/documentum-xdb.htm"/>.</t>
-            </list>
-         </t>
-      </section>
       <section title="Security Considerations" anchor="security-considerations">
          <t>Parsing XML may entail including information from external sources through XML's mechanism of external entities. Implementations therefore should be aware of the fact that standard parsers may resolve external entities, and thus include external information as a result of applying patch operations to an XML document.</t>
       </section>
@@ -115,7 +107,7 @@
             <t>For unprefixed names in expressions, the rules depart from XPath 1.0 <xref target="W3C.REC-xpath-19991116"/>. XPath 1.0 defines that unprefixed names in expressions match namespace-less names (i.e., there is no "default namespace" for names used in XPath 1.0 expressions). RFC 5261 requires, however, that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate XMPL Patch selectors in the context of the diff document.</t>
             <t>As an extension of XPath 1.0's simple model, XPath 2.0 <xref target="W3C.REC-xpath20-20101214"/> specifies different processing rules for unprefixed names: They are matched against the URI of the "default element/type namespace", which is defined as part of an expression's static context. In some XPath 2.0 applications, this can be set; XSLT 2.0 for example has the ability to define an "xpath-default-namespace", which then will be used to match unprefixed names in expressions. Thus, by using an XPath 2.0 implementation that allows to set this URI, and setting it to the default namespace of the diff document (or leaving it undefined if there is no such default namespace), it is possible to use an out-of-the-box XPath 2.0 implementation for evaluating XML Patch selectors.</t>
             <t>Please keep in mind, however, that evaluating selectors is only one part of applying patches. When it comes to applying the actual patch operation, neither XPath 1.0 nor XPath 2.0 are sufficient, because they are not preserving some of the information from the XML syntax (specifically: namespace declarations) that is required to correctly apply patch operations. The following section described this issue in more detail.</t>
-            <t>[[[ Currently, RFC 5261's section on namespace matching explains XPath 2.0's rules incorrectly <eref target="http://tools.ietf.org/html/rfc5261#section-4.2.2"/>. An erratum has been filed <eref target="http://www.rfc-editor.org/errata_search.php?rfc=5261&amp;eid=3477"/> which, upon verification, will be linked to from here. ]]]</t>
+            <t>Please note that RFC 5261's Section 4.2.2 on namespace matching explains XPath 2.0's rules incorrectly <eref target="http://tools.ietf.org/html/rfc5261#section-4.2.2"/>. For this reason, <xref target="update-section-4-2-2"/> updates Section 4.2.2 of RFC 5261.</t>
          </section>
          <section title="Patching Namespaces" anchor="namespace-patching">
             <t>One of the issues when patching namespaces based on XPath is that XPath exposes namespaces different than the XML 1.0 <xref target="W3C.REC-xml-20081126"/> syntax for XML Namespaces <xref target="W3C.REC-xml-names-20091208"/>. In the XML syntax, a namespace is declared with an attribute using the reserved name or prefix "xmlns", and this results in this namespace being available recursively through the document tree. In XPath, the namespace declaration is not exposed as an attribute (i.e., the attribute, although syntactically an XML attribute, is not accessible in XPath), but the resulting namespace nodes are exposed recursively through the tree.</t>
@@ -136,15 +128,24 @@
             <t>In this second example, patching with a selector of /x/namespace::a should indeed change the namespace nodes on elements x and y, because they both have been derived from the same namespace declaration.</t>
             <t>The conclusion of these considerations is that for implementing XML Patch, access closer to the XML syntax (specifically: access to namespace declarations) is necessary. As a result, implementations attempting to exclusively use the XPath model for implementing XML Patch will fail to correctly address certain edge cases (such as the one shown above).</t>
             <t>Note that XPath's specific limitations do not mean that it is impossible to use XML technologies other than XPath. The Document Object Model (DOM) <xref target="W3C.REC-DOM-Level-3-Core-20040407"/>, for example, does expose namespace declaration attributes as regular attributes in the document tree, and thus could be used to differentiate between the two variants shown above.</t>
-            <t>[[[ Currently, RFC 5261's section on replacing namespaces mixes the terms "namespace declaration" and "namespace" <eref target="http://tools.ietf.org/html/rfc5261#section-4.4.3"/>. An erratum has been filed <eref target="http://www.rfc-editor.org/errata_search.php?eid=3478"/> which, upon verification, will be linked to from here. ]]]</t>
+            <t>Please note that RFC 5261's Section 4.4.3 on replacing namespaces mixes the terms "namespace declaration" and "namespace". For this reason, <xref target="update-section-4-4-3"/> updates Section 4.4.3 of RFC 5261.</t>
          </section>
+      </section>
+      <section title="Implementation Status" anchor="implementation-status">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <t>As explained in a draft currently under development <eref target="http://tools.ietf.org/html/draft-sheffer-running-code"/>, this section contains information about implementation status, so that reviews of the draft document can take implementation reports into account as well. If you are implementing this draft, please contact this draft's author. Any implementation status reports are intended for draft publications only; the section will be removed when the draft is published in RFC form.</t>
+         <t>
+            <list>
+               <t>EMC: We have implemented the selector part of the spec, which is the trickiest part (see <xref target="namespace-matching"/> for an explanation). By reusing an existing XPath 1.0 implementation and changing it to match the changed default namespace processing model, the required behavior is fairly easy to implement. This does, however, require that the implementation is available in source code, and also does require some changes to the implementation's code. The resulting implementation is closed source and will be made available, if released, as part of EMC's XML database product xDB <eref target="http://www.emc.com/products/detail/software2/documentum-xdb.htm"/>.</t>
+            </list>
+         </t>
       </section>
       <section title="Change Log">
          <t>Note to RFC Editor: Please remove this section before publication.</t>
          <section title="From -03 to -04">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Added text and section <xref target="rfc5261-updates"/> about updating RFC 5261.</t>
                </list>
             </t>
          </section>
@@ -562,8 +563,59 @@
             <format type='HTML' target='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407' />
          </reference>
       </references>
-      <section title="XSD from RFC 5261" anchor="rfc5261-xsd">
-         <t>For reference, this section contains a copy of the XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> defining the add, replace, and remove types in RFC 5261 <xref target="RFC5261"/>. This section is informational only, and the definitive version of the schema is the one listed in RFC 5261.</t>
+      <section title="Updates to RFC 5261" anchor="rfc5261-updates">
+         <t>This section is normative. It contains a list of updates to RFC 5261 <xref target="RFC5261"/>. These updates are limited to cases where RFC 5261 needed to be fixed, or was hard to understand.</t>
+         <section title="Section 4.2.2" anchor="update-section-4-2-2">
+            <t>Section 4.2.2 of RFC 5261 <xref target="RFC5261"/> says:</t>
+            <t>
+               <list style="empty">
+                  <t>In XPath 2.0, a "bar" selector not only matches an unqualified &lt;bar> element, but also matches a qualified &lt;bar> element that is in scope of a default namespace declaration.  In contrast, in this specification, a selector without a prefix only matches one element, and it may match an element with or without a prefix but only if the namespace it's qualified with (or none) is an exact match.</t>
+               </list>
+            </t>
+            <t>It should say:</t>
+            <t>
+               <list style="empty">
+                  <t>In XPath 2.0, a "bar" selector matches elements that have the URI of the "default element/type namespace", which is part of an XPath's static context. By setting this URI to the default namespace of the diff document (or leave it empty, if there is none), XPath 2.0's behavior matches the requirements of the previous section.</t>
+               </list>
+            </t>
+            <t>Explanation: The original text is not easy to understand, but seems to assume that an unprefixed name in XPath 2.0 matches both unprefixed names, and prefixed ones that have the same namespace as the default namespace of the XPath static context. This is not the case: Matching depends on how the "default element/type namespace" of the XPath static context is defined, and then matches either namespace-less elements, or those in the "default element/type namespace", but never both. This context, however, is defined by the XPath itself, not by the document. Thus, it can be set externally and could be set to the diff document's default namespace (if there is one). In that case, XPath 2.0 can be used to evaluate XML Patch selectors.</t>
+         </section>
+         <section title="Section 4.4.3" anchor="update-section-4-4-3">
+            <t>Section 4.4.3 of RFC 5261 <xref target="RFC5261"/> says:</t>
+            <t>
+               <list style="empty">
+                  <t>4.4.3. Replacing a Namespace Declaration URI</t>
+                  <t>An example for a replacement of a namespace URI: &lt;replace sel="doc/namespace::pref">urn:new:xxx&lt;/replace> This will replace the URI value of 'pref' prefixed namespace node with "urn:new:xxx". The parent node of the namespace declaration MUST be the &lt;doc> element, otherwise an error occurs.</t>
+               </list>
+            </t>
+            <t>It should say:</t>
+            <t>
+               <list style="empty">
+                  <t>4.4.3. Replacing a Namespace URI</t>
+                  <t>An example for a replacement of a namespace URI: &lt;replace sel="doc/namespace::pref">urn:new:xxx&lt;/replace> This will replace the URI of the namespace associated with the 'pref' prefix with "urn:new:xxx". The parent node of the namespace declaration MUST be the &lt;doc> element, otherwise an error occurs. Replacing the namespace at the element where it is declared MUST also change all namespace nodes derived from this declaration in descendant elements.</t>
+               </list>
+            </t>
+            <t>Explanation: The spec uses the terms "namespace declaration" and "namespace" almost interchangeably, which is incorrect. It is impossible to select namespace declarations using XPath. When selecting and replacing a namespace, then it should be taken into account that its associated namespace declaration very likely has resulted in numerous namespace nodes, attached to child elements of the element where the namespace was declared. It is likely that RFC 5261 intended to specify a "recursive replace" of the resulting namespace nodes of a namespace declaration, and this is what the corrected text suggests. The original text is mixing terminology, hard to read, and ambiguous in its meaning.</t>
+            <t>Side note: If the original text indeed tried to specify that really only this one namespace node should be changed, then this could lead to rather strange effects in the resulting document, since the XPath tree now would have "orphan" namespace nodes, which then would need to be serialized, and there would be resulting namespace declarations in locations where previously no namespace declarations occurred.</t>
+         </section>
+         <section title="Section 8" anchor="update-section-8">
+            <t>Section 8 of RFC 5261 <xref target="RFC5261"/> says:</t>
+            <t>
+               <list style="empty">
+                  <t>&lt;!ENTITY id     "id\(('&amp;ncname;')?\)|id\((&amp;quot;&amp;ncname;&amp;quot;)?\)"></t>
+               </list>
+            </t>
+            <t>It should say:</t>
+            <t>
+               <list style="empty">
+                  <t>&lt;!ENTITY id     "id\('&amp;ncname;'\)|id\(&amp;quot;&amp;ncname;&amp;quot;\)"></t>
+               </list>
+            </t>
+            <t>Explanation: The regex in the XSD suggests that "id()" would be a valid selector for a patch, but it would not make sense to specify such a selector, since it never would select a node (there's no identifier to locate in the document). This means that while "id()" is a valid XPath expression, it should not be allowed as a selector expression within an XML patch document. </t>
+         </section>
+      </section>
+      <section title="XSD for RFC 5261" anchor="rfc5261-xsd">
+         <t>For easy reference, this section contains a modified copy of the XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> defining the add, replace, and remove types in RFC 5261 <xref target="RFC5261"/>. This section is normative, since it contains an update (see Section <xref target="update-section-8"/>) of the original grammar of RFC 5261.</t>
          <figure>
             <artwork><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE schema [
@@ -578,7 +630,7 @@
     <!ENTITY step   "(&qname;|\*)(&cond;)*">
     <!ENTITY piq    "processing-instruction\((&quot;&ncname;&quot;)\)">
     <!ENTITY pi     "processing-instruction\(('&ncname;')?\)|&piq;">
-    <!ENTITY id     "id\(('&ncname;')?\)|id\((&quot;&ncname;&quot;)?\)">
+    <!ENTITY id     "id\(('&ncname;')\)|id\((&quot;&ncname;&quot;)\)">
     <!ENTITY com    "comment\(\)">
     <!ENTITY text   "text\(\)">
     <!ENTITY nspa   "namespace::&ncname;">
@@ -662,7 +714,8 @@
          </figure>
       </section>
       <section title="ABNF for RFC 5261" anchor="rfc5261-abnf">
-         <t>RFC 5261 <xref target="RFC5261"/> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types (which is shown in <xref target="rfc5261-xsd"/>). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions given in RFC 5261. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.</t>
+         <t>RFC 5261 <xref target="RFC5261"/> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types (which is shown in <xref target="rfc5261-xsd"/>). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions given in <xref target="rfc5261-xsd"/>. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.</t>
+         <t>This section is normative, since it contains an update (see Section <xref target="update-section-8"/>) of the original grammar of RFC 5261.</t>
          <figure>
             <artwork>ncname     =  1*%x00-ffffffff
 qname      =  [ ncname ":" ] ncname
