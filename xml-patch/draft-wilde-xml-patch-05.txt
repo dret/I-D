@@ -518,7 +518,7 @@ Internet-Draft                  XML Patch                     March 2013
 
 8.1.  From -04 to -05
 
-   o  ...
+   o  Improved formatting of XML and XSD code.
 
 8.2.  From -03 to -04
 
@@ -897,26 +897,30 @@ Wilde                  Expires September 22, 2013              [Page 16]
 Internet-Draft                  XML Patch                     March 2013
 
 
-ncname     =  1*%x00-ffffffff
-                  qname      =  [ ncname ":" ] ncname
-                  aname      =  "@" qname
-                  pos        =  "[" 1*DIGIT "]"
-                  attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) / ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
-                  valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
-                  value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
-                  cond       =  attr / value / pos
-                  step       =  ( qname / "*" ) 0*( cond )
-                  piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
-                  pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
-                  id         =  ( "id(" [ "'" ncname "'" ] ")" ) / ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
-                  com        =  "comment()"
-                  text       =  "text()"
-                  nspa       =  "namespace::" ncname
-                  cnodes     =  ( text / com / pi ) [ pos ]
-                  child      =  cnodes / step
-                  last       =  child / aname / nspa
-                  xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) / ( 0*( step "/" ) last ) )
-                  xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) / ( 0*( step "/" ) child ) )
+   ncname     =  1*%x00-ffffffff
+   qname      =  [ ncname ":" ] ncname
+   aname      =  "@" qname
+   pos        =  "[" 1*DIGIT "]"
+   attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) /
+                 ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
+   valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
+   value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
+   cond       =  attr / value / pos
+   step       =  ( qname / "*" ) 0*( cond )
+   piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
+   pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
+   id         =  ( "id(" [ "'" ncname "'" ] ")" ) /
+                 ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
+   com        =  "comment()"
+   text       =  "text()"
+   nspa       =  "namespace::" ncname
+   cnodes     =  ( text / com / pi ) [ pos ]
+   child      =  cnodes / step
+   last       =  child / aname / nspa
+   xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
+                 ( 0*( step "/" ) last ) )
+   xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
+                 ( 0*( step "/" ) child ) )
 
 
 Appendix B.  Acknowledgements
@@ -930,10 +934,6 @@ Author's Address
    EMC
 
    Email: erik.wilde@emc.com
-
-
-
-
 
 
 

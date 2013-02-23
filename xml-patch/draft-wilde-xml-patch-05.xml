@@ -148,7 +148,7 @@
          <section title="From -04 to -05">
             <t>
                <list style="symbols">
-                  <t>Improved formatting of XML and XSD code.</t>
+                  <t>Improved formatting of XML/XSD and ABNF code.</t>
                </list>
             </t>
          </section>
@@ -723,26 +723,30 @@
          <section title="ABNF for RFC 5261" anchor="rfc5261-abnf">
             <t>RFC 5261 <xref target="RFC5261"/> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types (which is shown in <xref target="rfc5261-xsd"/>). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions given in <xref target="rfc5261-xsd"/>. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.</t>
             <figure>
-               <artwork>ncname     =  1*%x00-ffffffff
-                  qname      =  [ ncname ":" ] ncname
-                  aname      =  "@" qname
-                  pos        =  "[" 1*DIGIT "]"
-                  attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) / ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
-                  valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
-                  value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
-                  cond       =  attr / value / pos
-                  step       =  ( qname / "*" ) 0*( cond )
-                  piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
-                  pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
-                  id         =  ( "id(" [ "'" ncname "'" ] ")" ) / ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
-                  com        =  "comment()"
-                  text       =  "text()"
-                  nspa       =  "namespace::" ncname
-                  cnodes     =  ( text / com / pi ) [ pos ]
-                  child      =  cnodes / step
-                  last       =  child / aname / nspa
-                  xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) / ( 0*( step "/" ) last ) )
-                  xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) / ( 0*( step "/" ) child ) )</artwork>
+               <artwork>   ncname     =  1*%x00-ffffffff
+   qname      =  [ ncname ":" ] ncname
+   aname      =  "@" qname
+   pos        =  "[" 1*DIGIT "]"
+   attr       =  ( "[" aname "='" 1*%x00-ffffffff "']" ) /
+                 ( "[" aname "=" DQUOTE 1*%x00-ffffffff DQUOTE "]" )
+   valueq     =  "[" ( qname / "." ) "=" DQUOTE 1*%x00-ffffffff DQUOTE "]"
+   value      =  ( "[" ( qname / "." ) "='" 1*%x00-ffffffff "']" ) / valueq
+   cond       =  attr / value / pos
+   step       =  ( qname / "*" ) 0*( cond )
+   piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
+   pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
+   id         =  ( "id(" [ "'" ncname "'" ] ")" ) /
+                 ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
+   com        =  "comment()"
+   text       =  "text()"
+   nspa       =  "namespace::" ncname
+   cnodes     =  ( text / com / pi ) [ pos ]
+   child      =  cnodes / step
+   last       =  child / aname / nspa
+   xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
+                 ( 0*( step "/" ) last ) )
+   xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
+                 ( 0*( step "/" ) child ) )</artwork>
             </figure>
          </section>
       </section>
