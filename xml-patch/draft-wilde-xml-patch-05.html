@@ -143,11 +143,11 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
-<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc5261'>5261</a> (if&nbsp;approved)</td><td class="header">February 21, 2013</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc5261'>5261</a> (if&nbsp;approved)</td><td class="header">March 21, 2013</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: August 25, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: September 22, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-04</h1>
+<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-05</h1>
 
 <h3>Abstract</h3>
 
@@ -176,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on August 25, 2013.</p>
+This Internet-Draft will expire on September 22, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -216,12 +216,14 @@ Implementation Status<br />
 <a href="#anchor2">8.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">8.1.</a>&nbsp;
-From -03 to -04<br />
+From -04 to -05<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">8.2.</a>&nbsp;
-From -02 to -03<br />
+From -03 to -04<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">8.3.</a>&nbsp;
-From -01 to -02<br />
+From -02 to -03<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">8.4.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">8.5.</a>&nbsp;
 From -00 to -01<br />
 <a href="#rfc.references1">9.</a>&nbsp;
 References<br />
@@ -241,7 +243,7 @@ Section 8<br />
 XSD for RFC 5261<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc5261-abnf">A.5.</a>&nbsp;
 ABNF for RFC 5261<br />
-<a href="#anchor9">Appendix&nbsp;B.</a>&nbsp;
+<a href="#anchor10">Appendix&nbsp;B.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
@@ -269,35 +271,37 @@ Patch Document Format</h3>
 <p>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.
 </p>
 <p>The following example patch document uses the example from RFC 5261, and simply uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example for each operation.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
-    xmlns:p="urn:ietf:rfc:XXXX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="urn:ietf:rfc:XXXX patch-document-00.xsd"&gt;
-    &lt;p:add sel="doc/elem[@a='foo']"&gt;
-        &lt;!-- This is a new child --&gt;
-        &lt;child id="ert4773"&gt;
-            &lt;y:node/&gt;
-        &lt;/child&gt;
-    &lt;/p:add&gt;
-    &lt;p:replace sel="doc/note/text()"&gt;Patched doc&lt;/p:replace&gt;
-    &lt;p:remove sel="*/elem[@a='bar']/y:child" ws="both"/&gt;
-    &lt;p:add sel="*/elem[@a='bar']" type="@b"&gt;new attr&lt;/p:add&gt;
-&lt;/p:patch&gt;</pre></div>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>
+   &lt;p:patch xmlns="urn:ietf:params:xml:ns:xxx"
+            xmlns:y="urn:ietf:params:xml:ns:yyy"
+            xmlns:p="urn:ietf:rfc:XXXX"&gt;
+       &lt;p:add sel="doc/elem[@a='foo']"&gt;
+           &lt;!-- This is a new child --&gt;
+           &lt;child id="ert4773"&gt;
+               &lt;y:node/&gt;
+           &lt;/child&gt;
+       &lt;/p:add&gt;
+       &lt;p:replace sel="doc/note/text()"&gt;Patched doc&lt;/p:replace&gt;
+       &lt;p:remove sel="*/elem[@a='bar']/y:child" ws="both"/&gt;
+       &lt;p:add sel="*/elem[@a='bar']" type="@b"&gt;new attr&lt;/p:add&gt;
+   &lt;/p:patch&gt;</pre></div>
 <p>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.
 </p>
 <p>RFC 5261 defines an XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> for the patch operation types, which is shown in <a class='info' href='#rfc5261-xsd'>Appendix&nbsp;A.4<span> (</span><span class='info'>XSD for RFC 5261</span><span>)</span></a>. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;xs:schema targetNamespace="urn:ietf:rfc:XXXX"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"&gt;
-    &lt;xs:import schemaLocation="rfc5261.xsd"/&gt;
-    &lt;xs:element name="patch"&gt;
-        &lt;xs:complexType&gt;
-            &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
-                &lt;xs:element name="add" type="add"/&gt;
-                &lt;xs:element name="remove" type="remove"/&gt;
-                &lt;xs:element name="replace" type="replace"/&gt;
-            &lt;/xs:choice&gt;
-        &lt;/xs:complexType&gt;
-    &lt;/xs:element&gt;
-&lt;/xs:schema&gt;</pre></div>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>   &lt;xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema"
+              elementFormDefault="qualified"&gt;
+       &lt;xs:import schemaLocation="rfc5261.xsd"/&gt;
+       &lt;xs:element name="patch"&gt;
+           &lt;xs:complexType&gt;
+               &lt;xs:choice minOccurs="0" maxOccurs="unbounded"&gt;
+                   &lt;xs:element name="add" type="add"/&gt;
+                   &lt;xs:element name="remove" type="remove"/&gt;
+                   &lt;xs:element name="replace" type="replace"/&gt;
+               &lt;/xs:choice&gt;
+           &lt;/xs:complexType&gt;
+       &lt;/xs:element&gt;
+   &lt;/xs:schema&gt;</pre></div>
 <a name="examples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
@@ -441,6 +445,19 @@ Change Log</h3>
 <a name="anchor3"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
+From -04 to -05</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>...
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
 From -03 to -04</h3>
 
 <p>
@@ -451,9 +468,9 @@ From -03 to -04</h3>
 </ul><p>
             
 </p>
-<a name="anchor4"></a><br /><hr />
+<a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
+<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
 From -02 to -03</h3>
 
 <p>
@@ -466,9 +483,9 @@ From -02 to -03</h3>
 </ul><p>
             
 </p>
-<a name="anchor5"></a><br /><hr />
+<a name="anchor6"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
+<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
 From -01 to -02</h3>
 
 <p>
@@ -481,9 +498,9 @@ From -01 to -02</h3>
 </ul><p>
             
 </p>
-<a name="anchor6"></a><br /><hr />
+<a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
+<a name="rfc.section.8.5"></a><h3>8.5.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -641,8 +658,7 @@ Section 8</h3>
 XSD for RFC 5261</h3>
 
 <p>This section contains a modified copy of the XML Schema (XSD) <a class='info' href='#W3C.REC-xmlschema-1-20041028'>[8]<span> (</span><span class='info'>Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a> defining the add, replace, and remove types in RFC 5261 <a class='info' href='#RFC5261'>[2]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a>. The modification is based on the grammar change made in <a class='info' href='#update-section-8'>Appendix&nbsp;A.3<span> (</span><span class='info'>Section 8</span><span>)</span></a>.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE schema [
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>   &lt;!DOCTYPE schema [
     &lt;!ENTITY ncname "\i\c*"&gt;
     &lt;!ENTITY qname  "(&amp;ncname;:)?&amp;ncname;"&gt;
     &lt;!ENTITY aname  "@&amp;qname;"&gt;
@@ -654,87 +670,86 @@ XSD for RFC 5261</h3>
     &lt;!ENTITY step   "(&amp;qname;|\*)(&amp;cond;)*"&gt;
     &lt;!ENTITY piq    "processing-instruction\((&amp;quot;&amp;ncname;&amp;quot;)\)"&gt;
     &lt;!ENTITY pi     "processing-instruction\(('&amp;ncname;')?\)|&amp;piq;"&gt;
-    &lt;!ENTITY id     "id\('&amp;ncname;'\)|id\(&amp;quot;&amp;ncname;&amp;quot;\)"&gt;
+    &lt;!ENTITY id     "id\(('&amp;ncname;')?\)|id\((&amp;quot;&amp;ncname;&amp;quot;)?\)"&gt;
     &lt;!ENTITY com    "comment\(\)"&gt;
     &lt;!ENTITY text   "text\(\)"&gt;
     &lt;!ENTITY nspa   "namespace::&amp;ncname;"&gt;
     &lt;!ENTITY cnodes "(&amp;text;(&amp;pos;)?)|(&amp;com;(&amp;pos;)?)|((&amp;pi;)(&amp;pos;)?)"&gt;
     &lt;!ENTITY child  "&amp;cnodes;|&amp;step;"&gt;
     &lt;!ENTITY last   "(&amp;child;|&amp;aname;|&amp;nspa;)"&gt;
-    ]&gt;
-&lt;xsd:schema
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="qualified"&gt;
+   ]&gt;
+   &lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               elementFormDefault="qualified"&gt;
 
-    &lt;xsd:simpleType name="xpath"&gt;
-        &lt;xsd:restriction base="xsd:string"&gt;
-            &lt;xsd:pattern
-                value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;last;))?|(&amp;step;/)*(&amp;last;))"/&gt;
-        &lt;/xsd:restriction&gt;
-    &lt;/xsd:simpleType&gt;
+       &lt;xsd:simpleType name="xpath"&gt;
+           &lt;xsd:restriction base="xsd:string"&gt;
+               &lt;xsd:pattern value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;last;))?|
+                                   (&amp;step;/)*(&amp;last;))"/&gt;
+           &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
 
-    &lt;xsd:simpleType name="xpath-add"&gt;
-        &lt;xsd:restriction base="xsd:string"&gt;
-            &lt;xsd:pattern
-                value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;child;))?|(&amp;step;/)*(&amp;child;))"/&gt;
-        &lt;/xsd:restriction&gt;
-    &lt;/xsd:simpleType&gt;
+       &lt;xsd:simpleType name="xpath-add"&gt;
+           &lt;xsd:restriction base="xsd:string"&gt;
+               &lt;xsd:pattern value="(/)?((&amp;id;)((/&amp;step;)*(/&amp;child;))?|
+                                   (&amp;step;/)*(&amp;child;))"/&gt;
+           &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
 
-    &lt;xsd:simpleType name="pos"&gt;
-        &lt;xsd:restriction base="xsd:string"&gt;
-            &lt;xsd:enumeration value="before"/&gt;
-            &lt;xsd:enumeration value="after"/&gt;
-            &lt;xsd:enumeration value="prepend"/&gt;
-        &lt;/xsd:restriction&gt;
-    &lt;/xsd:simpleType&gt;
+       &lt;xsd:simpleType name="pos"&gt;
+           &lt;xsd:restriction base="xsd:string"&gt;
+               &lt;xsd:enumeration value="before"/&gt;
+               &lt;xsd:enumeration value="after"/&gt;
+               &lt;xsd:enumeration value="prepend"/&gt;
+           &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
 
-    &lt;xsd:simpleType name="type"&gt;
-        &lt;xsd:restriction base="xsd:string"&gt;
-            &lt;xsd:pattern value="&amp;aname;|&amp;nspa;"/&gt;
-        &lt;/xsd:restriction&gt;
-    &lt;/xsd:simpleType&gt;
+       &lt;xsd:simpleType name="type"&gt;
+           &lt;xsd:restriction base="xsd:string"&gt;
+               &lt;xsd:pattern value="&amp;aname;|&amp;nspa;"/&gt;
+           &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
 
-    &lt;xsd:complexType name="add"&gt;
-        &lt;xsd:complexContent mixed="true"&gt;
-            &lt;xsd:restriction base="xsd:anyType"&gt;
-                &lt;xsd:sequence&gt;
-                    &lt;xsd:any processContents="lax" namespace="##any"
-                        minOccurs="0" maxOccurs="unbounded"/&gt;
-                &lt;/xsd:sequence&gt;
-                &lt;xsd:attribute name="sel" type="xpath-add"
-                    use="required"/&gt;
-                &lt;xsd:attribute name="pos" type="pos"/&gt;
-                &lt;xsd:attribute name="type" type="type"/&gt;
-            &lt;/xsd:restriction&gt;
-        &lt;/xsd:complexContent&gt;
-    &lt;/xsd:complexType&gt;
+       &lt;xsd:complexType name="add"&gt;
+           &lt;xsd:complexContent mixed="true"&gt;
+               &lt;xsd:restriction base="xsd:anyType"&gt;
+                   &lt;xsd:sequence&gt;
+                       &lt;xsd:any processContents="lax" namespace="##any"
+                           minOccurs="0" maxOccurs="unbounded"/&gt;
+                   &lt;/xsd:sequence&gt;
+                   &lt;xsd:attribute name="sel" type="xpath-add"
+                       use="required"/&gt;
+                   &lt;xsd:attribute name="pos" type="pos"/&gt;
+                   &lt;xsd:attribute name="type" type="type"/&gt;
+               &lt;/xsd:restriction&gt;
+           &lt;/xsd:complexContent&gt;
+       &lt;/xsd:complexType&gt;
 
-    &lt;xsd:complexType name="replace"&gt;
-        &lt;xsd:complexContent mixed="true"&gt;
-            &lt;xsd:restriction base="xsd:anyType"&gt;
-                &lt;xsd:sequence&gt;
-                    &lt;xsd:any processContents="lax" namespace="##any"
-                        minOccurs="0" maxOccurs="1"/&gt;
-                &lt;/xsd:sequence&gt;
-                &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
-            &lt;/xsd:restriction&gt;
-        &lt;/xsd:complexContent&gt;
-    &lt;/xsd:complexType&gt;
+       &lt;xsd:complexType name="replace"&gt;
+           &lt;xsd:complexContent mixed="true"&gt;
+               &lt;xsd:restriction base="xsd:anyType"&gt;
+                   &lt;xsd:sequence&gt;
+                       &lt;xsd:any processContents="lax" namespace="##any"
+                           minOccurs="0" maxOccurs="1"/&gt;
+                   &lt;/xsd:sequence&gt;
+                   &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
+               &lt;/xsd:restriction&gt;
+           &lt;/xsd:complexContent&gt;
+       &lt;/xsd:complexType&gt;
 
-    &lt;xsd:simpleType name="ws"&gt;
-        &lt;xsd:restriction base="xsd:string"&gt;
-            &lt;xsd:enumeration value="before"/&gt;
-            &lt;xsd:enumeration value="after"/&gt;
-            &lt;xsd:enumeration value="both"/&gt;
-        &lt;/xsd:restriction&gt;
-    &lt;/xsd:simpleType&gt;
+       &lt;xsd:simpleType name="ws"&gt;
+           &lt;xsd:restriction base="xsd:string"&gt;
+               &lt;xsd:enumeration value="before"/&gt;
+               &lt;xsd:enumeration value="after"/&gt;
+               &lt;xsd:enumeration value="both"/&gt;
+           &lt;/xsd:restriction&gt;
+       &lt;/xsd:simpleType&gt;
 
-    &lt;xsd:complexType name="remove"&gt;
-        &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
-        &lt;xsd:attribute name="ws" type="ws"/&gt;
-    &lt;/xsd:complexType&gt;
+       &lt;xsd:complexType name="remove"&gt;
+           &lt;xsd:attribute name="sel" type="xpath" use="required"/&gt;
+           &lt;xsd:attribute name="ws" type="ws"/&gt;
+       &lt;/xsd:complexType&gt;
 
-&lt;/xsd:schema&gt;</pre></div>
+   &lt;/xsd:schema&gt;</pre></div>
 <a name="rfc5261-abnf"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A.5"></a><h3>A.5.&nbsp;
@@ -761,7 +776,7 @@ ABNF for RFC 5261</h3>
                   last       =  child / aname / nspa
                   xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) / ( 0*( step "/" ) last ) )
                   xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) / ( 0*( step "/" ) child ) )</pre></div>
-<a name="anchor9"></a><br /><hr />
+<a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
 Acknowledgements</h3>

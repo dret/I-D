@@ -35,36 +35,38 @@
          <t>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.</t>
          <t>The following example patch document uses the example from RFC 5261, and simply uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example for each operation.</t>
          <figure>
-            <artwork><![CDATA[<p:patch xmlns="urn:ietf:params:xml:ns:xxx" xmlns:y="urn:ietf:params:xml:ns:yyy"
-    xmlns:p="urn:ietf:rfc:XXXX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="urn:ietf:rfc:XXXX patch-document-00.xsd">
-    <p:add sel="doc/elem[@a='foo']">
-        <!-- This is a new child -->
-        <child id="ert4773">
-            <y:node/>
-        </child>
-    </p:add>
-    <p:replace sel="doc/note/text()">Patched doc</p:replace>
-    <p:remove sel="*/elem[@a='bar']/y:child" ws="both"/>
-    <p:add sel="*/elem[@a='bar']" type="@b">new attr</p:add>
-</p:patch>]]></artwork>
+               <artwork><![CDATA[
+   <p:patch xmlns="urn:ietf:params:xml:ns:xxx"
+            xmlns:y="urn:ietf:params:xml:ns:yyy"
+            xmlns:p="urn:ietf:rfc:XXXX">
+       <p:add sel="doc/elem[@a='foo']">
+           <!-- This is a new child -->
+           <child id="ert4773">
+               <y:node/>
+           </child>
+       </p:add>
+       <p:replace sel="doc/note/text()">Patched doc</p:replace>
+       <p:remove sel="*/elem[@a='bar']/y:child" ws="both"/>
+       <p:add sel="*/elem[@a='bar']" type="@b">new attr</p:add>
+   </p:patch>]]></artwork>
          </figure>
          <t>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.</t>
          <t>RFC 5261 defines an XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> for the patch operation types, which is shown in <xref target="rfc5261-xsd"/>. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
          <figure>
-            <artwork><![CDATA[<xs:schema targetNamespace="urn:ietf:rfc:XXXX"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-    <xs:import schemaLocation="rfc5261.xsd"/>
-    <xs:element name="patch">
-        <xs:complexType>
-            <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="add" type="add"/>
-                <xs:element name="remove" type="remove"/>
-                <xs:element name="replace" type="replace"/>
-            </xs:choice>
-        </xs:complexType>
-    </xs:element>
-</xs:schema>]]></artwork>
+            <artwork><![CDATA[   <xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema"
+              elementFormDefault="qualified">
+       <xs:import schemaLocation="rfc5261.xsd"/>
+       <xs:element name="patch">
+           <xs:complexType>
+               <xs:choice minOccurs="0" maxOccurs="unbounded">
+                   <xs:element name="add" type="add"/>
+                   <xs:element name="remove" type="remove"/>
+                   <xs:element name="replace" type="replace"/>
+               </xs:choice>
+           </xs:complexType>
+       </xs:element>
+   </xs:schema>]]></artwork>
          </figure>
       </section>
       <section title="Patch Examples" anchor="examples">
@@ -146,7 +148,7 @@
          <section title="From -04 to -05">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Improved formatting of XML and XSD code.</t>
                </list>
             </t>
          </section>
@@ -624,8 +626,7 @@
          <section title="XSD for RFC 5261" anchor="rfc5261-xsd">
             <t>This section contains a modified copy of the XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> defining the add, replace, and remove types in RFC 5261 <xref target="RFC5261"/>. The modification is based on the grammar change made in <xref target="update-section-8"/>.</t>
             <figure>
-               <artwork><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE schema [
+               <artwork><![CDATA[   <!DOCTYPE schema [
     <!ENTITY ncname "\i\c*">
     <!ENTITY qname  "(&ncname;:)?&ncname;">
     <!ENTITY aname  "@&qname;">
@@ -637,87 +638,86 @@
     <!ENTITY step   "(&qname;|\*)(&cond;)*">
     <!ENTITY piq    "processing-instruction\((&quot;&ncname;&quot;)\)">
     <!ENTITY pi     "processing-instruction\(('&ncname;')?\)|&piq;">
-    <!ENTITY id     "id\('&ncname;'\)|id\(&quot;&ncname;&quot;\)">
+    <!ENTITY id     "id\(('&ncname;')?\)|id\((&quot;&ncname;&quot;)?\)">
     <!ENTITY com    "comment\(\)">
     <!ENTITY text   "text\(\)">
     <!ENTITY nspa   "namespace::&ncname;">
     <!ENTITY cnodes "(&text;(&pos;)?)|(&com;(&pos;)?)|((&pi;)(&pos;)?)">
     <!ENTITY child  "&cnodes;|&step;">
     <!ENTITY last   "(&child;|&aname;|&nspa;)">
-    ]>
-<xsd:schema
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    elementFormDefault="qualified">
-    
-    <xsd:simpleType name="xpath">
-        <xsd:restriction base="xsd:string">
-            <xsd:pattern
-                value="(/)?((&id;)((/&step;)*(/&last;))?|(&step;/)*(&last;))"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    
-    <xsd:simpleType name="xpath-add">
-        <xsd:restriction base="xsd:string">
-            <xsd:pattern
-                value="(/)?((&id;)((/&step;)*(/&child;))?|(&step;/)*(&child;))"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    
-    <xsd:simpleType name="pos">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="before"/>
-            <xsd:enumeration value="after"/>
-            <xsd:enumeration value="prepend"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    
-    <xsd:simpleType name="type">
-        <xsd:restriction base="xsd:string">
-            <xsd:pattern value="&aname;|&nspa;"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    
-    <xsd:complexType name="add">
-        <xsd:complexContent mixed="true">
-            <xsd:restriction base="xsd:anyType">
-                <xsd:sequence>
-                    <xsd:any processContents="lax" namespace="##any"
-                        minOccurs="0" maxOccurs="unbounded"/>
-                </xsd:sequence>
-                <xsd:attribute name="sel" type="xpath-add"
-                    use="required"/>
-                <xsd:attribute name="pos" type="pos"/>
-                <xsd:attribute name="type" type="type"/>
-            </xsd:restriction>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:complexType name="replace">
-        <xsd:complexContent mixed="true">
-            <xsd:restriction base="xsd:anyType">
-                <xsd:sequence>
-                    <xsd:any processContents="lax" namespace="##any"
-                        minOccurs="0" maxOccurs="1"/>
-                </xsd:sequence>
-                <xsd:attribute name="sel" type="xpath" use="required"/>
-            </xsd:restriction>
-        </xsd:complexContent>
-    </xsd:complexType>
-    
-    <xsd:simpleType name="ws">
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="before"/>
-            <xsd:enumeration value="after"/>
-            <xsd:enumeration value="both"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-    
-    <xsd:complexType name="remove">
-        <xsd:attribute name="sel" type="xpath" use="required"/>
-        <xsd:attribute name="ws" type="ws"/>
-    </xsd:complexType>
-    
-</xsd:schema>]]></artwork>
+   ]>
+   <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               elementFormDefault="qualified">
+       
+       <xsd:simpleType name="xpath">
+           <xsd:restriction base="xsd:string">
+               <xsd:pattern value="(/)?((&id;)((/&step;)*(/&last;))?|
+                                   (&step;/)*(&last;))"/>
+           </xsd:restriction>
+       </xsd:simpleType>
+       
+       <xsd:simpleType name="xpath-add">
+           <xsd:restriction base="xsd:string">
+               <xsd:pattern value="(/)?((&id;)((/&step;)*(/&child;))?|
+                                   (&step;/)*(&child;))"/>
+           </xsd:restriction>
+       </xsd:simpleType>
+       
+       <xsd:simpleType name="pos">
+           <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="before"/>
+               <xsd:enumeration value="after"/>
+               <xsd:enumeration value="prepend"/>
+           </xsd:restriction>
+       </xsd:simpleType>
+       
+       <xsd:simpleType name="type">
+           <xsd:restriction base="xsd:string">
+               <xsd:pattern value="&aname;|&nspa;"/>
+           </xsd:restriction>
+       </xsd:simpleType>
+       
+       <xsd:complexType name="add">
+           <xsd:complexContent mixed="true">
+               <xsd:restriction base="xsd:anyType">
+                   <xsd:sequence>
+                       <xsd:any processContents="lax" namespace="##any"
+                           minOccurs="0" maxOccurs="unbounded"/>
+                   </xsd:sequence>
+                   <xsd:attribute name="sel" type="xpath-add"
+                       use="required"/>
+                   <xsd:attribute name="pos" type="pos"/>
+                   <xsd:attribute name="type" type="type"/>
+               </xsd:restriction>
+           </xsd:complexContent>
+       </xsd:complexType>
+       
+       <xsd:complexType name="replace">
+           <xsd:complexContent mixed="true">
+               <xsd:restriction base="xsd:anyType">
+                   <xsd:sequence>
+                       <xsd:any processContents="lax" namespace="##any"
+                           minOccurs="0" maxOccurs="1"/>
+                   </xsd:sequence>
+                   <xsd:attribute name="sel" type="xpath" use="required"/>
+               </xsd:restriction>
+           </xsd:complexContent>
+       </xsd:complexType>
+       
+       <xsd:simpleType name="ws">
+           <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="before"/>
+               <xsd:enumeration value="after"/>
+               <xsd:enumeration value="both"/>
+           </xsd:restriction>
+       </xsd:simpleType>
+       
+       <xsd:complexType name="remove">
+           <xsd:attribute name="sel" type="xpath" use="required"/>
+           <xsd:attribute name="ws" type="ws"/>
+       </xsd:complexType>
+       
+   </xsd:schema>]]></artwork>
             </figure>
          </section>
          <section title="ABNF for RFC 5261" anchor="rfc5261-abnf">
