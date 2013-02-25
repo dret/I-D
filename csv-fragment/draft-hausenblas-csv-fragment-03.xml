@@ -5,7 +5,7 @@
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="no" ?>
-<rfc category="std" ipr="trust200902" docName="draft-hausenblas-csv-fragment-02" updates="4180">
+<rfc category="std" ipr="trust200902" docName="draft-hausenblas-csv-fragment-03" updates="4180">
 	<front>
 		<title abbrev="text/csv Fragment Identifiers">URI Fragment Identifiers for the text/csv Media Type</title>
 		<author initials="M." surname="Hausenblas" fullname="Michael Hausenblas">
@@ -100,9 +100,23 @@
 				<figure>
 					<artwork>http://example.com/data.csv#row=3</artwork>
 				</figure>
-				<t>The above CSV fragment yields:</t>
+				<t>The above CSV fragment identifies the fourth row:</t>
 				<figure>
 					<artwork>2011-01-03,0,Galway</artwork>
+				</figure>
+				<t>Fragments can also select ranges of rows:</t>
+				<figure>
+					<artwork>http://example.com/data.csv#row=4-6</artwork>
+				</figure>
+				<t>The above CSV fragment identifies three consecutive rows:</t>
+				<figure>
+					<artwork>2011-01-01,6,Berkeley
+2011-01-02,8,Berkeley
+2011-01-03,5,Berkeley</artwork>
+				</figure>
+				<t>The value "*" can be used to indicate the last row, so the previous URI is equivalent to:</t>
+				<figure>
+					<artwork>http://example.com/data.csv#row=4-*</artwork>
 				</figure>
 			</section>
 			<section title="Column-based selection" anchor="method-column">
@@ -110,7 +124,7 @@
 				<figure>
 					<artwork>http://example.com/data.csv#col=1</artwork>
 				</figure>
-				<t>The above CSV fragment addresses the second column, yielding the column:</t>
+				<t>The above CSV fragment addresses the second column, identifying the column:</t>
 				<figure>
 					<artwork>temperature
 1
@@ -120,6 +134,21 @@
 8
 5</artwork>
 				</figure>
+				<t>The "col" scheme can also be used to identify ranges of columns:</t>
+				<figure>
+					<artwork>http://example.com/data.csv#col=0-1</artwork>
+				</figure>
+				<t>The above CSV fragment addresses the first and second column:</t>
+				<figure>
+					<artwork>date,temperature
+2011-01-01,1
+2011-01-02,-1
+2011-01-03,0
+2011-01-01,6
+2011-01-02,8
+2011-01-03,5</artwork>
+				</figure>
+				<t>The value "*" can be used to indicate the last column.</t>
 			</section>
 			<section title="Cell-based selection" anchor="method-cell">
 				<t>To select particular fields, use the "cell" scheme, followed by a row number, a comma, and a column number.</t>
@@ -174,12 +203,12 @@ number       =  1*( DIGIT )</artwork>
 				<t>If a fragment identifier contains a syntax error (i.e., does not conform to the syntax specified in <xref target="syntax"/>), then it MUST be ignored by clients. Clients MUST NOT make any attempt to correct or guess fragment identifiers. Syntax errors MAY be reported by clients.</t>
 			</section>
 			<section title="Semantics of Fragment Identifiers" anchor="semantics">
-				<t>Rows and columns in CSV are counted from zero. Positions thus refer to the rows and columns starting from position 0, which identifies the first row or column of a CSV. The special character "*" can be used to refer to the last rwo or column of a CSV, thus allowing fragment identifiers to easily identify ranges that extend to the last row or column.</t>
+				<t>Rows and columns in CSV are counted from zero. Positions thus refer to the rows and columns starting from position 0, which identifies the first row or column of a CSV. The special character "*" can be used to refer to the last row or column of a CSV, thus allowing fragment identifiers to easily identify ranges that extend to the last row or column.</t>
 				<t>If single selections refer to non-existing rows or columns (i.e., beyond the size of of the CSV), they MUST be ignored.</t>
 				<t>If ranges extend beyond the size of the CSV (by extending to row or columns beyond the size of the CSV), they MUST be interpreted to only extend to the actual size of the CSV.</t>
 				<t>If selections of ranges of rows or columns or selections of cell ranges are specified in a way so that they select "inversely" (i.e., "#row=10-5" or "#cell=10,10-5,5"), they MUST be ignored.</t>
-				<t>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1,4-3,12-15" does identify the frist two rows, because the second specification is an "inverse" one and thus ignored, and the third specification selects rows beyond the actual size of the CSV.</t>
-				<t>The result of evaluating the complete fragment identifier joins all the successfully evaluated identified parts, and then treats this joint fragment as the single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=2-5,3-4" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.</t>
+				<t>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1;4-3;12-15" does identify the frist two rows: the second specification is an "inverse" specification and thus ignored, and the third specification targets rows beyond the actual size of the CSV and is also ignored.</t>
+				<t>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=2-5;3-4" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.</t>
 			</section>
 		</section>
 		<section title="IANA Considerations">
@@ -201,6 +230,8 @@ number       =  1*( DIGIT )</artwork>
 				<t>
 					<list style="symbols">
 						<t>Added section on "Implementation Status" (<xref target="implementation-status"/>).</t>
+						<t>Added examples of ranges of rows and columns</t>
+						<t>Corrected errors in examples</t>
 					</list>
 				</t>
 			</section>
