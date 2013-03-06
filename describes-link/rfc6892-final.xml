@@ -35,42 +35,12 @@
 
    <middle>
       <section title="Introduction" anchor="introduction">
-
-<!--[rfced] Please note that we have lowercased instances of "Web" when it appeared in the text to fit with more common use in RFCs.  Please let us know any objections.
-
--->
-         <t>Resources on the web can be identified by any (registered) URI scheme and can be represented by any (registered) media type. In many cases, applications establish specific (i.e., typed) relations between the resources they are concerned with, which can either be under their control or controlled by another authority. A common usage pattern for associating resources is to have resources that are descriptions of other resources. This specification registers the 'describes' link relation, which allows applications to represent the fact that one resource is a description of another resource.</t>
+             <t>Resources on the web can be identified by any (registered) URI scheme and can be represented by any (registered) media type. In many cases, applications establish specific (i.e., typed) relations between the resources they are concerned with, which can either be under their control or controlled by another authority. A common usage pattern for associating resources is to have resources that are descriptions of other resources. This specification registers the 'describes' link relation, which allows applications to represent the fact that one resource is a description of another resource.</t>
          <t>RFC 5988 <xref target="RFC5988"/> "defines a framework for typed links that isn't specific to a particular serialisation or application. It does so by redefining the link relation registry established by Atom to have a broader domain, and adding to it the relations that are defined by HTML".  This registration request intends to augment the link relation registry with a link relation that is the inverse of the already registered 'describedby' relation, so that links between described resources and describing resources can be represented in both directions.</t>
       </section>
 
       <section title="Resource Descriptions" anchor="resource-descriptions">
          <t>Associating resources with descriptions of these resources is a recurring pattern on the web. The IANA "Link Relations" registry established by RFC 5988 <xref target="RFC5988"/> currently contains a 'describedby' link relation type, which has been registered by POWDER <xref target="POWDER"/>. The definition given in that registration originally was as follows: "The relationship A 'describedby' B asserts that resource B provides a description of resource A. There are no constraints on the format or representation of either A or B, neither are there any further constraints on either resource".</t>
-
-<!--[rfced] In reviewing the current entries at http://www.iana.org/assignments/link-relations/link-relations.xml, we have updated the text in Section 2 as follows (specifically, the text listed here now appears as the Description for 'describes' not 'describedby').  Additionally, please let us know if the current text should also be given either here or in the IANA Considerations section for the 'describedby' element.
-
-Original:
-The IANA link relation registry
-established by RFC 5988 [1] currently contains a 'describedby'
-link relation type, which has been registered by POWDER [3]. 
-The definition given in that registration is as follows: 
-The relationship A 'describedby' B asserts that resource B provides a
-description of resource A.  There are no constraints on the format or
-representation of either A or B, neither are there any further
-constraints on either resource."
-
-Edited:
-The IANA link relation registry
-established by RFC 5988 [1] currently contains a 'describedby'
-link relation type, which has been registered by POWDER [2]. 
-The definition given in that registration originally was as follows: 
-The relationship A 'describedby' B asserts that resource B provides a
-description of resource A.  There are no constraints on the format or
-representation of either A or B, neither are there any further
-constraints on either resource".
-
-
--->
-
          <t>Since many scenarios using resource descriptions need to represent the fact that some resource describes another resource (the opposite of the 'describedby' relation), this document registers a 'describes' link relation type. Establishing a link A 'describes' B asserts that the resource identified by A is a description of the resource identified by B, without constraining in any way the identifiers being used for A and B, and the media types for the representations being provided when those identifiers are dereferenced. Specifically, it is  possible that identifiers A and/or B have no associated interaction method (they could be URNs, for example), but it still is valid to establish the A 'describes' B link.</t>
          <t>Another design freedom is to use "chains" of 'describes' (or 'describedby') links, so that one resource is a description of another resource, which in turn is a description of yet another resource. The "levels" of descriptions can go as deep as required by an application and are not constrained by this specification.</t>
       </section>
