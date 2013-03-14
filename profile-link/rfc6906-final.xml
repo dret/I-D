@@ -24,20 +24,8 @@
       </author>
       <date month="March" year="2013"/>
 
-<!-- [rfced] Please insert any keywords (beyond those that appear in 
-the title) for use on http://www.rfc-editor.org/search/rfc_search.php. -->
-<keyword>example</keyword>
-
-<!-- [rfced] Throughout the text, the following terminology appears to be used 
-inconsistently.  
-
-Please review these occurrences and let us know if/how they may be made 
-consistent.  
-
-'profile' vs. "profile"
-
--->
-
+      <keyword>application profile</keyword>
+      <keyword>profile identifier</keyword>
 
       <abstract>
          <t>This specification defines the 'profile' link relation
@@ -69,12 +57,12 @@ mechanism built into the language, which is the 'profile' attribute of the
 time of writing, it seems as if HTML 5 will drop support for this mechanism entirely.</t>
 
 
-         <t>RFC 5988 <xref target="RFC5988"/> "defines a framework for typed links that isn't specific to a particular serialisation or application.  It does
+         <t>RFC 5988 <xref target="RFC5988"/> "defines a framework for typed links that isn't specific to a particular serialization or application.  It does
 so by redefining the link relation registry established by Atom to have a
 broader domain, and adding to it the relations that are defined by HTML."</t>
 
          <t>This specification registers a 'profile' link relation
-            type according to the rules of RFC 5988 <xref target="RFC5988"/>. Links with this relation type can be used in representations that support typed links as well as in HTTP Link headers. The profile link relation type is independent of the context in which it is used and does not constrain in any way the target of the linked URI. In fact, for the purpose of this specification, the target
+            type according to the rules of RFC 5988 <xref target="RFC5988"/>. Links with this relation type can be used in representations that support typed links as well as in HTTP Link headers. The profile link relation type is independent of the context in which it is used and does not constrain, in any way, the target of the linked URI. In fact, for the purpose of this specification, the target
 URI does not necessarily have to identify a dereferencable resource
 (or even use a dereferencable URI scheme).  Clients can treat the
 occurrence of a specific URI in the same way as an XML namespace URI
@@ -111,7 +99,7 @@ machine-readable way.</t>
 or on the web. For the purpose of this specification, a profile can be
 described as additional semantics that can be used to process a resource
 representation, such as constraints, conventions, extensions, or any other
-aspects that do not alter the basic media-type semantics. A profile MUST NOT
+aspects that do not alter the basic media type semantics. A profile MUST NOT
 change the semantics of the resource representation when processed without
 profile knowledge, so that clients both with and without knowledge of a
 profiled resource can safely use the same representation. While this
@@ -194,14 +182,14 @@ representation.</t>
             embedded typed links. For newly defined media types that
             may be used with profiles, it is therefore recommended
             that they SHOULD define a media type parameter called
-            "profile" and specify that this media type parameter
+            'profile' and specify that this media type parameter
             follows the semantics of a profile as laid out in this
             document. This way, clients can use this media type
             parameter to request a certain profile when interacting,
             for example, with an HTTP server and setting the Accept
-            header. Representations using a "profile" media type
+            header. Representations using a 'profile' media type
             parameter still SHOULD include that value in the
-            representation using the "profile" link relation, since
+            representation using the 'profile' link relation, since
             the media type label of a representation can easily get
             lost when it is taken out of its conversational
             context.</t>
@@ -209,7 +197,7 @@ representation.</t>
             <t>Since a representation can link to more than one
             profile, the same has to be possible for the corresponding
             media type parameter (if a media type defines such a
-            parameter). Media types defining a "profile" parameter
+            parameter). Media types defining a 'profile' parameter
             SHOULD define it as a whitespace-separated list of profile
             URIs.</t>
 
@@ -241,22 +229,8 @@ extend to the scope of the protocol in which they are being used.</t>
       </section>
       <section title="Examples" anchor="examples">
          <t>This section lists some examples of profiles that are already defined (and
-thus could be readily used with a 'profile' link) and of some potential additional
-examples. 
-
-<!--[rfced] May we update the text as follows to avoid saying "This section lists some examples....of potential additional examples"?
-
-Original:
-This section lists some examples of profiles that are already defined (and
-thus could be readily used with a 'profile' link) and of some potential additional
-examples. 
-
-Suggested:
-This section lists some examples of profiles that are already defined (and
-thus could be readily used with a 'profile' link) and of some potential additional
-profiles. 
--->
-So far, profiles have been mostly limited to HTML (because of the
+            thus could be readily used with a 'profile' link) and of some potential additional
+            profiles. So far, profiles have been mostly limited to HTML (because of the
 support of profiles in HTML).  The two examples of existing profiles are HTML profiles, and the two hypothetical examples 
 are non-HTML examples.</t>
          <section title="hCard" anchor="hcard">
