@@ -14,6 +14,7 @@
          <organization>EMC Corporation</organization>
          <address>
             <email>remon.sinnema@emc.com</email>
+            <uri>http://securesoftwaredev.com/</uri>
          </address>
       </author>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
@@ -40,10 +41,10 @@
    </front>
    <middle>
       <section title="Introduction">
-         <t>The XACML media type contains an XACML request, response, or policy <xref target="XACML-3"/>. The request and response allow clients form a query to request whether or not a given action should be allowed, and interpret the result. The policy is used to describe general access control requirements.</t>
+         <t>The eXtensible Access Control Markup Language (XACML) <xref target="XACML-3"/> defines an architecture and a language for access control (authorization). The language consists of requests, responses, and policies. Clients sends a request to a server to query whether a given action should be allowed. The server evaluates the request against the available policies and returns a reponse. The policies implement the organization's access control requirements.</t>
       </section>
       <section title="XACML Media Type">
-         <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML) that will be registered with the Internet Assigned Numbers Authority (IANA) following the "Media Type Specifications and Registration Procedures" <xref target="RFC6838"/>. The XACML media type represents an XACML request, response, or policy <xref target="XACML-3"/>. The request and response allow clients to contact an XACML service and ask whether or not a given action should be allowed, and interpret the result. The policy is used to describe general access control requirements.</t>
+         <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML) that will be registered with the Internet Assigned Numbers Authority (IANA) following the "Media Type Specifications and Registration Procedures" <xref target="RFC6838"/>. The XACML media type represents an XACML request, response, or policy in the XML-based format defined by the core XACML specification <xref target="XACML-3"/>.</t>
       </section>
       <section title="XACML Media Type application/xacml+xml" anchor="xacml-media-type">
          <t>This specification requests the registration of an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
@@ -58,7 +59,7 @@
          </section>
          <section title="Optional Parameters">
             <t>charset: The charset parameter is the same as the charset parameter of application/xml <xref target="RFC3023"/>.</t>
-            <t>version: The version parameter indicates the version of the XACML specification. It can be used for content negotiation when dealing with components that support multiple XACML versions. Its range is the range of published XACML versions. As of this writing that is: 1.0 <xref target="XACML-1"/>, 1.1 <xref target="XACML-1.1"/>, 2.0 <xref target="XACML-2"/>, and 3.0 <xref target="XACML-3"/>. These and future version identifiers are of the form x.y, where x and y are decimal numbers with no leading zeros, with x being positive and y being non-negative.</t>
+            <t>version: The version parameter indicates the version of the XACML specification. It can be used for content negotiation when dealing with clients and servers that support multiple XACML versions. Its range is the range of published XACML versions. As of this writing that is: 1.0 <xref target="XACML-1"/>, 1.1 <xref target="XACML-1.1"/>, 2.0 <xref target="XACML-2"/>, and 3.0 <xref target="XACML-3"/>. These and future version identifiers consist of a series of non-negative decimal numbers with no leading zeros separated by dots, where the first decimal must be positive. If this parameter is not specified by the client, the server is free to return any version it deems fit. If a client cannot or does not want to deal with that, it should explicitly specify a version.</t>
          </section>
          <section title="Encoding Considerations">
             <t>Same as for application/xml <xref target="RFC3023"/>.</t>
@@ -72,18 +73,27 @@
          </section>
          <section title="Interoperability Considerations">
             <t>XACML 3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI. XACML 2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI. Signed XACML has a wrapping SAML 2.0 assertion <xref target="SAML-2"/>, which uses the urn:oasis:names:tc:SAML:2.0:assertion namespace URI. Interoperability with SAML is defined by the SAML 2.0 Profile of XACML <xref target="XACML-3-SAML"/> for all versions of XACML.</t>
+            <t>
+               <list style="symbols">
+                  <t>1.0 &amp; 1.1 use the urn:oasis:names:tc:xacml:1.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:1.0:context XML namespace URI for requests and responses</t>
+                  <t>2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:2.0:context XML namespace URI for requests and responses</t>
+                  <t>3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI for policies, requests, and responses</t>
+               </list>
+            </t>
          </section>
          <section title="Applications which use this media type">
             <t>Potentially any application implementing XACML, as well as those applications implementing specifications based on XACML.</t>
          </section>
          <section title="Magic number(s)">
-            <t>In general, the same as for application/xml [2]. In particular, the XML document element of the returned object will be one of xacml:Policy,  xacml:PolicySet, context:Request, or context:Response. The xacml and context prefixes differ for the various versions of XACML as follows:
-            <list style="symbols">
-               <t>1.0 &amp; 1.1: The xacml prefix maps to urn:oasis:names:tc:xacml:1.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:1.0:context</t>
-               <t>2.0: The xacml prefix maps to urn:oasis:names:tc:xacml:2.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:2.0:context</t>
-               <t>3.0: Both the xacml and context prefixes map to the namespace URI urn:oasis:names:tc:xacml:3.0:core:schema:wd-17</t>
-            </list>
-            For signed XACML, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion</t>   
+            <t>In general, the same as for application/xml <xref target="RFC3023"/>. In particular, the XML document element of the returned object will be one of xacml:Policy,  xacml:PolicySet, context:Request, or context:Response. The xacml and context prefixes differ for the various versions of XACML as follows:</t>
+            <t>
+               <list style="symbols">
+                  <t>1.0 &amp; 1.1: The xacml prefix maps to urn:oasis:names:tc:xacml:1.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:1.0:context</t>
+                  <t>2.0: The xacml prefix maps to urn:oasis:names:tc:xacml:2.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:2.0:context</t>
+                  <t>3.0: Both the xacml and context prefixes map to the namespace URI urn:oasis:names:tc:xacml:3.0:core:schema:wd-17</t>
+               </list>
+            </t>
+            <t>For signed XACML, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion</t>   
          </section>
          <section title="File extension(s)">
             <t>none</t>
@@ -107,7 +117,8 @@
          <section title="From -01 to -02">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Added new introduction text.</t>
+                  <t>Improved definition of version numbers and their handling.</t>
                </list>
             </t>
          </section>
