@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<!-- online RFC references: http://xml.resource.org/public/rfc/bibxml/reference.RFC.6838.xml -->
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <?rfc toc="yes" ?>
@@ -69,31 +68,32 @@
             <t>XACML <xref target="XACML-3"/> contains information whose integrity and authenticity is important - identity provider and service provider public keys and endpoint addresses, for example. Sections 9.2.1 Authentication and 9.2.4 Policy integrity in XACML <xref target="XACML-3"/> describe requirements and considerations for such authentication and integrity protection.</t>
             <t>To counter potential issues, the publisher may sign application/xacml+xml typed objects. Any such signature should be verified by the recipient of the data - both as a valid signature, and as being the signature of the publisher. The XACML v3.0 XML Digital Signature Profile <xref target="XACML-3-DSig"/> describes how to use XML-based digital signatures with XACML.</t>
             <t>Additionally, various of the possible publication protocols, for example HTTPS, offer means for ensuring the authenticity of the publishing party and for protecting the policy in transit.</t>
-            <t>For a more detailed discussion of XACML policy and its security considerations, please see XACML 3.0 <xref target="XACML-3"/> and the associated XML Digital Signature Profile <xref target="XACML-3"/>.</t>
+            <t>For a more detailed discussion of XACML policy and its security considerations, please see XACML 3.0 <xref target="XACML-3"/> and the associated XML Digital Signature Profile <xref target="XACML-3-DSig"/>.</t>
          </section>
          <section title="Interoperability Considerations">
-            <t>XACML 3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI. XACML 2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI. Signed XACML has a wrapping SAML 2.0 assertion <xref target="SAML-2"/>, which uses the urn:oasis:names:tc:SAML:2.0:assertion namespace URI. Interoperability with SAML is defined by the SAML 2.0 Profile of XACML <xref target="XACML-3-SAML"/> for all versions of XACML.</t>
+            <t>Different versions of XACML use different XML namespace URIS:</t>
             <t>
-               <list style="symbols">
-                  <t>1.0 &amp; 1.1 use the urn:oasis:names:tc:xacml:1.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:1.0:context XML namespace URI for requests and responses</t>
-                  <t>2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:2.0:context XML namespace URI for requests and responses</t>
-                  <t>3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI for policies, requests, and responses</t>
-               </list>
+                <list style="symbols">
+                   <t>1.0 &amp; 1.1 use the urn:oasis:names:tc:xacml:1.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:1.0:context XML namespace URI for requests and responses</t>
+                   <t>2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:2.0:context XML namespace URI for requests and responses</t>
+                   <t>3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI for policies, requests, and responses</t>
+                </list>
             </t>
+            <t>Signed XACML has a wrapping SAML 2.0 assertion <xref target="SAML-2"/>, which uses the urn:oasis:names:tc:SAML:2.0:assertion namespace URI. Interoperability with SAML is defined by the SAML 2.0 Profile of XACML <xref target="XACML-3-SAML"/> for all versions of XACML.</t>
          </section>
          <section title="Applications which use this media type">
-            <t>Potentially any application implementing XACML, as well as those applications implementing specifications based on XACML.</t>
+            <t>Potentially any application implementing or using XACML, as well as those applications implementing or using specifications based on XACML.</t>
          </section>
          <section title="Magic number(s)">
             <t>In general, the same as for application/xml <xref target="RFC3023"/>. In particular, the XML document element of the returned object will be one of xacml:Policy,  xacml:PolicySet, context:Request, or context:Response. The xacml and context prefixes differ for the various versions of XACML as follows:</t>
             <t>
                <list style="symbols">
-                  <t>1.0 &amp; 1.1: The xacml prefix maps to urn:oasis:names:tc:xacml:1.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:1.0:context</t>
-                  <t>2.0: The xacml prefix maps to urn:oasis:names:tc:xacml:2.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:2.0:context</t>
-                  <t>3.0: Both the xacml and context prefixes map to the namespace URI urn:oasis:names:tc:xacml:3.0:core:schema:wd-17</t>
+                   <t>1.0 &amp; 1.1: The xacml prefix maps to urn:oasis:names:tc:xacml:1.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:1.0:context</t>
+                   <t>2.0: The xacml prefix maps to urn:oasis:names:tc:xacml:2.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:2.0:context</t>
+                   <t>3.0: Both the xacml and context prefixes map to the namespace URI urn:oasis:names:tc:xacml:3.0:core:schema:wd-17</t>
                </list>
             </t>
-            <t>For signed XACML, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion</t>   
+            <t>For signed XACML <xref target="XACML-3-DSig"/>, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion <xref target="SAML-2"/></t>   
          </section>
          <section title="File extension(s)">
             <t>none</t>
@@ -157,11 +157,14 @@
             <front>
                <title>XML Media Types</title>
                <author initials='M.' surname='Murata' fullname='M. Murata'>
-                  <organization /></author>
+                  <organization />
+               </author>
                <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
-                  <organization /></author>
+                  <organization />
+               </author>
                <author initials='D.' surname='Kohn' fullname='D. Kohn'>
-                  <organization /></author>
+                  <organization />
+               </author>
                <date year='2001' month='January' />
                <abstract>
                   <t>This document standardizes five new media types - text/xml, application/xml, text/xml-external-parsed-entity, application/xml- external-parsed-entity, and application/xml-dtd - for use in exchanging network entities that are related to the Extensible Markup Language (XML). This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t></abstract>

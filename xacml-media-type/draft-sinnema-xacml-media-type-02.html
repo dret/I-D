@@ -314,17 +314,17 @@ Security Considerations</h3>
 </p>
 <p>Additionally, various of the possible publication protocols, for example HTTPS, offer means for ensuring the authenticity of the publishing party and for protecting the policy in transit.
 </p>
-<p>For a more detailed discussion of XACML policy and its security considerations, please see XACML 3.0 <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> and the associated XML Digital Signature Profile <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a>.
+<p>For a more detailed discussion of XACML policy and its security considerations, please see XACML 3.0 <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> and the associated XML Digital Signature Profile <a class='info' href='#XACML-3-DSig'>[XACML&#8209;3&#8209;DSig]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;XACML v3.0 XML Digital Signature Profile Version 1.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a>.
 </p>
 <a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.7"></a><h3>3.7.&nbsp;
 Interoperability Considerations</h3>
 
-<p>XACML 3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI. XACML 2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI. Signed XACML has a wrapping SAML 2.0 assertion <a class='info' href='#SAML-2'>[SAML&#8209;2]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;Security Assertion Markup Language (SAML) Version 2.0. OASIS Standard,&rdquo; March&nbsp;2005.</span><span>)</span></a>, which uses the urn:oasis:names:tc:SAML:2.0:assertion namespace URI. Interoperability with SAML is defined by the SAML 2.0 Profile of XACML <a class='info' href='#XACML-3-SAML'>[XACML&#8209;3&#8209;SAML]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;SAML 2.0 Profile of XACML, Version 2.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> for all versions of XACML.
+<p>Different versions of XACML use different XML namespace URIS:
 </p>
 <p>
-               </p>
+                </p>
 <ul class="text">
 <li>1.0 &amp; 1.1 use the urn:oasis:names:tc:xacml:1.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:1.0:context XML namespace URI for requests and responses
 </li>
@@ -335,12 +335,14 @@ Interoperability Considerations</h3>
 </ul><p>
             
 </p>
+<p>Signed XACML has a wrapping SAML 2.0 assertion <a class='info' href='#SAML-2'>[SAML&#8209;2]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;Security Assertion Markup Language (SAML) Version 2.0. OASIS Standard,&rdquo; March&nbsp;2005.</span><span>)</span></a>, which uses the urn:oasis:names:tc:SAML:2.0:assertion namespace URI. Interoperability with SAML is defined by the SAML 2.0 Profile of XACML <a class='info' href='#XACML-3-SAML'>[XACML&#8209;3&#8209;SAML]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;SAML 2.0 Profile of XACML, Version 2.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> for all versions of XACML.
+</p>
 <a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.8"></a><h3>3.8.&nbsp;
 Applications which use this media type</h3>
 
-<p>Potentially any application implementing XACML, as well as those applications implementing specifications based on XACML.
+<p>Potentially any application implementing or using XACML, as well as those applications implementing or using specifications based on XACML.
 </p>
 <a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -361,7 +363,7 @@ Magic number(s)</h3>
 </ul><p>
             
 </p>
-<p>For signed XACML, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion
+<p>For signed XACML <a class='info' href='#XACML-3-DSig'>[XACML&#8209;3&#8209;DSig]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;XACML v3.0 XML Digital Signature Profile Version 1.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a>, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion <a class='info' href='#SAML-2'>[SAML&#8209;2]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;Security Assertion Markup Language (SAML) Version 2.0. OASIS Standard,&rdquo; March&nbsp;2005.</span><span>)</span></a>
 </p>
 <a name="anchor12"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
