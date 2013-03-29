@@ -32,7 +32,10 @@
    </front>
    <middle>
       <section title="Introduction">
-         <t>Atom Syndication Format <xref target="RFC4287"/> ... Profiles <xref target="RFC6906"/> ... Hypertext Transfer Protocol (HTTP) <xref target="RFC4287"/> ...</t>
+         <t>The Atom Syndication Format "is an XML-based document format that describes lists of related information known as 'feeds'. Feeds are composed of a number of items, known as 'entries', each with an extensible set of attached metadata. For example, each entry has a title." <xref target="RFC4287"/></t>
+         <t>Profiles "can be described as additional semantics that can be used to process a resource representation, such as constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. A profile MUST NOT change the semantics of the resource representation when processed without profile knowledge, so that clients both with and without knowledge of a profiled resource can safely use the same representation." <xref target="RFC6906"/></t>
+            <t>Profiles are identified by URI, and can be added to a representation by adding a link with the registered "profile" link relation type, linking to the profile URI. While this is sufficient to represent the fact that a certain representation is using a profile, it does not make that fact visible outside of this representation. Ideally, peers communicating their media type should be able to indicate the support of certain profiles through the media type itself, without changing the base media type.</t>
+         <t>Because Atom supports generic links through its &lt;link/> element, "profile" links can be easily added to a feed, indicating that this feed does adhere to a certain profile. However, on the media type level, this feed would still be labeled as application/atom+xml, making the profile invisible on that level and thus not allowing it to be used in interactions such as content negotiation in the Hypertext Transfer Protocol (HTTP). <xref target="RFC2616"/>.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
          <t>The Internet media type <xref target="RFC6838"/> for an Atom document is application/atom+xml.</t>
