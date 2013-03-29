@@ -57,14 +57,9 @@
                             <xs:group ref="td:descriptions" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>
                         <xs:attribute name="name" use="required"/>
-                        <xs:attribute name="concept-URI" type="xs:anyURI" use="optional">
+                        <xs:attribute name="concept" type="xs:anyURI" use="optional">
                             <xs:annotation>
-                                <xs:documentation>Identifies the variable by URI; mutually exclusive with the concept-QName attribute.</xs:documentation>
-                            </xs:annotation>
-                        </xs:attribute>
-                        <xs:attribute name="concept-QName" type="xs:QName" use="optional">
-                            <xs:annotation>
-                                <xs:documentation>Identifies the variable by QName; mutually exclusive with the concept-URI attribute.</xs:documentation>
+                                <xs:documentation>Identifies the variable by referring to a concept URI.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
                         <xs:attribute name="default" type="xs:anySimpleType" use="optional">
@@ -72,11 +67,6 @@
                                 <xs:documentation>Defines the default value for the variable (used by the service if no value is provided). The value must match the type defined for the variable.</xs:documentation>
                             </xs:annotation>
                         </xs:attribute>
-                        <xs:assert test="count((@concept-URI, @concept-QName)) le 1">
-                            <xs:annotation>
-                                <xs:documentation>Make sure that @concept-URI and @concept-QName are mutually exclusive, i.e. it's not allowed for both to occur at the same time.</xs:documentation>
-                            </xs:annotation>
-                        </xs:assert>
                     </xs:complexType>
                 </xs:element>
                 <xs:group ref="td:descriptions" maxOccurs="unbounded" minOccurs="0"/>

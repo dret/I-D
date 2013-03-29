@@ -51,17 +51,10 @@
                             </td>
                             <td>
                                 <xsl:choose>
-                                    <xsl:when test="@concept-URI">
-                                        <xsl:text>URI: </xsl:text>
-                                        <code>
-                                            <xsl:value-of select="@concept-URI"/>
-                                        </code>
-                                    </xsl:when>
-                                    <xsl:when test="@concept-QName">
-                                        <xsl:text>QName: </xsl:text>
-                                        <code>
-                                            <xsl:value-of select="@concept-QName"/>
-                                        </code>
+                                    <xsl:when test="@concept">
+                                        <q>
+                                            <xsl:value-of select="@concept"/>
+                                        </q>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <span class="msg">n/a</span>
