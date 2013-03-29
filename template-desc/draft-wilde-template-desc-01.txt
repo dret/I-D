@@ -28,9 +28,9 @@ Abstract
 
 Note to Readers
 
-   Please discuss this draft on the rest-discuss mailing list [12].
+   Please discuss this draft on the rest-discuss mailing list [13].
 
-   Online access to all versions and files is available on github [13].
+   Online access to all versions and files is available on github [14].
 
 Status of this Memo
 
@@ -256,13 +256,13 @@ Internet-Draft          URI Template Descriptions          February 2013
    descriptions of all variables in the template.  The idea of Template
    Descriptions is that they are made available at design time and/or at
    runtime, so that clients encountering URI Templates as part of HTTP
-   APIs can find more information about the template itself.
+   services can find more information about the template itself.
 
-   Ideally, every URI template exposed in an HTTP API should be
-   accompanied by a link to a Template Description.  In those HTTP APIs
-   where URI Templates are exposed in XML attributes named "hreft", the
-   suggestion is to add a link to the corresponding Template Description
-   in an "hreftd" XML attribute.
+   Ideally, every URI template exposed in an HTTP service should be
+   accompanied by a link to a Template Description.  In those XML-based
+   HTTP services where URI Templates are exposed in XML attributes named
+   "hreft", the suggestion is to add a link to the corresponding
+   Template Description in an "hreftd" XML attribute.
 
 3.1.  General Concepts
 
@@ -308,6 +308,14 @@ Internet-Draft          URI Template Descriptions          February 2013
    identifiers, which then establishes a binding between the concept,
    and the variable it has been bound to.
 
+   A variable can have a default value, in which case the assumption is
+   that excluding this variable from a request has the same effect as
+   including it with the default value.  Since Template Descriptions are
+   runtime concepts, however, there is not guarantee that a service
+   might not use a different value between the time when the Template
+   Description was retrieved, and the time when a request based on it is
+   being sent.
+
    Variable descriptions can optionally add documentation and/or appinfo
    elements to add human- or machine-readable descriptions.
 
@@ -320,14 +328,6 @@ Internet-Draft          URI Template Descriptions          February 2013
    application/td+xml (using the "+xml" suffix as defined and registered
    by RFC 6839 [10]).
 
-      Type name: application
-
-      Subtype name: td+xml
-
-      Required parameters: none
-
-      Optional parameters: profile
-
 
 
 
@@ -337,7 +337,15 @@ Wilde, et al.            Expires August 5, 2013                 [Page 6]
 Internet-Draft          URI Template Descriptions          February 2013
 
 
-         ...
+      Type name: application
+
+      Subtype name: td+xml
+
+      Required parameters: none
+
+      Optional parameters: profile
+
+         ... [11]
 
       Encoding considerations: Same as encoding considerations of
       application/xml as specified in [6].
@@ -377,14 +385,6 @@ Internet-Draft          URI Template Descriptions          February 2013
    The link relation type below will be registered by IANA per Section
    6.2.1 of RFC 5988 [7]:
 
-      Relation Name: query-template
-
-      Description: Linking to a resource that can be used as a template
-      description for creating a request URI for the context resource.
-
-      Reference: RFC XXXX
-
-
 
 
 
@@ -392,6 +392,13 @@ Wilde, et al.            Expires August 5, 2013                 [Page 7]
 
 Internet-Draft          URI Template Descriptions          February 2013
 
+
+      Relation Name: query-template
+
+      Description: Linking to a resource that can be used as a template
+      description for creating a request URI for the context resource.
+
+      Reference: RFC XXXX
 
       Notes: Template Descriptions can be used in all scenarios where
       clients want to create requests that represent a query into the
@@ -417,7 +424,7 @@ Internet-Draft          URI Template Descriptions          February 2013
 
    ...
 
-   "Feed Paging and Archiving" specified in RFC 5005 [11]
+   "Feed Paging and Archiving" specified in RFC 5005 [12]
 
    Maybe suggest to use profiles?
 
@@ -435,13 +442,6 @@ Internet-Draft          URI Template Descriptions          February 2013
       How to handle variables in Level 4 templates that are supposed to
       have composite values?
 
-      Should there be some way how default values can be exposed/
-      documented?
-
-      If a template is refined in an incremental process (such as for
-      example faceted search services), does it make sense to be able to
-      add a "back" link and/or "home" link, so that clients can find the
-
 
 
 Wilde, et al.            Expires August 5, 2013                 [Page 8]
@@ -449,6 +449,9 @@ Wilde, et al.            Expires August 5, 2013                 [Page 8]
 Internet-Draft          URI Template Descriptions          February 2013
 
 
+      If a template is refined in an incremental process (such as for
+      example faceted search services), does it make sense to be able to
+      add a "back" link and/or "home" link, so that clients can find the
       "most general" version easily?
 
       How does this interact with "faceted search" scenarios?  Does
@@ -458,7 +461,7 @@ Internet-Draft          URI Template Descriptions          February 2013
       Is there a concept of how Template Descriptions (and thus URI
       Templates) can be reused?  Should there be an inclusion facility
       or something along those lines?  If so, what's the model for that?
-      Initial thoughts on possibilities can be found on this page [14]
+      Initial thoughts on possibilities can be found on this page [15]
 
       Should there be some recommended link relation to use when linking
       to a Template Description from within the context of a URI
@@ -494,15 +497,18 @@ Internet-Draft          URI Template Descriptions          February 2013
    o  Added a lot of descriptive text about the purpose, the concepts,
       and the goals.
 
-   o  Added section on "Implementation Status" (Section 8).
-
-
 
 
 
 Wilde, et al.            Expires August 5, 2013                 [Page 9]
 
 Internet-Draft          URI Template Descriptions          February 2013
+
+
+   o  Added section on "Implementation Status" (Section 8).
+
+   o  Added (optional) variable/@default so that services can expose
+      default values.
 
 
 10.  References
@@ -547,12 +553,6 @@ Internet-Draft          URI Template Descriptions          February 2013
          January 2013.
 
    [10]  Hansen, T. and A. Melnikov, "Additional Media Type Structured
-         Syntax Suffixes", RFC 6839, January 2013.
-
-   [11]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
-         September 2007.
-
-URIs
 
 
 
@@ -561,11 +561,21 @@ Wilde, et al.            Expires August 5, 2013                [Page 10]
 Internet-Draft          URI Template Descriptions          February 2013
 
 
-   [12]  <http://tech.groups.yahoo.com/group/rest-discuss/>
+         Syntax Suffixes", RFC 6839, January 2013.
 
-   [13]  <https://github.com/dret/I-D/tree/master/template-desc>
+   [11]  Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
+         March 2013.
 
-   [14]  <http://dret.typepad.com/dretblog/2012/12/
+   [12]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
+         September 2007.
+
+URIs
+
+   [13]  <http://tech.groups.yahoo.com/group/rest-discuss/>
+
+   [14]  <https://github.com/dret/I-D/tree/master/template-desc>
+
+   [15]  <http://dret.typepad.com/dretblog/2012/12/
          structuring-uri-templates.html>
 
 
@@ -595,16 +605,6 @@ Authors' Addresses
    U.S.A.
 
    Email: yliu@ischool.berkeley.edu
-
-
-
-
-
-
-
-
-
-
 
 
 

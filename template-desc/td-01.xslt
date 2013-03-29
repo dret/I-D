@@ -37,6 +37,7 @@
                         <tr>
                             <th>Variable</th>
                             <th>Concept</th>
+                            <th>Default</th>
                             <th>Value Range</th>
                             <th>Documentation</th>
                             <th>Appinfo</th>
@@ -50,17 +51,31 @@
                             </td>
                             <td>
                                 <xsl:choose>
-                                    <xsl:when test="@concept-uri">
+                                    <xsl:when test="@concept-URI">
                                         <xsl:text>URI: </xsl:text>
                                         <code>
-                                            <xsl:value-of select="@concept-uri"/>
+                                            <xsl:value-of select="@concept-URI"/>
                                         </code>
                                     </xsl:when>
-                                    <xsl:when test="@concept-qname">
+                                    <xsl:when test="@concept-QName">
                                         <xsl:text>QName: </xsl:text>
                                         <code>
-                                            <xsl:value-of select="@concept-qname"/>
+                                            <xsl:value-of select="@concept-QName"/>
                                         </code>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <span class="msg">n/a</span>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+                            </td>
+                            <td>
+                                <xsl:choose>
+                                    <xsl:when test="@default">
+                                        <q>
+                                            <code>
+                                                <xsl:value-of select="@default"/>
+                                            </code>
+                                        </q>
                                     </xsl:when>
                                     <xsl:otherwise>
                                         <span class="msg">n/a</span>

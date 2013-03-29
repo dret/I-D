@@ -80,8 +80,8 @@
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
       </section>
       <section title="Template Descriptions" anchor="template-desc">
-         <t>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template. The idea of Template Descriptions is that they are made available at design time and/or at runtime, so that clients encountering URI Templates as part of HTTP APIs can find more information about the template itself.</t>
-         <t>Ideally, every URI template exposed in an HTTP API should be accompanied by a link to a Template Description. In those HTTP APIs where URI Templates are exposed in XML attributes named "hreft", the suggestion is to add a link to the corresponding Template Description in an "hreftd" XML attribute.</t>
+         <t>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template. The idea of Template Descriptions is that they are made available at design time and/or at runtime, so that clients encountering URI Templates as part of HTTP services can find more information about the template itself.</t>
+         <t>Ideally, every URI template exposed in an HTTP service should be accompanied by a link to a Template Description. In those XML-based HTTP services where URI Templates are exposed in XML attributes named "hreft", the suggestion is to add a link to the corresponding Template Description in an "hreftd" XML attribute.</t>
          <section title="General Concepts" anchor="concepts">
             <t>As mentioned in <xref target="intro-templates"/>, most of the descriptions in this spec do not prescribe a specific description framework. While variables (<xref target="variable-struct"/>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <xref target="XSD-1"/>. These elements carry a "source" attribute, which is used (quoting from <xref target="XSD-1"/>) "to supplement the local information." For example, when a description of a variable is done formally using a specific description framework, this would best translate to use appinfo elements, and to add an identifier to them which would identify the description framework in question. As a result, any client knowing this particular description framework would be able to interpret the variable description in the Template Description.</t>
          </section>
@@ -90,6 +90,7 @@
          </section>
          <section title="Variable Description Structure" anchor="variable-struct">
             <t>A variable is described by specifying the variable name. Variables can refer to a "concept" associated with a variable, which can by identified by URI, or by a QName (at most one of these SHALL be present). This specification makes no provision how such a concept is defined or described, but it allows consumers of a Template Description to match their understanding of certain concepts to those identifiers, which then establishes a binding between the concept, and the variable it has been bound to.</t>
+            <t>A variable can have a default value, in which case the assumption is that excluding this variable from a request has the same effect as including it with the default value. Since Template Descriptions are runtime concepts, however, there is not guarantee that a service might not use a different value between the time when the Template Description was retrieved, and the time when a request based on it is being sent.</t>
             <t>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.</t>
          </section>
       </section>
@@ -103,7 +104,7 @@
                   <t>Required parameters: none</t>
                   <t>Optional parameters: profile
                      <list>
-                        <t>...</t>
+                        <t>... <xref target="RFC6906"/> </t>
                      </list>
                   </t>
                   <t>Encoding considerations: Same as encoding considerations of application/xml as specified in <xref target="RFC3023"/>.</t>
@@ -158,7 +159,6 @@
                <t>If and how to use profiles (example in <xref target="examples"/>); if profile use is recommended, define a suggested profile URI for other specs to use?</t>
                <t>Should we support other ways how URIs could be generated, most importantly the application/x-www-form-urlencoded method of HTML forms?</t>
                <t>How to handle variables in Level 4 templates that are supposed to have composite values?</t>
-               <t>Should there be some way how default values can be exposed/documented?</t>
                <t>If a template is refined in an incremental process (such as for example faceted search services), does it make sense to be able to add a "back" link and/or "home" link, so that clients can find the "most general" version easily?</t>
                <t>How does this interact with "faceted search" scenarios? Does incremental refinement of URI Template Descriptions somehow nicely and naturally map into faceted search scenarios?</t>
                <t>Is there a concept of how Template Descriptions (and thus URI Templates) can be reused? Should there be an inclusion facility or something along those lines? If so, what's the model for that? Initial thoughts on possibilities can be found on <eref target="http://dret.typepad.com/dretblog/2012/12/structuring-uri-templates.html">this page</eref></t>
@@ -184,6 +184,7 @@
                   <t>Added profile media type parameter.</t>
                   <t>Added a lot of descriptive text about the purpose, the concepts, and the goals.</t>
                   <t>Added section on "Implementation Status" (<xref target="implementation-status"/>).</t>
+                  <t>Added (optional) variable/@default so that services can expose default values.</t>
                </list>
             </t>
          </section>
@@ -390,6 +391,20 @@
             </front>
             <seriesInfo name='RFC' value='6839' />
             <format type='TXT' octets='26071' target='http://www.rfc-editor.org/rfc/rfc6839.txt' />
+         </reference>
+         <reference anchor='RFC6906'>
+            <front>
+               <title>The 'profile' Link Relation Type</title>
+               <author initials='E.' surname='Wilde' fullname='E. Wilde'>
+                  <organization />
+               </author>
+               <date year='2013' month='March' />
+               <abstract>
+                  <t>This specification defines the 'profile' link relation type that allows resource representations to indicate that they are following one or more profiles.  A profile is defined not to alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='6906' />
+            <format type='TXT' octets='18469' target='http://www.rfc-editor.org/rfc/rfc6906.txt' />
          </reference>
       </references>
       <!-- 

@@ -300,9 +300,9 @@ Terminology</h3>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Template Descriptions</h3>
 
-<p>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template. The idea of Template Descriptions is that they are made available at design time and/or at runtime, so that clients encountering URI Templates as part of HTTP APIs can find more information about the template itself.
+<p>Template Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template. The idea of Template Descriptions is that they are made available at design time and/or at runtime, so that clients encountering URI Templates as part of HTTP services can find more information about the template itself.
 </p>
-<p>Ideally, every URI template exposed in an HTTP API should be accompanied by a link to a Template Description. In those HTTP APIs where URI Templates are exposed in XML attributes named "hreft", the suggestion is to add a link to the corresponding Template Description in an "hreftd" XML attribute.
+<p>Ideally, every URI template exposed in an HTTP service should be accompanied by a link to a Template Description. In those XML-based HTTP services where URI Templates are exposed in XML attributes named "hreft", the suggestion is to add a link to the corresponding Template Description in an "hreftd" XML attribute.
 </p>
 <a name="concepts"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -324,6 +324,8 @@ Template Description Structure</h3>
 Variable Description Structure</h3>
 
 <p>A variable is described by specifying the variable name. Variables can refer to a "concept" associated with a variable, which can by identified by URI, or by a QName (at most one of these SHALL be present). This specification makes no provision how such a concept is defined or described, but it allows consumers of a Template Description to match their understanding of certain concepts to those identifiers, which then establishes a binding between the concept, and the variable it has been bound to.
+</p>
+<p>A variable can have a default value, in which case the assumption is that excluding this variable from a request has the same effect as including it with the default value. Since Template Descriptions are runtime concepts, however, there is not guarantee that a service might not use a different value between the time when the Template Description was retrieved, and the time when a request based on it is being sent.
 </p>
 <p>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.
 </p>
@@ -351,7 +353,7 @@ Media Type</h3>
 <p>Optional parameters: profile
                      </p>
 <blockquote class="text">
-<p>...
+<p>... <a class='info' href='#RFC6906'>[11]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a> 
 </p>
 </blockquote>
                   
@@ -440,7 +442,7 @@ Atom Feeds</h3>
 
 <p>...
 </p>
-<p>"Feed Paging and Archiving" specified in RFC 5005 <a class='info' href='#RFC5005'>[11]<span> (</span><span class='info'>Nottingham, M., &ldquo;Feed Paging and Archiving,&rdquo; September&nbsp;2007.</span><span>)</span></a> 
+<p>"Feed Paging and Archiving" specified in RFC 5005 <a class='info' href='#RFC5005'>[12]<span> (</span><span class='info'>Nottingham, M., &ldquo;Feed Paging and Archiving,&rdquo; September&nbsp;2007.</span><span>)</span></a> 
 </p>
 <p>Maybe suggest to use profiles?
 </p>
@@ -457,8 +459,6 @@ Open Issues</h3>
 <p>Should we support other ways how URIs could be generated, most importantly the application/x-www-form-urlencoded method of HTML forms?
 </p>
 <p>How to handle variables in Level 4 templates that are supposed to have composite values?
-</p>
-<p>Should there be some way how default values can be exposed/documented?
 </p>
 <p>If a template is refined in an incremental process (such as for example faceted search services), does it make sense to be able to add a "back" link and/or "home" link, so that clients can find the "most general" version easily?
 </p>
@@ -511,6 +511,8 @@ From -00 to -01</h3>
 </li>
 <li>Added section on "Implementation Status" (<a class='info' href='#implementation-status'>Section&nbsp;8<span> (</span><span class='info'>Implementation Status</span><span>)</span></a>).
 </li>
+<li>Added (optional) variable/@default so that services can expose default values.
+</li>
 </ul><p>
             
 </p>
@@ -549,7 +551,9 @@ References</h3>
 <td class="author-text">Freed, N., Klensin, J., and T. Hansen, &ldquo;<a href="http://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>,&rdquo; BCP&nbsp;13, RFC&nbsp;6838, January&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6838.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC6839">[10]</a></td>
 <td class="author-text">Hansen, T. and A. Melnikov, &ldquo;<a href="http://tools.ietf.org/html/rfc6839">Additional Media Type Structured Syntax Suffixes</a>,&rdquo; RFC&nbsp;6839, January&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6839.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC5005">[11]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC6906">[11]</a></td>
+<td class="author-text">Wilde, E., &ldquo;<a href="http://tools.ietf.org/html/rfc6906">The 'profile' Link Relation Type</a>,&rdquo; RFC&nbsp;6906, March&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6906.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5005">[12]</a></td>
 <td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5005">Feed Paging and Archiving</a>,&rdquo; RFC&nbsp;5005, September&nbsp;2007 (<a href="http://www.rfc-editor.org/rfc/rfc5005.txt">TXT</a>).</td></tr>
 </table>
 
