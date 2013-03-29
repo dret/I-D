@@ -7,7 +7,7 @@
 <?rfc symrefs="no" ?>
 <rfc category="std" ipr="trust200902" docName="draft-wilde-atom-profile-00" updates="4287">
    <front>
-      <title abbrev="Atom Profiles">Profiles for the Atom Syndication Format</title>
+      <title abbrev="Atom Profiles">Profile Support for the Atom Syndication Format</title>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
          <organization>EMC</organization>
          <address>
@@ -23,7 +23,7 @@
       </author>
       <date day="30" month="April" year="2013"/>
       <abstract>
-         <t>The Atom syndication format is a generic XML format for representing collections. Profiles are one way how Atom feeds can indicate that they support specific extensions. To make this support visible on the media type level, this specification re-registers the Atom media type, and adds a profile media type parameter. This allows profiles to become visible at the media type level, so that servers as well as clients can indicate support for specific Atom profiles in conversations, for example when communicating via HTTP.</t>
+         <t>The Atom syndication format is a generic XML format for representing collections. Profiles are one way how Atom feeds can indicate that they support specific extensions. To make this support visible on the media type level, this specification re-registers the Atom media type, and adds a "profile" media type parameter. This allows profiles to become visible at the media type level, so that servers as well as clients can indicate support for specific Atom profiles in conversations, for example when communicating via HTTP.</t>
       </abstract>
       <note title="Note to Readers">
          <t>This draft should be discussed on the <eref target="http://www.imc.org/atom-syntax/">atom-syntax mailing list</eref>.</t>
@@ -36,6 +36,61 @@
       </section>
       <section title="IANA Considerations" anchor="iana">
          <t>The Internet media type <xref target="RFC6838"/> for an Atom document is application/atom+xml.</t>
+         <section title="Atom Media Type application/atom+xml" anchor="atom-media-type">
+            <t>This specification requests the registration of an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
+            <section title="Media Type Name">
+               <t>application</t>
+            </section>
+            <section title="Subtype Name">
+               <t>atom+xml</t>
+            </section>
+            <section title="Required Parameters">
+               <t>none</t>
+            </section>
+            <section title="Optional Parameters">
+               <t>charset: This parameter has semantics identical to the charset parameter of the "application/xml" media type as specified in <xref target="RFC3023"/>.</t>
+               <t>profile: ...</t>
+            </section>
+            <section title="Encoding Considerations">
+               <t>Identical to those of "application/xml" as described in <xref target="RFC3023"/>, Section 3.2.</t>
+            </section>
+            <section title="Security Considerations">
+               <t>As defined in <xref target="RFC4287"/>. In addition, as this media type uses the "+xml" convention, it shares the same security considerations as described in <xref target="RFC3023"/>, Section 10.</t>
+            </section>
+            <section title="Interoperability Considerations">
+               <t>There are no known interoperability issues.</t>
+            </section>
+            <section title="Published Specification">
+               <t><xref target="RFC4287"/></t>
+            </section>
+            <section title="Applications which use this media type">
+               <t>Many. "profile" ....</t>
+            </section>
+            <section title="Magic number(s)">
+               <t>As specified for "application/xml" in <xref target="RFC3023"/>, Section 3.2.</t>
+            </section>
+            <section title="File extension(s)">
+               <t>.atom</t>
+            </section>
+            <section title="Fragment Identifiers">
+               <t>As specified for "application/xml" in <xref target="RFC3023"/>, Section 5.</t>
+            </section>
+            <section title="Base URI">
+               <t>As specified in <xref target="RFC3023"/>, Section 6.</t>
+            </section>
+            <section title="Macintosh File Type Code(s)">
+               <t>TEXT</t>
+            </section>
+            <section title="Person &amp; email address to contact for further information">
+               <t>Mark Nottingham &lt;mnot@mnot.net></t>
+            </section>
+            <section title="Intended Usage">
+               <t>Common</t>
+            </section>
+            <section title="Author/Change Controller">
+               <t>IESG</t>
+            </section>
+         </section>
       </section>
       <section title="Security Considerations" anchor="security">
          <t>...</t>
