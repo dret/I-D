@@ -84,7 +84,7 @@
 			<t>This memo specifies fragment identification using following methods: "row" for row selections, "col" for columns selections, and "cell" for cell selections.</t>
 			<t>Throughout the sections below, the following example table in CSV (having 7 rows, including one header row, and 3 columns) is used:</t>
 			<figure>
-				<artwork>date,temperature,place
+				<artwork type="csv">date,temperature,place
 2011-01-01,1,Galway
 2011-01-02,-1,Galway
 2011-01-03,0,Galway
@@ -102,7 +102,7 @@
 				</figure>
 				<t>The above CSV fragment identifies the fourth row:</t>
 				<figure>
-					<artwork>2011-01-03,0,Galway</artwork>
+					<artwork type="csv">2011-01-03,0,Galway</artwork>
 				</figure>
 				<t>Fragments can also select ranges of rows:</t>
 				<figure>
@@ -110,7 +110,7 @@
 				</figure>
 				<t>The above CSV fragment identifies three consecutive rows:</t>
 				<figure>
-					<artwork>2011-01-01,6,Berkeley
+					<artwork type="csv">2011-01-01,6,Berkeley
 2011-01-02,8,Berkeley
 2011-01-03,5,Berkeley</artwork>
 				</figure>
@@ -126,7 +126,7 @@
 				</figure>
 				<t>The above CSV fragment addresses the second column, identifying the column:</t>
 				<figure>
-					<artwork>temperature
+					<artwork type="csv">temperature
 1
 -1
 0
@@ -140,7 +140,7 @@
 				</figure>
 				<t>The above CSV fragment addresses the first and second column:</t>
 				<figure>
-					<artwork>date,temperature
+					<artwork type="csv">date,temperature
 2011-01-01,1
 2011-01-02,-1
 2011-01-03,0
@@ -157,7 +157,7 @@
 				</figure>
 				<t>The above CSV fragment addresses the field in the first column within the fourth row, yielding:</t>
 				<figure>
-					<artwork>2011-01-03</artwork>
+					<artwork type="csv">2011-01-03</artwork>
 				</figure>
 				<t>It is also possible to select ranges that have more than one row or column, in which case the cell selection uses the same range syntax as for row and column selections. For these selections, the syntax uses the upper-lefthand call as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.</t>
 				<figure>
@@ -165,7 +165,7 @@
 				</figure>
 				<t>The above CSV fragment selects a region that starts at the fourth row and the first column, and ends at the sixth row and the second column:</t>
 				<figure>
-					<artwork>2011-01-03,0
+					<artwork type="csv">2011-01-03,0
 2011-01-01,6
 2011-01-02,8</artwork>
 				</figure>
@@ -184,7 +184,7 @@
 			</t>
 			<t>
 				<figure>
-					<artwork>csv-fragment =  rowsel / colsel / cellsel
+					<artwork type="abnf">csv-fragment =  rowsel / colsel / cellsel
 rowsel       =  "row=" singlespec 0*( ";" singlespec)
 colsel       =  "col=" singlespec 0*( ";" singlespec)
 cellsel      =  "cell=" cellspec 0*( ";" cellspec)
