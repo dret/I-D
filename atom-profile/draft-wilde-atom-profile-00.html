@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en"><head><title>Profiles for the Atom Syndication Format</title>
+<html lang="en"><head><title>Profile Support for the Atom Syndication Format</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="Profiles for the Atom Syndication Format">
+<meta name="description" content="Profile Support for the Atom Syndication Format">
 <meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
 <style type='text/css'><!--
         body {
@@ -143,19 +143,19 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
-<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4287'>4287</a> (if&nbsp;approved)</td><td class="header">April 30, 2013</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4287'>4287</a> (if&nbsp;approved)</td><td class="header">March 30, 2013</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: November 1, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: October 1, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />Profiles for the Atom Syndication Format<br />draft-wilde-atom-profile-00</h1>
+<h1><br />Profile Support for the Atom Syndication Format<br />draft-wilde-atom-profile-00</h1>
 
 <h3>Abstract</h3>
 
-<p>...
+<p>The Atom syndication format is a generic XML format for representing collections. Profiles are one way how Atom feeds can indicate that they support specific extensions. To make this support visible on the media type level, this specification re-registers the Atom media type, and adds a "profile" media type parameter. This allows profiles to become visible at the media type level, so that servers as well as clients can indicate support for specific Atom profiles in conversations, for example when communicating via HTTP.
 </p>
 <h3>Note to Readers</h3>
 
-<p>This draft should be discussed on the <a href='https://www.ietf.org/mailman/listinfo/apps-discuss'>apps-discuss mailing list</a>.
+<p>This draft should be discussed on the <a href='http://www.imc.org/atom-syntax/'>atom-syntax mailing list</a>.
 </p>
 <p>Online access to all versions and files is available on <a href='https://github.com/dret/I-D/tree/master/atom-profile'>github</a>.
 </p>
@@ -174,7 +174,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on November 1, 2013.</p>
+This Internet-Draft will expire on October 1, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -193,74 +193,228 @@ described in the Simplified BSD License.</p>
 <a name="toc"></a><br /><hr />
 <h3>Table of Contents</h3>
 <p class="toc">
-<a href="#anchor1">1.</a>&nbsp;
+<a href="#intro">1.</a>&nbsp;
 Introduction<br />
-<a href="#iana">2.</a>&nbsp;
+<a href="#examples">2.</a>&nbsp;
+Examples<br />
+<a href="#profile-definition">3.</a>&nbsp;
+Profile Parameter Definition<br />
+<a href="#iana">4.</a>&nbsp;
 IANA Considerations<br />
-<a href="#security">3.</a>&nbsp;
-Security Considerations<br />
-<a href="#rfc.references1">4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#atom-media-type">4.1.</a>&nbsp;
+Atom Media Type application/atom+xml<br />
+<a href="#rfc.references1">5.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">4.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">5.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">4.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">5.2.</a>&nbsp;
 Non-Normative References<br />
-<a href="#anchor4">Appendix&nbsp;A.</a>&nbsp;
-Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
 </p>
 <br clear="all" />
 
-<a name="anchor1"></a><br /><hr />
+<a name="intro"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>the Atom Syndication Format <a class='info' href='#RFC4287'>[1]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> ...
+<p>The Atom Syndication Format "is an XML-based document format that describes lists of related information known as 'feeds'. Feeds are composed of a number of items, known as 'entries', each with an extensible set of attached metadata. For example, each entry has a title." <a class='info' href='#RFC4287'>[1]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a>
+</p>
+<p>Profiles "can be described as additional semantics that can be used to process a resource representation, such as constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. A profile MUST NOT change the semantics of the resource representation when processed without profile knowledge, so that clients both with and without knowledge of a profiled resource can safely use the same representation." <a class='info' href='#RFC6906'>[2]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>
+</p>
+<p>Profiles are identified by URI, and can be added to a representation by adding a link with the registered "profile" link relation type, linking to the profile URI. While this is sufficient to represent the fact that a certain representation is using a profile, it does not make that fact visible outside of this representation. Ideally, peers communicating their media type should be able to indicate the support of certain profiles through the media type itself, without changing the base media type.
+</p>
+<p>Because Atom supports generic links through its &lt;link/> element, "profile" links can be easily added to a feed, indicating that this feed does adhere to a certain profile. However, on the media type level, this feed would still be labeled as application/atom+xml, making the profile invisible on that level and thus not allowing it to be used in interactions such as content negotiation in the Hypertext Transfer Protocol (HTTP). <a class='info' href='#RFC2616'>[4]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>.
+</p>
+<p>This specification adds a "profile" parameter to the application/atom+xml media type, thereby making it possible for profiles to be exposed at the media type level. Apart from adding that one media type parameter, this specification does not change anything about the Atom format itself.
+</p>
+<a name="examples"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Examples</h3>
+
+<p>Adding a "profile" parameter to the Atom media type adds visibility of profiles at the media type level. For example, when linking to feeds of media-oriented services, it would be possible to expose two feeds, one using MediaRSS, and the other using Podcasts. Both formats roughly cover the same functionality as media-oriented feed-based extensions, but by having the ability to expose their capabilities at the media type level, HTTP mechanisms and conversations can be used to distinguish between these formats.
+</p>
+<p>In some cases it may be possible to support more than one profile, and then it is up for the service to decide whether these should be exposed in one representation (which can be exposed by linking to multiple profiles from the resource representation and/or in the media type parameter), or whether there should be two representations, one for each profile. This decision will probably depend on implementation complexity, the trade-off between navigation complexity (two representations with one profile each) and processing complexity, and also the size of the profile data, because in particular in the case of overlapping profiles, there might be many redundacies.
+</p>
+<p>Thus, which way to go for multiple profiles is not a question that as one correct answer; it depends on the profiles, and on the services that are built around them.
+</p>
+<a name="profile-definition"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Profile Parameter Definition</h3>
+
+<p>The profile parameter for the application/atom+xml media type allows one or more profile URIs to be specified. These profile URIs have the identifier semantics defined in <a class='info' href='#RFC6906'>[2]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>, and when appearing as media type parameter, they have the same semantics as if they had been associated with the resource URI through other means, such as using one or more &lt;link profile="" href=""/> element as a child of the &lt;feed> element.
+</p>
+<p>Media type parameters must be quoted unless they are tokens. For the "profile" media type parameter defined here, this means that is must be quoted, and contains a non-empty list of space-separated URI-encoded URIs.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><dfn>profile-param</dfn> = "<span class='str'>profile=</span>" <cite class='id'>profile-value</cite>
+<dfn>profile-value</dfn> = &lt;<span class='str'>"</span>&gt; <cite class='id'>profile-URI</cite> <span class='rep'>0*</span>( <span class='rep'>1*</span><cite class='key'>SP</cite> <cite class='id'>profile-URI</cite> ) &lt;<span class='str'>"</span>&gt;
+<dfn>profile-URI</dfn>   = <cite class='id'>percent-encoded-URI</cite></pre></div>
+<p>When processing "mprofile" media type parameters, it is therefore important to apply URI-decoding before processing the URI (such as comparing it to known profiles). This is particularly important since profile URIs in Atom content (in &lt;link profile="" href=""/> links) will not be URI-encoded, and thus properly encoding and decoding URIs in these two location is essential to implement correct processing.
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.2"></a><h3>2.&nbsp;
+<a name="rfc.section.4"></a><h3>4.&nbsp;
 IANA Considerations</h3>
 
-<p>The Internet media type <a class='info' href='#RFC6838'>[2]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for an Atom document is application/atom+xml.
+<p>The Internet media type <a class='info' href='#RFC6838'>[5]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for an Atom document is application/atom+xml.
 </p>
-<a name="security"></a><br /><hr />
+<a name="atom-media-type"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.3"></a><h3>3.&nbsp;
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Atom Media Type application/atom+xml</h3>
+
+<p>This specification requests the registration of an XML-based media type for the eXtensible Access Control Markup Language (XACML).
+</p>
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.1"></a><h3>4.1.1.&nbsp;
+Media Type Name</h3>
+
+<p>application
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.2"></a><h3>4.1.2.&nbsp;
+Subtype Name</h3>
+
+<p>atom+xml
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.3"></a><h3>4.1.3.&nbsp;
+Required Parameters</h3>
+
+<p>none
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.4"></a><h3>4.1.4.&nbsp;
+Optional Parameters</h3>
+
+<p>charset: This parameter has semantics identical to the charset parameter of the "application/xml" media type as specified in <a class='info' href='#RFC3023'>[3]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
+</p>
+<p>profile: This parameter indicates that one or more profiles are used in the feed, according to the definition of profiles in <a class='info' href='#RFC6906'>[2]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>. The parameter syntax is specified in <a class='info' href='#profile-definition'>of RFC XXXX<span> (</span><span class='info'>Profile Parameter Definition</span><span>)</span></a>
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.5"></a><h3>4.1.5.&nbsp;
+Encoding Considerations</h3>
+
+<p>Identical to those of "application/xml" as described in <a class='info' href='#RFC3023'>[3]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, Section 3.2.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.6"></a><h3>4.1.6.&nbsp;
 Security Considerations</h3>
 
-<p>...
+<p>As defined in <a class='info' href='#RFC4287'>[1]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a>. In addition, as this media type uses the "+xml" convention, it shares the same security considerations as described in <a class='info' href='#RFC3023'>[3]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, Section 10.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.7"></a><h3>4.1.7.&nbsp;
+Interoperability Considerations</h3>
+
+<p>There are no known interoperability issues.
+</p>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.8"></a><h3>4.1.8.&nbsp;
+Published Specification</h3>
+
+<p><a class='info' href='#RFC4287'>[1]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a>
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.9"></a><h3>4.1.9.&nbsp;
+Applications which use this media type</h3>
+
+<p>Many. Atom has become a common foundation for many syndication-oriented scenarios, and also has become a commonly used representation for collection contents.
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.10"></a><h3>4.1.10.&nbsp;
+Magic number(s)</h3>
+
+<p>As specified for "application/xml" in <a class='info' href='#RFC3023'>[3]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, Section 3.2.
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.11"></a><h3>4.1.11.&nbsp;
+File extension(s)</h3>
+
+<p>.atom
+</p>
+<a name="anchor12"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.12"></a><h3>4.1.12.&nbsp;
+Fragment Identifiers</h3>
+
+<p>As specified for "application/xml" in <a class='info' href='#RFC3023'>[3]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, Section 5.
+</p>
+<a name="anchor13"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.13"></a><h3>4.1.13.&nbsp;
+Base URI</h3>
+
+<p>As specified in <a class='info' href='#RFC3023'>[3]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, Section 6.
+</p>
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.14"></a><h3>4.1.14.&nbsp;
+Macintosh File Type Code(s)</h3>
+
+<p>TEXT
+</p>
+<a name="anchor15"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.15"></a><h3>4.1.15.&nbsp;
+Person &amp; email address to contact for further information</h3>
+
+<p>Mark Nottingham &lt;mnot@mnot.net> and Erik Wilde &lt;erik.wilde@emc.com>
+</p>
+<a name="anchor16"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.16"></a><h3>4.1.16.&nbsp;
+Intended Usage</h3>
+
+<p>Common
+</p>
+<a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1.17"></a><h3>4.1.17.&nbsp;
+Author/Change Controller</h3>
+
+<p>IESG
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4"></a><h3>4.&nbsp;
+<a name="rfc.section.5"></a><h3>5.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>4.1.&nbsp;Normative References</h3>
+<h3>5.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC4287">[1]</a></td>
 <td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6906">[2]</a></td>
+<td class="author-text">Wilde, E., &ldquo;<a href="http://tools.ietf.org/html/rfc6906">The 'profile' Link Relation Type</a>,&rdquo; RFC&nbsp;6906, March&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6906.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3023">[3]</a></td>
+<td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>4.2.&nbsp;Non-Normative References</h3>
+<h3>5.2.&nbsp;Non-Normative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="RFC6838">[2]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC2616">[4]</a></td>
+<td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6838">[5]</a></td>
 <td class="author-text">Freed, N., Klensin, J., and T. Hansen, &ldquo;<a href="http://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>,&rdquo; BCP&nbsp;13, RFC&nbsp;6838, January&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6838.txt">TXT</a>).</td></tr>
 </table>
 
-<a name="anchor4"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
-Acknowledgements</h3>
-
-<p>Thanks for comments and suggestions provided by ...
-</p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>Author's Address</h3>

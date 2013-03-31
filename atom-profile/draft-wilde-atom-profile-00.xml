@@ -3,6 +3,7 @@
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <?rfc toc="yes" ?>
+<?rfc tocdepth="2" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="no" ?>
 <rfc category="std" ipr="trust200902" docName="draft-wilde-atom-profile-00" updates="4287">
@@ -21,7 +22,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="30" month="April" year="2013"/>
+      <date day="30" month="March" year="2013"/>
       <abstract>
          <t>The Atom syndication format is a generic XML format for representing collections. Profiles are one way how Atom feeds can indicate that they support specific extensions. To make this support visible on the media type level, this specification re-registers the Atom media type, and adds a "profile" media type parameter. This allows profiles to become visible at the media type level, so that servers as well as clients can indicate support for specific Atom profiles in conversations, for example when communicating via HTTP.</t>
       </abstract>
@@ -44,7 +45,14 @@
          <t>Thus, which way to go for multiple profiles is not a question that as one correct answer; it depends on the profiles, and on the services that are built around them.</t>
       </section>
       <section title="Profile Parameter Definition" anchor="profile-definition">
-         <t></t>
+         <t>The profile parameter for the application/atom+xml media type allows one or more profile URIs to be specified. These profile URIs have the identifier semantics defined in <xref target="RFC6906"/>, and when appearing as media type parameter, they have the same semantics as if they had been associated with the resource URI through other means, such as using one or more &lt;link profile="" href=""/> element as a child of the &lt;feed> element.</t>
+         <t>Media type parameters must be quoted unless they are tokens. For the "profile" media type parameter defined here, this means that is must be quoted, and contains a non-empty list of space-separated URI-encoded URIs.</t>
+         <figure>
+             <artwork type="abnf">profile-param = "profile=" profile-value
+profile-value = &lt;"> profile-URI 0*( 1*SP profile-URI ) &lt;">
+profile-URI   = percent-encoded-URI</artwork>
+         </figure>
+         <t>When processing "mprofile" media type parameters, it is therefore important to apply URI-decoding before processing the URI (such as comparing it to known profiles). This is particularly important since profile URIs in Atom content (in &lt;link profile="" href=""/> links) will not be URI-encoded, and thus properly encoding and decoding URIs in these two location is essential to implement correct processing.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
          <t>The Internet media type <xref target="RFC6838"/> for an Atom document is application/atom+xml.</t>
@@ -103,9 +111,6 @@
                <t>IESG</t>
             </section>
          </section>
-      </section>
-      <section title="Security Considerations" anchor="security">
-         <t>...</t>
       </section>
    </middle>
 <!--
@@ -309,8 +314,10 @@
             <format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
          </reference>
       </references>
+<!--
       <section title="Acknowledgements">
          <t>Thanks for comments and suggestions provided by ...</t>
       </section>
+-->
    </back>
 </rfc>
