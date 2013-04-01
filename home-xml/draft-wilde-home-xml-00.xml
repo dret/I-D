@@ -1,46 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!DOCTYPE rfc SYSTEM "http://xml.resource.org/authoring/rfc2629.dtd" [
-   <!ENTITY rfc2119 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml'>
-   <!ENTITY rfc3986 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml'>
-   <!ENTITY rfc4627 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.4627.xml'>
-   <!ENTITY rfc5789 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5789.xml'>
-   <!ENTITY rfc5988 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml'>
-   <!ENTITY rfc6570 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6570.xml'>
-   <!ENTITY rfc6838 SYSTEM 'http://xml.resource.org/public/rfc/bibxml/reference.RFC.6838.xml'>
-   <!ENTITY xml SYSTEM 'http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-xml-20081126.xml'>  
-   <!ENTITY httpbis-semenatics SYSTEM 'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-httpbis-p2-semantics-19.xml'>
-   <!ENTITY httpbis-conditional SYSTEM 'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-httpbis-p4-conditional-19.xml'>
-   <!ENTITY httpbis-range SYSTEM 'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-httpbis-p5-range-19.xml'>
-   <!ENTITY httpbis-cache SYSTEM 'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-httpbis-p6-cache-19.xml'>
-   <!ENTITY httpbis-auth SYSTEM 'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-ietf-httpbis-p7-auth-19.xml'>
-   <!ENTITY prefer SYSTEM 'http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-snell-http-prefer-12.xml'>
-   <!ENTITY home-schema SYSTEM 'json-home-03.xsd'>
-]>
-
-<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
-<?rfc toc="yes" ?>
-<?rfc tocdepth="3" ?>
-<?rfc tocindent="yes" ?>
-<?rfc symrefs="yes" ?>
-<?rfc sortrefs="yes"?>
-<?rfc iprnotified="no" ?>
-<?rfc strict="yes" ?>
-<?rfc compact="yes" ?>
-<?rfc comments="yes" ?>
-<?rfc inline="yes" ?>
-
-<rfc ipr="trust200902" docName="draft-nottingham-json-home-03" category="info">
-
+<rfc ipr="trust200902" docName="draft-wilde-home-xml-00" category="info">
 	<front>
-		<title>Home Documents for HTTP APIs</title>
-		<author initials="M." surname="Nottingham" fullname="Mark Nottingham">
-			<organization></organization>
-			<address>
-				<email>mnot@mnot.net</email>
-				<uri>http://www.mnot.net/</uri>
-			</address>
-		</author>
+		<title abbrev="Home Documents XML">XML Syntax for Home Documents for HTTP Services</title>
 	   <author initials="E." surname="Wilde" fullname="Erik Wilde">
 	      <organization>EMC</organization>
 	      <address>
@@ -54,29 +15,16 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
 	   </author>
-	   <date year="2013"/>
+	   <date day="1" month="April" year="2013"/>
 		<abstract>
-
-			<t>This document proposes a "home document" format for non-browser
-         HTTP clients. The format is defined in JSON and XML syntaxes. The goal
-			of home documents is to serve as a starting point for hypermedia APIs,
-			where clients need to have an entry point, and then can use the API by
-			following links. Home documents thus serve the same purpose as home
-			pages on web sites: They are stable entry points that provide starting
-			points for clients with some knowledge of the services linked from
-			them.</t>
-
+			<t>The current draft for HTTP Home Documents provides a JSON syntax only. This draft provides an XML syntax for the same underlying data model, so that the concept of HTTP Home Documents can be consistently exposed in both JSON and XML HTTP services.</t>
 		</abstract>
-		
-		<note title="Note to Readers">
-			<t>This draft should be discussed on the <eref
-         target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss
-         mailing list</eref>.</t>
-      </note>
+	   <note title="Note to Readers">
+	      <t>Please discuss this draft on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
+	      <t>Online access to all versions and files is available on <eref target="https://github.com/dret/I-D/tree/master/template-desc">github</eref>.</t>
+	   </note>
 	</front>
-
 	<middle>
-
 		<section title="Introduction">
 
          <t>There is an emerging preference for non-browser Web applications
@@ -568,156 +516,5 @@ Connection: close
 ]]></artwork></figure>
 
       </section>
-
 	</middle>
-
-	<back>
-		<references title="Normative References">
-			&rfc2119;
-			&rfc3986;
-			&rfc4627;
-			&rfc5988;
-			&rfc6570;
-			&httpbis-cache;
-		</references>
-
-		<references title="Informative References">
-		   &xml;
-		   &rfc5789;
-			&rfc6838;
-			&httpbis-conditional;
-			&httpbis-range;
-			&httpbis-auth;
-			&prefer;
-		</references>
-
-		<section title="Acknowledgements">
-			<t>Thanks to
-			   Jan Algermissen,
-               Mike Amundsen,
-               Bill Burke,
-               Graham Klyne,
-               Leif Hedstrom,
-               Jeni Tennison and
-               Jorge Williams
-			  for their suggestions and feedback.
-			 </t>
-		</section>
-
-      <section anchor="frequently-asked-questions" title="Frequently Asked Questions">
-
-         <section anchor="why-not-microformats" title="Why not Microformats?">
-
-            <t>Browser-centric Web applications use HTML as their
-            representation format of choice. While it is possible to augment
-            HTML for non-browser clients (using techniques like <eref
-            target="http://microformats.org/">Microformats</eref> ), a few
-            issues become evident when doing so:</t>
-
-            <t><list style='symbols'>
-              <t>HTML has a very forgiving syntax. While this is appropriate
-              for browsers (especially considering that there are many million
-              HTML authors in the world), it makes for a less-than-precise
-              language for machines, resulting in both overhead (parsing and
-              transmission) as well as lack of precision.</t>
-              <t>HTML is presentation-centric, making it tempting to reformat
-              it from time to time, to improve the "look and feel" of a page.
-              However, doing so can cause comparatively brittle non-browser
-              clients to lose their understanding of the content’s semantics,
-              unless very careful controls are in place.</t>
-            </list></t>
-
-            <t>Because of this, it’s most practical to define a separate
-            format, and JSON is easily machine-readable, precise, and has a
-            better chance of being managed for stability.</t>
-
-         </section>
-         <section anchor="what-about-authentication" title="What about authentication?">
-
-            <t>In HTTP, authentication is discoverable by interacting with the
-            resource (usually, by getting a 401 Unauthorized response status
-            code, along with one or more challenges). While the home document
-            could hint it, this isn’t yet done, to avoid possible security
-            complications.</t>
-
-         </section>
-         <section anchor="what-about-faults-ie-errors" title="What about 'Faults' (i.e., errors)?">
-
-            <t>In HTTP, errors are conveyed by HTTP status codes. While this
-            specification could (and even may) allow enumeration of possible
-            error conditions, there’s a concern that this will encourage
-            applications to define many such "faults", leading to tight
-            coupling between the application and its clients.</t>
-
-             <t>So, this is an area of possible future development; if any
-            such mechanism appears here, it’s likely to be quite
-            restricted.</t>
-
-         </section>
-         <section title="How Do I find the XML Schema / JSON Schema / etc. for a particular media type?">
-
-            <t>That isn’t addressed by home documents. Ultimately, it’s up to
-            the media type accepted and generated by resources to define and
-            constrain (or not) their syntax.</t>
-
-         </section>
-         <section title="How do I express complex query arguments?">
-            
-            <t>Complex queries -- i.e., those that exceed the expressive power
-            of Link Templates or would require ambiguous properties of a
-            "resources" object -- aren't intended to be defined by a home
-            document. The appropriate way to do this is with a "form"
-            language, much as HTML defines. </t>
-
-            <t>Future revisions of this specification may define or
-            accommodate the use of such a form in the home document.</t>
-            
-         </section>
-      </section>
-
-      <section anchor="open-issues" title="Open Issues">
-
-      <t>The following is a list of placeholders for open issues.</t>
-
-      <t><list style='symbols'>
-        <t>Refining and extending representation formats - "application/xml",
-        for example, isn't enough. While a media type for every representation
-        is one answer, something like 'profile' might be good too.</t>
-        <t>Object for contact details - do we need an object that describes
-        who's running the API, API/software version, etc?</t>
-        <t>Defining new hints - guidance is needed on minting new hints.
-        Possibly a registry.</t>
-        <t>Defining new top-level properties - how new ones are minted,
-        registry, etc.</t>
-        <t>Defining new Resource Object properties - how new ones are minted,
-        registry, etc.</t>
-        <t>Hint to indicate a POST to 201 Created pattern</t>
-        <t>Hint to indicate an "action" POST</t>
-        <t>Describe the extensibility model</t>
-        <t>Allow resources to expose their links</t>
-        <t>Add human-readable documentation to home documents. Pretty easy to
-        do in XML, probably more challenging in JSON.</t>
-        <t>Since there is some overlap between the resource hints and what
-        HTTP OPTIONS is doing, it would be good to address this question in
-        some (possibly informative) section.</t>
-      </list></t>
-      </section>
-
-	   <section anchor="xml-syntax" title="Home Documents and XML">
-	      
-	      <t>Some HTTP-based APIs are using XML <xref
-	         target="W3C.REC-xml-20081126"/> as their primary format convention. Such
-	         APIs MAY express Home Documents using the format defined in this
-	         appendix. An XML-based Home Document uses the format described has the
-	         media type "application/home+xml".</t>
-	      
-	      <t>The OPTIONAL XML Schema <xref target="W3C.REC-xmlschema-0-20041028"/>
-	         for the XML format is:</t>
-	      
-	      <figure><artwork>&home-schema;</artwork></figure>
-	   </section>
-
-	   <t></t>
-
-	</back>
 </rfc>
