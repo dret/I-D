@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
 <rfc ipr="trust200902" docName="draft-wilde-home-xml-00" category="info">
 	<front>
-		<title abbrev="Home Documents XML">XML Syntax for Home Documents for HTTP Services</title>
+	  <title abbrev="Home Documents XML">Home Documents for HTTP Services: XML Syntax</title>
 	   <author initials="E." surname="Wilde" fullname="Erik Wilde">
 	      <organization>EMC</organization>
 	      <address>
@@ -14,507 +20,266 @@
             <email>erik.wilde@emc.com</email>
             <uri>http://dret.net/netdret/</uri>
          </address>
-	   </author>
-	   <date day="1" month="April" year="2013"/>
-		<abstract>
-			<t>The current draft for HTTP Home Documents provides a JSON syntax only. This draft provides an XML syntax for the same underlying data model, so that the concept of HTTP Home Documents can be consistently exposed in both JSON and XML HTTP services.</t>
-		</abstract>
-	   <note title="Note to Readers">
-	      <t>Please discuss this draft on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
-	      <t>Online access to all versions and files is available on <eref target="https://github.com/dret/I-D/tree/master/template-desc">github</eref>.</t>
-	   </note>
-	</front>
-	<middle>
-		<section title="Introduction">
-
-         <t>There is an emerging preference for non-browser Web applications
-         (colloquially, "HTTP APIs") to use a link-driven approach to their
-         interactions to assure loose coupling, thereby enabling extensibility
-         and API evolution.</t>
-
-         <t>This is based upon experience with previous APIs where static URI
-         paths (such as "http://api.example.com/v1.0/widgets/abc123/properties")
-         have resulted in brittle, tight coupling between clients and servers.</t>
-
-         <t>Sometimes, these APIs were documented by a document format like
-         <eref target="http://www.w3.org/Submission/wadl/">WADL</eref> that is
-         used as a design time description; i.e., the URIs and other
-         information they describe are "baked into" client
-         implementations. WADL made it easier to implement these clients
-         because of the available WADL descriptions, but it did not help to
-         reduce the inherent brittleness of this tight coupling.</t>
-
-         <t>In contrast, a "follow your nose" API advertises the resources
-         available to clients using link relations <xref target="RFC5988"/>
-         and the formats they support using internet media types <xref
-         target="RFC6838"/>. A client can then decide – at run time – which
-         resources to interact with based upon its capabilities (as described
-         by link relations), and the server can safely add new resources and
-         formats without disturbing clients that are not yet aware of
-         them. This design decouples clients from the complete URI space of
-         an API, and only requires that clients can follow the same link-driven
-         paths, once they are at a URI's starting point.</t>
-
-         <t>As such, the client needs to be able to discover this information
-         quickly and efficiently use it to interact with the server. Just as
-         with a human-targeted home page for a site, we can create a "home
-         document" for a HTTP API that describes it to non-browser
-         clients.</t>
-
-         <t>Of course, an HTTP API might use any format to do so; however,
-         there are advantages to having a standard home document format. This
-         specification suggests one model for consideration, which is available
-         as a JSON format <xref target="RFC4627"/> as well as in an XML syntax
-         <xref target="W3C.REC-xml-20081126"/>.</t>
-
-		</section>
-
-		<section title="Requirements">
-		   <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-		   NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in
-		   this document are to be interpreted as described in <xref
-		   target="RFC2119"/>.</t>
-		</section>
-
-
-      <section anchor="json-home-documents" title="JSON Home Documents">
-
-         <t>A JSON Home Document uses the format described in <xref
-         target="RFC4627"/> and has the media type
-         "application/home+json".</t>
-
-         <t>Its content consists of a root object with a "resources" property,
-         an object whose names are link relation types (as defined by <xref
-         target="RFC5988"/>), and values are Resource Objects, defined
-         below.</t>
-
-         <t>For example:</t>
-
-<figure><artwork><![CDATA[
-GET / HTTP/1.1
-Host: example.org
-Accept: application/home+json
-
-HTTP/1.1 200 OK
-Content-Type: application/home+json
-Cache-Control: max-age=3600
-Connection: close
-
-{
-  "resources": {
-    "http://example.org/rel/widgets": {
-      "href": "/widgets/"
-    },
-    "http://example.org/rel/widget": {
-      "href-template": "/widgets/{widget_id}",
-      "href-vars": {
-        "widget_id": "http://example.org/param/widget"
-      },
-      "hints": {
-        "allow": ["GET", "PUT", "DELETE", "PATCH"],
-        "representations": ["application/json"],
-        "accept-patch": ["application/patch+json"],
-        "accept-post": ["application/xml"],
-        "accept-ranges": ["bytes"]
-      }
-    }
-  }
-}
-]]></artwork></figure>
-
-         <t>Here, we have a home document that links to a resource,
-         "/widgets/" with the relation "http://example.org/rel/widgets". It
-         also links to an undefined number of resources with the relation type
-         "http://example.org/rel/widget" using a URI Template <xref
-         target="RFC6570"/>, along with a mapping of several identifiers to
-         specific variables for use in that template.</t>
-
-         <t>It also gives several hints about interacting with the latter
-         "widget" resources, including the HTTP methods usable with them, the
-         patch formats they accept, and the fact that they support partial
-         requests <xref target="I-D.ietf-httpbis-p5-range"/> using the "bytes"
-         range-specifier.</t>
-
-         <t>It gives no such hints about the "widgets" resource. This does
-         not mean that it (for example) doesn’t support any HTTP methods; it
-         means that the client will need to discover this by interacting with
-         the resource, and/or examining the documentation for its link
-         relation type.</t>
-
-		 <t>Note that the properties of a "resources" object MUST be unique;
-			i.e., one Resource Object per relation type.</t>
-
+     </author>
+     <date day="1" month="April" year="2013"/>
+  	<abstract>
+      <t>The current draft for HTTP Home Documents provides a JSON syntax only. This draft provides an XML syntax for the same underlying data model, so that the concept of HTTP Home Documents can be consistently exposed in both JSON- and XML-based HTTP services.</t>
+    </abstract>
+    <note title="Note to Readers">
+        <t>Please discuss this draft on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
+        <t>Online access to all versions and files is available on <eref target="https://github.com/dret/I-D/tree/master/template-desc">github</eref>.</t>
+     </note>
+  </front>
+  <middle>
+    <section title="Introduction">
+      <t>An Internet Draft currently under development <xref target="I-D.nottingham-json-home"/> proposes the concept of "Home Documents for HTTP APIs" and described them as follows:</t>
+      <t>"This document proposes a 'home document' format for non-browser HTTP clients. [...] The goal of home documents is to serve as a starting point for hypermedia APIs, where clients need to have an entry point, and then can use the API by following links. Home documents thus serve the same purpose as home pages on web sites: They are stable entry points that provide starting points for clients with some knowledge of the services linked from them."</t>
+      <t>While this general concept of a home document is independent of the representation format, the current draft only defines a JSON syntax. In order to make this concept available across representations, this draft defines an XML syntax for the concepts defined in <xref target="I-D.nottingham-json-home"/>.</t>
+      <t>At this point it is undecided whether both drafts will be merged eventually, or whether they will both be published as separate documents. Regardless of the final publication setup, it should be noted that this draft is only defining the XML syntax, whereas all the concepts represented in this syntax are defined by <xref target="I-D.nottingham-json-home"/>.</t>
+    </section>
+    <section title="XML Example" anchor="xml-example">
+      <t>The following Home Document in XML syntax uses the same data as the Home Document shown in <eref target="http://tools.ietf.org/html/draft-nottingham-json-home-02#section-3">Section 3</eref> of <xref target="I-D.nottingham-json-home"/>:</t>
+      <figure>
+        <artwork type="xml"><![CDATA[<resources xmlns="urn:ietf:rfc:XXXX">
+ <resource rel="http://example.org/rel/widgets">
+  <link href="/widgets/"/>
+ </resource>
+ <resource rel="http://example.org/rel/widget">
+  <template href-template="/widgets/{widget_id}">
+   <var name="widget_id" URI="http://example.org/param/widget"/>
+  </template>
+  <hints>
+   <allow>
+    <i>GET</i>
+    <i>PUT</i>
+    <i>DELETE</i>
+    <i>PATCH</i>
+   </allow>
+   <representations>
+    <i>application/json</i>
+   </representations>
+   <accept-patch>
+    <i>application/patch+json</i>
+   </accept-patch>
+   <accept-post>
+    <i>application/xml</i>
+   </accept-post>
+   <accept-ranges>
+    <i>bytes</i>
+   </accept-ranges>
+  </hints>
+ </resource>
+</resources>]]></artwork>
+      </figure>
+      <t>The mapping between JSON arrays and XML uses "item" elements &lt;i/>, where each of those elements represents one array item. For properties that have a single values (i.e., they are not defined as an array of values), this value is directly contained as content in the corresponding element.</t>
+      <t>Currently, the draft does not specify an extension model (how to represents hints that are not specified in the draft itself), and therefore the extension model for XML is currently undefined as well. The XML syntax will be updated to reflect the extension model once it has been specified for the JSON syntax.</t>
+    </section>
+    <section title="XML Schema" anchor="xml-schema">
+      <t>The following XML Schema is describing the XML shown in <xref target="xml-example"/>. Since there currently is no extension model, the XML Schema does currently not contain any extension points.</t>
+      <figure>
+        <artwork type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ietf:rfc:XXXX"
+ elementFormDefault="qualified" xmlns:home="urn:ietf:rfc:XXXX">
+ <xs:element name="resources">
+  <xs:complexType>
+   <xs:sequence maxOccurs="unbounded" minOccurs="0">
+    <xs:element name="resource">
+     <xs:complexType>
+      <xs:sequence>
+       <xs:choice>
+        <xs:element name="link">
+         <xs:complexType>
+          <xs:attribute name="href" type="xs:anyURI" use="required"/>
+         </xs:complexType>
+        </xs:element>
+        <xs:element name="template">
+         <xs:complexType>
+          <xs:sequence maxOccurs="unbounded" minOccurs="0">
+           <xs:element name="var">
+            <xs:complexType>
+             <xs:attribute name="name" use="required"/>
+             <xs:attribute name="URI" type="xs:anyURI" use="required"/>
+            </xs:complexType>
+           </xs:element>
+          </xs:sequence>
+          <xs:attribute name="href-template" use="required"/>
+         </xs:complexType>
+        </xs:element>
+       </xs:choice>
+       <xs:element minOccurs="0" name="hints">
+        <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element name="allow" type="home:arrayType"/>
+          <xs:element name="representations" type="home:arrayType"/>
+          <xs:element name="accept-patch" type="home:arrayType"/>
+          <xs:element name="accept-post" type="home:arrayType"/>
+          <xs:element name="accept-put" type="home:arrayType"/>
+          <xs:element name="accept-ranges" type="home:arrayType"/>
+          <xs:element name="prefer" type="home:arrayType"/>
+          <xs:element name="docs" type="xs:anyURI"/>
+          <xs:element name="precondition-req" type="home:arrayType"/>
+          <xs:element name="auth-req">
+           <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+             <xs:element name="scheme">
+              <xs:complexType>
+               <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="realm"/>
+               </xs:sequence>
+               <xs:attribute name="name" type="xs:token"/>
+              </xs:complexType>
+             </xs:element>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
+          <xs:element name="status">
+           <xs:simpleType>
+            <xs:restriction base="xs:token">
+             <xs:enumeration value="deprecated"/>
+             <xs:enumeration value="gone"/>
+            </xs:restriction>
+           </xs:simpleType>
+          </xs:element>
+         </xs:choice>
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence>
+      <xs:attribute name="rel" type="xs:anyURI" use="required"/>
+     </xs:complexType>
+    </xs:element>
+   </xs:sequence>
+  </xs:complexType>
+ </xs:element>
+ <xs:complexType name="arrayType">
+  <xs:sequence maxOccurs="unbounded" minOccurs="0">
+   <xs:element name="i"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:schema>]]></artwork>
+      </figure>
+    </section>
+    <section title="IANA Considerations" anchor="iana">
+      <t>This specification registers a media type for the XML syntax of Home Documents (as defined in <xref target="I-D.nottingham-json-home"/>).</t>
+      <section title="Media Type application/home+xml" anchor="media-type">
+        <t>The Internet media type <xref target="RFC6838"/> for a Home Document in XML syntax is application/home+xml.</t>
+        <t>Type name: application</t>
+        <t>Subtype name: home+xml</t>
+        <t>Required parameters: none</t>
+        <t>Optional parameters: Same as charset parameter for the media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+        <t>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+        <t>Security considerations: This media type has all of the security considerations described in RFC 3023 <xref target="RFC3023"/> and <xref target="I-D.nottingham-json-home"/>.</t>
+        <t>Interoperability considerations: N/A</t>
+        <t>Published specification: RFC XXXX</t>
+        <t>Applications that use this media type: Applications that publish Home Documents for HTTP services using XML syntax.</t>
+        <t>Additional information:
+          <list>
+            <t>Magic number(s): N/A</t>
+            <t>File extension(s): XML documents should use ".xml" as the file extension.</t>
+            <t>Macintosh file type code(s): TEXT</t>
+          </list>
+        </t>
+        <t>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com></t>
+        <t>Intended usage: COMMON</t>
+        <t>Restrictions on usage: none</t>
+        <t>Author: Erik Wilde &lt;erik.wilde@emc.com></t>
+        <t>Change controller: IETF</t>
       </section>
-      <section anchor="resource-objects" title="Resource Objects">
-
-         <t>A Resource Object links to resources of the defined type using one
-         of two mechanisms; either a direct link (in which case there is
-         exactly one resource of that relation type associated with the API),
-         or a templated link, in which case there are zero to many such
-         resources.</t>
-
-         <t>Resource Objects MUST have only and exactly one of the "href" and
-         "href-template" properties.</t>
-
-         <t>Direct links are indicated with an "href" property, whose value is
-         a URI <xref target="RFC3986"/>.</t>
-
-         <t>Templated links are indicated with an "href-template" property,
-         whose value is a URI Template <xref target="RFC6570"/>. When
-         "href-template" is present, the Resource Object MUST have a
-         "href-vars" property; see "Resolving Templated Links".</t>
-
-         <t>In both forms, the links that "href" and "href-template" refer to
-         are URI-references <xref target="RFC3986"/> whose base URI is that
-         of the Home Document itself.</t>
-
-         <t>Resource Objects MAY also have a "hints" property, whose value is
-         an object that uses named Resource Hints as its properties.</t>
-
-         <section anchor="resolving-templates" title="Resolving Templated Links">
-
-            <t>A URI can be derived from a Templated Link by treating the
-            "href-template" value as a Level 3 URI Template <xref
-            target="RFC6570"/>, using the "href-vars" property to fill the
-            template.</t>
-
-             <t>The "href-vars" property, in turn, is an object that acts as a
-            mapping between variable names available to the template and
-            absolute URIs that are used as global identifiers for the
-            semantics and syntax of those variables.</t>
-
-             <t>For example, given the following Resource Object:</t>
-
-<figure><artwork><![CDATA[
-"http://example.org/rel/widget": {
-  "href-template": "/widgets/{widget_id}",
-  "href-vars": {
-    "widget_id": "http://example.org/param/widget"
-  },
-  "hints": {
-    "allow": ["GET", "PUT", "DELETE", "PATCH"],
-    "representations": ["application/json"],
-    "accept-patch": ["application/patch+json"],
-    "accept-post": ["application/xml"],
-    "accept-ranges": ["bytes"]
-  }
-}
-]]></artwork></figure>
-
-            <t>If you understand that "http://example.org/param/widget" is an
-            numeric identifier for a widget (perhaps by dereferencing that URL
-            and reading the documentation), you can then find the resource
-            corresponding to widget number 12345 at
-            "http://example.org/widgets/12345" (assuming that the Home
-            Document is located at "http://example.org/").</t>
-
-         </section>
+    </section>
+    <section title="Open Issues" anchor="open-issues">
+      <t><list style="symbols">
+        <t>What is the extension model for the XML syntax? Should processing of other namespaces be defined as "should ignore", so that same-namespace extensions are encouraged?</t>
+        <t>Should the XML syntax provide support for embedded human-readable documentation? This would probably not be supported in the JSON syntax, but could be marked as strictly optional and XML-specific.</t>
+      </list></t>
+    </section>
+    <!-- 
+    <section title="Change Log">
+      <t>Note to RFC Editor: Please remove this section before publication.</t>
+      <section title="From -00 to -01">
+        <t>
+          <list style="symbols">
+            <t>...</t>
+          </list>
+        </t>
       </section>
-      <section anchor="resource-hints" title="Resource Hints">
-
-         <t>Resource hints allow clients to find relevant information about
-         interacting with a resource beforehand, as a means of optimising
-         communications, as well as advertising available behaviours (e.g., to
-         aid in laying out a user interface for consuming the API).</t>
-
-         <t>Hints are just that – they are not a "contract", and are to only
-         be taken as advisory. The runtime behaviour of the resource always
-         overrides hinted information.</t>
-
-         <t>For example, a resource might hint that the PUT method is allowed
-         on all "widget" resources. This means that generally, the user has
-         the ability to PUT to a particular resource, but a specific resource
-         could reject a PUT based upon access control or other considerations.
-         More fine-grained information might be gathered by interacting with
-         the resource (e.g., via a GET or OPTIONS), or by another resource
-         "containing" it (such as a "widgets" collection).</t>
-
-         <t>This specification defines a set of common hints, based upon
-         information that’s discoverable by directly interacting with
-         resources. A future draft will explain how to define new hints.</t>
-
-         <section anchor="allow" title="allow">
-
-            <t>Hints the HTTP methods that the current client will be able to
-            use to interact with the resource; equivalent to the Allow HTTP
-            response header.</t>
-
-            <t>Content MUST be an array of strings, containing HTTP
-            methods.</t>
-
-         </section>
-         <section anchor="representations" title="representations">
-
-            <t>Hints the representation types that the resource produces and
-            consumes, using the GET and PUT methods respectively, subject to
-            the ‘allow’ hint.</t>
-
-            <t>Content MUST be an array of strings, containing media
-            types.</t>
-
-         </section>
-         <section anchor="accept-patch" title="accept-patch">
-
-            <t>Hints the PATCH request formats <xref target="RFC5789"/>
-            accepted by the resource for this client; equivalent to the
-            Accept-Patch HTTP response header.</t>
-
-            <t>Content MUST be an array of strings, containing media
-            types.</t>
-
-            <t>When this hint is present, "PATCH" SHOULD be listed in the
-               "allow" hint.</t>
-
-         </section>
-         <section anchor="accept-post" title="accept-post">
-
-            <t>Hints the POST request formats accepted by the resource for
-            this client.</t>
-
-            <t>Content MUST be an array of strings, containing media
-            types.</t>
-
-            <t>When this hint is present, "POST" SHOULD be listed in the
-               "allow" hint.</t>
-
-         </section>
-         <section anchor="accept-put" title="accept-put">
-
-            <t>Hints the PUT request formats accepted by the resource for
-            this client.</t>
-
-            <t>Content MUST be an array of strings, containing media
-            types. If absent, a client MAY assume that any format indicated
-            by the 'representations' hint is acceptable in a PUT.</t>
-
-            <t>When this hint is present, "PUT" SHOULD be listed in the
-               "allow" hint.</t>
-
-         </section>
-         <section anchor="accept-ranges" title="accept-ranges">
-
-            <t>Hints the range-specifiers available to the client for this
-            resource; equivalent to the Accept-Ranges HTTP response
-            header <xref target="I-D.ietf-httpbis-p5-range"/>.</t>
-
-            <t>Content MUST be an array of strings, containing HTTP
-            range-specifiers.</t>
-
-         </section>
-         <section anchor="accept-prefer" title="prefer">
-
-            <t>Hints the preferences <xref target="I-D.snell-http-prefer"/>
-            supported by the resource. Note that, as per that specifications,
-            a preference can be ignored by the server.</t>
-
-            <t>Content MUST be an array of strings, containing preferences.</t>
-
-         </section>
-         <section anchor="docs" title="docs">
-
-            <t>Hints the location for human-readable documentation for the
-               relation type of the resource.</t>
-
-            <t>Content MUST be a string containing an absolute-URI <xref
-            target="RFC3986"/> referring to documentation that SHOULD be in
-            HTML format.</t>
-
-         </section>
-         <section anchor="precondition-req" title="precondition-req">
-
-            <t>Hints that the resource requires state-changing requests (e.g.,
-            PUT, PATCH) to include a precondition, as per <xref
-            target="I-D.ietf-httpbis-p4-conditional"/>, to avoid conflicts due
-            to concurrent updates.</t>
-
-            <t>Content MUST be an array of strings, with possible values
-            "etag" and "last-modified" indicating type of precondition
-            expected.</t>
-
-         </section>
-         <section anchor="auth-req" title="auth-req">
-
-            <t>Hints that the resource requires authentication using the
-               HTTP Authentication Framework <xref
-               target="I-D.ietf-httpbis-p7-auth"/>.</t>
-
-            <t>Content MUST be an array of objects, each with a "scheme"
-               property containing a string that corresponds to a HTTP
-               authentication scheme, and optionally a "realms" property
-               containing an array of zero to many strings that identify
-               protection spaces that the resource is a member of.</t>
-
-            <t>For example, a Resource Object might contain the following
-            hint:</t>
-
-            <figure><artwork><![CDATA[
-{
-  "auth-req": [
-    {
-      "scheme": "Basic",
-      "realms": ["private"]
-    }
-  ]
-}]]></artwork></figure>
-         </section>
-
-         <section anchor="status" title="status">
-
-            <t>Hints the status of the resource.</t>
-
-            <t>Content MUST be a string; possible values are:</t>
-
-            <t><list style="symbols">
-               <t>"deprecated" - indicates that use of the resource is not
-                  recommended, but it is still available.</t>
-			   <t>"gone" - indicates that the resource is no longer available;
-            i.e., it will return a 410 Gone HTTP status code if accessed.</t>
-            </list></t>
-
-         </section>
-
-      </section>
-
-      <section anchor="creating" title="Creating and Serving Home Documents">
-
-         <t>When making a home document available, there are a few things to
-         keep in mind:</t>
-
-         <t><list style='symbols'>
-
-           <t>A home document is best located at a memorable URI, because its
-           URI will effectively become the URI for the API itself to
-           clients.</t>
-           <t>Home documents can be personalised, just as "normal" home pages
-           can. For example, you might advertise different URIs, and/or
-           different kinds of link relations, depending on the client’s
-           identity.</t>
-           <t>Home documents SHOULD be assigned a freshness lifetime (e.g.,
-           "Cache-Control: max-age=3600") so that clients can cache them, to
-           avoid having to fetch it every time the client interacts with the
-           service.</t>
-           <t>Custom link relation types, as well as the URIs for variables,
-           should lead to documentation for those constructs.</t>
-         </list></t>
-
-         <section anchor="managing-change-in-home-documents" title="Managing Change in Home Documents">
-
-            <t>The URIs used in home documents MAY change over time. However,
-            changing them can cause issues for clients that are relying on
-            cached home documents containing old links.</t>
-
-            <t>To mitigate these risks, servers changing links SHOULD
-            consider:</t>
-
-            <t><list style='symbols'>
-              <t>Reducing the freshness lifetime of home documents before a
-              link change, so that clients are less likely to refer to an
-              "old" document</t>
-              <t>Assure that they handle requests for the "old" URIs
-              appropriately; e.g., with a 404 Not Found, or by redirecting the
-              client to the new URI.</t>
-              <t>Alternatively, considering the "old" and "new" URIs as
-              equally valid references for an "overlap" period.</t>
-            </list></t>
-
-            <t>Generally, servers ought not to change URIs without good
-            cause.</t>
-
-         </section>
-
-         <section anchor="evolving-and-mixing-apis-with-home-documents" title="Evolving and Mixing APIs with Home Documents">
-
-            <t>Using home documents affords the opportunity to change the
-            "shape" of the API over time, without breaking old clients.</t>
-
-             <t>This includes introducing new functions alongside the old ones
-            – by adding new link relation types with corresponding resource
-            objects – as well as adding new template variables, media types,
-            and so on.</t>
-
-             <t>It’s important to realise that a home document can serve more
-            than one "API" at a time; by listing all relevant relation types,
-            it can effectively "mix" different APIs, allowing clients to work
-            with different resources as they see fit.</t>
-
-         </section>
-
-         <section anchor="documenting-apis-that-use-home-documents" title="Documenting APIs that use Home Documents">
-
-            <t>Another use case for "static" API description formats like WSDL
-            and WADL is to generate documentation for the API from them.</t>
-
-             <t>An API that uses the home document format correctly won’t have
-            a need to do so, provided that the link relation types and media
-            types it uses are well-documented already.</t>
-
-         </section>
-      </section>
-
-      <section anchor="consuming-home-documents" title="Consuming Home Documents">
-
-         <t>Clients might use home documents in a variety of ways.</t>
-
-         <t>In the most common case – actually consuming the API – the client
-         will scan the Resources Object for the link relation(s) that it is
-         interested in, and then to interact with the resource(s) referred to.
-         Resource Hints can be used to optimise communication with the client,
-         as well as to inform as to the permissible actions (e.g., whether PUT
-         is likely to be supported).</t>
-
-         <t>Note that the home document is a "living" document; it does not
-         represent a "contract", but rather is expected to be inspected before
-         each interaction. In particular, links from the home document MUST
-         NOT be assumed to be valid beyond the freshness lifetime of the home
-         document, as per HTTP’s caching model <xref
-         target="I-D.ietf-httpbis-p6-cache"/>.</t>
-
-          <t>As a result, clients SHOULD cache the home document (as per <xref
-          target="I-D.ietf-httpbis-p6-cache"/>), to avoid fetching it before
-          every interaction (which would otherwise be required).</t>
-
-          <t>Likewise, a client encountering a 404 Not Found on a link SHOULD
-         obtain a fresh copy of the home document, to assure that it is
-         up-to-date.</t>
-
-      </section>
-      <section anchor="security-considerations" title="Security Considerations">
-
-         <t>TBD</t>
-
-         <t>Clients need to exercise care when using hints. For example,
-            a naive client might send credentials to a server that uses
-            the auth-req hint, without checking to see if those credentials
-            are appropriate for that server.</t>
-      </section>
-      <section anchor="iana-considerations" title="IANA Considerations">
-
-         <t>This specification defines a new Internet media type
-            <xref target="RFC6838"/>:</t>
-
-         <figure><artwork><![CDATA[
-   Type name: application
-   Subtype name: home+json
-   Required parameters: None
-   Optional parameters: None; unrecognised parameters 
-                        should be ignored
-   Encoding considerations: Same as [RFC4627]
-   Security considerations: see [this document]
-   Interoperability considerations: None.
-   Published specification: [this document]
-   Applications that use this media type: HTTP
-   Additional information:
-     Magic number(s): n/a
-     File extension(s): n/a
-     Macintosh file type code(s): n/a
-   Person & email address to contact for further information:
-     Mark Nottingham <mnot@mnot.net>
-   Intended usage: COMMON
-   Restrictions on usage: None.
-   Author: Mark Nottingham <mnot@mnot.net>
-   Change controller: IESG
-]]></artwork></figure>
-
-      </section>
-	</middle>
+    </section>
+-->
+  </middle>
+  <back>
+    <references title="Normative References">
+      <reference anchor='I-D.nottingham-json-home'>
+        <front>
+          <title>Home Documents for HTTP APIs</title>
+          <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+            <organization />
+          </author>
+          <date month='September' day='13' year='2012' />
+          <abstract>
+            <t>This document proposes a "home document" format for non-browser HTTP clients.  Note to Readers  This draft should be discussed on the apps-discuss mailing list [1].</t>
+          </abstract>
+        </front>
+        <seriesInfo name='Internet-Draft' value='draft-nottingham-json-home-02' />
+        <format type='TXT' target='http://www.ietf.org/internet-drafts/draft-nottingham-json-home-02.txt' />
+      </reference>
+      <reference anchor='RFC3023'>
+        <front>
+          <title>XML Media Types</title>
+          <author initials='M.' surname='Murata' fullname='M. Murata'>
+            <organization /></author>
+          <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
+            <organization /></author>
+          <author initials='D.' surname='Kohn' fullname='D. Kohn'>
+            <organization /></author>
+          <date year='2001' month='January' />
+          <abstract>
+            <t>This document standardizes five new media types - text/xml, application/xml, text/xml-external-parsed-entity, application/xml- external-parsed-entity, and application/xml-dtd - for use in exchanging network entities that are related to the Extensible Markup Language (XML). This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t></abstract>
+        </front>
+        <seriesInfo name='RFC' value='3023' />
+        <format type='TXT' octets='86011' target='http://www.rfc-editor.org/rfc/rfc3023.txt' />
+      </reference>
+      <reference anchor='RFC6838'>
+        <front>
+          <title>Media Type Specifications and Registration Procedures</title>
+          <author initials='N.' surname='Freed' fullname='N. Freed'>
+            <organization />
+          </author>
+          <author initials='J.' surname='Klensin' fullname='J. Klensin'>
+            <organization />
+          </author>
+          <author initials='T.' surname='Hansen' fullname='T. Hansen'>
+            <organization />
+          </author>
+          <date year='2013' month='January' />
+          <abstract>
+            <t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols.  This memo documents an Internet Best Current Practice.</t>
+          </abstract>
+        </front>
+        <seriesInfo name='BCP' value='13' />
+        <seriesInfo name='RFC' value='6838' />
+        <format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
+      </reference>
+      <reference anchor='W3C.REC-xml-20081126' target='http://www.w3.org/TR/2008/REC-xml-20081126'>
+        <front>
+          <title>Extensible Markup Language (XML) 1.0 (Fifth Edition)</title>
+          <author initials='C.' surname='Sperberg-McQueen' fullname='C. M. Sperberg-McQueen'>
+            <organization />
+          </author>
+          <author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
+            <organization />
+          </author>
+          <author initials='J.' surname='Paoli' fullname='Jean Paoli'>
+            <organization />
+          </author>
+          <author initials='E.' surname='Maler' fullname='Eve Maler'>
+            <organization />
+          </author>
+          <author initials='T.' surname='Bray' fullname='Tim Bray'>
+            <organization />
+          </author>
+          <date month='November' day='26' year='2008' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xml-20081126' />
+        <format type='HTML' target='http://www.w3.org/TR/2008/REC-xml-20081126' />
+      </reference>
+    </references>
+  </back>
 </rfc>
