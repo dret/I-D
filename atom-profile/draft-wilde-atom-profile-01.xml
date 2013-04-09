@@ -41,7 +41,7 @@
       </section>
       <section title="Examples" anchor="examples">
          <t>Adding a "profile" parameter to the Atom media type adds visibility of profiles at the media type level. For example, when linking to feeds of media-oriented services, it would be possible to expose two feeds, one using MediaRSS, and the other using Podcasts. Both formats roughly cover the same functionality as media-oriented feed-based extensions, but by having the ability to expose their capabilities at the media type level, HTTP mechanisms and conversations can be used to distinguish between these formats.</t>
-         <t>In some cases it may be possible to support more than one profile, and then it is up for the service to decide whether these should be exposed in one representation (which can be exposed by linking to multiple profiles from the resource representation and/or in the media type parameter), or whether there should be two representations, one for each profile. This decision will probably depend on implementation complexity, the trade-off between navigation complexity (two representations with one profile each) and processing complexity, and also the size of the profile data, because in particular in the case of overlapping profiles, there might be many redundacies.</t>
+         <t>In some cases it may be possible to support more than one profile, and then it is up for the service to decide whether these should be exposed in one representation (which can be exposed by linking to multiple profiles from the resource representation and/or in the media type parameter), or whether there should be two representations, one for each profile. This decision will probably depend on implementation complexity, the trade-off between navigation complexity (two representations with one profile each) and processing complexity, and also the size of the profile data, because in particular in the case of overlapping profiles, there might be many redundancies.</t>
          <t>Thus, which way to go for multiple profiles is not a question that as one correct answer; it depends on the profiles, and on the services that are built around them.</t>
       </section>
       <section title="Profile Parameter Definition" anchor="profile-definition">
@@ -52,12 +52,11 @@
 profile-value = &lt;"> profile-URI 0*( 1*SP profile-URI ) &lt;">
 profile-URI   = percent-encoded-URI</artwork>
          </figure>
-         <t>When processing "mprofile" media type parameters, it is therefore important to apply URI-decoding before processing the URI (such as comparing it to known profiles). This is particularly important since profile URIs in Atom content (in &lt;link profile="" href=""/> links) will not be URI-encoded, and thus properly encoding and decoding URIs in these two location is essential to implement correct processing.</t>
+         <t>When processing "profile" media type parameters, it is therefore important to apply URI-decoding before processing the URI (such as comparing it to known profiles). This is particularly important since profile URIs in Atom content (in &lt;link profile="" href=""/> links) will not be URI-encoded, and thus properly encoding and decoding URIs in these two location is essential to implement correct processing.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
          <t>The Internet media type <xref target="RFC6838"/> for an Atom document is application/atom+xml.</t>
          <section title="Atom Media Type application/atom+xml" anchor="atom-media-type">
-            <t>This specification requests the registration of an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
             <section title="Media Type Name">
                <t>application</t>
             </section>
@@ -113,18 +112,16 @@ profile-URI   = percent-encoded-URI</artwork>
          </section>
       </section>
    </middle>
-<!--
    <section title="Change Log">
       <t>Note to RFC Editor: Please remove this section before publication.</t>
       <section title="From -00 to -01">
          <t>
             <list style="symbols">
-               <t>...</t>
+               <t>Fixed typos.</t>
             </list>
          </t>
       </section>
    </section>
--->
    <back>
       <references title="Normative References">
          <reference anchor='RFC3023'>
@@ -314,10 +311,8 @@ profile-URI   = percent-encoded-URI</artwork>
             <format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
          </reference>
       </references>
-<!--
       <section title="Acknowledgements">
-         <t>Thanks for comments and suggestions provided by ...</t>
+         <t>Thanks for comments and suggestions provided by Markus Lanthaler.</t>
       </section>
--->
    </back>
 </rfc>
