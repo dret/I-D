@@ -17,7 +17,7 @@ Abstract
 
 Note to Readers
 
-   This draft should be discussed on the atom-syntax mailing list [3].
+   This draft should be discussed on the atom-syntax mailing list [5].
 
 Status of this Memo
 
@@ -62,26 +62,26 @@ Internet-Draft          Feed Service Managemenet           November 2012
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
-     1.1.  RESTful Web Services  . . . . . . . . . . . . . . . . . . . 3
-     1.2.  Feed-based Services . . . . . . . . . . . . . . . . . . . . 3
-     1.3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . 3
-   2.  Model . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
-     2.1.  Service Entries . . . . . . . . . . . . . . . . . . . . . . 3
-       2.1.1.  Example . . . . . . . . . . . . . . . . . . . . . . . . 4
-     2.2.  Bundles . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-       2.2.1.  Remote Bundles  . . . . . . . . . . . . . . . . . . . . 4
-       2.2.2.  Example . . . . . . . . . . . . . . . . . . . . . . . . 4
-   3.  Interactions  . . . . . . . . . . . . . . . . . . . . . . . . . 4
-     3.1.  Services  . . . . . . . . . . . . . . . . . . . . . . . . . 4
-       3.1.1.  Examples  . . . . . . . . . . . . . . . . . . . . . . . 4
-     3.2.  Bundles . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-       3.2.1.  Examples  . . . . . . . . . . . . . . . . . . . . . . . 4
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . . . 4
-   5.  Normative References  . . . . . . . . . . . . . . . . . . . . . 4
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 4
-
-
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.1.  RESTful Web Services . . . . . . . . . . . . . . . . . . .  3
+     1.2.  Feed-based Services  . . . . . . . . . . . . . . . . . . .  3
+     1.3.  Terminology  . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.  Model  . . . . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     2.1.  Service Entries  . . . . . . . . . . . . . . . . . . . . .  4
+       2.1.1.  Example  . . . . . . . . . . . . . . . . . . . . . . .  5
+     2.2.  Bundles  . . . . . . . . . . . . . . . . . . . . . . . . .  5
+       2.2.1.  Bundle references  . . . . . . . . . . . . . . . . . .  5
+       2.2.2.  Example  . . . . . . . . . . . . . . . . . . . . . . .  6
+       2.2.3.  Remote Bundle Example  . . . . . . . . . . . . . . . .  6
+   3.  Service Document . . . . . . . . . . . . . . . . . . . . . . .  6
+   4.  Interactions . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     4.1.  Services . . . . . . . . . . . . . . . . . . . . . . . . .  7
+       4.1.1.  Example  . . . . . . . . . . . . . . . . . . . . . . .  7
+     4.2.  Bundles  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+       4.2.1.  Examples . . . . . . . . . . . . . . . . . . . . . . .  8
+   5.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
+   6.  Normative References . . . . . . . . . . . . . . . . . . . . .  9
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 10
 
 
 
@@ -155,12 +155,12 @@ Internet-Draft          Feed Service Managemenet           November 2012
 
 2.  Model
 
-   ...
-
-2.1.  Service Entries
-
-   ...
-
+   Feed Service Management provides two fundamental models for managing
+   client-side state of feed-based services: Service Entries and
+   Bundles.  The Service Entry represents each feed-based service that
+   the client is interested in.  The Entry contains information about
+   each individual service, including the URI of the service, associated
+   metadata, any pre-formulated queries and filters, and other client-
 
 
 
@@ -169,50 +169,50 @@ Wilde & Liu               Expires June 3, 2013                  [Page 3]
 Internet-Draft          Feed Service Managemenet           November 2012
 
 
-2.1.1.  Example
+   side preferences.  Bundles organize one or more Service Entries and
+   references to other Bundles into a collection of services, providing
+   organization and meta-service entry management features for stored
+   services.  Both models are represented in FSM as extensions to the
+   Atom specification, with extension elements existing in the namespace
+   represented by "http://dret.net/fsm/1.0".
 
-2.2.  Bundles
+2.1.  Service Entries
 
-   ...
+   Service Entries are extended Atom entries, representing each service
+   that the FSM client is interested in placing with the management
+   server.  Each service thus represented MUST have a unique ID, on a
+   per client basis.  The URI to the feed-based service MUST appear in
+   an href attribute, within the atom:link element that has a rel
+   attribute of "alternate", and SHOULD appear in an atom:content
+   element as part of the src attribute.  To identify itself as a
+   Service Entry, the entry MUST contain an atom:Link element with the
+   rel attribute of "profile" and an href to the profile URI
+   "http://dret.net/fsm/1.0/service-entry".  Each entry SHOULD also have
+   an atom:link element pointing to an edit URI, with a rel attribute of
+   "edit", if the entry itself can be edited once placed on the FSM
+   server.  Each entry MUST also have an atom:title element, to conform
+   with the Atom specification, and MAY place text such as a human-
+   readable name of the service in the title element.  Some description
+   of the service SHOULD also appear in the atom:summary element of the
+   entry.
 
-2.2.1.  Remote Bundles
-
-   ...
-
-2.2.2.  Example
-
-
-3.  Interactions
-
-   ...
-
-3.1.  Services
-
-   ...
-
-3.1.1.  Examples
-
-3.2.  Bundles
-
-   ...
-
-3.2.1.  Examples
+   If the invocation of the service by this particular client requires
+   certain persistent query parameters, these parameters SHOULD appear
+   in a fsm:query element.  The fsm:query element accepts an additional
+   optional attribute called scheme, which accepts URIs as valid values
+   and functions purely as an context identifier for the type of query
+   values being preserved within the element.  If the scheme identifier
+   is omitted, consumers of the FSM feed MAY assume the contents of the
+   fsm:query element to be a valid URI query string component that can
+   be directly appended to the service URI.  While the FSM server is
+   agnostic to the particular values and semantic meaning of these
+   stored values, they may be described by a URI template and template
+   description provided by the service itself.
 
 
-4.  Security Considerations
-
-   ...
 
 
-5.  Normative References
 
-   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
-        Levels", RFC 2119, March 1997.
-
-   [2]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
-        Format", RFC 4287, December 2005.
-
-   [3]  <http://www.imc.org/atom-syntax/index.html>
 
 
 
@@ -223,6 +223,300 @@ Internet-Draft          Feed Service Managemenet           November 2012
 Wilde & Liu               Expires June 3, 2013                  [Page 4]
 
 Internet-Draft          Feed Service Managemenet           November 2012
+
+
+2.1.1.  Example
+
+     <entry>
+        <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
+        <published>2012-10-12T02:30:22Z</published>
+        <updated>2012-10-12T02:30:22Z</updated>
+        <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+        <title>Unemployment Rates 2011</title>
+        <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
+        <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
+        <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
+        <content src="http://geofeeds.org/unemployment2011"/>
+        <fsm:query scheme="http://geofeeds.org/query">state=CA</fsm:query>
+    </entry>
+
+2.2.  Bundles
+
+   Bundles are extended Atom feeds, representing a collection of Service
+   Entries or references to other Bundles.  As with normal Atom feeds,
+   Bundles MAY be extended with additional metadata, in the form of
+   foreign markup.  FSM-specific extensions should exist within the
+   namespace identified by the URI "http://dret.net/fsm/1.0".  To
+   identify itself as a Bundle, the feed MUST contain an atom:link
+   element with the rel attribute of "profile" and an href to the
+   profile URI "http://dret.net/fsm/1.0/bundle".  It MUST also identify
+   its service document, using an atom:link element with the rel
+   attribute of "service".
+
+2.2.1.  Bundle references
+
+   Bundle references are entries within bundles that identify other
+   bundles, either hosted locally or on another FSM server.  They are
+   Atom entries and resemble Service Entries, except with a profile href
+   set to "http://dret.net/fsm/1.0/bundle".  The FSM client can de-
+   reference the bundle using the URI given in the entry's alternate
+   link element in order to interact with the bundle.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Liu               Expires June 3, 2013                  [Page 5]
+
+Internet-Draft          Feed Service Managemenet           November 2012
+
+
+2.2.2.  Example
+
+
+                  <feed  xmlns:fsm="http://dret.net/fsm/1.0" xml:lang="en-US"
+                  xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2005/Atom">
+    <id>tag:yliu@ischool.berkeley.edu,2010-11-13:spatial-feeds-berkeley</id>
+    <link type="text/html"
+    href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.html" rel="alternate"/>
+    <link type="application/atom+xml"
+    href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.atom" rel="self"/>
+    <link href="http://dret.net/fsm/1.0/bundle" rel="profile"/>
+    <title type="text">Spatial Feeds for Berkeley</title>
+    <georss:where><georss:circle>37.874271 -122.265695 50</georss:circle></georss:where>
+    <updated>2010-11-13T16:51:38Z</updated>
+    <author>
+        <name>Yiming Liu</name>
+    </author>
+    <link href="http://fsm.yimingliu.com/users/yliu/service" rel="service"/> ...
+
+2.2.3.  Remote Bundle Example
+
+                 <entry>
+    <id>tag:yliu,2010-11-09:delicious-rest_ref</id>
+    <published>2010-11-09T06:21:26Z</published>
+    <updated>2010-11-09T06:21:26Z</updated>
+    <link href="http://fsm.yimingliu.com/users/yliu/feeds/delicious-rest" rel="alternate"/>
+    <title>delicious REST</title>
+    <link href="http://dret.net/fsm/1.0/bundle" rel="profile"/>
+    <summary>delicious REST bundle</summary>
+    <content type="application/atom+xml" src="http://fsm.yimingliu.com/users/yliu/feeds/delicious-rest"/>
+  </entry>
+
+
+3.  Service Document
+
+   The FSM service document MUST identify each bundle hosted by the FSM
+   server as a collection within its workspace, in order to facilitate
+   AtomPub service interactions that form the basis of FSM.
+
+
+4.  Interactions
+
+   Feed Service Management servers MUST implement the AtomPub protocol
+   as specified in RFC 5023 [2] for creating and managing feed services.
+   The core service interactions are simple and typical AtomPub
+   interactions -- the client retrieves the service document, identifies
+   the bundles / collections that it is interested in working with, and
+   then proceeds with HTTP interactions with the various collections.
+
+
+
+Wilde & Liu               Expires June 3, 2013                  [Page 6]
+
+Internet-Draft          Feed Service Managemenet           November 2012
+
+
+4.1.  Services
+
+   To create a new service entry, an FSM client issues a HTTP POST
+   request to create a new AtomPub member entry as specified by RFC 5023
+   [2] to the URI representing the bundle / collection.  The POST body
+   MUST contain an Atom entry representing the service entry to be
+   added.  The server signals a successful creation with a status code
+   of 201.  The response MUST include a Location header indicating the
+   URI of the Service Entry, and a representation of that Entry in the
+   body of the response.  Modifying and deleting resources proceed
+   exactly as specified in RFC 5023 [2]
+
+   A special case occurs when a bundle reference is being deleted.  In
+   this case, the client issues a POST request to the containing
+   collection, TODO
+
+4.1.1.  Example
+
+   Below, an FSM client requests the creation of a new service entry
+
+
+        POST /spatial-feeds/ HTTP/1.1
+        Host: example.org
+        User-Agent: FSMClient/1.0
+        Content-Type: application/atom+xml;type=entry
+        Content-Length: nnn
+
+        <?xml version="1.0"?>
+        <entry xml:lang="en-US" xmlns:fsm="http://dret.net/fsm/1.0" xmlns="http://www.w3.org/2005/Atom">
+        <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+        <title>Unemployment Rates 2011</title>
+        <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
+        <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
+        <content src="http://geofeeds.org/unemployment2011"/>
+        <fsm:query>state=CA</fsm:query>
+</entry>
+
+
+   Receiving the server response:
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Liu               Expires June 3, 2013                  [Page 7]
+
+Internet-Draft          Feed Service Managemenet           November 2012
+
+
+    HTTP/1.1 201 Created
+    Date: Fri, 7 Oct 2012 02:03:22 GMT
+    Content-Length: nnn
+    Content-Type: application/atom+xml;type=entry
+    Location: http://fsm.yimingliu.com/users/yliu/subs/137.atom
+    ETag: "c180de84f991g8"
+
+    <?xml version="1.0"?>
+    <entry xmlns="http://www.w3.org/2005/Atom">
+        <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
+        <published>2012-10-12T02:30:22Z</published>
+        <updated>2012-10-12T02:30:22Z</updated>
+        <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+        <title>Unemployment Rates 2011</title>
+        <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
+        <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
+        <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
+        <content src="http://geofeeds.org/unemployment2011"/>
+        <fsm:query>state=CA</fsm:query>
+    </entry>
+
+
+4.2.  Bundles
+
+   To create a new bundle, an FSM client must issue a HTTP POST request
+   to URI of the desired workspace, as provided by the Atom Service
+   Document of the FSM server, containing a collection.  The server
+   signals a successful creation with a status code of 201.  The
+   response includes a Location header indicating the URI of the bundle
+   / collection, and a representation of that Entry in the body of the
+   response.  To edit a collection, the FSM client sends a PUT request
+   to its Collection URI containing new collection data.  To delete a
+   collection, a client sends a DELETE request to its collection URI.
+
+4.2.1.  Examples
+
+   Below, an FSM client requests the creation of a new bundle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Liu               Expires June 3, 2013                  [Page 8]
+
+Internet-Draft          Feed Service Managemenet           November 2012
+
+
+        POST /bundles HTTP/1.1
+        Host: example.org
+        User-Agent: FSMClient/1.0
+        Content-Type: application/atom+xml;type=entry
+        Content-Length: nnn
+
+        <?xml version="1.0"?>
+    <collection xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss" >
+      <atom:title>Spatial Feeds</atom:title>
+      <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
+      <accept>application/atom=xml;type=entry</accept>
+    </collection>
+
+
+   Receiving the server response:
+
+
+    HTTP/1.1 201 Created
+    Date: Fri, 7 Oct 2012 02:03:22 GMT
+    Content-Length: nnn
+    Content-Type: application/atom+xml;type=entry
+    Location: http://fsm.yimingliu.com/users/yliu/spatial-feeds
+    ETag: "c180de84f991g8"
+
+    <?xml version="1.0"?>
+    <collection xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:georss="http://www.georss.org/georss" href="http://fsm.yimingliu.com/users/yliu/spatial-feeds">
+      <atom:title>Spatial Feeds</atom:title>
+      <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
+      <accept>application/atom=xml;type=entry</accept>
+    </collection>
+
+
+
+5.  Security Considerations
+
+   Authentication and trust is out of scope of this specification, but
+   given this as an extension of Atom and AtomPub standards, security
+   considerations outlined in RFC 5023 [2] also applies to the FSM
+   protocol.  Standard mitigation strategies for HTTP and Atom
+   protocols, such as the use of cryptographic signatures, transport
+   layer security, and three-legged authentication protocols like OAuth
+   [3] may be applied atop the protocol to address some of these issues.
+
+
+6.  Normative References
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+
+
+
+Wilde & Liu               Expires June 3, 2013                  [Page 9]
+
+Internet-Draft          Feed Service Managemenet           November 2012
+
+
+        Levels", RFC 2119, March 1997.
+
+   [2]  Gregorio, J. and B. de hOra, "The Atom Publishing Protocol",
+        RFC 5023, October 2007.
+
+   [3]  Hammer-Lahav, E. and B. de hOra, "The OAuth 1.0 Protocol",
+        RFC 5849, April 2010.
+
+   [4]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
+        Format", RFC 4287, December 2005.
+
+   [5]  <http://www.imc.org/atom-syntax/index.html>
 
 
 Authors' Addresses
@@ -262,19 +556,5 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wilde & Liu               Expires June 3, 2013                  [Page 5]
+Wilde & Liu               Expires June 3, 2013                 [Page 10]
 
