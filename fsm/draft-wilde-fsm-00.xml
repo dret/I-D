@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!-- $Id: draft-wilde-fsm-00.xml 20 2012-11-28 21:12:57Z yliu $ -->
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
@@ -8,7 +7,7 @@
 <?rfc symrefs="no" ?>
 <rfc category="std" ipr="trust200902" docName="draft-wilde-fsm-00">
    <front>
-      <title abbrev="Feed Service Managemenet">Feed Service Management (FSM)</title>
+      <title abbrev="FSM">Feed Service Management (FSM)</title>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
          <organization>EMC Corporation</organization>
          <address>
@@ -45,9 +44,9 @@
    </front>
    <middle>
       <section title="Introduction">
-         <t>Feed Service Management (FSM) is a decentralized protocol for organizing, managing, and persisting client-side state for large numbers of feed-based Web services. This document describes the motivations, data models, and protocol interactions for FSM servers and clients. In particular, it specifies how clients create and modify service descriptions stored on an FSM server, how they should retrieve and use such service descriptions, and how these interactions apply across multiple FSM servers, possibly operated by completely independent entities.</t>
+         <t>Feed Service Management (FSM) is a decentralized protocol for organizing, managing, and persisting consumer state for large numbers of feed-based Web services. This document describes the motivations, data models, and protocol interactions for FSM servers and clients. In particular, it specifies how clients create and modify service descriptions stored on an FSM server, how they should retrieve and use such service descriptions, and how these interactions apply across multiple FSM servers, possibly operated by completely independent entities.</t>
          <section title="RESTful Web Services">
-            <t>A growing number of web applications offer APIs and web services, as means to share data and interoperate with other services and devices.   Many such services expose RESTful APIs, with one of the prevalent protocols for designing standards-based RESTful APIs being Atom and AtomPub. </t>
+            <t>A growing number of web applications offer APIs and web services, as means to share data and interoperate with other services and devices.  Many such services expose RESTful APIs, with one of the prevalent protocols for designing standards-based RESTful APIs being Atom and AtomPub. </t>
          </section>
          <section title="Feed-based Services">
             <t>iTunes podcasts, for example, are enclosed audio files delivered as a service via feeds, albeit wrapped within the Apple iTunes client. Large web content management systems, like Wordpress or Blogger, offer full-featured read-write Web services for publishing, consuming, and managing content. In application areas such as the Web of Things, a large number of sensors, appliances, and other everyday objects may emit data streams, made accessible on the Web as real-time data feeds. Generally speaking, any federated and decentralized ecosystem of producers and consumers of information services can be modeled as a feed-based architecture.</t>
@@ -60,51 +59,50 @@
       </section>
 
       <section title="Model"> 
-         <t>Feed Service Management provides two fundamental models for managing client-side state of feed-based services: Service Entries and Bundles. The Service Entry represents each feed-based service that the client is interested in. The Entry contains information about each individual service, including the URI of the service, associated metadata, any pre-formulated queries and filters, and other client-side preferences.  Bundles organize one or more Service Entries and references to other Bundles into a collection of services, providing organization and meta-service entry management features for stored services.  Both models are represented in FSM as extensions to the Atom specification, with extension elements existing in the namespace represented by "http://dret.net/fsm/1.0".</t>
+         <t>Feed Service Management provides two fundamental models for managing client-side state of feed-based services: Service Entries and Bundles. The Service Entry represents each feed-based service that the client is interested in. The Entry contains information about each individual service, including the URI of the service, associated metadata, any pre-formulated queries and filters, and other client-side preferences. Bundles organize one or more Service Entries and references to other Bundles into a collection of services, providing organization and meta-service entry management features for stored services. Both models are represented in FSM as extensions to the Atom specification, with extension elements existing in the namespace represented by "http://dret.net/fsm/1.0".</t>
          <section title="Service Entries">
-            <t>Service Entries are extended Atom entries, representing each service that the FSM client is interested in placing with the management server.  Each service thus represented MUST have a unique ID, on a per client basis.  The URI to the feed-based service MUST appear in an href attribute, within the atom:link element that has a rel attribute of "alternate", and SHOULD appear in an atom:content element as part of the src attribute.  To identify itself as a Service Entry, the entry MUST contain an atom:Link element with the rel attribute of "profile" and an href to the profile URI  "http://dret.net/fsm/1.0/service-entry". Each entry SHOULD also have an atom:link element pointing to an edit URI, with a rel attribute of "edit", if the entry itself can be edited once placed on the FSM server.  Each entry MUST also have an atom:title element, to conform with the Atom specification, and MAY place text such as a human-readable name of the service in the title element. Some description of the service SHOULD also appear in the atom:summary element of the entry.  </t>
-            <t>If the invocation of the service by this particular client requires certain persistent query parameters, these parameters SHOULD appear in a fsm:query element.  The fsm:query element accepts an additional optional attribute called scheme, which accepts URIs as valid values and functions purely as an context identifier for the type of query values being preserved within the element.  If the scheme identifier is omitted, consumers of the FSM feed MAY assume the contents of the fsm:query element to be a valid URI query string component that can be directly appended to the service URI.  While the FSM server is agnostic to the particular values and semantic meaning of these stored values, they may be described by a URI template and template description provided by the service itself.</t>
+            <t>Service Entries are extended Atom entries, representing each service that the FSM client is interested in placing with the management server. Each service thus represented MUST have a unique ID, on a per client basis. The URI to the feed-based service MUST appear in an href attribute, within the atom:link element that has a rel attribute of "alternate", and SHOULD appear in an atom:content element as part of the src attribute. To identify itself as a Service Entry, the entry MUST contain an atom:Link element with the rel attribute of "profile" and an href to the profile URI  "http://dret.net/fsm/1.0/service-entry". Each entry SHOULD also have an atom:link element pointing to an edit URI, with a rel attribute of "edit", if the entry itself can be edited once placed on the FSM server. Each entry MUST also have an atom:title element, to conform with the Atom specification, and MAY place text such as a human-readable name of the service in the title element. Some description of the service SHOULD also appear in the atom:summary element of the entry. </t>
+            <t>If the invocation of the service by this particular client requires certain persistent query parameters, these parameters SHOULD appear in a fsm:query element. The fsm:query element accepts an additional optional attribute called scheme, which accepts URIs as valid values and functions purely as an context identifier for the type of query values being preserved within the element. If the scheme identifier is omitted, consumers of the FSM feed MAY assume the contents of the fsm:query element to be a valid URI query string component that can be directly appended to the service URI. While the FSM server is agnostic to the particular values and semantic meaning of these stored values, they may be described by a URI template and template description provided by the service itself.</t>
             <section title="Example">
-               <figure><artwork><![CDATA[      
-     <entry>
-        <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
-        <published>2012-10-12T02:30:22Z</published>
-        <updated>2012-10-12T02:30:22Z</updated>
-        <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
-        <title>Unemployment Rates 2011</title>
-        <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
-        <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
-        <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
-        <content src="http://geofeeds.org/unemployment2011"/>
-        <fsm:query scheme="http://geofeeds.org/query">state=CA</fsm:query>
-    </entry>
-    ]]></artwork></figure>
+               <figure>
+                  <artwork><![CDATA[<entry>
+   <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
+   <published>2012-10-12T02:30:22Z</published>
+   <updated>2012-10-12T02:30:22Z</updated>
+   <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+   <title>Unemployment Rates 2011</title>
+   <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
+   <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
+   <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
+   <content src="http://geofeeds.org/unemployment2011"/>
+   <fsm:query scheme="http://geofeeds.org/query">state=CA</fsm:query>
+</entry>]]></artwork>
+               </figure>
             </section>
          </section>
          <section title="Bundles">
-            <t>Bundles are extended Atom feeds, representing a collection of Service Entries or references to other Bundles. As with normal Atom feeds, Bundles MAY be extended with additional metadata, in the form of foreign markup.  FSM-specific extensions should exist within the namespace identified by the URI "http://dret.net/fsm/1.0".  To identify itself as a Bundle, the feed MUST contain an atom:link element with the rel attribute of "profile" and an href to the profile URI "http://dret.net/fsm/1.0/bundle".  It MUST also identify its service document, using an atom:link element with the rel attribute of "service".</t>
+            <t>Bundles are extended Atom feeds, representing a collection of Service Entries or references to other Bundles. As with normal Atom feeds, Bundles MAY be extended with additional metadata, in the form of foreign markup. FSM-specific extensions should exist within the namespace identified by the URI "http://dret.net/fsm/1.0". To identify itself as a Bundle, the feed MUST contain an atom:link element with the rel attribute of "profile" and an href to the profile URI "http://dret.net/fsm/1.0/bundle". It MUST also identify its service document, using an atom:link element with the rel attribute of "service".</t>
             <section title="Bundle references">
-               <t>Bundle references are entries within bundles that identify other bundles, either hosted locally or on another FSM server.  They are Atom entries and resemble Service Entries, except with a profile href set to "http://dret.net/fsm/1.0/bundle".  The FSM client can de-reference the bundle using the URI given in the entry's alternate link element in order to interact with the bundle.</t>
+               <t>Bundle references are entries within bundles that identify other bundles, either hosted locally or on another FSM server. They are Atom entries and resemble Service Entries, except with a profile href set to "http://dret.net/fsm/1.0/bundle". The FSM client can de-reference the bundle using the URI given in the entry's alternate link element in order to interact with the bundle.</t>
             </section>
             <section title="Example">
-               <figure><artwork>
-<![CDATA[
-                  <feed  xmlns:fsm="http://dret.net/fsm/1.0" xml:lang="en-US"
-                  xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2005/Atom">
-    <id>tag:yliu@ischool.berkeley.edu,2010-11-13:spatial-feeds-berkeley</id>
-    <link type="text/html"
-    href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.html" rel="alternate"/>
-    <link type="application/atom+xml"
-    href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.atom" rel="self"/>
-    <link href="http://dret.net/fsm/1.0/bundle" rel="profile"/>
-    <title type="text">Spatial Feeds for Berkeley</title>
-    <georss:where><georss:circle>37.874271 -122.265695 50</georss:circle></georss:where>
-    <updated>2010-11-13T16:51:38Z</updated>
-    <author>
-        <name>Yiming Liu</name>
-    </author>
-    <link href="http://fsm.yimingliu.com/users/yliu/service" rel="service"/> ... 
-                  ]]></artwork></figure>
+               <figure>
+                  <artwork><![CDATA[<feed  xmlns:fsm="http://dret.net/fsm/1.0" xml:lang="en-US"
+   xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2005/Atom">
+   <id>tag:yliu@ischool.berkeley.edu,2010-11-13:spatial-feeds-berkeley</id>
+   <link type="text/html"
+   href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.html" rel="alternate"/>
+   <link type="application/atom+xml"
+   href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.atom" rel="self"/>
+   <link href="http://dret.net/fsm/1.0/bundle" rel="profile"/>
+   <title type="text">Spatial Feeds for Berkeley</title>
+   <georss:where><georss:circle>37.874271 -122.265695 50</georss:circle></georss:where>
+   <updated>2010-11-13T16:51:38Z</updated>
+   <author>
+     <name>Yiming Liu</name>
+   </author>
+<link href="http://fsm.yimingliu.com/users/yliu/service" rel="service"/> ... ]]></artwork>
+               </figure>
             </section>
             <section title="Remote Bundle Example">
                <figure><artwork><![CDATA[
@@ -121,113 +119,115 @@
                ]]></artwork></figure>
             </section>
          </section>
-
       </section>
       <section title="Service Document">
          <t>The FSM service document MUST identify each bundle hosted by the FSM server as a collection within its workspace, in order to facilitate AtomPub service interactions that form the basis of FSM.</t>
       </section>
       <section title="Interactions"> 
-         <t>Feed Service Management servers MUST implement the AtomPub protocol as specified in RFC 5023 <xref target="rfc5023"/> for creating and managing feed services.  The core service interactions are simple and typical AtomPub interactions -- the client retrieves the service document, identifies the bundles / collections that it is interested in working with, and then proceeds with HTTP interactions with the various collections.</t>
+         <t>Feed Service Management servers MUST implement the AtomPub protocol as specified in RFC 5023 <xref target="rfc5023"/> for creating and managing feed services. The core service interactions are simple and typical AtomPub interactions -- the client retrieves the service document, identifies the bundles / collections that it is interested in working with, and then proceeds with HTTP interactions with the various collections.</t>
          <section title="Services">
-            <t>To create a new service entry, an FSM client issues a HTTP POST request to create a new AtomPub member entry as specified by RFC 5023 <xref target="rfc5023"/> to the URI representing the bundle / collection.  The POST body MUST contain an Atom entry representing the service entry to be added.  The server signals a successful creation with a status code of 201. The response MUST include a Location header indicating the URI of the Service Entry, and a representation of that Entry in the body of the response.  Modifying and deleting resources proceed exactly as specified in RFC 5023 <xref target="rfc5023"/></t>
-            <t>A special case occurs when a bundle reference is being deleted.  In this case, the client issues a POST request to the containing collection, TODO</t>
+            <t>To create a new service entry, an FSM client issues a HTTP POST request to create a new AtomPub member entry as specified by RFC 5023 <xref target="rfc5023"/> to the URI representing the bundle / collection. The POST body MUST contain an Atom entry representing the service entry to be added. The server signals a successful creation with a status code of 201. The response MUST include a Location header indicating the URI of the Service Entry, and a representation of that Entry in the body of the response. Modifying and deleting resources proceed exactly as specified in RFC 5023 <xref target="rfc5023"/></t>
+            <t>A special case occurs when a bundle reference is being deleted. In this case, the client issues a POST request to the containing collection, TODO</t>
             <section title="Example">
                <t>Below, an FSM client requests the creation of a new service entry</t>
-               <figure><artwork>
-                  <![CDATA[
-        POST /spatial-feeds/ HTTP/1.1
-        Host: example.org
-        User-Agent: FSMClient/1.0
-        Content-Type: application/atom+xml;type=entry
-        Content-Length: nnn
-    
-        <?xml version="1.0"?>
-        <entry xml:lang="en-US" xmlns:fsm="http://dret.net/fsm/1.0" xmlns="http://www.w3.org/2005/Atom">
-        <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
-        <title>Unemployment Rates 2011</title>
-        <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
-        <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
-        <content src="http://geofeeds.org/unemployment2011"/>
-        <fsm:query>state=CA</fsm:query>
-</entry>
-                  ]]>
-               </artwork></figure>
+               <figure>
+                  <artwork><![CDATA[POST /spatial-feeds/ HTTP/1.1
+Host: example.org
+User-Agent: FSMClient/1.0
+Content-Type: application/atom+xml;type=entry
+Content-Length: nnn
+
+<?xml version="1.0"?>
+<entry xml:lang="en-US" xmlns:fsm="http://dret.net/fsm/1.0" xmlns="http://www.w3.org/2005/Atom">
+   <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+   <title>Unemployment Rates 2011</title>
+   <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
+   <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
+   <content src="http://geofeeds.org/unemployment2011"/>
+   <fsm:query>state=CA</fsm:query>
+</entry>]]></artwork>
+               </figure>
                <t>
                   Receiving the server response:
                </t>
-               <figure><artwork>
-                  <![CDATA[
-    HTTP/1.1 201 Created
-    Date: Fri, 7 Oct 2012 02:03:22 GMT
-    Content-Length: nnn
-    Content-Type: application/atom+xml;type=entry
-    Location: http://fsm.yimingliu.com/users/yliu/subs/137.atom
-    ETag: "c180de84f991g8"  
+               <figure>
+                  <artwork><![CDATA[HTTP/1.1 201 Created
+ Date: Fri, 7 Oct 2012 02:03:22 GMT
+ Content-Length: nnn
+ Content-Type: application/atom+xml;type=entry
+ Location: http://fsm.yimingliu.com/users/yliu/subs/137.atom
+ ETag: "c180de84f991g8"  
 
-    <?xml version="1.0"?>
-    <entry xmlns="http://www.w3.org/2005/Atom">
-        <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
-        <published>2012-10-12T02:30:22Z</published>
-        <updated>2012-10-12T02:30:22Z</updated>
-        <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
-        <title>Unemployment Rates 2011</title>
-        <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
-        <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
-        <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
-        <content src="http://geofeeds.org/unemployment2011"/>
-        <fsm:query>state=CA</fsm:query>
-    </entry>
-                  ]]>
-               </artwork></figure>
+ <?xml version="1.0"?>
+ <entry xmlns="http://www.w3.org/2005/Atom">
+     <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
+     <published>2012-10-12T02:30:22Z</published>
+     <updated>2012-10-12T02:30:22Z</updated>
+     <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+     <title>Unemployment Rates 2011</title>
+     <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
+     <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
+     <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
+     <content src="http://geofeeds.org/unemployment2011"/>
+     <fsm:query>state=CA</fsm:query>
+ </entry>]]></artwork>
+               </figure>
             </section>
          </section>
          <section title="Bundles">
-            <t>To create a new bundle, an FSM client must issue a HTTP POST request to URI of the desired workspace, as provided by the Atom Service Document of the FSM server, containing a collection.  The server signals a successful creation with a status code of 201. The response includes a Location header indicating the URI of the bundle / collection, and a representation of that Entry in the body of the response.  To edit a collection, the FSM client sends a PUT request to its Collection URI containing new collection data.  To delete a collection, a client sends a DELETE request to its collection URI.</t>
+            <t>To create a new bundle, an FSM client must issue a HTTP POST request to URI of the desired workspace, as provided by the Atom Service Document of the FSM server, containing a collection. The server signals a successful creation with a status code of 201. The response includes a Location header indicating the URI of the bundle / collection, and a representation of that Entry in the body of the response. To edit a collection, the FSM client sends a PUT request to its Collection URI containing new collection data. To delete a collection, a client sends a DELETE request to its collection URI.</t>
             <section title="Examples">
                <t>Below, an FSM client requests the creation of a new bundle</t>
-               <figure><artwork>
-                  <![CDATA[
-        POST /bundles HTTP/1.1
-        Host: example.org
-        User-Agent: FSMClient/1.0
-        Content-Type: application/atom+xml;type=entry
-        Content-Length: nnn
-    
-        <?xml version="1.0"?>
-    <collection xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss" >
-      <atom:title>Spatial Feeds</atom:title>
-      <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
-      <accept>application/atom=xml;type=entry</accept>
-    </collection>
-                  ]]>
-               </artwork></figure>
+               <figure>
+                  <artwork><![CDATA[POST /bundles HTTP/1.1
+Host: example.org
+User-Agent: FSMClient/1.0
+Content-Type: application/atom+xml;type=entry
+Content-Length: nnn
+
+<?xml version="1.0"?>
+<collection xmlns="http://www.w3.org/2007/app"
+            xmlns:atom="http://www.w3.org/2005/Atom"
+            xmlns:georss="http://www.georss.org/georss" >
+   <atom:title>Spatial Feeds</atom:title>
+   <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
+   <accept>application/atom=xml;type=entry</accept>
+</collection>]]></artwork>
+               </figure>
                <t>
                   Receiving the server response:
                </t>
-               <figure><artwork>
-                  <![CDATA[
-    HTTP/1.1 201 Created
-    Date: Fri, 7 Oct 2012 02:03:22 GMT
-    Content-Length: nnn
-    Content-Type: application/atom+xml;type=entry
-    Location: http://fsm.yimingliu.com/users/yliu/spatial-feeds
-    ETag: "c180de84f991g8"  
-    
-    <?xml version="1.0"?>
-    <collection xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom"
-    xmlns:georss="http://www.georss.org/georss" href="http://fsm.yimingliu.com/users/yliu/spatial-feeds">
-      <atom:title>Spatial Feeds</atom:title>
-      <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
-      <accept>application/atom=xml;type=entry</accept>
-    </collection>
-                  ]]>
-               </artwork></figure>
+               <figure>
+                  <artwork><![CDATA[HTTP/1.1 201 Created
+Date: Fri, 7 Oct 2012 02:03:22 GMT
+Content-Length: nnn
+Content-Type: application/atom+xml;type=entry
+Location: http://fsm.yimingliu.com/users/yliu/spatial-feeds
+ETag: "c180de84f991g8"  
+
+<?xml version="1.0"?>
+<collection xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom"
+   xmlns:georss="http://www.georss.org/georss" href="http://fsm.yimingliu.com/users/yliu/spatial-feeds">
+   <atom:title>Spatial Feeds</atom:title>
+   <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
+   <accept>application/atom=xml;type=entry</accept>
+</collection>]]></artwork>
+               </figure>
             </section>
          </section>
          
       </section>
       <section title="Security Considerations">
-         <t>Authentication and trust is out of scope of this specification, but given this as an extension of Atom and AtomPub standards, security considerations outlined in RFC 5023 <xref target="rfc5023"/> also applies to the FSM protocol.  Standard mitigation strategies for HTTP and Atom protocols, such as the use of cryptographic signatures, transport layer security, and three-legged authentication protocols like OAuth <xref target="rfc5849"/> may be applied atop the protocol to address some of these issues.</t>
+         <t>Authentication and trust is out of scope of this specification, but given this as an extension of Atom and AtomPub standards, security considerations outlined in RFC 5023 <xref target="rfc5023"/> also applies to the FSM protocol. Standard mitigation strategies for HTTP and Atom protocols, such as the use of cryptographic signatures, transport layer security, and three-legged authentication protocols like OAuth <xref target="rfc5849"/> may be applied atop the protocol to address some of these issues.</t>
+      </section>
+      <section title="Examples">
+         <t>...</t>
+         <section title="Feed Readers">
+            <t>...</t>
+         </section>
+         <section title="Push Notification Services">
+            <t>...</t>
+         </section>
       </section>
       <!--
       <section title="Change Log">
@@ -277,13 +277,10 @@
             </front>
             <seriesInfo name="RFC" value="4287"/>
             <format type="TXT" octets="81922" target="http://www.rfc-editor.org/rfc/rfc4287.txt"/>
-            <format type="HTML" octets="150786"
-               target="http://xml.resource.org/public/rfc/html/rfc4287.html"/>
-            <format type="XML" octets="108706"
-               target="http://xml.resource.org/public/rfc/xml/rfc4287.xml"/>
+            <format type="HTML" octets="150786" target="http://xml.resource.org/public/rfc/html/rfc4287.html"/>
+            <format type="XML" octets="108706" target="http://xml.resource.org/public/rfc/xml/rfc4287.xml"/>
          </reference>
          <reference anchor='rfc5023'>
-            
             <front>
                <title>The Atom Publishing Protocol</title>
                <author initials='J.' surname='Gregorio' fullname='J. Gregorio'>
@@ -292,14 +289,13 @@
                   <organization /></author>
                <date year='2007' month='October' />
                <abstract>
-                  <t>The Atom Publishing Protocol (AtomPub) is an application-level protocol for publishing and editing Web resources.  The protocol is based on HTTP transfer of Atom-formatted representations.  The Atom format is documented in the Atom Syndication Format. [STANDARDS TRACK]</t></abstract></front>
-            
+                  <t>The Atom Publishing Protocol (AtomPub) is an application-level protocol for publishing and editing Web resources. The protocol is based on HTTP transfer of Atom-formatted representations. The Atom format is documented in the Atom Syndication Format. [STANDARDS TRACK]</t>
+               </abstract>
+            </front>
             <seriesInfo name='RFC' value='5023' />
             <format type='TXT' octets='102274' target='ftp://ftp.isi.edu/in-notes/rfc5023.txt' />
          </reference>
-         
          <reference anchor='rfc5849'>
-            
             <front>
                <title>The OAuth 1.0 Protocol</title>
                <author initials='E.' surname='Hammer-Lahav' fullname='E. Hammer-Lahav'>
@@ -312,10 +308,22 @@
             <seriesInfo name='RFC' value='5849' />
             <format type='HTML' octets='102274' target='http://tools.ietf.org/html/rfc5849' />
          </reference>
-         
-
+         <reference anchor='RFC6906'>
+            <front>
+               <title>The 'profile' Link Relation Type</title>
+               <author initials='E.' surname='Wilde' fullname='E. Wilde'>
+                  <organization />
+               </author>
+               <date year='2013' month='March' />
+               <abstract>
+                  <t>This specification defines the 'profile' link relation type that allows resource representations to indicate that they are following one or more profiles. A profile is defined not to alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='6906' />
+            <format type='TXT' octets='18469' target='http://www.rfc-editor.org/rfc/rfc6906.txt' />
+         </reference>
       </references>
-      <!-- 
+<!-- 
       <references title="Informative References">
       </references>
       <section title="Acknowledgements">
