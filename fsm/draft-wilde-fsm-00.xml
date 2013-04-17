@@ -37,27 +37,23 @@
          <t>...</t>
       </abstract>
       <note title="Note to Readers">
-         <t>This draft should be discussed on the <eref
-               target="http://www.imc.org/atom-syntax/index.html">atom-syntax mailing
-            list</eref>.</t>
+         <t>This draft should be discussed on the <eref target="http://www.imc.org/atom-syntax/index.html">atom-syntax mailing list</eref>.</t>
       </note>
    </front>
    <middle>
-      <section title="Introduction">
-         <t>Feed Service Management (FSM) is a decentralized protocol for organizing, managing, and persisting consumer state for large numbers of feed-based Web services. This document describes the motivations, data models, and protocol interactions for FSM servers and clients. In particular, it specifies how clients create and modify service descriptions stored on an FSM server, how they should retrieve and use such service descriptions, and how these interactions apply across multiple FSM servers, possibly operated by completely independent entities.</t>
-         <section title="RESTful Web Services">
-            <t>A growing number of web applications offer APIs and web services, as means to share data and interoperate with other services and devices.  Many such services expose RESTful APIs, with one of the prevalent protocols for designing standards-based RESTful APIs being Atom and AtomPub. </t>
+      <section title="Introduction" anchor="intro">
+         <t>Feed Service Management (FSM) is a protocol for representing, organizing, managing, and sharing consumer state for potentially large numbers of feed-based Web services. This document describes the motivations, data model, and protocol interactions for FSM servers and clients. In particular, it specifies how clients create and modify service descriptions stored on an FSM server, how they retrieve and use such service descriptions, and how these interactions apply across multiple FSM servers, possibly operated by independent entities.</t>
+         <section title="Web Services" anchor="web-services">
+            <t>A growing number of Web applications provide APIs and Web services, as means to share data and interoperate with other services and devices. Many such services expose REST-based APIs, with one of the prevalent protocols for designing standards-based REST-based APIs being Atom <xref target="RFC4287"/> and AtomPub <xref target="rfc5023"/>. Atom is a read-only service that allows client to consume collections (called "feeds") of published information items (called "entries"). AtomPub extends Atom with write capabilities and allows clients to create, update, and delete information items in collections.</t>
          </section>
-         <section title="Feed-based Services">
-            <t>iTunes podcasts, for example, are enclosed audio files delivered as a service via feeds, albeit wrapped within the Apple iTunes client. Large web content management systems, like Wordpress or Blogger, offer full-featured read-write Web services for publishing, consuming, and managing content. In application areas such as the Web of Things, a large number of sensors, appliances, and other everyday objects may emit data streams, made accessible on the Web as real-time data feeds. Generally speaking, any federated and decentralized ecosystem of producers and consumers of information services can be modeled as a feed-based architecture.</t>
-         </section>
-         <section title="Terminology">
-            <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD
-               NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
-               described in RFC 2119 <xref target="RFC2119"/>.</t>
+         <section title="Feed-based Services" anchor="feed-services">
+            <t>Podcasts <eref target="http://www.apple.com/itunes/podcasts/"/>, for example, are media files delivered as a service via feeds, only that the most popular client for them (iTunes) is a specialized media client instead of being a generic feed reader. Large Web content management systems, like Wordpress or Blogger, offer full-featured read-write Web services for publishing, consuming, and managing content. In application areas such as the Web of Things, a large number of sensors, appliances, and other everyday objects may emit data streams, made accessible on the Web as real-time data feeds.</t>
+            <t>Generally speaking, any federated and decentralized ecosystem of producers and consumers of information services can be modeled as a feed-based architecture. The most common cases are scenarios where services revolve around providing access to similar types of information items (such as news stories, blog posts, radio or television shows, or update information about certain products or services). FSM targets scenarios where consumers are interested in a variety of feed-based services, and want to keep track of the ones they are interested in. FSM provides a service that allows cosumers to manage information about feed-based services, thus freeing them from having to manage this service information in one particular client or service.</t>
          </section>
       </section>
-
+      <section title="Terminology">
+         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+      </section>
       <section title="Model"> 
          <t>Feed Service Management provides two fundamental models for managing client-side state of feed-based services: Service Entries and Bundles. The Service Entry represents each feed-based service that the client is interested in. The Entry contains information about each individual service, including the URI of the service, associated metadata, any pre-formulated queries and filters, and other client-side preferences. Bundles organize one or more Service Entries and references to other Bundles into a collection of services, providing organization and meta-service entry management features for stored services. Both models are represented in FSM as extensions to the Atom specification, with extension elements existing in the namespace represented by "http://dret.net/fsm/1.0".</t>
          <section title="Service Entries">
