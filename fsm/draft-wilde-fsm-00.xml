@@ -57,7 +57,7 @@
       <section title="Model"> 
          <t>Feed Service Management provides two fundamental models for managing client-side state of feed-based services: Service Entries and Bundles. The Service Entry represents each feed-based service that the client is interested in. The Entry contains information about each individual service, including the URI of the service, associated metadata, any pre-formulated queries and filters, and other client-side preferences. Bundles organize one or more Service Entries and references to other Bundles into a collection of services, providing organization and meta-service entry management features for stored services. Both models are represented in FSM as extensions to the Atom specification, with extension elements existing in the namespace represented by "http://dret.net/fsm/1.0".</t>
          <section title="Service Entries">
-            <t>Service Entries are extended Atom entries, representing each service that the FSM client is interested in placing with the management server. Each service thus represented MUST have a unique ID, on a per client basis. The URI to the feed-based service MUST appear in an href attribute, within the atom:link element that has a rel attribute of "alternate", and SHOULD appear in an atom:content element as part of the src attribute. To identify itself as a Service Entry, the entry MUST contain an atom:Link element with the rel attribute of "profile" and an href to the profile URI  "http://dret.net/fsm/1.0/service-entry". Each entry SHOULD also have an atom:link element pointing to an edit URI, with a rel attribute of "edit", if the entry itself can be edited once placed on the FSM server. Each entry MUST also have an atom:title element, to conform with the Atom specification, and MAY place text such as a human-readable name of the service in the title element. Some description of the service SHOULD also appear in the atom:summary element of the entry. </t>
+            <t>Service Entries are extended Atom entries, representing each service that the FSM client is interested in placing with the management server. Each service thus represented MUST have a unique ID, on a per client basis. The URI to the feed-based service MUST appear in an href attribute, within the atom:link element that has a rel attribute of "alternate", and SHOULD appear in an atom:content element as part of the src attribute. To identify itself as a Service Entry, the entry MUST contain an atom:link element with the rel attribute of "profile" and an href to the profile URI  "http://dret.net/fsm/1.0/service-entry". Each entry SHOULD also have an atom:link element pointing to an edit URI, with a rel attribute of "edit", if the entry itself can be edited once placed on the FSM server. Each entry MUST also have an atom:title element, to conform with the Atom specification, and MAY place text such as a human-readable name of the service in the title element. Some description of the service SHOULD also appear in the atom:summary element of the entry. As with ordinary Atom entries, foreign markup MAY appear within the submitted Atom entry, and SHOULD be processed in accordance with Section 6.3 of RFC 4287 <xref target="RFC4287"/>.</t>
             <t>If the invocation of the service by this particular client requires certain persistent query parameters, these parameters SHOULD appear in a fsm:query element. The fsm:query element accepts an additional optional attribute called scheme, which accepts URIs as valid values and functions purely as an context identifier for the type of query values being preserved within the element. If the scheme identifier is omitted, consumers of the FSM feed MAY assume the contents of the fsm:query element to be a valid URI query string component that can be directly appended to the service URI. While the FSM server is agnostic to the particular values and semantic meaning of these stored values, they may be described by a URI template and template description provided by the service itself.</t>
             <section title="Example">
                <figure>
@@ -65,13 +65,13 @@
    <id>tag:yliu,2012-10-12:unemployment-rates-2011_ref</id>
    <published>2012-10-12T02:30:22Z</published>
    <updated>2012-10-12T02:30:22Z</updated>
-   <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
+   <link href="http://example.com/unemployment2011" rel="alternate"/>
    <title>Unemployment Rates 2011</title>
    <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
-   <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
-   <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
-   <content src="http://geofeeds.org/unemployment2011"/>
-   <fsm:query scheme="http://geofeeds.org/query">state=CA</fsm:query>
+   <link href="http://fsm.example.com/users/yliu/subs/137.atom" rel="edit"/>
+   <summary>Subscription to http://example.org/unemployment2011</summary>
+   <content src="http://example.org/unemployment2011"/>
+   <fsm:query scheme="http://example.org/query">state=CA</fsm:query>
 </entry>]]></artwork>
                </figure>
             </section>
@@ -85,11 +85,11 @@
                <figure>
                   <artwork><![CDATA[<feed  xmlns:fsm="http://dret.net/fsm/1.0" xml:lang="en-US"
    xmlns:app="http://www.w3.org/2007/app" xmlns="http://www.w3.org/2005/Atom">
-   <id>tag:yliu@ischool.berkeley.edu,2010-11-13:spatial-feeds-berkeley</id>
+   <id>tag:yliu,2010-11-13:spatial-feeds-berkeley</id>
    <link type="text/html"
-   href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.html" rel="alternate"/>
+   href="http://fsm.example.com/users/yliu/feeds/spatial-feeds-berkeley.html" rel="alternate"/>
    <link type="application/atom+xml"
-   href="http://fsm.yimingliu.com/users/yliu/feeds/spatial-feeds-berkeley.atom" rel="self"/>
+   href="http://fsm.example.com/users/yliu/feeds/spatial-feeds-berkeley.atom" rel="self"/>
    <link href="http://dret.net/fsm/1.0/bundle" rel="profile"/>
    <title type="text">Spatial Feeds for Berkeley</title>
    <georss:where><georss:circle>37.874271 -122.265695 50</georss:circle></georss:where>
@@ -97,7 +97,7 @@
    <author>
      <name>Yiming Liu</name>
    </author>
-<link href="http://fsm.yimingliu.com/users/yliu/service" rel="service"/> ... ]]></artwork>
+<link href="http://fsm.example.com/users/yliu/service" rel="service"/> ... ]]></artwork>
                </figure>
             </section>
             <section title="Remote Bundle Example">
@@ -106,11 +106,11 @@
     <id>tag:yliu,2010-11-09:delicious-rest_ref</id>
     <published>2010-11-09T06:21:26Z</published>
     <updated>2010-11-09T06:21:26Z</updated>
-    <link href="http://fsm.yimingliu.com/users/yliu/feeds/delicious-rest" rel="alternate"/>
+    <link href="http://fsm.example.com/users/yliu/feeds/delicious-rest" rel="alternate"/>
     <title>delicious REST</title>
     <link href="http://dret.net/fsm/1.0/bundle" rel="profile"/>
     <summary>delicious REST bundle</summary>
-    <content type="application/atom+xml" src="http://fsm.yimingliu.com/users/yliu/feeds/delicious-rest"/>
+    <content type="application/atom+xml" src="http://fsm.example.com/users/yliu/feeds/delicious-rest"/>
   </entry>
                ]]></artwork></figure>
             </section>
@@ -122,7 +122,7 @@
       <section title="Interactions"> 
          <t>Feed Service Management servers MUST implement the AtomPub protocol as specified in RFC 5023 <xref target="rfc5023"/> for creating and managing feed services. The core service interactions are simple and typical AtomPub interactions -- the client retrieves the service document, identifies the bundles / collections that it is interested in working with, and then proceeds with HTTP interactions with the various collections.</t>
          <section title="Services">
-            <t>To create a new service entry, an FSM client issues a HTTP POST request to create a new AtomPub member entry as specified by RFC 5023 <xref target="rfc5023"/> to the URI representing the bundle / collection. The POST body MUST contain an Atom entry representing the service entry to be added. The server signals a successful creation with a status code of 201. The response MUST include a Location header indicating the URI of the Service Entry, and a representation of that Entry in the body of the response. Modifying and deleting resources proceed exactly as specified in RFC 5023 <xref target="rfc5023"/></t>
+            <t>To create a new service entry, an FSM client issues a HTTP POST request to create a new AtomPub member entry as specified by RFC 5023 <xref target="rfc5023"/> to the URI representing the bundle / collection. The POST body MUST contain an Atom entry representing the service entry to be added. The server signals a successful creation with a status code of 201. The response MUST include a Location header indicating the URI of the Service Entry, and a representation of that Entry in the body of the response. Modifying and deleting resources proceed exactly as specified in RFC 5023 <xref target="rfc5023"/>.  </t>
             <t>A special case occurs when a bundle reference is being deleted. In this case, the client issues a POST request to the containing collection, TODO</t>
             <section title="Example">
                <t>Below, an FSM client requests the creation of a new service entry</t>
@@ -151,7 +151,7 @@ Content-Length: nnn
  Date: Fri, 7 Oct 2012 02:03:22 GMT
  Content-Length: nnn
  Content-Type: application/atom+xml;type=entry
- Location: http://fsm.yimingliu.com/users/yliu/subs/137.atom
+ Location: http://fsm.example.com/users/yliu/subs/137.atom
  ETag: "c180de84f991g8"  
 
  <?xml version="1.0"?>
@@ -162,7 +162,7 @@ Content-Length: nnn
      <link href="http://geofeeds.org/unemployment2011" rel="alternate"/>
      <title>Unemployment Rates 2011</title>
      <link href="http://dret.net/fsm/1.0/service-entry" rel="profile"/>
-     <link href="http://fsm.yimingliu.com/users/yliu/subs/137.atom" rel="edit"/>
+     <link href="http://fsm.example.com/users/yliu/subs/137.atom" rel="edit"/>
      <summary>Subscription to http://geofeeds.org/unemployment2011</summary>
      <content src="http://geofeeds.org/unemployment2011"/>
      <fsm:query>state=CA</fsm:query>
@@ -171,7 +171,14 @@ Content-Length: nnn
             </section>
          </section>
          <section title="Bundles">
-            <t>To create a new bundle, an FSM client must issue a HTTP POST request to URI of the desired workspace, as provided by the Atom Service Document of the FSM server, containing a collection. The server signals a successful creation with a status code of 201. The response includes a Location header indicating the URI of the bundle / collection, and a representation of that Entry in the body of the response. To edit a collection, the FSM client sends a PUT request to its Collection URI containing new collection data. To delete a collection, a client sends a DELETE request to its collection URI.</t>
+            <t>Interactions with bundles require a FSM-specific extension to the AtomPub specification, namely to allow creation and modification of AtomPub Collections as a first-class resource. This is modeled as a variation of Section 5 of RFC 5023 <xref target="rfc5023"/>, applied to collections within a workspace rather than resources within a collection.</t>
+               <section title="Creating Collections">
+                  <t>To create a new bundle, an FSM client must issue a HTTP POST request to URI of the desired workspace, as provided by the Atom Service Document of the FSM server, containing the representation of an AtomPub collection within the service document's workspace.  The server signals a successful creation with a status code of 201. The response includes a Location header indicating the URI of the bundle / collection, and a representation of that Entry in the body of the response. </t>
+               </section>
+            <section title="Editing Collections">
+               <t>To edit a collection, the FSM client sends a PUT request to its Collection URI containing new collection data to be stored in place of the original collection information, receiving a HTTP 200 response on success. If some member resources contained in the previous collection no longer forms to the acceptable contents of the new collection as edited, the collection edit request MUST not be processed.  Instead, an HTTP 409 Conflict response is returned. </t> 
+               <t>To delete a collection, a client sends a DELETE request to its collection URI.  Member resources within the collection SHOULD be deleted along with its parent collection if they are left orphaned -- that is, not referred to from any other collection.</t>
+            </section>
             <section title="Examples">
                <t>Below, an FSM client requests the creation of a new bundle</t>
                <figure>
@@ -198,12 +205,13 @@ Content-Length: nnn
 Date: Fri, 7 Oct 2012 02:03:22 GMT
 Content-Length: nnn
 Content-Type: application/atom+xml;type=entry
-Location: http://fsm.yimingliu.com/users/yliu/spatial-feeds
+Location: http://fsm.example.com/users/yliu/spatial-feeds
 ETag: "c180de84f991g8"  
 
 <?xml version="1.0"?>
 <collection xmlns="http://www.w3.org/2007/app" xmlns:atom="http://www.w3.org/2005/Atom"
-   xmlns:georss="http://www.georss.org/georss" href="http://fsm.yimingliu.com/users/yliu/spatial-feeds">
+   xmlns:georss="http://www.georss.org/georss" 
+href="http://fsm.example.com/users/yliu/spatial-feeds">
    <atom:title>Spatial Feeds</atom:title>
    <georss:box>37.8685 -122.2680 37.8796 -122.2533</georss:box>
    <accept>application/atom=xml;type=entry</accept>
@@ -214,12 +222,12 @@ ETag: "c180de84f991g8"
          
       </section>
       <section title="Security Considerations">
-         <t>Authentication and trust is out of scope of this specification, but given this as an extension of Atom and AtomPub standards, security considerations outlined in RFC 5023 <xref target="rfc5023"/> also applies to the FSM protocol. Standard mitigation strategies for HTTP and Atom protocols, such as the use of cryptographic signatures, transport layer security, and three-legged authentication protocols like OAuth <xref target="rfc5849"/> may be applied atop the protocol to address some of these issues.</t>
+         <t>Authentication and trust layers are not part of this specification, but given this as an extension of Atom and AtomPub standards, security considerations outlined in RFC 5023 <xref target="rfc5023"/> also applies to the FSM protocol. Standard mitigation strategies for HTTP and Atom protocols, such as the use of cryptographic signatures, transport layer security, and three-legged authentication protocols like OAuth <xref target="rfc5849"/> may be applied atop the protocol to address some of these security concerns.</t>
       </section>
       <section title="Examples">
          <t>...</t>
          <section title="Feed Readers">
-            <t>...</t>
+            <t>FSM can serve as a distributed synchronization service for personal feed readers. A significant part of a Web-based feed reader's function is to maintain user feed subscriptions and personalization preferences across a number of potential client devices.  The introduction of OPML is in part to serve as an interchange format across not only devices, but also different feed reader apps and services themselves.  Instead of using a specific feed reader as an ad-hoc silo of stored feeds, however, an FSM server can be deployed as a part of an ecosystem of personal feed management services.  A user need only to point his reader to a bundle within his personal FSM feed, and any FSM-enabled reader service should be able to access and synchronize feeds using this system.  They can even optionally reference public bundles shared from other users' FSM servers to be included within their own feed bundles.</t>
          </section>
          <section title="Push Notification Services">
             <t>...</t>
