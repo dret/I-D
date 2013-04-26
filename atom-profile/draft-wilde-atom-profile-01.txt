@@ -9,7 +9,7 @@ Expires: October 28, 2013
 
 
             Profile Support for the Atom Syndication Format
-                      draft-wilde-atom-profile-00
+                      draft-wilde-atom-profile-01
 
 Abstract
 
@@ -72,18 +72,18 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
    2.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
-   3.  Profile Parameter Definition  . . . . . . . . . . . . . . . . . 4
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 4
+     2.1.  Profiles for Alternatives . . . . . . . . . . . . . . . . . 4
+     2.2.  Profiles for Specializations  . . . . . . . . . . . . . . . 4
+   3.  Profile Parameter Definition  . . . . . . . . . . . . . . . . . 5
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 5
      4.1.  Atom Media Type application/atom+xml  . . . . . . . . . . . 5
-   5.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     5.1.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 6
+   5.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+     5.1.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 7
    6.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
      6.1.  Normative References  . . . . . . . . . . . . . . . . . . . 7
-     6.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 7
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 7
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 7
-
-
+     6.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 8
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 8
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 8
 
 
 
@@ -129,38 +129,38 @@ Internet-Draft                Atom Profiles                   April 2013
    knowledge, so that clients both with and without knowledge of a
    profiled resource can safely use the same representation."  [2]
 
-   Profiles are identified by URI, and can be added to a representation
-   by adding a link with the registered "profile" link relation type,
-   linking to the profile URI.  While this is sufficient to represent
-   the fact that a certain representation is using a profile, it does
-   not make that fact visible outside of this representation.  Ideally,
-   peers communicating their media type should be able to indicate the
-   support of certain profiles through the media type itself, without
-   changing the base media type.
+   Profiles are identified by URI, and their use can be indicated for a
+   representation by adding a link with the registered "profile" link
+   relation type, linking to the profile URI.  While this is sufficient
+   to represent the fact that a certain representation is using a
+   profile, it does not make that fact visible outside of this
+   representation.  Ideally, peers communicating their media type, for
+   example when communicating via Hypertext Transfer Protocol (HTTP)
+   [5], should be able to indicate the support of certain profiles
+   through the media type identifier itself, without changing the base
+   media type.
 
    Because Atom supports generic links through its <link/> element,
    "profile" links can be easily added to a feed, indicating that this
    feed does adhere to a certain profile.  However, on the media type
    level, this feed would still be labeled as application/atom+xml,
    making the profile invisible on that level and thus not allowing it
-   to be used in interactions such as content negotiation in the
-   Hypertext Transfer Protocol (HTTP). [5].
+   to be used in interactions such as content negotiation in HTTP.
 
-   This specification adds a "profile" parameter to the application/
-   atom+xml media type, thereby making it possible for profiles to be
-   exposed at the media type level.  Apart from adding that one media
-   type parameter, this specification does not change anything about the
-   Atom format itself.
+   This specification adds a "profile" media type parameter to the
+   application/atom+xml media type, thereby making it possible for
+   profiles to be exposed at the media type level.  Apart from adding
+   that one media type parameter, this specification does not change
+   anything about the Atom format itself, or its media type
+   registration.
 
 
 2.  Examples
 
    Adding a "profile" parameter to the Atom media type adds visibility
-   of profiles at the media type level.  For example, when linking to
-   feeds of media-oriented services, it would be possible to expose two
-   feeds, one using MediaRSS, and the other using Podcasts.  Both
-   formats roughly cover the same functionality as media-oriented feed-
-   based extensions, but by having the ability to expose their
+   of profiles at the media type level, for example when alternative
+   profiles are supported by a service.  It might also help to further
+   "specialize" a media type in environments where such a
 
 
 
@@ -169,8 +169,18 @@ Wilde                   Expires October 28, 2013                [Page 3]
 Internet-Draft                Atom Profiles                   April 2013
 
 
-   capabilities at the media type level, HTTP mechanisms and
-   conversations can be used to distinguish between these formats.
+   "specialization" is useful.  Two examples are intended to illustrate
+   these two scenarios.
+
+2.1.  Profiles for Alternatives
+
+   For example, when linking to feeds of media-oriented services, it
+   would be possible to expose two feeds, one using MediaRSS, and the
+   other one using Podcasts.  Both formats roughly cover the same
+   functionality as media-oriented feed-based extensions, but by having
+   the ability to expose their capabilities at the media type level,
+   HTTP mechanisms and conversations can be used to distinguish between
+   these formats.
 
    In some cases it may be possible to support more than one profile,
    and then it is up for the service to decide whether these should be
@@ -184,9 +194,40 @@ Internet-Draft                Atom Profiles                   April 2013
    particular in the case of overlapping profiles, there might be many
    redundancies.
 
-   Thus, which way to go for multiple profiles is not a question that as
-   one correct answer; it depends on the profiles, and on the services
-   that are built around them.
+   Thus, which way to go for multiple profiles is not a question that
+   has one correct answer; it depends on the profiles, and on the
+   services that are built around them.
+
+2.2.  Profiles for Specializations
+
+   Feed-based services may provide additional features in feeds that are
+   represented using Atom's extension mechanisms.  These additional
+   features might be useful only for those clients that support them,
+   and otherwise might add volume to a feed that is of no value to
+   general consumers.  In such a scenario, specialized clients might
+   also request their specialized features via profile media type
+   parameters, and will then get the feed being "enriched" with the
+   additional features.  If clients do not request such a profile or
+   request one that is not known to the server, the server responds with
+   a generic feed, still allowing them to treat the feed as a generic
+   feed (with no additional features being represented).
+
+   Whether services respond with profiles by default or only for
+   specific requests about a profile is a matter of policy, and will be
+   influenced by factors such as the added volume when adding profile
+   data, and the question whether profiles should only be exposed to
+   those that specifically ask for them.  Since profiles are not allowed
+
+
+
+Wilde                   Expires October 28, 2013                [Page 4]
+
+Internet-Draft                Atom Profiles                   April 2013
+
+
+   to change the semantics of the media type itself, such a decision can
+   depend on the trade-off being a matter of expressivity, and not
+   whether it will break clients under some circumstances.
 
 
 3.  Profile Parameter Definition
@@ -196,13 +237,13 @@ Internet-Draft                Atom Profiles                   April 2013
    the identifier semantics defined in [2], and when appearing as media
    type parameter, they have the same semantics as if they had been
    associated with the resource URI through other means, such as using
-   one or more <link profile="" href=""/> element as a child of the
+   one or more <link profile="" href=""/> elements as children of the
    <feed> element.
 
-   Media type parameters must be quoted unless they are tokens.  For the
-   "profile" media type parameter defined here, this means that is must
-   be quoted, and contains a non-empty list of space-separated URI-
-   encoded URIs.
+   As a general rule, media type parameters must be quoted unless they
+   are tokens.  For the "profile" media type parameter defined here,
+   this means that is must be quoted.  It contains a non-empty list of
+   space-separated URIs (the profile URIs).
    profile-param = "profile=" profile-value
    profile-value = <"> profile-URI 0*( 1*SP profile-URI ) <">
    profile-URI   = URI
@@ -213,19 +254,13 @@ Internet-Draft                Atom Profiles                   April 2013
 
 4.  IANA Considerations
 
-   The Internet media type [6] for an Atom document is application/
-   atom+xml.
-
-
-
-
-
-Wilde                   Expires October 28, 2013                [Page 4]
-
-Internet-Draft                Atom Profiles                   April 2013
-
+   The media type registration for the media type application/atom+xml
+   should be updated according to the following registration.
 
 4.1.  Atom Media Type application/atom+xml
+
+   The Internet media type [6] for an Atom document is application/
+   atom+xml.
 
 4.1.1.  Media Type Name
 
@@ -234,6 +269,17 @@ Internet-Draft                Atom Profiles                   April 2013
 4.1.2.  Subtype Name
 
    atom+xml
+
+
+
+
+
+
+
+Wilde                   Expires October 28, 2013                [Page 5]
+
+Internet-Draft                Atom Profiles                   April 2013
+
 
 4.1.3.  Required Parameters
 
@@ -246,7 +292,7 @@ Internet-Draft                Atom Profiles                   April 2013
 
    profile: This parameter indicates that one or more profiles are used
    in the feed, according to the definition of profiles in [2].  The
-   parameter syntax is specified in of RFC XXXX (Section 3)
+   parameter syntax is specified in Section 3 of RFC XXXX
 
 4.1.5.  Encoding Considerations
 
@@ -265,21 +311,13 @@ Internet-Draft                Atom Profiles                   April 2013
 
 4.1.8.  Published Specification
 
-   [1]
+   [1], RFC XXXX
 
 4.1.9.  Applications which use this media type
 
    Many.  Atom has become a common foundation for many syndication-
    oriented scenarios, and also has become a commonly used
    representation for collection contents.
-
-
-
-
-Wilde                   Expires October 28, 2013                [Page 5]
-
-Internet-Draft                Atom Profiles                   April 2013
-
 
 4.1.10.  Magic number(s)
 
@@ -288,6 +326,16 @@ Internet-Draft                Atom Profiles                   April 2013
 4.1.11.  File extension(s)
 
    .atom
+
+
+
+
+
+
+Wilde                   Expires October 28, 2013                [Page 6]
+
+Internet-Draft                Atom Profiles                   April 2013
+
 
 4.1.12.  Fragment Identifiers
 
@@ -325,17 +373,10 @@ Internet-Draft                Atom Profiles                   April 2013
    o  Removed the requirement to percent-encode URIs in the profile
       parameter.
 
+   o  Added example for media type specialization.
+
 
 6.  References
-
-
-
-
-
-Wilde                   Expires October 28, 2013                [Page 6]
-
-Internet-Draft                Atom Profiles                   April 2013
-
 
 6.1.  Normative References
 
@@ -344,6 +385,13 @@ Internet-Draft                Atom Profiles                   April 2013
 
    [2]  Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
         March 2013.
+
+
+
+Wilde                   Expires October 28, 2013                [Page 7]
+
+Internet-Draft                Atom Profiles                   April 2013
+
 
    [3]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
         Resource Identifier (URI): Generic Syntax", STD 66, RFC 3986,
@@ -374,25 +422,6 @@ Appendix A.  Acknowledgements
    Thanks for comments and suggestions provided by Markus Lanthaler.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wilde                   Expires October 28, 2013                [Page 7]
-
-Internet-Draft                Atom Profiles                   April 2013
-
-
 Author's Address
 
    Erik Wilde
@@ -404,35 +433,6 @@ Author's Address
    Phone: +1-925-6006244
    Email: erik.wilde@emc.com
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
