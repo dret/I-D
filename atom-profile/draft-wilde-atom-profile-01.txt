@@ -3,9 +3,9 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                                       EMC
-Updates: 4287 (if approved)                               March 30, 2013
+Updates: 4287 (if approved)                               April 26, 2013
 Intended status: Standards Track
-Expires: October 1, 2013
+Expires: October 28, 2013
 
 
             Profile Support for the Atom Syndication Format
@@ -24,9 +24,9 @@ Abstract
 
 Note to Readers
 
-   This draft should be discussed on the atom-syntax mailing list [6].
+   This draft should be discussed on the atom-syntax mailing list [7].
 
-   Online access to all versions and files is available on github [7].
+   Online access to all versions and files is available on github [8].
 
 Status of this Memo
 
@@ -43,7 +43,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 1, 2013.
+   This Internet-Draft will expire on October 28, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Wilde                    Expires October 1, 2013                [Page 1]
+Wilde                   Expires October 28, 2013                [Page 1]
 
-Internet-Draft                Atom Profiles                   March 2013
+Internet-Draft                Atom Profiles                   April 2013
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -73,11 +73,14 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
    2.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
    3.  Profile Parameter Definition  . . . . . . . . . . . . . . . . . 4
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 5
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 4
      4.1.  Atom Media Type application/atom+xml  . . . . . . . . . . . 5
-   5.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-     5.1.  Normative References  . . . . . . . . . . . . . . . . . . . 7
-     5.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 7
+   5.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     5.1.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 6
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . . . 7
+     6.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 7
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 7
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 7
 
 
@@ -105,12 +108,9 @@ Table of Contents
 
 
 
-
-
-
-Wilde                    Expires October 1, 2013                [Page 2]
+Wilde                   Expires October 28, 2013                [Page 2]
 
-Internet-Draft                Atom Profiles                   March 2013
+Internet-Draft                Atom Profiles                   April 2013
 
 
 1.  Introduction
@@ -144,7 +144,7 @@ Internet-Draft                Atom Profiles                   March 2013
    level, this feed would still be labeled as application/atom+xml,
    making the profile invisible on that level and thus not allowing it
    to be used in interactions such as content negotiation in the
-   Hypertext Transfer Protocol (HTTP). [4].
+   Hypertext Transfer Protocol (HTTP). [5].
 
    This specification adds a "profile" parameter to the application/
    atom+xml media type, thereby making it possible for profiles to be
@@ -164,9 +164,9 @@ Internet-Draft                Atom Profiles                   March 2013
 
 
 
-Wilde                    Expires October 1, 2013                [Page 3]
+Wilde                   Expires October 28, 2013                [Page 3]
 
-Internet-Draft                Atom Profiles                   March 2013
+Internet-Draft                Atom Profiles                   April 2013
 
 
    capabilities at the media type level, HTTP mechanisms and
@@ -182,7 +182,7 @@ Internet-Draft                Atom Profiles                   March 2013
    complexity (two representations with one profile each) and processing
    complexity, and also the size of the profile data, because in
    particular in the case of overlapping profiles, there might be many
-   redundacies.
+   redundancies.
 
    Thus, which way to go for multiple profiles is not a question that as
    one correct answer; it depends on the profiles, and on the services
@@ -205,35 +205,27 @@ Internet-Draft                Atom Profiles                   March 2013
    encoded URIs.
    profile-param = "profile=" profile-value
    profile-value = <"> profile-URI 0*( 1*SP profile-URI ) <">
-   profile-URI   = percent-encoded-URI
+   profile-URI   = URI
 
-   When processing "mprofile" media type parameters, it is therefore
-   important to apply URI-decoding before processing the URI (such as
-   comparing it to known profiles).  This is particularly important
-   since profile URIs in Atom content (in <link profile="" href=""/>
-   links) will not be URI-encoded, and thus properly encoding and
-   decoding URIs in these two location is essential to implement correct
-   processing.
-
-
-
-
-
-
-Wilde                    Expires October 1, 2013                [Page 4]
-
-Internet-Draft                Atom Profiles                   March 2013
+   The "URI" in the above grammar refers to the "URI" as defined in
+   Section 3 of [3]
 
 
 4.  IANA Considerations
 
-   The Internet media type [5] for an Atom document is application/
+   The Internet media type [6] for an Atom document is application/
    atom+xml.
 
-4.1.  Atom Media Type application/atom+xml
 
-   This specification requests the registration of an XML-based media
-   type for the eXtensible Access Control Markup Language (XACML).
+
+
+
+Wilde                   Expires October 28, 2013                [Page 4]
+
+Internet-Draft                Atom Profiles                   April 2013
+
+
+4.1.  Atom Media Type application/atom+xml
 
 4.1.1.  Media Type Name
 
@@ -250,7 +242,7 @@ Internet-Draft                Atom Profiles                   March 2013
 4.1.4.  Optional Parameters
 
    charset: This parameter has semantics identical to the charset
-   parameter of the "application/xml" media type as specified in [3].
+   parameter of the "application/xml" media type as specified in [4].
 
    profile: This parameter indicates that one or more profiles are used
    in the feed, according to the definition of profiles in [2].  The
@@ -258,28 +250,18 @@ Internet-Draft                Atom Profiles                   March 2013
 
 4.1.5.  Encoding Considerations
 
-   Identical to those of "application/xml" as described in [3], Section
+   Identical to those of "application/xml" as described in [4], Section
    3.2.
 
 4.1.6.  Security Considerations
 
    As defined in [1].  In addition, as this media type uses the "+xml"
    convention, it shares the same security considerations as described
-   in [3], Section 10.
+   in [4], Section 10.
 
 4.1.7.  Interoperability Considerations
 
    There are no known interoperability issues.
-
-
-
-
-
-
-Wilde                    Expires October 1, 2013                [Page 5]
-
-Internet-Draft                Atom Profiles                   March 2013
-
 
 4.1.8.  Published Specification
 
@@ -291,9 +273,17 @@ Internet-Draft                Atom Profiles                   March 2013
    oriented scenarios, and also has become a commonly used
    representation for collection contents.
 
+
+
+
+Wilde                   Expires October 28, 2013                [Page 5]
+
+Internet-Draft                Atom Profiles                   April 2013
+
+
 4.1.10.  Magic number(s)
 
-   As specified for "application/xml" in [3], Section 3.2.
+   As specified for "application/xml" in [4], Section 3.2.
 
 4.1.11.  File extension(s)
 
@@ -301,11 +291,11 @@ Internet-Draft                Atom Profiles                   March 2013
 
 4.1.12.  Fragment Identifiers
 
-   As specified for "application/xml" in [3], Section 5.
+   As specified for "application/xml" in [4], Section 5.
 
 4.1.13.  Base URI
 
-   As specified in [3], Section 6.
+   As specified in [4], Section 6.
 
 4.1.14.  Macintosh File Type Code(s)
 
@@ -324,20 +314,30 @@ Internet-Draft                Atom Profiles                   March 2013
    IESG
 
 
-5.  References
+5.  Change Log
+
+   Note to RFC Editor: Please remove this section before publication.
+
+5.1.  From -00 to -01
+
+   o  Fixed typos.
+
+   o  Removed the requirement to percent-encode URIs in the profile
+      parameter.
+
+
+6.  References
 
 
 
 
 
-
-
-Wilde                    Expires October 1, 2013                [Page 6]
+Wilde                   Expires October 28, 2013                [Page 6]
 
-Internet-Draft                Atom Profiles                   March 2013
+Internet-Draft                Atom Profiles                   April 2013
 
 
-5.1.  Normative References
+6.1.  Normative References
 
    [1]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
         Format", RFC 4287, December 2005.
@@ -345,24 +345,52 @@ Internet-Draft                Atom Profiles                   March 2013
    [2]  Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
         March 2013.
 
-   [3]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
+   [3]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+        Resource Identifier (URI): Generic Syntax", STD 66, RFC 3986,
+        January 2005.
+
+   [4]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
         RFC 3023, January 2001.
 
-5.2.  Non-Normative References
+6.2.  Non-Normative References
 
-   [4]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L.,
+   [5]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L.,
         Leach, P., and T. Berners-Lee, "Hypertext Transfer Protocol --
         HTTP/1.1", RFC 2616, June 1999.
 
-   [5]  Freed, N., Klensin, J., and T. Hansen, "Media Type
+   [6]  Freed, N., Klensin, J., and T. Hansen, "Media Type
         Specifications and Registration Procedures", BCP 13, RFC 6838,
         January 2013.
 
 URIs
 
-   [6]  <http://www.imc.org/atom-syntax/>
+   [7]  <http://www.imc.org/atom-syntax/>
 
-   [7]  <https://github.com/dret/I-D/tree/master/atom-profile>
+   [8]  <https://github.com/dret/I-D/tree/master/atom-profile>
+
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by Markus Lanthaler.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires October 28, 2013                [Page 7]
+
+Internet-Draft                Atom Profiles                   April 2013
 
 
 Author's Address
@@ -388,5 +416,33 @@ Author's Address
 
 
 
-Wilde                    Expires October 1, 2013                [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires October 28, 2013                [Page 8]
 
