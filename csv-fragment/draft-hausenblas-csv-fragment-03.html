@@ -145,9 +145,9 @@
 <tr><td class="header">Internet-Draft</td><td class="header">DERI, NUI Galway</td></tr>
 <tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4180'>4180</a> (if&nbsp;approved)</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">Expires: July 16, 2013</td><td class="header">J. Tennison</td></tr>
+<tr><td class="header">Expires: November 4, 2013</td><td class="header">J. Tennison</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Open Data Institute</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">January 12, 2013</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">May 3, 2013</td></tr>
 </table></td></tr></table>
 <h1><br />URI Fragment Identifiers for the text/csv Media Type<br />draft-hausenblas-csv-fragment-03</h1>
 
@@ -176,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 16, 2013.</p>
+This Internet-Draft will expire on November 4, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -211,15 +211,13 @@ Incremental Deployment<br />
 Notation Used in this Memo<br />
 <a href="#methods">2.</a>&nbsp;
 Fragment Identification Methods<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#selections">2.1.</a>&nbsp;
-Selections<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-row">2.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-row">2.1.</a>&nbsp;
 Row-based selection<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-column">2.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-column">2.2.</a>&nbsp;
 Column-based selection<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-cell">2.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-cell">2.3.</a>&nbsp;
 Cell-based selection<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#multi-select">2.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#multi-select">2.4.</a>&nbsp;
 Multi-Selections<br />
 <a href="#syntax">3.</a>&nbsp;
 Fragment Identification Syntax<br />
@@ -324,14 +322,9 @@ Fragment Identification Methods</h3>
 2011-01-01,6,Berkeley
 2011-01-02,8,Berkeley
 2011-01-03,5,Berkeley</pre></div>
-<a name="selections"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
-Selections</h3>
-
 <a name="method-row"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
 Row-based selection</h3>
 
 <p>To select a specific record, the "row" scheme followed by a single number is used (the first row has the position 0).
@@ -348,7 +341,7 @@ Row-based selection</h3>
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#row=4-*</pre></div>
 <a name="method-column"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
+<a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
 Column-based selection</h3>
 
 <p>To select values from a certain column, the "col" scheme, followed by a position:
@@ -375,14 +368,14 @@ Column-based selection</h3>
 </p>
 <a name="method-cell"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.2.4"></a><h3>2.4.&nbsp;
+<a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
 Cell-based selection</h3>
 
 <p>To select particular fields, use the "cell" scheme, followed by a row number, a comma, and a column number.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#cell=3,0</pre></div>
 <p>The above CSV fragment addresses the field in the first column within the fourth row, yielding:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>2011-01-03</pre></div>
-<p>It is also possible to select ranges that have more than one row or column, in which case the cell selection uses the same range syntax as for row and column selections. For these selections, the syntax uses the upper-lefthand call as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.
+<p>It is also possible to select cell-based fragments that have more than just one cell, in which case the cell selection uses the same range syntax as for row and column range selections. For these selections, the syntax uses the upper-lefthand cell as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#cell=3,0-5,1</pre></div>
 <p>The above CSV fragment selects a region that starts at the fourth row and the first column, and ends at the sixth row and the second column:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>2011-01-03,0
@@ -390,7 +383,7 @@ Cell-based selection</h3>
 2011-01-02,8</pre></div>
 <a name="multi-select"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.2.5"></a><h3>2.5.&nbsp;
+<a name="rfc.section.2.4"></a><h3>2.4.&nbsp;
 Multi-Selections</h3>
 
 <p>Row, column, and cell selections can make more than one selection, in which case the individual selections are separated by semicolons. In these cases, the resulting fragment may be a disjoint fragment, such as the selection "#row=2;5" for the example CSV, which would select the third and the sixth row. It is up to the user agent to decide how to handle disjoint fragments, but since they are allowed, user agents should be prepared to handle disjoint fragments.
@@ -415,16 +408,16 @@ Fragment Identification Syntax</h3>
 </p>
 <p>
 				</p>
-<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>csv-fragment =  rowsel / colsel / cellsel
-rowsel       =  "row=" singlespec 0*( ";" singlespec)
-colsel       =  "col=" singlespec 0*( ";" singlespec)
-cellsel      =  "cell=" cellspec 0*( ";" cellspec)
-singlespec   =  position [ "-" position ]
-cellspec     =  cellrow "," cellcol [ "-" cellrow "," cellcol ]
-cellrow      =  position
-cellcol      =  position
-position     =  number / "*"
-number       =  1*( DIGIT )</pre></div><p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><dfn>csv-fragment</dfn> =  <cite class='id'>rowsel</cite> / <cite class='id'>colsel</cite> / <cite class='id'>cellsel</cite>
+<dfn>rowsel</dfn>       =  "<span class='str'>row=</span>" <cite class='id'>singlespec</cite> <span class='rep'>0*</span>( "<span class='str'>;</span>" <cite class='id'>singlespec</cite>)
+<dfn>colsel</dfn>       =  "<span class='str'>col=</span>" <cite class='id'>singlespec</cite> <span class='rep'>0*</span>( "<span class='str'>;</span>" <cite class='id'>singlespec</cite>)
+<dfn>cellsel</dfn>      =  "<span class='str'>cell=</span>" <cite class='id'>cellspec</cite> <span class='rep'>0*</span>( "<span class='str'>;</span>" <cite class='id'>cellspec</cite>)
+<dfn>singlespec</dfn>   =  <cite class='id'>position</cite> [ "<span class='str'>-</span>" <cite class='id'>position</cite> ]
+<dfn>cellspec</dfn>     =  <cite class='id'>cellrow</cite> "<span class='str'>,</span>" <cite class='id'>cellcol</cite> [ "<span class='str'>-</span>" <cite class='id'>cellrow</cite> "<span class='str'>,</span>" <cite class='id'>cellcol</cite> ]
+<dfn>cellrow</dfn>      =  <cite class='id'>position</cite>
+<dfn>cellcol</dfn>      =  <cite class='id'>position</cite>
+<dfn>position</dfn>     =  <cite class='id'>number</cite> / "<span class='str'>*</span>"
+<dfn>number</dfn>       =  <span class='rep'>1*</span>( <cite class='key'>DIGIT</cite> )</pre></div><p>
 
 			
 </p>
@@ -455,7 +448,7 @@ Semantics of Fragment Identifiers</h3>
 </p>
 <p>If selections of ranges of rows or columns or selections of cell ranges are specified in a way so that they select "inversely" (i.e., "#row=10-5" or "#cell=10,10-5,5"), they MUST be ignored.
 </p>
-<p>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1;4-3;12-15" does identify the frist two rows: the second specification is an "inverse" specification and thus ignored, and the third specification targets rows beyond the actual size of the CSV and is also ignored.
+<p>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1;4-3;12-15" does identify the first two rows: the second specification is an "inverse" specification and thus ignored, and the third specification targets rows beyond the actual size of the CSV and is also ignored.
 </p>
 <p>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=2-5;3-4" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.
 </p>
@@ -474,8 +467,6 @@ IANA Considerations</h3>
 Security Considerations</h3>
 
 <p>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.
-</p>
-<p>...
 </p>
 <p>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <a class='info' href='#RFC3986'>[4]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> and RFC 3987 <a class='info' href='#RFC3987'>[7]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRI),&rdquo; January&nbsp;2005.</span><span>)</span></a>.
 </p>
@@ -505,9 +496,9 @@ From -02 to -03</h3>
 <ul class="text">
 <li>Added section on "Implementation Status" (<a class='info' href='#implementation-status'>Section&nbsp;7<span> (</span><span class='info'>Implementation Status</span><span>)</span></a>).
 </li>
-<li>Added examples of ranges of rows and columns
+<li>Added examples of ranges of rows and columns.
 </li>
-<li>Corrected errors in examples
+<li>Corrected errors in examples.
 </li>
 </ul><p>
 				

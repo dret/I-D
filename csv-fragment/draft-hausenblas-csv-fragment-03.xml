@@ -47,7 +47,7 @@
 				<uri>http://www.jenitennison.com/blog/</uri>
 			</address>
 		</author>
-		<date day="12" month="January" year="2013"/>
+		<date day="3" month="May" year="2013"/>
 		<abstract>
 			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell. Fragment identification can use single items, or ranges.</t>
 		</abstract>
@@ -92,9 +92,6 @@
 2011-01-02,8,Berkeley
 2011-01-03,5,Berkeley</artwork>
 			</figure>
-			<section title="Selections" anchor="selections">
-				
-			</section>
 			<section title="Row-based selection" anchor="method-row">
 				<t>To select a specific record, the "row" scheme followed by a single number is used (the first row has the position 0).</t>
 				<figure>
@@ -159,7 +156,7 @@
 				<figure>
 					<artwork type="csv">2011-01-03</artwork>
 				</figure>
-				<t>It is also possible to select ranges that have more than one row or column, in which case the cell selection uses the same range syntax as for row and column selections. For these selections, the syntax uses the upper-lefthand call as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.</t>
+				<t>It is also possible to select cell-based fragments that have more than just one cell, in which case the cell selection uses the same range syntax as for row and column range selections. For these selections, the syntax uses the upper-lefthand cell as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.</t>
 				<figure>
 					<artwork>http://example.com/data.csv#cell=3,0-5,1</artwork>
 				</figure>
@@ -207,7 +204,7 @@ number       =  1*( DIGIT )</artwork>
 				<t>If single selections refer to non-existing rows or columns (i.e., beyond the size of of the CSV), they MUST be ignored.</t>
 				<t>If ranges extend beyond the size of the CSV (by extending to row or columns beyond the size of the CSV), they MUST be interpreted to only extend to the actual size of the CSV.</t>
 				<t>If selections of ranges of rows or columns or selections of cell ranges are specified in a way so that they select "inversely" (i.e., "#row=10-5" or "#cell=10,10-5,5"), they MUST be ignored.</t>
-				<t>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1;4-3;12-15" does identify the frist two rows: the second specification is an "inverse" specification and thus ignored, and the third specification targets rows beyond the actual size of the CSV and is also ignored.</t>
+				<t>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1;4-3;12-15" does identify the first two rows: the second specification is an "inverse" specification and thus ignored, and the third specification targets rows beyond the actual size of the CSV and is also ignored.</t>
 				<t>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=2-5;3-4" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.</t>
 			</section>
 		</section>
@@ -217,7 +214,6 @@ number       =  1*( DIGIT )</artwork>
 		</section>
 		<section title="Security Considerations" anchor="security">
 			<t>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.</t>
-			<t>...</t>
 			<t>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <xref target="RFC3986"/> and RFC 3987 <xref target="RFC3987"/>.</t>
 		</section>
 		<section title="Implementation Status" anchor="implementation-status">
@@ -230,8 +226,8 @@ number       =  1*( DIGIT )</artwork>
 				<t>
 					<list style="symbols">
 						<t>Added section on "Implementation Status" (<xref target="implementation-status"/>).</t>
-						<t>Added examples of ranges of rows and columns</t>
-						<t>Corrected errors in examples</t>
+						<t>Added examples of ranges of rows and columns.</t>
+						<t>Corrected errors in examples.</t>
 					</list>
 				</t>
 			</section>
