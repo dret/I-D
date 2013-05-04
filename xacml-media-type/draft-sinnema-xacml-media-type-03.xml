@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc tocdepth="2" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc category="info" ipr="trust200902" docName="draft-sinnema-xacml-media-type-03">
+   <front>
+      <title abbrev="XACML Media Type">eXtensible Access Control Markup Language (XACML) Media Type</title>
+      <author initials="R." surname="Sinnema" fullname="Remon Sinnema">
+         <organization>EMC Corporation</organization>
+         <address>
+            <email>remon.sinnema@emc.com</email>
+            <uri>http://securesoftwaredev.com/</uri>
+         </address>
+      </author>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>EMC Corporation</organization>
+         <address>
+            <postal>
+               <street>6801 Koll Center Parkway</street>
+               <city>Pleasanton, CA 94566</city>
+               <country>U.S.A.</country>
+            </postal>
+            <phone>+1-925-6006244</phone>
+            <email>erik.wilde@emc.com</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="3" month="May" year="2013"/>
+      <abstract>
+         <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
+         <t>Online access to all versions and files is available on <eref target="https://github.com/dret/I-D/tree/master/xacml-media-type">github</eref>.</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction">
+         <t>The eXtensible Access Control Markup Language (XACML) <xref target="XACML-3"/> defines an architecture and a language for access control (authorization). The language consists of requests, responses, and policies. Clients sends a request to a server to query whether a given action should be allowed. The server evaluates the request against the available policies and returns a reponse. The policies implement the organization's access control requirements.</t>
+      </section>
+      <section title="XACML Media Type">
+         <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML) that will be registered with the Internet Assigned Numbers Authority (IANA) following the "Media Type Specifications and Registration Procedures" <xref target="RFC6838"/>. The XACML media type represents an XACML request, response, or policy in the XML-based format defined by the core XACML specification <xref target="XACML-3"/>.</t>
+      </section>
+      <section title="XACML Media Type application/xacml+xml" anchor="xacml-media-type">
+         <t>This specification requests the registration of an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
+         <section title="Media Type Name">
+            <t>application</t>
+         </section>
+         <section title="Subtype Name">
+            <t>xacml+xml</t>
+         </section>
+         <section title="Required Parameters">
+            <t>none</t>
+         </section>
+         <section title="Optional Parameters">
+            <t>charset: The charset parameter is the same as the charset parameter of application/xml <xref target="RFC3023"/>.</t>
+            <t>version: The version parameter indicates the version of the XACML specification. It can be used for content negotiation when dealing with clients and servers that support multiple XACML versions. Its range is the range of published XACML versions. As of this writing that is: 1.0 <xref target="XACML-1"/>, 1.1 <xref target="XACML-1.1"/>, 2.0 <xref target="XACML-2"/>, and 3.0 <xref target="XACML-3"/>. These and future version identifiers consist of a series of non-negative decimal numbers with no leading zeros separated by dots, where the first decimal must be positive. If this parameter is not specified by the client, the server is free to return any version it deems fit. If a client cannot or does not want to deal with that, it should explicitly specify a version.</t>
+         </section>
+         <section title="Encoding Considerations">
+            <t>Same as for application/xml <xref target="RFC3023"/>.</t>
+         </section>
+         <section title="Security Considerations">
+            <t>Per their specification, application/xacml+xml typed objects do not contain executable content. However, these objects are XML-based, and thus they have all of the general security considerations presented in section 10 of RFC 3023 <xref target="RFC3023"/>.</t>
+            <t>XACML <xref target="XACML-3"/> contains information whose integrity and authenticity is important - identity provider and service provider public keys and endpoint addresses, for example. Sections 9.2.1 Authentication and 9.2.4 Policy integrity in XACML <xref target="XACML-3"/> describe requirements and considerations for such authentication and integrity protection.</t>
+            <t>To counter potential issues, the publisher may sign application/xacml+xml typed objects. Any such signature should be verified by the recipient of the data - both as a valid signature, and as being the signature of the publisher. The XACML v3.0 XML Digital Signature Profile <xref target="XACML-3-DSig"/> describes how to use XML-based digital signatures with XACML.</t>
+            <t>Additionally, various of the possible publication protocols, for example HTTPS, offer means for ensuring the authenticity of the publishing party and for protecting the policy in transit.</t>
+            <t>For a more detailed discussion of XACML policy and its security considerations, please see XACML 3.0 <xref target="XACML-3"/> and the associated XML Digital Signature Profile <xref target="XACML-3-DSig"/>.</t>
+         </section>
+         <section title="Interoperability Considerations">
+            <t>Different versions of XACML use different XML namespace URIS:</t>
+            <t>
+                <list style="symbols">
+                   <t>1.0 &amp; 1.1 use the urn:oasis:names:tc:xacml:1.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:1.0:context XML namespace URI for requests and responses</t>
+                   <t>2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI for policies, and the urn:oasis:names:tc:xacml:2.0:context XML namespace URI for requests and responses</t>
+                   <t>3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML namespace URI for policies, requests, and responses</t>
+                </list>
+            </t>
+            <t>Signed XACML has a wrapping SAML 2.0 assertion <xref target="SAML-2"/>, which uses the urn:oasis:names:tc:SAML:2.0:assertion namespace URI. Interoperability with SAML is defined by the SAML 2.0 Profile of XACML <xref target="XACML-3-SAML"/> for all versions of XACML.</t>
+         </section>
+         <section title="Applications which use this media type">
+            <t>Potentially any application implementing or using XACML, as well as those applications implementing or using specifications based on XACML.</t>
+         </section>
+         <section title="Magic number(s)">
+            <t>In general, the same as for application/xml <xref target="RFC3023"/>. In particular, the XML document element of the returned object will be one of xacml:Policy,  xacml:PolicySet, context:Request, or context:Response. The xacml and context prefixes differ for the various versions of XACML as follows:</t>
+            <t>
+               <list style="symbols">
+                   <t>1.0 &amp; 1.1: The xacml prefix maps to urn:oasis:names:tc:xacml:1.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:1.0:context</t>
+                   <t>2.0: The xacml prefix maps to urn:oasis:names:tc:xacml:2.0:policy, the context prefix maps to urn:oasis:names:tc:xacml:2.0:context</t>
+                   <t>3.0: Both the xacml and context prefixes map to the namespace URI urn:oasis:names:tc:xacml:3.0:core:schema:wd-17</t>
+               </list>
+            </t>
+            <t>For signed XACML <xref target="XACML-3-DSig"/>, the XML document element is saml:Assertion, where the saml prefix maps to the SAML 2.0 namespace URI urn:oasis:names:tc:SAML:2.0:assertion <xref target="SAML-2"/></t>   
+         </section>
+         <section title="File extension(s)">
+            <t>none</t>
+         </section>
+         <section title="Macintosh File Type Code(s)">
+            <t>none</t>
+         </section>
+         <section title="Person &amp; email address to contact for further information">
+            <t>This registration is made on behalf of the OASIS eXtensible Access Control Markup Language Technical Committee (XACMLTC). Please refer to the XACMLTC website for current information on committee chairperson(s) and their contact addresses: http://www.oasis-open.org/committees/xacml/. Committee members should submit comments and potential errata to the xacml@lists.oasis-open.org list. Others should submit them by filling out the web form located at http://www.oasis-open.org/committees/comments/form.php?wg_abbrev=xacml.</t>
+            <t>Additionally, the XACML developer community email distribution list, xacml-dev@lists.oasis-open.org, may be employed to discuss usage of the application/xacml+xml MIME media type. The xacml-dev mailing list is publicly archived here: http://www.oasis-open.org/archives/xacml-dev/. To post to the xacml-dev mailing list, one must subscribe to it. To subscribe, visit the OASIS mailing list page at http://www.oasis-open.org/mlmanage/.</t>
+         </section>
+         <section title="Intended Usage">
+            <t>Common</t>
+         </section>
+         <section title="Author/Change Controller">
+            <t>The XACML specification sets are a work product of the OASIS eXtensible Access Control Markup Language Technical Committee (XACMLTC). OASIS and the XACMLTC have change control over the XACML specification sets.</t>
+         </section>
+      </section>
+      <section title="Change Log">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <section title="From -02 to -03">
+            <t>
+               <list style="symbols">
+                  <t>Switched category from "std" to "info".</t>
+               </list>
+            </t>
+         </section>
+         <section title="From -01 to -02">
+            <t>
+               <list style="symbols">
+                  <t>Added new introduction text.</t>
+                  <t>Improved definition of version numbers and their handling.</t>
+               </list>
+            </t>
+         </section>
+         <section title="From -00 to -01">
+            <t>
+               <list style="symbols">
+                  <t>Added new introduction text.</t>
+                  <t>Changed reference from RFC 4288 to RFC 6838 (updated RFC for media type registrations).</t>
+               </list>
+            </t>
+         </section>
+         <section title="Versions prior to I-D -00">
+            <t>Prior to being published as a I-D document, this document was published and revised as an OASIS document with the following versions:</t>
+            <t>
+               <list style="symbols">
+                  <t>2012-02-29 (WD01): Initial revision with one media type.</t>
+                  <t>2012-04-23 (WD02): Added JSON media type.</t>
+                  <t>2012-04-24 (WD03): Fixed layout, typos, and references. Better defined the allowable range of values for the version parameter.</t>
+               </list>
+            </t>
+         </section>
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor="SAML-2" target="http://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf">
+            <front>
+               <title>Security Assertion Markup Language (SAML) Version 2.0. OASIS Standard</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="15" month="March" year="2005"/>
+            </front>
+         </reference>
+         <reference anchor='RFC3023'>
+            <front>
+               <title>XML Media Types</title>
+               <author initials='M.' surname='Murata' fullname='M. Murata'>
+                  <organization />
+               </author>
+               <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
+                  <organization />
+               </author>
+               <author initials='D.' surname='Kohn' fullname='D. Kohn'>
+                  <organization />
+               </author>
+               <date year='2001' month='January' />
+               <abstract>
+                  <t>This document standardizes five new media types - text/xml, application/xml, text/xml-external-parsed-entity, application/xml- external-parsed-entity, and application/xml-dtd - for use in exchanging network entities that are related to the Extensible Markup Language (XML). This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t></abstract>
+            </front>
+            <seriesInfo name='RFC' value='3023' />
+            <format type='TXT' octets='86011' target='http://www.rfc-editor.org/rfc/rfc3023.txt' />
+         </reference>
+         <reference anchor='RFC6838'>
+            <front>
+               <title>Media Type Specifications and Registration Procedures</title>
+               <author initials='N.' surname='Freed' fullname='N. Freed'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Klensin' fullname='J. Klensin'>
+                  <organization />
+               </author>
+               <author initials='T.' surname='Hansen' fullname='T. Hansen'>
+                  <organization />
+               </author>
+               <date year='2013' month='January' />
+               <abstract>
+                  <t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols.  This memo documents an Internet Best Current Practice.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='BCP' value='13' />
+            <seriesInfo name='RFC' value='6838' />
+            <format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
+         </reference>
+         <reference anchor="XACML-1" target="http://www.oasis-open.org/committees/download.php/2406/oasis-xacml-1.0.pdf">
+            <front>
+               <title>eXtensible Access Control Markup Language (XACML) Version 1.0. OASIS Standard</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="18" month="February" year="2003"/>
+            </front>
+         </reference>
+         <reference anchor="XACML-1.1" target="http://www.oasis-open.org/committees/xacml/repository/cs-xacml-specification-1.1.pdf">
+            <front>
+               <title>eXtensible Access Control Markup Language (XACML) Version 1.1. OASIS Committee Specification</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="7" month="August" year="2003"/>
+            </front>
+         </reference>
+         <reference anchor="XACML-2" target="http://docs.oasis-open.org/xacml/2.0/access_control-xacml-2.0-core-spec-os.pdf">
+            <front>
+               <title>eXtensible Access Control Markup Language (XACML) Version 2.0. OASIS Standard</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="1" month="February" year="2005"/>
+            </front>
+         </reference>
+         <reference anchor="XACML-3" target="http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-cs-01-en.pdf">
+            <front>
+               <title>eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="10" month="August" year="2010"/>
+            </front>
+         </reference>
+         <reference anchor="XACML-3-SAML" target="http://docs.oasis-open.org/xacml/3.0/xacml-profile-saml2.0-v2-spec-cs-01-en.pdf">
+            <front>
+               <title>SAML 2.0 Profile of XACML, Version 2.0. OASIS Committee Specification 01</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="10" month="August" year="2010"/>
+            </front>
+         </reference>
+         <reference anchor="XACML-3-DSig" target="http://docs.oasis-open.org/xacml/3.0/xacml-3.0-dsig-v1-spec-cs-01-en.pdf">
+            <front>
+               <title>XACML v3.0 XML Digital Signature Profile Version 1.0. OASIS Committee Specification 01</title>
+               <author>
+                  <organization abbrev="OASIS">Organization for the Advancement of Structured Information Standards</organization>
+               </author>
+               <date day="10" month="August" year="2010"/>
+            </front>
+         </reference>
+      </references>
+      <section title="Acknowledgements">
+         <t>The following individuals have participated in the creation of this specification and are gratefully acknowledged: Erik Rissanen (Axiomatics) and Jonathan Robie (EMC).</t>
+      </section>
+   </back>
+</rfc>
