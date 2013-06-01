@@ -43,10 +43,7 @@
          <t>The eXtensible Access Control Markup Language (XACML) <xref target="XACML-3"/> defines an architecture and a language for access control (authorization). The language consists of requests, responses, and policies. Clients sends a request to a server to query whether a given action should be allowed. The server evaluates the request against the available policies and returns a reponse. The policies implement the organization's access control requirements.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
-         <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
-         <section title="XACML Media Type">
-            <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML) that will be registered with the Internet Assigned Numbers Authority (IANA) following the "Media Type Specifications and Registration Procedures" <xref target="RFC6838"/>. The XACML media type represents an XACML request, response, or policy in the XML-based format defined by the core XACML specification <xref target="XACML-3"/>.</t>
-         </section>
+         <t>This specification registers an XML-based media type for the eXtensible Access Control Markup Language (XACML) that will be registered with the Internet Assigned Numbers Authority (IANA) following the "Media Type Specifications and Registration Procedures" <xref target="RFC6838"/>. The XACML media type represents an XACML request, response, or policy in the XML-based format defined by the core XACML specification <xref target="XACML-3"/>.</t>
          <section title="XACML Media Type application/xacml+xml" anchor="xacml-media-type">
             <t>This specification requests the registration of an XML-based media type for the eXtensible Access Control Markup Language (XACML).</t>
             <section title="Media Type Name">
@@ -65,7 +62,7 @@
             <section title="Encoding Considerations">
                <t>Same as for application/xml <xref target="RFC3023"/>.</t>
             </section>
-            <section title="Security Considerations">
+            <section title="Security Considerations" anchor="media-type-security-considerations">
                <t>Per their specification, application/xacml+xml typed objects do not contain executable content. However, these objects are XML-based, and thus they have all of the general security considerations presented in section 10 of RFC 3023 <xref target="RFC3023"/>.</t>
                <t>XACML <xref target="XACML-3"/> contains information whose integrity and authenticity is important - identity provider and service provider public keys and endpoint addresses, for example. Sections 9.2.1 Authentication and 9.2.4 Policy integrity in XACML <xref target="XACML-3"/> describe requirements and considerations for such authentication and integrity protection.</t>
                <t>To counter potential issues, the publisher may sign application/xacml+xml typed objects. Any such signature should be verified by the recipient of the data - both as a valid signature, and as being the signature of the publisher. The XACML v3.0 XML Digital Signature Profile <xref target="XACML-3-DSig"/> describes how to use XML-based digital signatures with XACML.</t>
@@ -114,6 +111,9 @@
                <t>The XACML specification sets are a work product of the OASIS eXtensible Access Control Markup Language Technical Committee (XACMLTC). OASIS and the XACMLTC have change control over the XACML specification sets.</t>
             </section>
          </section>
+      </section>
+      <section title="Security Considerations" anchor="security-considerations">
+         <t>The security considerations for this specifications are described in <xref target="media-type-security-considerations"/> of the media type registration.</t>
       </section>
       <section title="Change Log">
          <t>Note to RFC Editor: Please remove this section before publication.</t>
