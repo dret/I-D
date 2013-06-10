@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:hints="urn:ietf:rfc:XXXX" exclude-result-prefixes="hints">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ld="urn:ietf:rfc:XXXX" exclude-result-prefixes="ld">
     <xsl:output method="html"/>
-    <xsl:template match="hints:hints">
+    <xsl:template match="ld:ld">
         <html>
             <head>
                 <title>
@@ -43,7 +43,7 @@
                             <th>Appinfo</th>
                         </tr>
                     </thead>
-                    <xsl:for-each select="hints:variable">
+                    <xsl:for-each select="ld:variable">
                         <xsl:sort select="@name"/>
                         <tr>
                             <td>
@@ -77,25 +77,25 @@
                             </td>
                             <td>
                                 <xsl:choose>
-                                    <xsl:when test="hints:restriction">
+                                    <xsl:when test="ld:restriction">
                                         <div>
                                             <xsl:text>Base: </xsl:text>
                                             <code>
                                                 <xsl:choose>
-                                                    <xsl:when test="contains(hints:restriction/@base, ':')">
-                                                        <xsl:value-of select="hints:restriction/@base"/>
+                                                    <xsl:when test="contains(ld:restriction/@base, ':')">
+                                                        <xsl:value-of select="ld:restriction/@base"/>
                                                     </xsl:when>
                                                     <xsl:otherwise>
-                                                        <a href="http://www.w3.org/TR/xmlschema-2/#{hints:restriction/@base}">
-                                                            <xsl:value-of select="concat('xs:', hints:restriction/@base)"/>
+                                                        <a href="http://www.w3.org/TR/xmlschema-2/#{ld:restriction/@base}">
+                                                            <xsl:value-of select="concat('xs:', ld:restriction/@base)"/>
                                                         </a>
                                                     </xsl:otherwise>
                                                 </xsl:choose>
                                             </code>
                                         </div>
-                                        <xsl:if test="hints:restriction/hints:*">
+                                        <xsl:if test="ld:restriction/ld:*">
                                             <ul>
-                                                <xsl:for-each select="hints:restriction/hints:*">
+                                                <xsl:for-each select="ld:restriction/ld:*">
                                                     <xsl:sort select="local-name()"/>
                                                     <li>
                                                         <code>
@@ -130,9 +130,9 @@
     </xsl:template>
     <xsl:template name="documentation">
         <xsl:choose>
-            <xsl:when test="hints:documentation">
+            <xsl:when test="ld:documentation">
                 <ul>
-                    <xsl:for-each select="hints:documentation">
+                    <xsl:for-each select="ld:documentation">
                         <li>
                             <xsl:value-of select="node()"/>
                             <xsl:if test="@xml:lang">
@@ -158,9 +158,9 @@
     </xsl:template>
     <xsl:template name="appinfo">
         <xsl:choose>
-            <xsl:when test="hints:appinfo">
+            <xsl:when test="ld:appinfo">
                 <ul>
-                    <xsl:for-each select="hints:appinfo">
+                    <xsl:for-each select="ld:appinfo">
                         <li>
                             <xsl:text>Source: </xsl:text>
                             <xsl:value-of select="@source"/>

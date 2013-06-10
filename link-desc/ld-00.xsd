@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:hints="urn:ietf:rfc:XXXX">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
     <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd">
         <xs:annotation>
             <xs:documentation>Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.</xs:documentation>
         </xs:annotation>
     </xs:import>
-    <xs:element name="hints">
+    <xs:element name="ld">
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="variable" maxOccurs="unbounded">
@@ -14,28 +14,28 @@
                             <xs:element name="restriction" minOccurs="0">
                                 <xs:complexType>
                                     <xs:choice maxOccurs="unbounded" minOccurs="0">
-                                        <xs:element name="minExclusive" type="hints:facet"/>
-                                        <xs:element name="minInclusive" type="hints:facet"/>
-                                        <xs:element name="maxExclusive" type="hints:facet"/>
-                                        <xs:element name="maxInclusive" type="hints:facet"/>
+                                        <xs:element name="minExclusive" type="ld:facet"/>
+                                        <xs:element name="minInclusive" type="ld:facet"/>
+                                        <xs:element name="maxExclusive" type="ld:facet"/>
+                                        <xs:element name="maxInclusive" type="ld:facet"/>
                                         <xs:element name="totalDigits">
                                             <xs:complexType>
                                                 <xs:complexContent>
-                                                    <xs:restriction base="hints:numFacet">
+                                                    <xs:restriction base="ld:numFacet">
                                                         <xs:attribute name="value" type="xs:positiveInteger" use="required"/>
                                                     </xs:restriction>
                                                 </xs:complexContent>
                                             </xs:complexType>
                                         </xs:element>
-                                        <xs:element name="fractionDigits" type="hints:numFacet"/>
-                                        <xs:element name="length" type="hints:numFacet"/>
-                                        <xs:element name="minLength" type="hints:numFacet"/>
-                                        <xs:element name="maxLength" type="hints:numFacet"/>
-                                        <xs:element name="enumeration" type="hints:facet"/>
+                                        <xs:element name="fractionDigits" type="ld:numFacet"/>
+                                        <xs:element name="length" type="ld:numFacet"/>
+                                        <xs:element name="minLength" type="ld:numFacet"/>
+                                        <xs:element name="maxLength" type="ld:numFacet"/>
+                                        <xs:element name="enumeration" type="ld:facet"/>
                                         <xs:element name="whiteSpace">
                                             <xs:complexType>
                                                 <xs:complexContent>
-                                                    <xs:restriction base="hints:facet">
+                                                    <xs:restriction base="ld:facet">
                                                         <xs:attribute name="value" use="required">
                                                             <xs:simpleType>
                                                                 <xs:restriction base="xs:NMTOKEN">
@@ -49,12 +49,12 @@
                                                 </xs:complexContent>
                                             </xs:complexType>
                                         </xs:element>
-                                        <xs:element name="pattern" type="hints:facet"/>
+                                        <xs:element name="pattern" type="ld:facet"/>
                                     </xs:choice>
                                     <xs:attribute name="base" use="required" type="xs:QName"> </xs:attribute>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:group ref="hints:descriptions" maxOccurs="unbounded" minOccurs="0"/>
+                            <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
                         </xs:sequence>
                         <xs:attribute name="name" use="required"/>
                         <xs:attribute name="concept" type="xs:anyURI" use="optional">
@@ -69,9 +69,9 @@
                         </xs:attribute>
                     </xs:complexType>
                 </xs:element>
-                <xs:group ref="hints:descriptions" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
             </xs:sequence>
-            <xs:attribute name="hreft" type="hints:uriTemplate"/>
+            <xs:attribute name="hreft" type="ld:uriTemplate"/>
         </xs:complexType>
     </xs:element>
     <xs:simpleType name="uriTemplate">
@@ -110,7 +110,7 @@
     </xs:complexType>
     <xs:complexType name="numFacet">
         <xs:complexContent>
-            <xs:restriction base="hints:facet">
+            <xs:restriction base="ld:facet">
                 <xs:attribute name="value" type="xs:nonNegativeInteger" use="required"/>
             </xs:restriction>
         </xs:complexContent>
