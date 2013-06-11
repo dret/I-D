@@ -3,12 +3,12 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                                       EMC
-Intended status: Informational                             April 1, 2013
-Expires: October 3, 2013
+Intended status: Informational                             June 11, 2013
+Expires: December 13, 2013
 
 
               Home Documents for HTTP Services: XML Syntax
-                        draft-wilde-home-xml-00
+                        draft-wilde-home-xml-01
 
 Abstract
 
@@ -19,9 +19,9 @@ Abstract
 
 Note to Readers
 
-   Please discuss this draft on the apps-discuss mailing list [5].
+   Please discuss this draft on the apps-discuss mailing list [7].
 
-   Online access to all versions and files is available on github [6].
+   Online access to all versions and files is available on github [8].
 
 Status of this Memo
 
@@ -38,7 +38,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 3, 2013.
+   This Internet-Draft will expire on December 13, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Wilde                    Expires October 3, 2013                [Page 1]
+Wilde                   Expires December 13, 2013               [Page 1]
 
-Internet-Draft             Home Documents XML                 April 2013
+Internet-Draft             Home Documents XML                  June 2013
 
 
    carefully, as they describe your rights and restrictions with respect
@@ -66,14 +66,20 @@ Internet-Draft             Home Documents XML                 April 2013
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . . . 3
-   2.  XML Example . . . . . . . . . . . . . . . . . . . . . . . . . . 3
-   3.  XML Schema  . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 6
-     4.1.  Media Type application/home+xml . . . . . . . . . . . . . . 6
-   5.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-   6.  Normative References  . . . . . . . . . . . . . . . . . . . . . 8
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 8
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.  XML Example  . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   3.  XML Schema . . . . . . . . . . . . . . . . . . . . . . . . . .  4
+   4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
+     4.1.  Media Type application/home+xml  . . . . . . . . . . . . .  6
+   5.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
+   6.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   7.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     7.1.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  8
+   8.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     8.1.  Normative References . . . . . . . . . . . . . . . . . . .  8
+     8.2.  Informative References . . . . . . . . . . . . . . . . . .  9
+   Appendix A.  XML-to-HTML for Home Documents  . . . . . . . . . . .  9
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 11
 
 
 
@@ -102,15 +108,9 @@ Table of Contents
 
 
 
-
-
-
-
-
-
-Wilde                    Expires October 3, 2013                [Page 2]
+Wilde                   Expires December 13, 2013               [Page 2]
 
-Internet-Draft             Home Documents XML                 April 2013
+Internet-Draft             Home Documents XML                  June 2013
 
 
 1.  Introduction
@@ -142,7 +142,7 @@ Internet-Draft             Home Documents XML                 April 2013
 2.  XML Example
 
    The following Home Document in XML syntax uses the same data as the
-   Home Document shown in Section 3 of [1]:
+   Home Document shown in Section 2 of [1]:
 
 
 
@@ -164,9 +164,9 @@ Internet-Draft             Home Documents XML                 April 2013
 
 
 
-Wilde                    Expires October 3, 2013                [Page 3]
+Wilde                   Expires December 13, 2013               [Page 3]
 
-Internet-Draft             Home Documents XML                 April 2013
+Internet-Draft             Home Documents XML                  June 2013
 
 
    <resources xmlns="urn:ietf:rfc:XXXX">
@@ -220,9 +220,9 @@ Internet-Draft             Home Documents XML                 April 2013
 
 
 
-Wilde                    Expires October 3, 2013                [Page 4]
+Wilde                   Expires December 13, 2013               [Page 4]
 
-Internet-Draft             Home Documents XML                 April 2013
+Internet-Draft             Home Documents XML                  June 2013
 
 
    currently not contain any extension points.
@@ -276,9 +276,9 @@ Internet-Draft             Home Documents XML                 April 2013
 
 
 
-Wilde                    Expires October 3, 2013                [Page 5]
+Wilde                   Expires December 13, 2013               [Page 5]
 
-Internet-Draft             Home Documents XML                 April 2013
+Internet-Draft             Home Documents XML                  June 2013
 
 
                 <xs:element name="realm"/>
@@ -332,9 +332,9 @@ Internet-Draft             Home Documents XML                 April 2013
 
 
 
-Wilde                    Expires October 3, 2013                [Page 6]
+Wilde                   Expires December 13, 2013               [Page 6]
 
-Internet-Draft             Home Documents XML                 April 2013
+Internet-Draft             Home Documents XML                  June 2013
 
 
    Required parameters: none
@@ -376,7 +376,28 @@ Internet-Draft             Home Documents XML                 April 2013
    Change controller: IETF
 
 
-5.  Open Issues
+5.  Security Considerations
+
+   The general security considerations for XML home documents are the
+   same as those for JSON home documents, as described in the "Security
+   Considerations" of [1].  The specific security considerations
+   introduced by XML as a representation format are described in the
+   "Security Considerations" of Section 4.1.
+
+
+
+
+
+Wilde                   Expires December 13, 2013               [Page 7]
+
+Internet-Draft             Home Documents XML                  June 2013
+
+
+6.  Open Issues
+
+   o  The move from a predefined list of hints to a hint registry is not
+      yet reflected in the XML; in particular because the latest draft
+      defines the hint data model to be JSON-specific.
 
    o  What is the extension model for the XML syntax?  Should processing
       of other namespaces be defined as "should ignore", so that same-
@@ -387,17 +408,27 @@ Internet-Draft             Home Documents XML                 April 2013
       syntax, but could be marked as strictly optional and XML-specific.
 
 
+7.  Change Log
 
-Wilde                    Expires October 3, 2013                [Page 7]
-
-Internet-Draft             Home Documents XML                 April 2013
+   Note to RFC Editor: Please remove this section before publication.
+
+7.1.  From -00 to -01
+
+   o  Updated references from draft-nottingham-json-home-02 to
+      draft-nottingham-json-home-03
+
+   o  Added "Security Considerations" section.
+
+   o  Added XSLT for transforming an XML Home Document to a simple HTML
+      representation.
 
 
-6.  Normative References
+8.  References
+
+8.1.  Normative References
 
    [1]  Nottingham, M., "Home Documents for HTTP APIs",
-        draft-nottingham-json-home-02 (work in progress),
-        September 2012.
+        draft-nottingham-json-home-03 (work in progress), May 2013.
 
    [2]  Freed, N., Klensin, J., and T. Hansen, "Media Type
         Specifications and Registration Procedures", BCP 13, RFC 6838,
@@ -411,9 +442,130 @@ Internet-Draft             Home Documents XML                 April 2013
         World Wide Web Consortium Recommendation REC-xml-20081126,
         November 2008, <http://www.w3.org/TR/2008/REC-xml-20081126>.
 
-   [5]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
 
-   [6]  <https://github.com/dret/I-D/tree/master/template-desc>
+
+Wilde                   Expires December 13, 2013               [Page 8]
+
+Internet-Draft             Home Documents XML                  June 2013
+
+
+8.2.  Informative References
+
+   [5]  Clark, J., "XSL Transformations (XSLT) Version 1.0", World Wide
+        Web Consortium Recommendation REC-xslt-19991116, November 1999,
+        <http://www.w3.org/TR/1999/REC-xslt-19991116>.
+
+   [6]  Pieters, S., Clark, J., and H. Thompson, "Associating Style
+        Sheets with XML documents 1.0 (Second Edition)", World Wide Web
+        Consortium Recommendation REC-xml-stylesheet-20101028,
+        October 2010,
+        <http://www.w3.org/TR/2010/REC-xml-stylesheet-20101028>.
+
+URIs
+
+   [7]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
+
+   [8]  <https://github.com/dret/I-D/tree/master/template-desc>
+
+
+Appendix A.  XML-to-HTML for Home Documents
+
+   The following XSLT 1.0 stylesheet [5] transforms XML Home Documents
+   to very simple HTML renditions.  By associating this stylesheet [6]
+   with an XML Home Document, it is possible to serve XML Home Documents
+   that will be rendered in a human-friendly way when viewed in a
+   browser.
+
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:home="urn:ietf:rfc:XXXX" exclude-result-prefixes="home">
+ <xsl:output method="html"/>
+ <xsl:template match="home:resources">
+  <html>
+   <head>
+    <title>Home Document</title>
+   </head>
+   <body>
+    <h1>Home Document</h1>
+    <ul>
+     <xsl:for-each select="home:resource">
+      <li>
+       <span title="Link Relation"><xsl:value-of select="@rel"/></span>
+       <xsl:text>: </xsl:text>
+       <xsl:choose>
+        <xsl:when test="home:link">
+         <a href="{home:link/@href}" title="URI"><xsl:value-of select="home:link/@href"/></a>
+        </xsl:when>
+        <xsl:otherwise>
+         <a href="{home:template/@href-template}" title="URI template"><xsl:value-of select="home:template/@href-template"/></a>
+
+
+
+Wilde                   Expires December 13, 2013               [Page 9]
+
+Internet-Draft             Home Documents XML                  June 2013
+
+
+        </xsl:otherwise>
+       </xsl:choose>
+       <dl>
+        <xsl:if test="home:template/home:var">
+         <dt>Variables: </dt>
+         <dd>
+          <ul>
+           <xsl:for-each select="home:template/home:var">
+            <xsl:sort select="@name"/>
+            <li>
+             <span title="Variable Name"><xsl:value-of select="@name"/></span>
+             <xsl:text>: </xsl:text>
+             <span title="Associated URI"><xsl:value-of select="@URI"/></span>
+            </li>
+           </xsl:for-each>
+          </ul>
+         </dd>
+        </xsl:if>
+        <xsl:if test="home:hints">
+         <dt>Hints: </dt>
+         <dd>
+          <ul>
+           <xsl:for-each select="home:hints/home:*">
+            <xsl:sort select="local-name()"/>
+            <li>
+             <span title="Hint Name"><xsl:value-of select="local-name()"/></span>
+             <xsl:text>: </xsl:text>
+             <xsl:choose>
+              <xsl:when test="home:i">
+               <xsl:for-each select="home:i">
+                <xsl:value-of select="."/>
+                <xsl:if test="position() != last()">
+                 <xsl:text>, </xsl:text>
+                </xsl:if>
+               </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+               <xsl:value-of select="."/>
+              </xsl:otherwise>
+             </xsl:choose>
+            </li>
+           </xsl:for-each>
+          </ul>
+         </dd>
+        </xsl:if>
+       </dl>
+      </li>
+     </xsl:for-each>
+
+
+
+Wilde                   Expires December 13, 2013              [Page 10]
+
+Internet-Draft             Home Documents XML                  June 2013
+
+
+    </ul>
+   </body>
+  </html>
+ </xsl:template>
+</xsl:stylesheet>
 
 
 Author's Address
@@ -444,5 +596,21 @@ Author's Address
 
 
 
-Wilde                    Expires October 3, 2013                [Page 8]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires December 13, 2013              [Page 11]
 
