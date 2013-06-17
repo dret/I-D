@@ -32,7 +32,7 @@
                         </td>
                     </tr>
                 </table>
-                <xsl:if test="ld:variable">
+                <xsl:if test="ld:var">
                     <hr/>
                     <h2>Variables:</h2>
                     <table rules="all" border="1" cellpadding="5">
@@ -46,7 +46,7 @@
                                 <th>Appinfo</th>
                             </tr>
                         </thead>
-                        <xsl:for-each select="ld:variable">
+                        <xsl:for-each select="ld:var">
                             <xsl:sort select="@name"/>
                             <tr>
                                 <td>
