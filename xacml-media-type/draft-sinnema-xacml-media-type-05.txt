@@ -4,11 +4,11 @@
 Network Working Group                                         R. Sinnema
 Internet-Draft                                                  E. Wilde
 Intended status: Informational                           EMC Corporation
-Expires: November 21, 2013                                  May 20, 2013
+Expires: December 20, 2013                                 June 18, 2013
 
 
-      eXtensible Access Control Markup Language (XACML) Media Type
-                   draft-sinnema-xacml-media-type-04
+    eXtensible Access Control Markup Language (XACML) XML Media Type
+                   draft-sinnema-xacml-media-type-05
 
 Abstract
 
@@ -36,7 +36,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 21, 2013.
+   This Internet-Draft will expire on December 20, 2013.
 
 Copyright Notice
 
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Sinnema & Wilde         Expires November 21, 2013               [Page 1]
+Sinnema & Wilde         Expires December 20, 2013               [Page 1]
 
-Internet-Draft              XACML Media Type                    May 2013
+Internet-Draft            XACML XML Media Type                 June 2013
 
 
    include Simplified BSD License text as described in Section 4.e of
@@ -69,11 +69,12 @@ Table of Contents
      2.1.  XACML Media Type application/xacml+xml  . . . . . . . . . . 3
    3.  Security Considerations . . . . . . . . . . . . . . . . . . . . 6
    4.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
-     4.1.  From -03 to -04 . . . . . . . . . . . . . . . . . . . . . . 6
-     4.2.  From -02 to -03 . . . . . . . . . . . . . . . . . . . . . . 7
-     4.3.  From -01 to -02 . . . . . . . . . . . . . . . . . . . . . . 7
-     4.4.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 7
-     4.5.  Versions prior to I-D -00 . . . . . . . . . . . . . . . . . 7
+     4.1.  From -04 to -05 . . . . . . . . . . . . . . . . . . . . . . 6
+     4.2.  From -03 to -04 . . . . . . . . . . . . . . . . . . . . . . 6
+     4.3.  From -02 to -03 . . . . . . . . . . . . . . . . . . . . . . 7
+     4.4.  From -01 to -02 . . . . . . . . . . . . . . . . . . . . . . 7
+     4.5.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 7
+     4.6.  Versions prior to I-D -00 . . . . . . . . . . . . . . . . . 7
    5.  Normative References  . . . . . . . . . . . . . . . . . . . . . 7
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 8
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 9
@@ -107,10 +108,9 @@ Table of Contents
 
 
 
-
-Sinnema & Wilde         Expires November 21, 2013               [Page 2]
+Sinnema & Wilde         Expires December 20, 2013               [Page 2]
 
-Internet-Draft              XACML Media Type                    May 2013
+Internet-Draft            XACML XML Media Type                 June 2013
 
 
 1.  Introduction
@@ -164,9 +164,9 @@ Internet-Draft              XACML Media Type                    May 2013
 
 
 
-Sinnema & Wilde         Expires November 21, 2013               [Page 3]
+Sinnema & Wilde         Expires December 20, 2013               [Page 3]
 
-Internet-Draft              XACML Media Type                    May 2013
+Internet-Draft            XACML XML Media Type                 June 2013
 
 
    [XACML-3].  These and future version identifiers consist of a series
@@ -189,8 +189,8 @@ Internet-Draft              XACML Media Type                    May 2013
 
    XACML [XACML-3] contains information whose integrity and authenticity
    is important - identity provider and service provider public keys and
-   endpoint addresses, for example.  Sections 9.2.1 Authentication and
-   9.2.4 Policy integrity in XACML [XACML-3] describe requirements and
+   endpoint addresses, for example.  Sections "9.2.1 Authentication" and
+   "9.2.4 Policy Integrity" in XACML [XACML-3] describe requirements and
    considerations for such authentication and integrity protection.
 
    To counter potential issues, the publisher may sign application/
@@ -204,10 +204,6 @@ Internet-Draft              XACML Media Type                    May 2013
    example HTTPS, offer means for ensuring the authenticity of the
    publishing party and for protecting the policy in transit.
 
-   For a more detailed discussion of XACML policy and its security
-   considerations, please see XACML 3.0 [XACML-3] and the associated XML
-   Digital Signature Profile [XACML-3-DSig].
-
 2.1.7.  Interoperability Considerations
 
    Different versions of XACML use different XML namespace URIS:
@@ -217,17 +213,17 @@ Internet-Draft              XACML Media Type                    May 2013
       urn:oasis:names:tc:xacml:1.0:context XML namespace URI for
       requests and responses
 
-
-
-
-Sinnema & Wilde         Expires November 21, 2013               [Page 4]
-
-Internet-Draft              XACML Media Type                    May 2013
-
-
    o  2.0 uses the urn:oasis:names:tc:xacml:2.0:policy XML namespace URI
       for policies, and the urn:oasis:names:tc:xacml:2.0:context XML
       namespace URI for requests and responses
+
+
+
+
+Sinnema & Wilde         Expires December 20, 2013               [Page 4]
+
+Internet-Draft            XACML XML Media Type                 June 2013
+
 
    o  3.0 uses the urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 XML
       namespace URI for policies, requests, and responses
@@ -273,18 +269,18 @@ Internet-Draft              XACML Media Type                    May 2013
 
    none
 
-
-
-
-Sinnema & Wilde         Expires November 21, 2013               [Page 5]
-
-Internet-Draft              XACML Media Type                    May 2013
-
-
 2.1.12.  Person & email address to contact for further information
 
    This registration is made on behalf of the OASIS eXtensible Access
    Control Markup Language Technical Committee (XACMLTC).  Please refer
+
+
+
+Sinnema & Wilde         Expires December 20, 2013               [Page 5]
+
+Internet-Draft            XACML XML Media Type                 June 2013
+
+
    to the XACMLTC website for current information on committee
    chairperson(s) and their contact addresses:
    http://www.oasis-open.org/committees/xacml/.  Committee members
@@ -323,7 +319,11 @@ Internet-Draft              XACML Media Type                    May 2013
 
    Note to RFC Editor: Please remove this section before publication.
 
-4.1.  From -03 to -04
+4.1.  From -04 to -05
+
+   o  Incorporating feedback from Oscar Koeroo (ISE review report).
+
+4.2.  From -03 to -04
 
    o  Creating a proper "IANA Considerations" section.
 
@@ -332,29 +332,29 @@ Internet-Draft              XACML Media Type                    May 2013
 
 
 
-Sinnema & Wilde         Expires November 21, 2013               [Page 6]
+Sinnema & Wilde         Expires December 20, 2013               [Page 6]
 
-Internet-Draft              XACML Media Type                    May 2013
+Internet-Draft            XACML XML Media Type                 June 2013
 
 
-4.2.  From -02 to -03
+4.3.  From -02 to -03
 
    o  Switched category from "std" to "info".
 
-4.3.  From -01 to -02
+4.4.  From -01 to -02
 
    o  Added new introduction text.
 
    o  Improved definition of version numbers and their handling.
 
-4.4.  From -00 to -01
+4.5.  From -00 to -01
 
    o  Added new introduction text.
 
    o  Changed reference from RFC 4288 to RFC 6838 (updated RFC for media
       type registrations).
 
-4.5.  Versions prior to I-D -00
+4.6.  Versions prior to I-D -00
 
    Prior to being published as a I-D document, this document was
    published and revised as an OASIS document with the following
@@ -388,9 +388,9 @@ Internet-Draft              XACML Media Type                    May 2013
 
 
 
-Sinnema & Wilde         Expires November 21, 2013               [Page 7]
+Sinnema & Wilde         Expires December 20, 2013               [Page 7]
 
-Internet-Draft              XACML Media Type                    May 2013
+Internet-Draft            XACML XML Media Type                 June 2013
 
 
               (XACML) Version 1.0. OASIS Standard", February 2003, <http
@@ -438,15 +438,15 @@ Internet-Draft              XACML Media Type                    May 2013
 Appendix A.  Acknowledgements
 
    The following individuals have participated in the creation of this
-   specification and are gratefully acknowledged: Erik Rissanen
-   (Axiomatics) and Jonathan Robie (EMC).
+   specification and are gratefully acknowledged: Oscar Koeroo (Nikhef),
+   Erik Rissanen (Axiomatics), and Jonathan Robie (EMC).
 
 
 
 
-Sinnema & Wilde         Expires November 21, 2013               [Page 8]
+Sinnema & Wilde         Expires December 20, 2013               [Page 8]
 
-Internet-Draft              XACML Media Type                    May 2013
+Internet-Draft            XACML XML Media Type                 June 2013
 
 
 Authors' Addresses
@@ -500,5 +500,5 @@ Authors' Addresses
 
 
 
-Sinnema & Wilde         Expires November 21, 2013               [Page 9]
+Sinnema & Wilde         Expires December 20, 2013               [Page 9]
 

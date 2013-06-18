@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en"><head><title>eXtensible Access Control Markup Language (XACML) Media Type</title>
+<html lang="en"><head><title>eXtensible Access Control Markup Language (XACML) XML Media Type</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="description" content="eXtensible Access Control Markup Language (XACML) Media Type">
+<meta name="description" content="eXtensible Access Control Markup Language (XACML) XML Media Type">
 <meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
 <style type='text/css'><!--
         body {
@@ -144,9 +144,9 @@
 <tr><td class="header">Network Working Group</td><td class="header">R. Sinnema</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">Expires: November 21, 2013</td><td class="header">May 20, 2013</td></tr>
+<tr><td class="header">Expires: December 20, 2013</td><td class="header">June 18, 2013</td></tr>
 </table></td></tr></table>
-<h1><br />eXtensible Access Control Markup Language (XACML) Media Type<br />draft-sinnema-xacml-media-type-04</h1>
+<h1><br />eXtensible Access Control Markup Language (XACML) XML Media Type<br />draft-sinnema-xacml-media-type-05</h1>
 
 <h3>Abstract</h3>
 
@@ -173,7 +173,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on November 21, 2013.</p>
+This Internet-Draft will expire on December 20, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -203,18 +203,20 @@ Security Considerations<br />
 <a href="#anchor15">4.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor16">4.1.</a>&nbsp;
-From -03 to -04<br />
+From -04 to -05<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor17">4.2.</a>&nbsp;
-From -02 to -03<br />
+From -03 to -04<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor18">4.3.</a>&nbsp;
-From -01 to -02<br />
+From -02 to -03<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor19">4.4.</a>&nbsp;
-From -00 to -01<br />
+From -01 to -02<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor20">4.5.</a>&nbsp;
+From -00 to -01<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor21">4.6.</a>&nbsp;
 Versions prior to I-D -00<br />
 <a href="#rfc.references1">5.</a>&nbsp;
 Normative References<br />
-<a href="#anchor22">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor23">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -286,13 +288,11 @@ Security Considerations</h3>
 
 <p>Per their specification, application/xacml+xml typed objects do not contain executable content. However, these objects are XML-based, and thus they have all of the general security considerations presented in section 10 of RFC 3023 <a class='info' href='#RFC3023'>[RFC3023]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
 </p>
-<p>XACML <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> contains information whose integrity and authenticity is important - identity provider and service provider public keys and endpoint addresses, for example. Sections 9.2.1 Authentication and 9.2.4 Policy integrity in XACML <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> describe requirements and considerations for such authentication and integrity protection.
+<p>XACML <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> contains information whose integrity and authenticity is important - identity provider and service provider public keys and endpoint addresses, for example. Sections "9.2.1 Authentication" and "9.2.4 Policy Integrity" in XACML <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> describe requirements and considerations for such authentication and integrity protection.
 </p>
 <p>To counter potential issues, the publisher may sign application/xacml+xml typed objects. Any such signature should be verified by the recipient of the data - both as a valid signature, and as being the signature of the publisher. The XACML v3.0 XML Digital Signature Profile <a class='info' href='#XACML-3-DSig'>[XACML&#8209;3&#8209;DSig]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;XACML v3.0 XML Digital Signature Profile Version 1.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> describes how to use XML-based digital signatures with XACML.
 </p>
 <p>Additionally, various of the possible publication protocols, for example HTTPS, offer means for ensuring the authenticity of the publishing party and for protecting the policy in transit.
-</p>
-<p>For a more detailed discussion of XACML policy and its security considerations, please see XACML 3.0 <a class='info' href='#XACML-3'>[XACML&#8209;3]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;eXtensible Access Control Markup Language (XACML) Version 3.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a> and the associated XML Digital Signature Profile <a class='info' href='#XACML-3-DSig'>[XACML&#8209;3&#8209;DSig]<span> (</span><span class='info'>Organization for the Advancement of Structured Information Standards, &ldquo;XACML v3.0 XML Digital Signature Profile Version 1.0. OASIS Committee Specification 01,&rdquo; August&nbsp;2010.</span><span>)</span></a>.
 </p>
 <a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -397,6 +397,19 @@ Change Log</h3>
 <a name="anchor16"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+From -04 to -05</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Incorporating feedback from Oscar Koeroo (ISE review report).
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor17"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
 From -03 to -04</h3>
 
 <p>
@@ -409,9 +422,9 @@ From -03 to -04</h3>
 </ul><p>
             
 </p>
-<a name="anchor17"></a><br /><hr />
+<a name="anchor18"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
 From -02 to -03</h3>
 
 <p>
@@ -422,9 +435,9 @@ From -02 to -03</h3>
 </ul><p>
             
 </p>
-<a name="anchor18"></a><br /><hr />
+<a name="anchor19"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
 From -01 to -02</h3>
 
 <p>
@@ -437,9 +450,9 @@ From -01 to -02</h3>
 </ul><p>
             
 </p>
-<a name="anchor19"></a><br /><hr />
+<a name="anchor20"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.4"></a><h3>4.4.&nbsp;
+<a name="rfc.section.4.5"></a><h3>4.5.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -452,9 +465,9 @@ From -00 to -01</h3>
 </ul><p>
             
 </p>
-<a name="anchor20"></a><br /><hr />
+<a name="anchor21"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.4.5"></a><h3>4.5.&nbsp;
+<a name="rfc.section.4.6"></a><h3>4.6.&nbsp;
 Versions prior to I-D -00</h3>
 
 <p>Prior to being published as a I-D document, this document was published and revised as an OASIS document with the following versions:
@@ -495,12 +508,12 @@ Versions prior to I-D -00</h3>
 <td class="author-text">Organization for the Advancement of Structured Information Standards, &ldquo;<a href="http://docs.oasis-open.org/xacml/3.0/xacml-profile-saml2.0-v2-spec-cs-01-en.pdf">SAML 2.0 Profile of XACML, Version 2.0. OASIS Committee Specification 01</a>,&rdquo; August&nbsp;2010.</td></tr>
 </table>
 
-<a name="anchor22"></a><br /><hr />
+<a name="anchor23"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>
 
-<p>The following individuals have participated in the creation of this specification and are gratefully acknowledged: Erik Rissanen (Axiomatics) and Jonathan Robie (EMC).
+<p>The following individuals have participated in the creation of this specification and are gratefully acknowledged: Oscar Koeroo (Nikhef), Erik Rissanen (Axiomatics), and Jonathan Robie (EMC).
 </p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
