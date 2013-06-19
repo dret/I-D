@@ -143,9 +143,9 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
-<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc5261'>5261</a> (if&nbsp;approved)</td><td class="header">March 21, 2013</td></tr>
-<tr><td class="header">Intended status: Standards Track</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: September 22, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc5261'>5261</a> (if&nbsp;approved)</td><td class="header">June 18, 2013</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: December 20, 2013</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-05</h1>
 
@@ -176,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on September 22, 2013.</p>
+This Internet-Draft will expire on December 20, 2013.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -430,7 +430,7 @@ Implementation Status</h3>
 <p>
             </p>
 <blockquote class="text">
-<p>EMC: We have implemented the selector part of the spec, which is the trickiest part (see <a class='info' href='#namespace-matching'>Section&nbsp;6.1<span> (</span><span class='info'>Matching Namespaces</span><span>)</span></a> for an explanation). By reusing an existing XPath 1.0 implementation and changing it to match the changed default namespace processing model, the required behavior is fairly easy to implement. This does, however, require that the implementation is available in source code, and also does require some changes to the implementation's code. The resulting implementation is closed source and will be made available, if released, as part of EMC's XML database product xDB <a href='http://www.emc.com/products/detail/software2/documentum-xdb.htm'>http://www.emc.com/products/detail/software2/documentum-xdb.htm</a>.
+<p>EMC: We have implemented the selector part of the specification, which is the trickiest part (see <a class='info' href='#namespace-matching'>Section&nbsp;6.1<span> (</span><span class='info'>Matching Namespaces</span><span>)</span></a> for an explanation). By reusing an existing XPath 1.0 implementation and changing it to match the changed default namespace processing model, the required behavior is fairly easy to implement. This does, however, require that the implementation is available in source code, and also does require some changes to the implementation's code. The resulting implementation is closed source and will be made available, if released, as part of EMC's XML database product xDB <a href='http://www.emc.com/products/detail/software2/documentum-xdb.htm'>http://www.emc.com/products/detail/software2/documentum-xdb.htm</a>.
 </p>
 </blockquote><p>
          
@@ -450,7 +450,9 @@ From -04 to -05</h3>
 <p>
                </p>
 <ul class="text">
-<li>Improved formatting of XML and XSD code.
+<li>Improved formatting of XML/XSD and ABNF code.
+</li>
+<li>Moving category from "std" to "info" (intended to become an informational RFC).
 </li>
 </ul><p>
             
@@ -621,7 +623,7 @@ Section 4.4.3</h3>
 </blockquote><p>
             
 </p>
-<p>Explanation: The spec uses the terms "namespace declaration" and "namespace" almost interchangeably, which is incorrect. It is impossible to select namespace declarations using XPath. When selecting and replacing a namespace, then it should be taken into account that its associated namespace declaration very likely has resulted in numerous namespace nodes, attached to child elements of the element where the namespace was declared. It is likely that RFC 5261 intended to specify a "recursive replace" of the resulting namespace nodes of a namespace declaration, and this is what the corrected text suggests. The original text is mixing terminology, hard to read, and ambiguous in its meaning.
+<p>Explanation: The specification uses the terms "namespace declaration" and "namespace" almost interchangeably, which is incorrect. It is impossible to select namespace declarations using XPath. When selecting and replacing a namespace, then it should be taken into account that its associated namespace declaration very likely has resulted in numerous namespace nodes, attached to child elements of the element where the namespace was declared. It is likely that RFC 5261 intended to specify a "recursive replace" of the resulting namespace nodes of a namespace declaration, and this is what the corrected text suggests. The original text is mixing terminology, hard to read, and ambiguous in its meaning.
 </p>
 <p>Side note: If the original text indeed tried to specify that really only this one namespace node should be changed, then this could lead to rather strange effects in the resulting document, since the XPath tree now would have "orphan" namespace nodes, which then would need to be serialized, and there would be resulting namespace declarations in locations where previously no namespace declarations occurred.
 </p>
@@ -795,7 +797,17 @@ Acknowledgements</h3>
 <td class="author-text">Erik Wilde</td></tr>
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">EMC</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">6801 Koll Center Parkway</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Pleasanton, CA 94566</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">U.S.A.</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1-925-6006244</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
 <td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
 </table>
 </body></html>
