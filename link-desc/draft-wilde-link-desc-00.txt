@@ -29,7 +29,7 @@ Abstract
 
 Note to Readers
 
-   Please discuss this draft on the rest-discuss mailing list [16].
+   Please discuss this draft on the apps-discuss mailing list [16].
 
    Online access to all versions and files is available on github [17].
 
@@ -77,30 +77,30 @@ Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
      1.1.  Web Links  . . . . . . . . . . . . . . . . . . . . . . . .  4
-     1.2.  URI Template . . . . . . . . . . . . . . . . . . . . . . .  4
-     1.3.  Describing Variables . . . . . . . . . . . . . . . . . . .  6
-   2.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   3.  Link Descriptions  . . . . . . . . . . . . . . . . . . . . . .  7
-     3.1.  General Concepts . . . . . . . . . . . . . . . . . . . . .  7
-     3.2.  Link Description Structure . . . . . . . . . . . . . . . .  8
-     3.3.  Variable Description Structure . . . . . . . . . . . . . .  8
-   4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  8
-     4.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . .  8
-     4.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . .  9
-   5.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
-   6.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
-     6.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . . 10
-     6.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . . 10
-   7.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 10
-   8.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 11
-   9.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 11
-     9.1.  Prior to -00 . . . . . . . . . . . . . . . . . . . . . . . 11
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
-     10.1. Normative References . . . . . . . . . . . . . . . . . . . 12
-     10.2. Informative References . . . . . . . . . . . . . . . . . . 12
+     1.2.  URI Templates  . . . . . . . . . . . . . . . . . . . . . .  4
+   2.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  6
+   3.  Description Concepts . . . . . . . . . . . . . . . . . . . . .  6
+     3.1.  Link Hints . . . . . . . . . . . . . . . . . . . . . . . .  6
+     3.2.  Describing Variables . . . . . . . . . . . . . . . . . . .  6
+   4.  Link Descriptions  . . . . . . . . . . . . . . . . . . . . . .  7
+     4.1.  General Concepts . . . . . . . . . . . . . . . . . . . . .  8
+     4.2.  Link Description Structure . . . . . . . . . . . . . . . .  8
+     4.3.  Variable Description Structure . . . . . . . . . . . . . .  8
+   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  9
+     5.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . .  9
+     5.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 10
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
+   7.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     7.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . . 11
+     7.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . . 11
+   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 11
+   9.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 11
+   10. Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+     10.1. Prior to -00 . . . . . . . . . . . . . . . . . . . . . . . 12
+   11. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
+     11.1. Normative References . . . . . . . . . . . . . . . . . . . 12
+     11.2. Informative References . . . . . . . . . . . . . . . . . . 13
    Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 13
-
-
 
 
 
@@ -127,7 +127,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    about how to instantiate the variables provided in the URI Template.
    This memo defines a schema and a media type that can be used to
    (partially) represent this information, so that it becomes possible
-   represent a change in interaction affordances at runtime.
+   to represent a change in interaction affordances at runtime.
 
    Possible use cases for both scenarios (fixed and templated links) are
    as follows:
@@ -145,16 +145,16 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       useful for UIs, where it can be used to drive usability features
       such as disabling certain operations.
 
-      Templated Links: URI Template [1] define a framework for how to
+      Templated Links: URI Templates [1] define a framework for how to
       represent and instantiate (with concrete variable values)
       templated URIs, but they don't cover how variables themselves are
-      described, or can be constrained.  If a colelction resource for
+      described, or can be constrained.  If a collection resource for
       example supports paged access to the set of collection members,
       then it might be useful for a client to know the number of
       available pages.  With this additional knowledge, it is possible
       to build applications and UIs that specifically take this
       knowledge into account to drive further interactions with the
-      resource.  For a pages collection, it may be a UI that provides
+      resource.  For a paged collection, it may be a UI that provides
       direct links to all available pages (if that number is reasonably
       small).
 
@@ -180,9 +180,9 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    does not provide any support for additional runtime information about
    possible interactions with such a link.  As outlined in the AtomPub
    example above, a link typed as "edit" by definition can be followed
-   by using HTTP GET, PUT, or POST, and the typed link by itself cannot
-   provide the additional information that some resource may allow
-   updates, but disallows deletion.
+   by using HTTP GET, PUT, or DELETE, and the typed link by itself
+   cannot provide the additional information that some resource may
+   allow updates, but disallows deletion.
 
    "Link Hints" [3] provide a framework of runtime hints that can be
    used to indicate information that might be made available by the link
@@ -213,10 +213,10 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    are nothing but optimizations of at which point during interactions
    certain information is provided.
 
-1.2.  URI Template
+1.2.  URI Templates
 
-   In many cases, interactions with resources require clients to provide
-   information in addition to just repeating a fixed URI in a request.
+   While following links is the basic principle of interacting with
+   resources on the web, in many cases, interactions with resources
 
 
 
@@ -225,26 +225,27 @@ Wilde                   Expires December 19, 2013               [Page 4]
 Internet-Draft           HTTP Link Descriptions                June 2013
 
 
-   In these cases, information can be provided in any way supported by
-   the interaction protocol, and in case of HTTP, this often means that
-   information is either embedded in the URI, and/or in the body of the
-   request.  For the first case, a "URI Template" [1] provides a
-   standard that allows servers and clients to exchange information
-   about the URIs that a service accepts.  The standard specifies "a
-   compact sequence of characters for describing a range of Uniform
-   Resource Identifiers through variable expansion."  It allows servers
-   to publish their expectation how a URI should be created by
-   substituting variables with values.  Consider the following URI
-   Template:
-   http://www.example.com/feed{?pagesize,page}
+   require clients to provide information in addition to just using a
+   fixed URI in a request.  In these cases, information can be provided
+   in any way supported by the interaction protocol, and in case of
+   HTTP, this often means that information is either embedded in the
+   URI, and/or in the body of the request.  For the first case, a "URI
+   Template" [1] provides a standard that allows servers and clients to
+   exchange information about the URIs that a service accepts.  The
+   standard specifies "a compact sequence of characters for describing a
+   range of Uniform Resource Identifiers through variable expansion."
+   It allows servers to publish their expectation how a URI should be
+   created by substituting variables with values.  Consider the
+   following URI Template:
+   http://www.example.com/collection{?pagesize,page}
 
-   This URI Template allows clients to expand two variables to end up
-   with a concrete URI such as the following:
-   http://www.example.com/feed?pagesize=10&page=42
+   This URI Template allows clients to expand it with two variables
+   values, to end up with a concrete URI such as the following:
+   http://www.example.com/collection?pagesize=10&page=42
 
    URI Templates cover the aspect of starting with a template with
    variables in it, assigning values to these variables, and then
-   expanding the template into a URI that can be used for issuing a
+   expanding the template into a URI that can be used for sending a
    request.  URI Templates make no assumptions or statements about the
    value range of the variables, except for those aspects which are
    required to cover the process of expanding the template.  In
@@ -253,16 +254,16 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    type), nor is there any indication that the service may apply certain
    limits such as a maximum page size (which may change depending on
    which paged resource is being accessed).  As a side note, even if
-   this information was known, URI template expansion could still result
-   in URIs that would not yield successful requests, such as when asking
-   for a page that is beyond the number of pages that a feed has (in a
-   given page size).
+   this basic type information was known, URI template expansion could
+   still result in URIs that would not yield successful requests, such
+   as when asking for a page that is beyond the number of pages that a
+   collection has (in a given page size).
 
-   The goal of Templates Descriptions as defined here is to allow
-   servers to expose a description resource that provides support both
-   at development time (when a developer looks at a media type that uses
+   The goal of Link Descriptions as defined in this memo is to allow
+   servers to expose a description that provides support both at
+   development time (when a developer looks at a media type that uses
    URI Templates) and at runtime (when a client wants to use a URI
-   template as part of its application flow).  Template Descriptions are
+   template as part of its application flow).  Link Descriptions are
    intended to provide additional information that is not communicated
    by publishing URI Templates alone.  The additional information is
    both targeted at machines and at humans.  On the human-oriented Web,
@@ -271,8 +272,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    learn more about the values they are supposed to submit within the
    form.
 
-
-
+   As a concrete example, a link to a collection like the one above may
 
 
 
@@ -281,7 +281,34 @@ Wilde                   Expires December 19, 2013               [Page 5]
 Internet-Draft           HTTP Link Descriptions                June 2013
 
 
-1.3.  Describing Variables
+   be exposed in a link description as follows:
+<link rel="items" href="http://www.example.com/collection" hreft="http://www.example.com/collection{?pagesize,page}">
+  <var name="pagesize" concept="http://example.com/feedpaging/pagesize"/>
+  <var name="page" concept="http://example.com/feedpaging/page"/>
+</link>
+
+   This link description allows a URI Template's variables to be
+   described in terms of URI-identified concepts.  By using such a
+   model, it is possible to use global names for URI Template
+   parameters, by binding them to the local variable names.
+
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [4].
+
+
+3.  Description Concepts
+
+   ...
+
+3.1.  Link Hints
+
+   ...
+
+3.2.  Describing Variables
 
    Variables can be described in a variety of ways when using Link
    Descriptions.  For each variable contained in the URI Template, it is
@@ -298,16 +325,24 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Datatype: Variables can be described in terms of using certain
       datatypes.  The datatype vocabulary is that of XML Schema Part 2
-      [4], plus all of the applicable facets of those datatypes.  This
+      [5], plus all of the applicable facets of those datatypes.  This
       allows Link Descriptions to constrain the set of allowed values.
       (This model does not cover any "co-constraints", i.e. dependencies
       across variables, or between variables and externally defined
+
+
+
+Wilde                   Expires December 19, 2013               [Page 6]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
       values.)
 
       Documentation: Documentation constructs can be associated with
       variables, which allows Link Descriptions to attach human-readable
       information to individual variables.  The documentation constructs
-      use the documentation design of XML Schema Part 1 [5].  XML
+      use the documentation design of XML Schema Part 1 [6].  XML
       Schema's documentation model has the ability to support multi-
       lingual human-oriented documentation.
 
@@ -315,7 +350,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       associated with variables, which allows Link Descriptions to
       attach machine-readable information to individual variables.  The
       application information constructs use the application information
-      design of XML Schema Part 1 [5].
+      design of XML Schema Part 1 [6].
 
    For the purpose of this specification, the term "description" should
    be interpreted loosely.  Some aspects of descriptions can be formal,
@@ -329,14 +364,6 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
    The descriptions of "concepts" and "datatypes" are not mutually
    exclusive.  On the contrary, a concept often will have associated
-
-
-
-Wilde                   Expires December 19, 2013               [Page 6]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    constraints that essentially define a datatype.  The difference is
    that while concepts are only described by identifier (allowing a
    consumer to identify a concept that they know about), datatypes are
@@ -345,17 +372,11 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    a consequence, when a consumer encounters an unknown concept, it adds
    little to the knowledge of the consumer, whereas a datatype
    description can always be interpreted and allows the consumer to
-   learn about constraints of the associated variable.
+   learn about constraints of the associated variable in a declarative
+   way.
 
 
-2.  Terminology
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in RFC 2119 [6].
-
-
-3.  Link Descriptions
+4.  Link Descriptions
 
    Link Descriptions are based on a URI Template, and add descriptive
    elements that allow publishers of URI Templates to describe the URI
@@ -365,27 +386,6 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    clients encountering URI Templates as part of HTTP services can find
    more information about the template itself.
 
-   Ideally, every URI template exposed in an HTTP service should be
-   accompanied by a link to a Link Description.  In those XML-based HTTP
-   services where URI Templates are exposed in XML attributes named
-   "hreft", the suggestion is to add a link to the corresponding Link
-   Description in an "hrefd" XML attribute.
-
-3.1.  General Concepts
-
-   As mentioned in Section 1.2, most of the descriptions in this spec do
-   not prescribe a specific description framework.  While variables
-   (Section 3.3) can be described with a built-in vocabulary of
-   datatypes, most other descriptions are either for human consumption,
-   or do rely on some external description framework.  To attach these
-   descriptions to both the template as a whole, and individual
-   variables, this specification reuses the "appinfo" and
-   "documentation" elements from XML Schema Part 1 [5].  These elements
-   carry a "source" attribute, which is used (quoting from [5]) "to
-   supplement the local information."  For example, when a description
-   of a variable is done formally using a specific description
-   framework, this would best translate to use appinfo elements, and to
-
 
 
 Wilde                   Expires December 19, 2013               [Page 7]
@@ -393,18 +393,38 @@ Wilde                   Expires December 19, 2013               [Page 7]
 Internet-Draft           HTTP Link Descriptions                June 2013
 
 
+   Ideally, every URI template exposed in an HTTP service should be
+   accompanied by a link to a Link Description.  In those XML-based HTTP
+   services where URI Templates are exposed in XML attributes named
+   "hreft", the suggestion is to add a link to the corresponding Link
+   Description in an "hrefd" XML attribute.
+
+4.1.  General Concepts
+
+   As mentioned in Section 1.2, most of the descriptions in this spec do
+   not prescribe a specific description framework.  While variables
+   (Section 4.3) can be described with a built-in vocabulary of
+   datatypes, most other descriptions are either for human consumption,
+   or do rely on some external description framework.  To attach these
+   descriptions to both the template as a whole, and individual
+   variables, this specification reuses the "appinfo" and
+   "documentation" elements from XML Schema Part 1 [6].  These elements
+   carry a "source" attribute, which is used (quoting from [6]) "to
+   supplement the local information."  For example, when a description
+   of a variable is done formally using a specific description
+   framework, this would best translate to use appinfo elements, and to
    add an identifier to them which would identify the description
    framework in question.  As a result, any client knowing this
    particular description framework would be able to interpret the
    variable description in the Link Description.
 
-3.2.  Link Description Structure
+4.2.  Link Description Structure
 
    An interaction is described by including the URI Template itself, and
    optionally adding documentation and/or appinfo elements to add human-
    or machine-readable descriptions.
 
-3.3.  Variable Description Structure
+4.3.  Variable Description Structure
 
    A variable is described by specifying the variable name.  Variables
    can refer to a "concept" associated with a variable, which can by
@@ -417,18 +437,25 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    A variable can have a default value, in which case the assumption is
    that excluding this variable from a request has the same effect as
    including it with the default value.  Since Link Descriptions are
-   runtime concepts, however, there is not guarantee that a service
-   might not use a different value between the time when the Link
-   Description was retrieved, and the time when a request based on it is
-   being sent.
+   runtime concepts, however, there is no guarantee that a service might
+   not use a different value between the time when the Link Description
+   was retrieved, and the time when a request based on it is being sent.
+
+
+
+
+Wilde                   Expires December 19, 2013               [Page 8]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
    Variable descriptions can optionally add documentation and/or appinfo
    elements to add human- or machine-readable descriptions.
 
 
-4.  IANA Considerations
+5.  IANA Considerations
 
-4.1.  Media Type
+5.1.  Media Type
 
    The Internet media type [11] for a Link Description document is
    application/ld+xml (using the "+xml" suffix as defined and registered
@@ -440,24 +467,25 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Required parameters: none
 
-
-
-
-
-Wilde                   Expires December 19, 2013               [Page 8]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
       Optional parameters: profile
 
-         ... [13]
+         The "profile" link relation [13] allows "resource
+         representations to indicate that they are following one or more
+         profiles.  A profile is defined not to alter the semantics of
+         the resource representation itself, but to allow clients to
+         learn about additional semantics (constraints, conventions,
+         extensions) that are associated with the resource
+         representation, in addition to those defined by the media type
+         and possibly other mechanisms."  If the application/ld+xml
+         media type is use with a profile parameter, this refers to a
+         profile as defined by [13], making it easier for extensions of
+         the link description media type to identify themselves.
 
       Encoding considerations: Same as encoding considerations of
       application/xml as specified in [7].
 
       Security considerations: This media type has all of the security
-      considerations described in [7], plus those listed in Section 5.
+      considerations described in [7], plus those listed in Section 6.
 
       Interoperability considerations: N/A
 
@@ -467,6 +495,15 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       descriptions of URI Interactions.
 
       Additional information:
+
+
+
+
+
+Wilde                   Expires December 19, 2013               [Page 9]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
          Magic number(s): none
 
@@ -486,7 +523,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Change controller: IETF
 
-4.2.  Link Relation
+5.2.  Link Relation
 
    The link relation type below will be registered by IANA per Section
    6.2.1 of RFC 5988 [2]:
@@ -495,15 +532,6 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Description: Linking to a resource that can be used as a link
       description for creating a request URI for the context resource.
-
-
-
-
-
-Wilde                   Expires December 19, 2013               [Page 9]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
 
       Reference: RFC XXXX
 
@@ -514,20 +542,30 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       this specification.
 
 
-5.  Security Considerations
+6.  Security Considerations
 
    ...
 
 
-6.  Examples
+7.  Examples
 
    ...
 
-6.1.  OpenSearch
+
+
+
+
+
+Wilde                   Expires December 19, 2013              [Page 10]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
+7.1.  OpenSearch
 
    ...
 
-6.2.  Atom Feeds
+7.2.  Atom Feeds
 
    ...
 
@@ -536,9 +574,9 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    Maybe suggest to use profiles?
 
 
-7.  Open Issues
+8.  Open Issues
 
-      If and how to use profiles (example in Section 6); if profile use
+      If and how to use profiles (example in Section 7); if profile use
       is recommended, define a suggested profile URI for other specs to
       use?
 
@@ -554,13 +592,6 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       incremental refinement of URI Template Descriptions somehow nicely
       and naturally map into faceted search scenarios?
 
-
-
-Wilde                   Expires December 19, 2013              [Page 10]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
       Is there a concept of how Template Descriptions (and thus URI
       Templates) can be reused?  Should there be an inclusion facility
       or something along those lines?  If so, what's the model for that?
@@ -570,25 +601,22 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       to a Template Description from within the context of a URI
       Template?
 
-      What about adding more hints (such as the hints from home
-      documents) and making the description more complete in terms of
-      possible interactions?  In that case it might even make sense to
-      make the URI template itself optional and use the description as a
-      "how to follow a link" description (turning "Template Description"
-      into "Link Description".  This would be a major change in scope,
-      but may allow for better combination/integration with approaches
-      such as the home document format.  Maybe move form "uri-template"
-      link relation to "interaction-template" link relation in that
-      case?
 
-
-8.  Implementation Status
+9.  Implementation Status
 
    Note to RFC Editor: Please remove this section before publication.
 
    As explained in a draft currently under development
    <http://tools.ietf.org/html/draft-sheffer-running-code>, this section
    contains information about implementation status, so that reviews of
+
+
+
+Wilde                   Expires December 19, 2013              [Page 11]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
    the draft document can take implementation reports into account as
    well.  If you are implementing this draft, please contact this
    draft's authors.  Any implementation status reports are intended for
@@ -598,31 +626,23 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       DescProc: <https://github.com/dret/DescProc>
 
 
-9.  Change Log
+10.  Change Log
 
    Note to RFC Editor: Please remove this section before publication.
 
-9.1.  Prior to -00
+10.1.  Prior to -00
 
    An earlier variation of a similar idea was published as "Template
    Descriptions" [15].  However, since this earlier draft was
    exclusively focusing on interactions with links driven by URI
    Templates [1], instead of looking at links in general, it was
    sufficiently distinct to start a new draft, instead of evolving the
-
-
-
-Wilde                   Expires December 19, 2013              [Page 11]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    existing one.
 
 
-10.  References
+11.  References
 
-10.1.  Normative References
+11.1.  Normative References
 
    [1]   Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D.
          Orchard, "URI Template", RFC 6570, March 2012.
@@ -632,19 +652,26 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    [3]   Nottingham, M., "HTTP Link Hints",
          draft-nottingham-link-hint-00 (work in progress), June 2013.
 
-   [4]   Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes Second
+   [4]   Bradner, S., "Key words for use in RFCs to Indicate Requirement
+         Levels", RFC 2119, March 1997.
+
+   [5]   Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes Second
          Edition", World Wide Web Consortium Recommendation REC-
          xmlschema-2-20041028, October 2004,
          <http://www.w3.org/TR/2004/REC-xmlschema-2-20041028>.
 
-   [5]   Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
+   [6]   Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
          Schema Part 1: Structures Second Edition", World Wide Web
          Consortium Recommendation REC-xmlschema-1-20041028,
          October 2004,
          <http://www.w3.org/TR/2004/REC-xmlschema-1-20041028>.
 
-   [6]   Bradner, S., "Key words for use in RFCs to Indicate Requirement
-         Levels", RFC 2119, March 1997.
+
+
+Wilde                   Expires December 19, 2013              [Page 12]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
    [7]   Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
          RFC 3023, January 2001.
@@ -658,21 +685,13 @@ Internet-Draft           HTTP Link Descriptions                June 2013
          December 2009,
          <http://www.w3.org/TR/2009/REC-xml-names-20091208>.
 
-10.2.  Informative References
+11.2.  Informative References
 
    [10]  Gregorio, J. and B. de hOra, "The Atom Publishing Protocol",
          RFC 5023, October 2007.
 
    [11]  Freed, N., Klensin, J., and T. Hansen, "Media Type
          Specifications and Registration Procedures", BCP 13, RFC 6838,
-
-
-
-Wilde                   Expires December 19, 2013              [Page 12]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
          January 2013.
 
    [12]  Hansen, T. and A. Melnikov, "Additional Media Type Structured
@@ -689,12 +708,25 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 URIs
 
-   [16]  <http://tech.groups.yahoo.com/group/rest-discuss/>
+   [16]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
 
    [17]  <https://github.com/dret/I-D/tree/master/link-desc>
 
    [18]  <http://dret.typepad.com/dretblog/2012/12/
          structuring-uri-templates.html>
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires December 19, 2013              [Page 13]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 Author's Address
@@ -724,5 +756,29 @@ Author's Address
 
 
 
-Wilde                   Expires December 19, 2013              [Page 13]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires December 19, 2013              [Page 14]
 
