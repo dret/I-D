@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX" >
     <title>Example Feed</title>
-    <link rel="self" href="http://example.org/"/>
+    <link rel="self" href="http://example.org/?pagesize=1&amp;page=42" ld:hreft="http://example.org/{?pagesize,page}">
+        <ld:var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10">
+            <ld:restriction base="positiveInteger">
+                <ld:minInclusive value="1"/>
+                <ld:maxInclusive value="100"/>
+            </ld:restriction>
+        </ld:var>
+        <ld:var name="page" concept="http://example.com/feedpaging/page" default="1">
+            <ld:restriction base="positiveInteger"/>
+        </ld:var>
+    </link>
     <updated>2003-12-13T18:30:02Z</updated>
     <author>
         <name>John Doe</name>
@@ -10,6 +20,10 @@
     <entry>
         <title>Atom-Powered Robots Run Amok</title>
         <link href="http://example.org/2003/12/13/atom03"/>
+        <link rel="edit" href="http://example.org/item42">
+            <ld:hint name="allow" value=' [ "PUT" ] '/>
+            <ld:hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '/>
+        </link>
         <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
         <updated>2003-12-13T18:30:02Z</updated>
         <summary>Some text.</summary>
