@@ -266,14 +266,48 @@ Introduction</h3>
 </blockquote><p>
          
 </p>
+<p>The following example shows hows both of these mechanisms can be used in one representation, it is based on Atom <a class='info' href='#RFC4287'>[2]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> and AtomPub <a class='info' href='#RFC5023'>[10]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a>.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX" &gt;
+    &lt;title&gt;Example Feed&lt;/title&gt;
+    &lt;link rel="self" href="http://example.org/?pagesize=1&amp;amp;page=42" ld:hreft="http://example.org/{?pagesize,page}"&gt;
+        &lt;ld:var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10"&gt;
+            &lt;ld:restriction base="positiveInteger"&gt;
+                &lt;ld:minInclusive value="1"/&gt;
+                &lt;ld:maxInclusive value="100"/&gt;
+            &lt;/ld:restriction&gt;
+        &lt;/ld:var&gt;
+        &lt;ld:var name="page" concept="http://example.com/feedpaging/page" default="1"&gt;
+            &lt;ld:restriction base="positiveInteger"/&gt;
+        &lt;/ld:var&gt;
+    &lt;/link&gt;
+    &lt;updated&gt;2003-12-13T18:30:02Z&lt;/updated&gt;
+    &lt;author&gt;
+        &lt;name&gt;John Doe&lt;/name&gt;
+    &lt;/author&gt;
+    &lt;id&gt;urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6&lt;/id&gt;
+    &lt;entry&gt;
+        &lt;title&gt;Atom-Powered Robots Run Amok&lt;/title&gt;
+        &lt;link href="http://example.org/2003/12/13/atom03"/&gt;
+        &lt;link rel="edit" href="http://example.org/item42"&gt;
+            &lt;ld:hint name="allow" value=' [ "PUT" ] '/&gt;
+            &lt;ld:hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '/&gt;
+        &lt;/link&gt;
+        &lt;id&gt;urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a&lt;/id&gt;
+        &lt;updated&gt;2003-12-13T18:30:02Z&lt;/updated&gt;
+        &lt;summary&gt;Some text.&lt;/summary&gt;
+    &lt;/entry&gt;
+&lt;/feed&gt;</pre></div>
+<p>The link to feed itself is augmented with a URI Template <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, which allows a consumer to understand that the feed can be requested with various page sizes, and that individual pages can be requested (assuming the consumer understands the "concept" identifiers for the described variables). The link to the entry is an augmented types Web Link <a class='info' href='#intro-links'>Section&nbsp;1.1<span> (</span><span class='info'>Web Links</span><span>)</span></a>, which allows a consumer to understand that even though "edit" links typically can be followed via GET, PUT, and DELETE, this particular link should only be followed using a PUT request.
+</p>
 <a name="intro-links"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
 Web Links</h3>
 
-<p>One of the defining principles of many services provided on the Web is that they expose linked resources, so that clients can follow the links in order to accomplish application goals. "Web Linking" <a class='info' href='#RFC5988'>[2]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> establishes a framework of typed links, allowing resources to expose typed links, which then can be followed by clients. While this framework allows clients to select links based on their types, it does not provide any support for additional runtime information about possible interactions with such a link. As outlined in the AtomPub example above, a link typed as "edit" by definition can be followed by using HTTP GET, PUT, or DELETE, and the typed link by itself cannot provide the additional information that some resource may allow updates, but disallows deletion.
+<p>One of the defining principles of many services provided on the Web is that they expose linked resources, so that clients can follow the links in order to accomplish application goals. "Web Linking" <a class='info' href='#RFC5988'>[3]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> establishes a framework of typed links, allowing resources to expose typed links, which then can be followed by clients. While this framework allows clients to select links based on their types, it does not provide any support for additional runtime information about possible interactions with such a link. As outlined in the AtomPub example above, a link typed as "edit" by definition can be followed by using HTTP GET, PUT, or DELETE, and the typed link by itself cannot provide the additional information that some resource may allow updates, but disallows deletion.
 </p>
-<p>"Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[3]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> provide a framework of runtime hints that can be used to indicate information that might be made available by the link target resource itself, but ahead of time. For example, a link hint would be able to indicate on an "edit" link that the resource only allows PUT requests, which is something that could also be discovered by sending an HTTP request and getting an HTTP Allow header in the response. However, link hints can save overhead by avoiding round trips, and they also allow to minimize the chances of sending requests that will not succeed.
+<p>"Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[4]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> provide a framework of runtime hints that can be used to indicate information that might be made available by the link target resource itself, but ahead of time. For example, a link hint would be able to indicate on an "edit" link that the resource only allows PUT requests, which is something that could also be discovered by sending an HTTP request and getting an HTTP Allow header in the response. However, link hints can save overhead by avoiding round trips, and they also allow to minimize the chances of sending requests that will not succeed.
 </p>
 <p>While link hints can help to avoid overhead and drive client behavior, they are strictly optional. There should be no functional difference of what a client can achieve by using or ignoring link hints; they simply expose information that otherwise would be more costly to acquire.
 </p>
@@ -304,7 +338,7 @@ URI Templates</h3>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Terminology</h3>
 
-<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[4]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[5]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
 </p>
 <a name="description-concepts"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -332,11 +366,11 @@ Describing Variables</h3>
 <blockquote class="text">
 <p>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be referred to by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferncable and yield some representation.
 </p>
-<p>Datatype: Variables can be described in terms of using certain datatypes. The datatype vocabulary is that of XML Schema Part 2 <a class='info' href='#XSD-2'>[5]<span> (</span><span class='info'>Malhotra, A. and P. Biron, &ldquo;XML Schema Part 2: Datatypes Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>, plus all of the applicable facets of those datatypes. This allows Link Descriptions to constrain the set of allowed values. (This model does not cover any "co-constraints", i.e. dependencies across variables, or between variables and externally defined values.)
+<p>Datatype: Variables can be described in terms of using certain datatypes. The datatype vocabulary is that of XML Schema Part 2 <a class='info' href='#XSD-2'>[6]<span> (</span><span class='info'>Malhotra, A. and P. Biron, &ldquo;XML Schema Part 2: Datatypes Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>, plus all of the applicable facets of those datatypes. This allows Link Descriptions to constrain the set of allowed values. (This model does not cover any "co-constraints", i.e. dependencies across variables, or between variables and externally defined values.)
 </p>
-<p>Documentation: Documentation constructs can be associated with variables, which allows Link Descriptions to attach human-readable information to individual variables. The documentation constructs use the documentation design of XML Schema Part 1 <a class='info' href='#XSD-1'>[6]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. XML Schema's documentation model has the ability to support multi-lingual human-oriented documentation.
+<p>Documentation: Documentation constructs can be associated with variables, which allows Link Descriptions to attach human-readable information to individual variables. The documentation constructs use the documentation design of XML Schema Part 1 <a class='info' href='#XSD-1'>[7]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. XML Schema's documentation model has the ability to support multi-lingual human-oriented documentation.
 </p>
-<p>Application Information: Application information constructs can be associated with variables, which allows Link Descriptions to attach machine-readable information to individual variables. The application information constructs use the application information design of XML Schema Part 1 <a class='info' href='#XSD-1'>[6]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>.
+<p>Application Information: Application information constructs can be associated with variables, which allows Link Descriptions to attach machine-readable information to individual variables. The application information constructs use the application information design of XML Schema Part 1 <a class='info' href='#XSD-1'>[7]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>.
 </p>
 </blockquote><p>
             
@@ -359,7 +393,7 @@ Link Descriptions</h3>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 General Concepts</h3>
 
-<p>As mentioned in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, most of the descriptions in this spec do not prescribe a specific description framework. While variables (<a class='info' href='#variable-struct'>Section&nbsp;4.3<span> (</span><span class='info'>Variable Description Structure</span><span>)</span></a>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <a class='info' href='#XSD-1'>[6]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. These elements carry a "source" attribute, which is used (quoting from <a class='info' href='#XSD-1'>[6]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>) "to supplement the local information." For example, when a description of a variable is done formally using a specific description framework, this would best translate to use appinfo elements, and to add an identifier to them which would identify the description framework in question. As a result, any client knowing this particular description framework would be able to interpret the variable description in the Link Description.
+<p>As mentioned in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, most of the descriptions in this spec do not prescribe a specific description framework. While variables (<a class='info' href='#variable-struct'>Section&nbsp;4.3<span> (</span><span class='info'>Variable Description Structure</span><span>)</span></a>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <a class='info' href='#XSD-1'>[7]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. These elements carry a "source" attribute, which is used (quoting from <a class='info' href='#XSD-1'>[7]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>) "to supplement the local information." For example, when a description of a variable is done formally using a specific description framework, this would best translate to use appinfo elements, and to add an identifier to them which would identify the description framework in question. As a result, any client knowing this particular description framework would be able to interpret the variable description in the Link Description.
 </p>
 <a name="link-desc-struct"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -408,9 +442,9 @@ Media Type</h3>
 </blockquote>
                   
 
-<p>Encoding considerations: Same as encoding considerations of application/xml as specified in <a class='info' href='#RFC3023'>[7]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
+<p>Encoding considerations: Same as encoding considerations of application/xml as specified in <a class='info' href='#RFC3023'>[8]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
 </p>
-<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[7]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;6<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[8]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;6<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
 </p>
 <p>Interoperability considerations: N/A
 </p>
@@ -448,7 +482,7 @@ Media Type</h3>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 Link Relation</h3>
 
-<p>The link relation type below will be registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[2]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
+<p>The link relation type below will be registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[3]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
 </p>
 <p>
                </p>
@@ -561,20 +595,20 @@ References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC6570">[1]</a></td>
 <td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC5988">[2]</a></td>
-<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010.</td></tr>
-<tr><td class="author-text" valign="top"><a name="I-D.nottingham-link-hint">[3]</a></td>
-<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/draft-nottingham-link-hint-00">HTTP Link Hints</a>,&rdquo; draft-nottingham-link-hint-00 (work in progress), June&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-nottingham-link-hint-00.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC2119">[4]</a></td>
-<td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
-<tr><td class="author-text" valign="top"><a name="XSD-2">[5]</a></td>
-<td class="author-text">Malhotra, A. and P. Biron, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">XML Schema Part 2: Datatypes Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-2-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">HTML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="XSD-1">[6]</a></td>
-<td class="author-text">Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">XML Schema Part 1: Structures Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-1-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">HTML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC3023">[7]</a></td>
-<td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC4287">[8]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC4287">[2]</a></td>
 <td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5988">[3]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010.</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.nottingham-link-hint">[4]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/draft-nottingham-link-hint-00">HTTP Link Hints</a>,&rdquo; draft-nottingham-link-hint-00 (work in progress), June&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-nottingham-link-hint-00.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[5]</a></td>
+<td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="XSD-2">[6]</a></td>
+<td class="author-text">Malhotra, A. and P. Biron, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">XML Schema Part 2: Datatypes Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-2-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="XSD-1">[7]</a></td>
+<td class="author-text">Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">XML Schema Part 1: Structures Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-1-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3023">[8]</a></td>
+<td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="XMLNS">[9]</a></td>
 <td class="author-text">Hollander, D., Layman, A., Thompson, H., Tobin, R., and T. Bray, &ldquo;<a href="http://www.w3.org/TR/2009/REC-xml-names-20091208">Namespaces in XML 1.0 (Third Edition)</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xml-names-20091208, December&nbsp;2009 (<a href="http://www.w3.org/TR/2009/REC-xml-names-20091208">HTML</a>).</td></tr>
 </table>

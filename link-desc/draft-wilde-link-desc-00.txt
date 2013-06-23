@@ -77,30 +77,30 @@ Table of Contents
 
    1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
      1.1.  Web Links  . . . . . . . . . . . . . . . . . . . . . . . .  4
-     1.2.  URI Templates  . . . . . . . . . . . . . . . . . . . . . .  4
-   2.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  6
-   3.  Description Concepts . . . . . . . . . . . . . . . . . . . . .  6
-     3.1.  Link Hints . . . . . . . . . . . . . . . . . . . . . . . .  6
-     3.2.  Describing Variables . . . . . . . . . . . . . . . . . . .  6
-   4.  Link Descriptions  . . . . . . . . . . . . . . . . . . . . . .  7
-     4.1.  General Concepts . . . . . . . . . . . . . . . . . . . . .  8
-     4.2.  Link Description Structure . . . . . . . . . . . . . . . .  8
-     4.3.  Variable Description Structure . . . . . . . . . . . . . .  8
-   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  9
-     5.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . .  9
-     5.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 10
-   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 10
-   7.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     1.2.  URI Templates  . . . . . . . . . . . . . . . . . . . . . .  5
+   2.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   3.  Description Concepts . . . . . . . . . . . . . . . . . . . . .  7
+     3.1.  Link Hints . . . . . . . . . . . . . . . . . . . . . . . .  7
+     3.2.  Describing Variables . . . . . . . . . . . . . . . . . . .  7
+   4.  Link Descriptions  . . . . . . . . . . . . . . . . . . . . . .  8
+     4.1.  General Concepts . . . . . . . . . . . . . . . . . . . . .  9
+     4.2.  Link Description Structure . . . . . . . . . . . . . . . .  9
+     4.3.  Variable Description Structure . . . . . . . . . . . . . .  9
+   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 10
+     5.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . . 10
+     5.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 11
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 11
+   7.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
      7.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . . 11
-     7.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . . 11
-   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 11
-   9.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 11
-   10. Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 12
-     10.1. Prior to -00 . . . . . . . . . . . . . . . . . . . . . . . 12
-   11. References . . . . . . . . . . . . . . . . . . . . . . . . . . 12
-     11.1. Normative References . . . . . . . . . . . . . . . . . . . 12
-     11.2. Informative References . . . . . . . . . . . . . . . . . . 13
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 13
+     7.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . . 12
+   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 12
+   9.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 12
+   10. Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+     10.1. Prior to -00 . . . . . . . . . . . . . . . . . . . . . . . 13
+   11. References . . . . . . . . . . . . . . . . . . . . . . . . . . 13
+     11.1. Normative References . . . . . . . . . . . . . . . . . . . 13
+     11.2. Informative References . . . . . . . . . . . . . . . . . . 14
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 14
 
 
 
@@ -158,8 +158,8 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       direct links to all available pages (if that number is reasonably
       small).
 
-
-
+   The following example shows hows both of these mechanisms can be used
+   in one representation, it is based on Atom [2] and AtomPub [10].
 
 
 
@@ -169,12 +169,62 @@ Wilde                   Expires December 19, 2013               [Page 3]
 Internet-Draft           HTTP Link Descriptions                June 2013
 
 
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX" >
+    <title>Example Feed</title>
+    <link rel="self" href="http://example.org/?pagesize=1&amp;page=42" ld:hreft="http://example.org/{?pagesize,page}">
+        <ld:var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10">
+            <ld:restriction base="positiveInteger">
+                <ld:minInclusive value="1"/>
+                <ld:maxInclusive value="100"/>
+            </ld:restriction>
+        </ld:var>
+        <ld:var name="page" concept="http://example.com/feedpaging/page" default="1">
+            <ld:restriction base="positiveInteger"/>
+        </ld:var>
+    </link>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <author>
+        <name>John Doe</name>
+    </author>
+    <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+    <entry>
+        <title>Atom-Powered Robots Run Amok</title>
+        <link href="http://example.org/2003/12/13/atom03"/>
+        <link rel="edit" href="http://example.org/item42">
+            <ld:hint name="allow" value=' [ "PUT" ] '/>
+            <ld:hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '/>
+        </link>
+        <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+        <updated>2003-12-13T18:30:02Z</updated>
+        <summary>Some text.</summary>
+    </entry>
+</feed>
+
+   The link to feed itself is augmented with a URI Template Section 1.2,
+   which allows a consumer to understand that the feed can be requested
+   with various page sizes, and that individual pages can be requested
+   (assuming the consumer understands the "concept" identifiers for the
+   described variables).  The link to the entry is an augmented types
+   Web Link Section 1.1, which allows a consumer to understand that even
+   though "edit" links typically can be followed via GET, PUT, and
+   DELETE, this particular link should only be followed using a PUT
+   request.
+
 1.1.  Web Links
 
    One of the defining principles of many services provided on the Web
    is that they expose linked resources, so that clients can follow the
-   links in order to accomplish application goals.  "Web Linking" [2]
+   links in order to accomplish application goals.  "Web Linking" [3]
    establishes a framework of typed links, allowing resources to expose
+
+
+
+Wilde                   Expires December 19, 2013               [Page 4]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
    typed links, which then can be followed by clients.  While this
    framework allows clients to select links based on their types, it
    does not provide any support for additional runtime information about
@@ -184,7 +234,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    cannot provide the additional information that some resource may
    allow updates, but disallows deletion.
 
-   "Link Hints" [3] provide a framework of runtime hints that can be
+   "Link Hints" [4] provide a framework of runtime hints that can be
    used to indicate information that might be made available by the link
    target resource itself, but ahead of time.  For example, a link hint
    would be able to indicate on an "edit" link that the resource only
@@ -217,20 +267,20 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
    While following links is the basic principle of interacting with
    resources on the web, in many cases, interactions with resources
-
-
-
-Wilde                   Expires December 19, 2013               [Page 4]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    require clients to provide information in addition to just using a
    fixed URI in a request.  In these cases, information can be provided
    in any way supported by the interaction protocol, and in case of
    HTTP, this often means that information is either embedded in the
    URI, and/or in the body of the request.  For the first case, a "URI
    Template" [1] provides a standard that allows servers and clients to
+
+
+
+Wilde                   Expires December 19, 2013               [Page 5]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
    exchange information about the URIs that a service accepts.  The
    standard specifies "a compact sequence of characters for describing a
    range of Uniform Resource Identifiers through variable expansion."
@@ -273,19 +323,19 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    form.
 
    As a concrete example, a link to a collection like the one above may
-
-
-
-Wilde                   Expires December 19, 2013               [Page 5]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    be exposed in a link description as follows:
 <link rel="items" href="http://www.example.com/collection" hreft="http://www.example.com/collection{?pagesize,page}">
   <var name="pagesize" concept="http://example.com/feedpaging/pagesize"/>
   <var name="page" concept="http://example.com/feedpaging/page"/>
 </link>
+
+
+
+
+Wilde                   Expires December 19, 2013               [Page 6]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
    This link description allows a URI Template's variables to be
    described in terms of URI-identified concepts.  By using such a
@@ -297,7 +347,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in RFC 2119 [4].
+   document are to be interpreted as described in RFC 2119 [5].
 
 
 3.  Description Concepts
@@ -325,24 +375,24 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Datatype: Variables can be described in terms of using certain
       datatypes.  The datatype vocabulary is that of XML Schema Part 2
-      [5], plus all of the applicable facets of those datatypes.  This
+      [6], plus all of the applicable facets of those datatypes.  This
       allows Link Descriptions to constrain the set of allowed values.
       (This model does not cover any "co-constraints", i.e. dependencies
       across variables, or between variables and externally defined
-
-
-
-Wilde                   Expires December 19, 2013               [Page 6]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
       values.)
 
       Documentation: Documentation constructs can be associated with
       variables, which allows Link Descriptions to attach human-readable
       information to individual variables.  The documentation constructs
-      use the documentation design of XML Schema Part 1 [6].  XML
+      use the documentation design of XML Schema Part 1 [7].  XML
+
+
+
+Wilde                   Expires December 19, 2013               [Page 7]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
       Schema's documentation model has the ability to support multi-
       lingual human-oriented documentation.
 
@@ -350,7 +400,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       associated with variables, which allows Link Descriptions to
       attach machine-readable information to individual variables.  The
       application information constructs use the application information
-      design of XML Schema Part 1 [6].
+      design of XML Schema Part 1 [7].
 
    For the purpose of this specification, the term "description" should
    be interpreted loosely.  Some aspects of descriptions can be formal,
@@ -386,18 +436,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    clients encountering URI Templates as part of HTTP services can find
    more information about the template itself.
 
-
-
-Wilde                   Expires December 19, 2013               [Page 7]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    Ideally, every URI template exposed in an HTTP service should be
    accompanied by a link to a Link Description.  In those XML-based HTTP
    services where URI Templates are exposed in XML attributes named
    "hreft", the suggestion is to add a link to the corresponding Link
    Description in an "hrefd" XML attribute.
+
+
+
+Wilde                   Expires December 19, 2013               [Page 8]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
 4.1.  General Concepts
 
@@ -408,8 +458,8 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    or do rely on some external description framework.  To attach these
    descriptions to both the template as a whole, and individual
    variables, this specification reuses the "appinfo" and
-   "documentation" elements from XML Schema Part 1 [6].  These elements
-   carry a "source" attribute, which is used (quoting from [6]) "to
+   "documentation" elements from XML Schema Part 1 [7].  These elements
+   carry a "source" attribute, which is used (quoting from [7]) "to
    supplement the local information."  For example, when a description
    of a variable is done formally using a specific description
    framework, this would best translate to use appinfo elements, and to
@@ -441,16 +491,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    not use a different value between the time when the Link Description
    was retrieved, and the time when a request based on it is being sent.
 
-
-
-
-Wilde                   Expires December 19, 2013               [Page 8]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    Variable descriptions can optionally add documentation and/or appinfo
    elements to add human- or machine-readable descriptions.
+
+
+
+
+
+
+
+Wilde                   Expires December 19, 2013               [Page 9]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 5.  IANA Considerations
@@ -482,10 +534,10 @@ Internet-Draft           HTTP Link Descriptions                June 2013
          the link description media type to identify themselves.
 
       Encoding considerations: Same as encoding considerations of
-      application/xml as specified in [7].
+      application/xml as specified in [8].
 
       Security considerations: This media type has all of the security
-      considerations described in [7], plus those listed in Section 6.
+      considerations described in [8], plus those listed in Section 6.
 
       Interoperability considerations: N/A
 
@@ -496,19 +548,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Additional information:
 
-
-
-
-
-Wilde                   Expires December 19, 2013               [Page 9]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
          Magic number(s): none
 
          File extension(s): XML data should use ".xml" as the file
          extension.
+
+
+
+
+Wilde                   Expires December 19, 2013              [Page 10]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
          Macintosh file type code(s): TEXT
 
@@ -526,7 +577,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 5.2.  Link Relation
 
    The link relation type below will be registered by IANA per Section
-   6.2.1 of RFC 5988 [2]:
+   6.2.1 of RFC 5988 [3]:
 
       Relation Name: link-desc
 
@@ -551,19 +602,20 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
    ...
 
-
-
-
-
-
-Wilde                   Expires December 19, 2013              [Page 10]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
 7.1.  OpenSearch
 
    ...
+
+
+
+
+
+
+
+Wilde                   Expires December 19, 2013              [Page 11]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
 
 7.2.  Atom Feeds
 
@@ -609,18 +661,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    As explained in a draft currently under development
    <http://tools.ietf.org/html/draft-sheffer-running-code>, this section
    contains information about implementation status, so that reviews of
-
-
-
-Wilde                   Expires December 19, 2013              [Page 11]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    the draft document can take implementation reports into account as
    well.  If you are implementing this draft, please contact this
    draft's authors.  Any implementation status reports are intended for
    draft publications only; the section will be removed when the draft
+
+
+
+Wilde                   Expires December 19, 2013              [Page 12]
+
+Internet-Draft           HTTP Link Descriptions                June 2013
+
+
    is published in RFC form.
 
       DescProc: <https://github.com/dret/DescProc>
@@ -647,20 +699,23 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    [1]   Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D.
          Orchard, "URI Template", RFC 6570, March 2012.
 
-   [2]   Nottingham, M., "Web Linking", RFC 5988, October 2010.
+   [2]   Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
+         Format", RFC 4287, December 2005.
 
-   [3]   Nottingham, M., "HTTP Link Hints",
+   [3]   Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+   [4]   Nottingham, M., "HTTP Link Hints",
          draft-nottingham-link-hint-00 (work in progress), June 2013.
 
-   [4]   Bradner, S., "Key words for use in RFCs to Indicate Requirement
+   [5]   Bradner, S., "Key words for use in RFCs to Indicate Requirement
          Levels", RFC 2119, March 1997.
 
-   [5]   Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes Second
+   [6]   Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes Second
          Edition", World Wide Web Consortium Recommendation REC-
          xmlschema-2-20041028, October 2004,
          <http://www.w3.org/TR/2004/REC-xmlschema-2-20041028>.
 
-   [6]   Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
+   [7]   Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
          Schema Part 1: Structures Second Edition", World Wide Web
          Consortium Recommendation REC-xmlschema-1-20041028,
          October 2004,
@@ -668,16 +723,14 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 
-Wilde                   Expires December 19, 2013              [Page 12]
+
+Wilde                   Expires December 19, 2013              [Page 13]
 
 Internet-Draft           HTTP Link Descriptions                June 2013
 
 
-   [7]   Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
+   [8]   Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
          RFC 3023, January 2001.
-
-   [8]   Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
-         Format", RFC 4287, December 2005.
 
    [9]   Hollander, D., Layman, A., Thompson, H., Tobin, R., and T.
          Bray, "Namespaces in XML 1.0 (Third Edition)", World Wide Web
@@ -724,7 +777,10 @@ URIs
 
 
 
-Wilde                   Expires December 19, 2013              [Page 13]
+
+
+
+Wilde                   Expires December 19, 2013              [Page 14]
 
 Internet-Draft           HTTP Link Descriptions                June 2013
 
@@ -780,5 +836,5 @@ Author's Address
 
 
 
-Wilde                   Expires December 19, 2013              [Page 14]
+Wilde                   Expires December 19, 2013              [Page 15]
 
