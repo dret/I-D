@@ -40,6 +40,41 @@
                <t>Templated Links: URI Templates <xref target="RFC6570"/> define a framework for how to represent and instantiate (with concrete variable values) templated URIs, but they don't cover how variables themselves are described, or can be constrained. If a collection resource for example supports paged access to the set of collection members, then it might be useful for a client to know the number of available pages. With this additional knowledge, it is possible to build applications and UIs that specifically take this knowledge into account to drive further interactions with the resource. For a paged collection, it may be a UI that provides direct links to all available pages (if that number is reasonably small).</t>
             </list>
          </t>
+         <t>The following example shows hows both of these mechanisms can be used in one representation, it is based on Atom <xref target="RFC4287"/> and AtomPub <xref target="RFC5023"/>.</t>
+         <figure>
+            <artwork type="XML"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX" >
+    <title>Example Feed</title>
+    <link rel="self" href="http://example.org/?pagesize=1&amp;page=42" ld:hreft="http://example.org/{?pagesize,page}">
+        <ld:var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10">
+            <ld:restriction base="positiveInteger">
+                <ld:minInclusive value="1"/>
+                <ld:maxInclusive value="100"/>
+            </ld:restriction>
+        </ld:var>
+        <ld:var name="page" concept="http://example.com/feedpaging/page" default="1">
+            <ld:restriction base="positiveInteger"/>
+        </ld:var>
+    </link>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <author>
+        <name>John Doe</name>
+    </author>
+    <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+    <entry>
+        <title>Atom-Powered Robots Run Amok</title>
+        <link href="http://example.org/2003/12/13/atom03"/>
+        <link rel="edit" href="http://example.org/item42">
+            <ld:hint name="allow" value=' [ "PUT" ] '/>
+            <ld:hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '/>
+        </link>
+        <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+        <updated>2003-12-13T18:30:02Z</updated>
+        <summary>Some text.</summary>
+    </entry>
+</feed>]]></artwork>
+         </figure>
+         <t>The link to feed itself is augmented with a URI Template <xref target="intro-templates"/>, which allows a consumer to understand that the feed can be requested with various page sizes, and that individual pages can be requested (assuming the consumer understands the "concept" identifiers for the described variables). The link to the entry is an augmented types Web Link <xref target="intro-links"/>, which allows a consumer to understand that even though "edit" links typically can be followed via GET, PUT, and DELETE, this particular link should only be followed using a PUT request.</t>
          <section title="Web Links" anchor="intro-links">
             <t>One of the defining principles of many services provided on the Web is that they expose linked resources, so that clients can follow the links in order to accomplish application goals. "Web Linking" <xref target="RFC5988"/> establishes a framework of typed links, allowing resources to expose typed links, which then can be followed by clients. While this framework allows clients to select links based on their types, it does not provide any support for additional runtime information about possible interactions with such a link. As outlined in the AtomPub example above, a link typed as "edit" by definition can be followed by using HTTP GET, PUT, or DELETE, and the typed link by itself cannot provide the additional information that some resource may allow updates, but disallows deletion.</t>
             <t>"Link Hints" <xref target="I-D.nottingham-link-hint"/> provide a framework of runtime hints that can be used to indicate information that might be made available by the link target resource itself, but ahead of time. For example, a link hint would be able to indicate on an "edit" link that the resource only allows PUT requests, which is something that could also be discovered by sending an HTTP request and getting an HTTP Allow header in the response. However, link hints can save overhead by avoiding round trips, and they also allow to minimize the chances of sending requests that will not succeed.</t>
