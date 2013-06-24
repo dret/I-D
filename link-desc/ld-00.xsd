@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+        schemaLocation="http://www.w3.org/2001/xml.xsd">
         <xs:annotation>
             <xs:documentation>Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.</xs:documentation>
         </xs:annotation>
@@ -51,7 +53,7 @@
         <xs:choice maxOccurs="unbounded">
             <xs:element name="var">
                 <xs:complexType>
-                    <xs:sequence maxOccurs="1" minOccurs="1">
+                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
                         <xs:element name="restriction" minOccurs="0">
                             <xs:complexType>
                                 <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -63,7 +65,8 @@
                                         <xs:complexType>
                                             <xs:complexContent>
                                                 <xs:restriction base="ld:numFacet">
-                                                    <xs:attribute name="value" type="xs:positiveInteger" use="required"/>
+                                                  <xs:attribute name="value"
+                                                  type="xs:positiveInteger" use="required"/>
                                                 </xs:restriction>
                                             </xs:complexContent>
                                         </xs:complexType>
@@ -77,26 +80,27 @@
                                         <xs:complexType>
                                             <xs:complexContent>
                                                 <xs:restriction base="ld:facet">
-                                                    <xs:attribute name="value" use="required">
-                                                        <xs:simpleType>
-                                                            <xs:restriction base="xs:NMTOKEN">
-                                                                <xs:enumeration value="preserve"/>
-                                                                <xs:enumeration value="replace"/>
-                                                                <xs:enumeration value="collapse"/>
-                                                            </xs:restriction>
-                                                        </xs:simpleType>
-                                                    </xs:attribute>
+                                                  <xs:attribute name="value" use="required">
+                                                  <xs:simpleType>
+                                                  <xs:restriction base="xs:NMTOKEN">
+                                                  <xs:enumeration value="preserve"/>
+                                                  <xs:enumeration value="replace"/>
+                                                  <xs:enumeration value="collapse"/>
+                                                  </xs:restriction>
+                                                  </xs:simpleType>
+                                                  </xs:attribute>
                                                 </xs:restriction>
                                             </xs:complexContent>
                                         </xs:complexType>
                                     </xs:element>
                                     <xs:element name="pattern" type="ld:facet"/>
                                 </xs:choice>
-                                <xs:attribute name="base" use="required" type="xs:QName"> </xs:attribute>
+                                <xs:attribute name="base" use="required" type="xs:QName">
+                                </xs:attribute>
                             </xs:complexType>
                         </xs:element>
                         <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
-                        <xs:any namespace="##other">
+                        <xs:any namespace="##other" minOccurs="0">
                             <xs:annotation>
                                 <xs:documentation>If variables are restricted in ways other than the simple type restrictions that are built into link descriptions, then these restrictions can be embedded in a variable description as well, as long as they are represented using a different namespace.</xs:documentation>
                             </xs:annotation>
