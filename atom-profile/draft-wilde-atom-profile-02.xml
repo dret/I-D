@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc tocdepth="2" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="std" ipr="trust200902" docName="draft-wilde-atom-profile-02" updates="4287">
+   <front>
+      <title abbrev="Atom Profiles">Profile Support for the Atom Syndication Format</title>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>EMC</organization>
+         <address>
+            <postal>
+               <street>6801 Koll Center Parkway</street>
+               <city>Pleasanton, CA 94566</city>
+               <country>U.S.A.</country>
+            </postal>
+            <phone>+1-925-6006244</phone>
+            <email>erik.wilde@emc.com</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="26" month="April" year="2013"/>
+      <abstract>
+         <t>The Atom syndication format is a generic XML format for representing collections. Profiles are one way how Atom feeds can indicate that they support specific extensions. To make this support visible on the media type level, this specification re-registers the Atom media type, and adds a "profile" media type parameter. This allows profiles to become visible at the media type level, so that servers as well as clients can indicate support for specific Atom profiles in conversations, for example when communicating via HTTP.</t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>This draft should be discussed on the <eref target="http://www.imc.org/atom-syntax/">atom-syntax mailing list</eref>.</t>
+         <t>Online access to all versions and files is available on <eref target="https://github.com/dret/I-D/tree/master/atom-profile">github</eref>.</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction" anchor="intro">
+         <t>The Atom Syndication Format "is an XML-based document format that describes lists of related information known as 'feeds'. Feeds are composed of a number of items, known as 'entries', each with an extensible set of attached metadata. For example, each entry has a title." <xref target="RFC4287"/></t>
+         <t>Profiles "can be described as additional semantics that can be used to process a resource representation, such as constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. A profile MUST NOT change the semantics of the resource representation when processed without profile knowledge, so that clients both with and without knowledge of a profiled resource can safely use the same representation." <xref target="RFC6906"/></t>
+         <t>Profiles are identified by URI, and their use can be indicated for a representation by adding a link with the registered "profile" link relation type, linking to the profile URI. While this is sufficient to represent the fact that a certain representation is using a profile, it does not make that fact visible outside of this representation. Ideally, peers communicating their media type, for example when communicating via Hypertext Transfer Protocol (HTTP) <xref target="RFC2616"/>, should be able to indicate the support of certain profiles through the media type identifier itself, without changing the base media type.</t>
+         <t>Because Atom supports generic links through its &lt;link/> element, "profile" links can be easily added to a feed, indicating that this feed does adhere to a certain profile. However, on the media type level, this feed would still be labeled as application/atom+xml, making the profile invisible on that level and thus not allowing it to be used in interactions such as content negotiation in HTTP.</t>
+         <t>This specification adds a "profile" media type parameter to the application/atom+xml media type, thereby making it possible for profiles to be exposed at the media type level. Apart from adding that one media type parameter, this specification does not change anything about the Atom format itself, or its media type registration.</t>
+      </section>
+      <section title="Examples" anchor="examples" >
+         <t>Adding a "profile" parameter to the Atom media type adds visibility of profiles at the media type level, for example when alternative profiles are supported by a service. It might also help to further "specialize" a media type in environments where such a "specialization" is useful. Two examples are intended to illustrate these two scenarios.</t>
+         <section title="Profiles for Alternatives" anchor="example-alternatives">
+            <t>For example, when linking to feeds of media-oriented services, it would be possible to expose two feeds, one using MediaRSS, and the other one using Podcasts. Both formats roughly cover the same functionality as media-oriented feed-based extensions, but by having the ability to expose their capabilities at the media type level, HTTP mechanisms and conversations can be used to distinguish between these formats.</t>
+            <t>In some cases it may be possible to support more than one profile, and then it is up for the service to decide whether these should be exposed in one representation (which can be exposed by linking to multiple profiles from the resource representation and/or in the media type parameter), or whether there should be two representations, one for each profile. This decision will probably depend on implementation complexity, the trade-off between navigation complexity (two representations with one profile each) and processing complexity, and also the size of the profile data, because in particular in the case of overlapping profiles, there might be many redundancies.</t>
+            <t>Thus, which way to go for multiple profiles is not a question that has one correct answer; it depends on the profiles, and on the services that are built around them.</t>
+         </section>
+         <section title="Profiles for Specializations" anchor="example-specialization">
+            <t>Feed-based services may provide additional features in feeds that are represented using Atom's extension mechanisms. These additional features might be useful only for those clients that support them, and otherwise might add volume to a feed that is of no value to general consumers. In such a scenario, specialized clients might also request their specialized features via profile media type parameters, and will then get the feed being "enriched" with the additional features. If clients do not request such a profile or request one that is not known to the server, the server responds with a generic feed, still allowing them to treat the feed as a generic feed (with no additional features being represented).</t>
+            <t>Whether services respond with profiles by default or only for specific requests about a profile is a matter of policy, and will be influenced by factors such as the added volume when adding profile data, and the question whether profiles should only be exposed to those that specifically ask for them. Since profiles are not allowed to change the semantics of the media type itself, such a decision can depend on the trade-off being a matter of expressivity, and not whether it will break clients under some circumstances.</t>
+         </section>
+      </section>
+      <section title="Profile Parameter Definition" anchor="profile-definition">
+         <t>The profile parameter for the application/atom+xml media type allows one or more profile URIs to be specified. These profile URIs have the identifier semantics defined in <xref target="RFC6906"/>, and when appearing as media type parameter, they have the same semantics as if they had been associated with the resource URI through other means, such as using one or more &lt;link profile="" href=""/> elements as children of the &lt;feed> element.</t>
+         <t>As a general rule, media type parameters must be quoted unless they are tokens. For the "profile" media type parameter defined here, this means that is must be quoted. It contains a non-empty list of space-separated URIs (the profile URIs).</t>
+         <figure>
+             <artwork type="abnf">profile-param = "profile=" profile-value
+profile-value = &lt;"> profile-URI 0*( 1*SP profile-URI ) &lt;">
+profile-URI   = URI</artwork>
+         </figure>
+         <t>The "URI" in the above grammar refers to the "URI" as defined in Section 3 of <xref target="RFC3986"/></t>
+      </section>
+      <section title="IANA Considerations" anchor="iana">
+         <t>The media type registration for the media type application/atom+xml should be updated according to the following registration.</t>
+         <section title="Atom Media Type application/atom+xml" anchor="atom-media-type">
+            <t>The Internet media type <xref target="RFC6838"/> for an Atom document is application/atom+xml.</t>
+            <section title="Media Type Name">
+               <t>application</t>
+            </section>
+            <section title="Subtype Name">
+               <t>atom+xml</t>
+            </section>
+            <section title="Required Parameters">
+               <t>none</t>
+            </section>
+            <section title="Optional Parameters">
+               <t>charset: This parameter has semantics identical to the charset parameter of the "application/xml" media type as specified in <xref target="RFC3023"/>.</t>
+               <t>profile: This parameter indicates that one or more profiles are used in the feed, according to the definition of profiles in <xref target="RFC6906"/>. The parameter syntax is specified in <xref target="profile-definition"/> of RFC XXXX</t>
+            </section>
+            <section title="Encoding Considerations">
+               <t>Identical to those of "application/xml" as described in <xref target="RFC3023"/>, Section 3.2.</t>
+            </section>
+            <section title="Security Considerations">
+               <t>As defined in <xref target="RFC4287"/>. In addition, as this media type uses the "+xml" convention, it shares the same security considerations as described in <xref target="RFC3023"/>, Section 10.</t>
+            </section>
+            <section title="Interoperability Considerations">
+               <t>There are no known interoperability issues.</t>
+            </section>
+            <section title="Published Specification">
+               <t><xref target="RFC4287"/>, RFC XXXX</t>
+            </section>
+            <section title="Applications which use this media type">
+               <t>Many. Atom has become a common foundation for many syndication-oriented scenarios, and also has become a commonly used representation for collection contents.</t>
+            </section>
+            <section title="Magic number(s)">
+               <t>As specified for "application/xml" in <xref target="RFC3023"/>, Section 3.2.</t>
+            </section>
+            <section title="File extension(s)">
+               <t>.atom</t>
+            </section>
+            <section title="Fragment Identifiers">
+               <t>As specified for "application/xml" in <xref target="RFC3023"/>, Section 5.</t>
+            </section>
+            <section title="Base URI">
+               <t>As specified in <xref target="RFC3023"/>, Section 6.</t>
+            </section>
+            <section title="Macintosh File Type Code(s)">
+               <t>TEXT</t>
+            </section>
+            <section title="Person &amp; email address to contact for further information">
+               <t>Mark Nottingham &lt;mnot@mnot.net> and Erik Wilde &lt;erik.wilde@emc.com></t>
+            </section>
+            <section title="Intended Usage">
+               <t>Common</t>
+            </section>
+            <section title="Author/Change Controller">
+               <t>IESG</t>
+            </section>
+         </section>
+      </section>
+      <section title="Change Log">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <section title="From -01 to -02">
+            <t>
+               <list style="symbols">
+                  <t>...</t>
+               </list>
+            </t>
+         </section>
+         <section title="From -00 to -01">
+            <t>
+               <list style="symbols">
+                  <t>Fixed typos.</t>
+                  <t>Removed the requirement to percent-encode URIs in the profile parameter.</t>
+                  <t>Added example for media type specialization.</t>
+               </list>
+            </t>
+         </section>
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor='RFC3023'>
+            <front>
+               <title>XML Media Types</title>
+               <author initials='M.' surname='Murata' fullname='M. Murata'>
+                  <organization />
+               </author>
+               <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
+                  <organization />
+               </author>
+               <author initials='D.' surname='Kohn' fullname='D. Kohn'>
+                  <organization />
+               </author>
+               <date year='2001' month='January' />
+               <abstract>
+                  <t>This document standardizes five new media types -- text/xml, application/xml, text/xml-external-parsed-entity, application/xml- external-parsed-entity, and application/xml-dtd -- for use in exchanging network entities that are related to the Extensible Markup Language (XML). This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='3023' />
+            <format type='TXT' octets='86011' target='http://www.rfc-editor.org/rfc/rfc3023.txt' />
+         </reference>
+         <reference anchor='RFC3986'>
+            <front>
+               <title abbrev='URI Generic Syntax'>Uniform Resource Identifier (URI): Generic Syntax</title>
+               <author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
+                  <organization abbrev='W3C/MIT'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>Massachusetts Institute of Technology</street>
+                     <street>77 Massachusetts Avenue</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code>
+                     <country>USA</country></postal>
+                     <phone>+1-617-253-5702</phone>
+                     <facsimile>+1-617-258-5999</facsimile>
+                     <email>timbl@w3.org</email>
+                     <uri>http://www.w3.org/People/Berners-Lee/</uri>
+                  </address>
+               </author>
+               <author initials='R.' surname='Fielding' fullname='Roy T. Fielding'>
+                  <organization abbrev='Day Software'>Day Software</organization>
+                  <address>
+                     <postal>
+                     <street>5251 California Ave., Suite 110</street>
+                     <city>Irvine</city>
+                     <region>CA</region>
+                     <code>92617</code>
+                     <country>USA</country></postal>
+                     <phone>+1-949-679-2960</phone>
+                     <facsimile>+1-949-679-2972</facsimile>
+                     <email>fielding@gbiv.com</email>
+                     <uri>http://roy.gbiv.com/</uri>
+                  </address>
+               </author>
+               <author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+                  <organization abbrev='Adobe Systems'>Adobe Systems Incorporated</organization>
+                  <address>
+                     <postal>
+                     <street>345 Park Ave</street>
+                     <city>San Jose</city>
+                     <region>CA</region>
+                     <code>95110</code>
+                     <country>USA</country></postal>
+                     <phone>+1-408-536-3024</phone>
+                     <email>LMM@acm.org</email>
+                     <uri>http://larry.masinter.net/</uri>
+                  </address>
+               </author>
+               <date year='2005' month='January' />
+               <area>Applications</area>
+               <keyword>uniform resource identifier</keyword>
+               <keyword>URI</keyword>
+               <keyword>URL</keyword>
+               <keyword>URN</keyword>
+               <keyword>WWW</keyword>
+               <keyword>resource</keyword>
+               <abstract>
+                  <t>A Uniform Resource Identifier (URI) is a compact sequence of characters that identifies an abstract or physical resource.  This specification defines the generic URI syntax and a process for resolving URI references that might be in relative form, along with guidelines and security considerations for the use of URIs on the Internet. The URI syntax defines a grammar that is a superset of all valid URIs, allowing an implementation to parse the common components of a URI reference without knowing the scheme-specific requirements of every possible identifier.  This specification does not define a generative grammar for URIs; that task is performed by the individual specifications of each URI scheme.</t></abstract></front>
+            <seriesInfo name='STD' value='66' />
+            <seriesInfo name='RFC' value='3986' />
+            <format type='TXT' octets='141811' target='http://www.rfc-editor.org/rfc/rfc3986.txt' />
+            <format type='HTML' octets='214067' target='http://xml.resource.org/public/rfc/html/rfc3986.html' />
+            <format type='XML' octets='163534' target='http://xml.resource.org/public/rfc/xml/rfc3986.xml' />
+         </reference>
+         <reference anchor='RFC4287'>
+            <front>
+               <title abbrev='Atom Format'>The Atom Syndication Format</title>
+               <author initials='M.' surname='Nottingham' fullname='Mark Nottingham' role='editor'>
+                  <organization />
+                  <address>
+                     <email>mnot@pobox.com</email>
+                     <uri>http://www.mnot.net/</uri>
+                  </address>
+               </author>
+               <author initials='R.' surname='Sayre' fullname='Robert Sayre' role='editor'>
+                  <organization />
+                  <address>
+                     <email>rfsayre@boswijck.com</email>
+                     <uri>http://boswijck.com</uri>
+                  </address>
+               </author>
+               <date year='2005' month='December' />
+               <abstract>
+                  <t>This document specifies Atom, an XML-based Web content and metadata syndication format.</t>
+               </abstract>
+            </front>            
+            <seriesInfo name='RFC' value='4287' />
+            <format type='TXT' octets='81922' target='http://www.rfc-editor.org/rfc/rfc4287.txt' />
+            <format type='HTML' octets='150786' target='http://xml.resource.org/public/rfc/html/rfc4287.html' />
+            <format type='XML' octets='108706' target='http://xml.resource.org/public/rfc/xml/rfc4287.xml' />
+         </reference>
+         <reference anchor='RFC6906'>
+            <front>
+               <title>The 'profile' Link Relation Type</title>
+               <author initials='E.' surname='Wilde' fullname='E. Wilde'>
+                  <organization />
+               </author>
+               <date year='2013' month='March' />
+               <abstract>
+                  <t>This specification defines the 'profile' link relation type that allows resource representations to indicate that they are following one or more profiles. A profile is defined not to alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='6906' />
+            <format type='TXT' octets='18469' target='http://www.rfc-editor.org/rfc/rfc6906.txt' />
+         </reference>
+      </references>
+      <references title="Non-Normative References">
+         <reference anchor='RFC2616'>
+            <front>
+               <title abbrev='HTTP/1.1'>Hypertext Transfer Protocol -- HTTP/1.1</title>
+               <author initials='R.' surname='Fielding' fullname='Roy T. Fielding'>
+                  <organization abbrev='UC Irvine'>Department of Information and Computer Science</organization>
+                  <address>
+                     <postal>
+                     <street>University of California, Irvine</street>
+                     <city>Irvine</city>
+                     <region>CA</region>
+                     <code>92697-3425</code></postal>
+                     <facsimile>+1(949)824-1715</facsimile>
+                     <email>fielding@ics.uci.edu</email>
+                  </address>
+               </author>
+               <author initials='J.' surname='Gettys' fullname='James Gettys'>
+                  <organization abbrev='Compaq/W3C'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>545 Technology Square</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code></postal>
+                     <facsimile>+1(617)258-8682</facsimile>
+                     <email>jg@w3.org</email>
+                  </address>
+               </author>
+               <author initials='J.' surname='Mogul' fullname='Jeffrey C. Mogul'>
+                  <organization abbrev='Compaq'>Compaq Computer Corporation</organization>
+                  <address>
+                     <postal>
+                     <street>Western Research Laboratory</street>
+                     <street>250 University Avenue</street>
+                     <city>Palo Alto</city>
+                     <region>CA</region>
+                     <code>94305</code></postal>
+                     <email>mogul@wrl.dec.com</email>
+                  </address>
+               </author>
+               <author initials='H.' surname='Frystyk' fullname='Henrik Frystyk Nielsen'>
+                  <organization abbrev='W3C/MIT'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>545 Technology Square</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code></postal>
+                     <facsimile>+1(617)258-8682</facsimile>
+                     <email>frystyk@w3.org</email>
+                  </address>
+               </author>
+               <author initials='L.' surname='Masinter' fullname='Larry Masinter'>
+                  <organization abbrev='Xerox'>Xerox Corporation</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>3333 Coyote Hill Road</street>
+                     <city>Palo Alto</city>
+                     <region>CA</region>
+                     <code>94034</code></postal>
+                     <email>masinter@parc.xerox.com</email>
+                  </address>
+               </author>
+               <author initials='P.' surname='Leach' fullname='Paul J. Leach'>
+                  <organization abbrev='Microsoft'>Microsoft Corporation</organization>
+                  <address>
+                     <postal>
+                     <street>1 Microsoft Way</street>
+                     <city>Redmond</city>
+                     <region>WA</region>
+                     <code>98052</code></postal>
+                     <email>paulle@microsoft.com</email>
+                  </address>
+               </author>
+               <author initials='T.' surname='Berners-Lee' fullname='Tim Berners-Lee'>
+                  <organization abbrev='W3C/MIT'>World Wide Web Consortium</organization>
+                  <address>
+                     <postal>
+                     <street>MIT Laboratory for Computer Science, NE43-356</street>
+                     <street>545 Technology Square</street>
+                     <city>Cambridge</city>
+                     <region>MA</region>
+                     <code>02139</code></postal>
+                     <facsimile>+1(617)258-8682</facsimile>
+                     <email>timbl@w3.org</email>
+                  </address>
+               </author>
+               <date year='1999' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is an application-level protocol for distributed, collaborative, hypermedia information systems. It is a generic, stateless, protocol which can be used for many tasks beyond its use for hypertext, such as name servers and distributed object management systems, through extension of its request methods, error codes and headers . A feature of HTTP is the typing and negotiation of data representation, allowing systems to be built independently of the data being transferred.</t>
+                  <t>HTTP has been in use by the World-Wide Web global information initiative since 1990. This specification defines the protocol referred to as "HTTP/1.1", and is an update to RFC 2068.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='2616' />
+            <format type='TXT' octets='422317' target='http://www.rfc-editor.org/rfc/rfc2616.txt' />
+            <format type='PS' octets='5529857' target='http://www.rfc-editor.org/rfc/rfc2616.ps' />
+            <format type='PDF' octets='550558' target='http://www.rfc-editor.org/rfc/rfc2616.pdf' />
+            <format type='HTML' octets='637302' target='http://xml.resource.org/public/rfc/html/rfc2616.html' />
+            <format type='XML' octets='493420' target='http://xml.resource.org/public/rfc/xml/rfc2616.xml' />
+         </reference>
+         <reference anchor='RFC6838'>
+            <front>
+               <title>Media Type Specifications and Registration Procedures</title>
+               <author initials='N.' surname='Freed' fullname='N. Freed'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Klensin' fullname='J. Klensin'>
+                  <organization />
+               </author>
+               <author initials='T.' surname='Hansen' fullname='T. Hansen'>
+                  <organization />
+               </author>
+               <date year='2013' month='January' />
+               <abstract>
+                  <t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols. This memo documents an Internet Best Current Practice.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='BCP' value='13' />
+            <seriesInfo name='RFC' value='6838' />
+            <format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
+         </reference>
+      </references>
+      <section title="Acknowledgements">
+         <t>Thanks for comments and suggestions provided by Markus Lanthaler.</t>
+      </section>
+   </back>
+</rfc>
