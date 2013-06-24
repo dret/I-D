@@ -14,12 +14,14 @@
                 <h1>Link Descriptions</h1>
                 <xsl:for-each select="//*[ ld:var | ld:hint ]">
                     <hr/>
-                    <xsl:for-each select=" @href | @hreft ">
+                    <xsl:for-each select=" @href | @hreft | @ld:href | @ld:hreft ">
                         <h2>
                             <code>
-                                <xsl:value-of select="local-name()"/>
+                                <xsl:value-of select="name()"/>
                                 <xsl:text>="</xsl:text>
-                                <xsl:value-of select="."/>
+                                <a href="{.}">
+                                    <xsl:value-of select="."/>
+                                </a>
                                 <xsl:text>"</xsl:text>
                             </code>
                         </h2>
