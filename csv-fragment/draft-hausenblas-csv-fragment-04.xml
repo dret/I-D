@@ -47,7 +47,7 @@
 				<uri>http://www.jenitennison.com/blog/</uri>
 			</address>
 		</author>
-		<date day="3" month="July" year="2013"/>
+		<date day="2" month="July" year="2013"/>
 		<abstract>
 			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell. Fragment identification can use single items, or ranges.</t>
 		</abstract>
@@ -93,9 +93,9 @@
 2011-01-03,5,Berkeley</artwork>
 			</figure>
 			<section title="Row-based selection" anchor="method-row">
-				<t>To select a specific record, the "row" scheme followed by a single number is used (the first row has the position 0).</t>
+				<t>To select a specific record, the "row" scheme followed by a single number is used (the first row is at position 1).</t>
 				<figure>
-					<artwork>http://example.com/data.csv#row=3</artwork>
+					<artwork type="uri">http://example.com/data.csv#row=4</artwork>
 				</figure>
 				<t>The above CSV fragment identifies the fourth row:</t>
 				<figure>
@@ -103,7 +103,7 @@
 				</figure>
 				<t>Fragments can also select ranges of rows:</t>
 				<figure>
-					<artwork>http://example.com/data.csv#row=4-6</artwork>
+					<artwork type="uri">http://example.com/data.csv#row=5-7</artwork>
 				</figure>
 				<t>The above CSV fragment identifies three consecutive rows:</t>
 				<figure>
@@ -113,13 +113,13 @@
 				</figure>
 				<t>The value "*" can be used to indicate the last row, so the previous URI is equivalent to:</t>
 				<figure>
-					<artwork>http://example.com/data.csv#row=4-*</artwork>
+					<artwork type="uri">http://example.com/data.csv#row=5-*</artwork>
 				</figure>
 			</section>
 			<section title="Column-based selection" anchor="method-column">
-				<t>To select values from a certain column, the "col" scheme, followed by a position:</t>
+				<t>To select values from a certain column, the "col" scheme is used, followed by a position (the first column is at position 1):</t>
 				<figure>
-					<artwork>http://example.com/data.csv#col=1</artwork>
+					<artwork type="uri">http://example.com/data.csv#col=2</artwork>
 				</figure>
 				<t>The above CSV fragment addresses the second column, identifying the column:</t>
 				<figure>
@@ -133,7 +133,7 @@
 				</figure>
 				<t>The "col" scheme can also be used to identify ranges of columns:</t>
 				<figure>
-					<artwork>http://example.com/data.csv#col=0-1</artwork>
+					<artwork type="uri">http://example.com/data.csv#col=1-2</artwork>
 				</figure>
 				<t>The above CSV fragment addresses the first and second column:</t>
 				<figure>
@@ -145,12 +145,12 @@
 2011-01-02,8
 2011-01-03,5</artwork>
 				</figure>
-				<t>The value "*" can be used to indicate the last column.</t>
+				<t>As for rows, the value "*" can be used to indicate the last column.</t>
 			</section>
 			<section title="Cell-based selection" anchor="method-cell">
-				<t>To select particular fields, use the "cell" scheme, followed by a row number, a comma, and a column number.</t>
+				<t>To select particular fields, the "cell" scheme is used, followed by a row number, a comma, and a column number.</t>
 				<figure>
-					<artwork>http://example.com/data.csv#cell=3,0</artwork>
+					<artwork type="uri">http://example.com/data.csv#cell=4,1</artwork>
 				</figure>
 				<t>The above CSV fragment addresses the field in the first column within the fourth row, yielding:</t>
 				<figure>
@@ -158,7 +158,7 @@
 				</figure>
 				<t>It is also possible to select cell-based fragments that have more than just one cell, in which case the cell selection uses the same range syntax as for row and column range selections. For these selections, the syntax uses the upper-lefthand cell as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.</t>
 				<figure>
-					<artwork>http://example.com/data.csv#cell=3,0-5,1</artwork>
+					<artwork>http://example.com/data.csv#cell=4,1-6,2</artwork>
 				</figure>
 				<t>The above CSV fragment selects a region that starts at the fourth row and the first column, and ends at the sixth row and the second column:</t>
 				<figure>
@@ -168,7 +168,7 @@
 				</figure>
 			</section>
 			<section title="Multi-Selections" anchor="multi-select">
-				<t>Row, column, and cell selections can make more than one selection, in which case the individual selections are separated by semicolons. In these cases, the resulting fragment may be a disjoint fragment, such as the selection "#row=2;5" for the example CSV, which would select the third and the sixth row. It is up to the user agent to decide how to handle disjoint fragments, but since they are allowed, user agents should be prepared to handle disjoint fragments.</t>
+				<t>Row, column, and cell selections can make more than one selection, in which case the individual selections are separated by semicolons. In these cases, the resulting fragment may be a disjoint fragment, such as the selection "#row=3;6" for the example CSV, which would select the third and the sixth row. It is up to the user agent to decide how to handle disjoint fragments, but since they are allowed, user agents should be prepared to handle disjoint fragments.</t>
 			</section>
 		</section>
 		<section title="Fragment Identification Syntax" anchor="syntax">
@@ -200,12 +200,12 @@ number       =  1*( DIGIT )</artwork>
 				<t>If a fragment identifier contains a syntax error (i.e., does not conform to the syntax specified in <xref target="syntax"/>), then it MUST be ignored by clients. Clients MUST NOT make any attempt to correct or guess fragment identifiers. Syntax errors MAY be reported by clients.</t>
 			</section>
 			<section title="Semantics of Fragment Identifiers" anchor="semantics">
-				<t>Rows and columns in CSV are counted from zero. Positions thus refer to the rows and columns starting from position 0, which identifies the first row or column of a CSV. The special character "*" can be used to refer to the last row or column of a CSV, thus allowing fragment identifiers to easily identify ranges that extend to the last row or column.</t>
+				<t>Rows and columns in CSV are counted from one. Positions thus refer to the rows and columns starting from position 1, which identifies the first row or column of a CSV. The special character "*" can be used to refer to the last row or column of a CSV, thus allowing fragment identifiers to easily identify ranges that extend to the last row or column.</t>
 				<t>If single selections refer to non-existing rows or columns (i.e., beyond the size of of the CSV), they MUST be ignored.</t>
-				<t>If ranges extend beyond the size of the CSV (by extending to row or columns beyond the size of the CSV), they MUST be interpreted to only extend to the actual size of the CSV.</t>
+				<t>If ranges extend beyond the size of the CSV (by extending to rows or columns beyond the size of the CSV), they MUST be interpreted to only extend to the actual size of the CSV.</t>
 				<t>If selections of ranges of rows or columns or selections of cell ranges are specified in a way so that they select "inversely" (i.e., "#row=10-5" or "#cell=10,10-5,5"), they MUST be ignored.</t>
-				<t>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) to not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=0-1;4-3;12-15" does identify the first two rows: the second specification is an "inverse" specification and thus ignored, and the third specification targets rows beyond the actual size of the CSV and is also ignored.</t>
-				<t>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=2-5;3-4" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.</t>
+				<t>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) do not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=1-2;5-4;13-16" does identify the first two rows: the second specification is an "inverse" specification and thus is ignored, and the third specification targets rows beyond the actual size of the CSV and thus is also ignored.</t>
+				<t>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=3-6;4-5" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.</t>
 			</section>
 		</section>
 		<section title="IANA Considerations">
@@ -226,6 +226,7 @@ number       =  1*( DIGIT )</artwork>
 				<t>
 					<list style="symbols">
 						<t>Switched category from "std" to "info".</t>
+						<t>Changed the definition of positions to start counting from 1 instead of 0.</t>
 					</list>
 				</t>
 			</section>
