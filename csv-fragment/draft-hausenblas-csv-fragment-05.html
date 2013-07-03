@@ -1,0 +1,654 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>URI Fragment Identifiers for the text/csv Media Type</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="URI Fragment Identifiers for the text/csv Media Type">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">M. Hausenblas</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">DERI, NUI Galway</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4180'>4180</a> (if&nbsp;approved)</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">EMC Corporation</td></tr>
+<tr><td class="header">Expires: January 3, 2014</td><td class="header">J. Tennison</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">Open Data Institute</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">July 2, 2013</td></tr>
+</table></td></tr></table>
+<h1><br />URI Fragment Identifiers for the text/csv Media Type<br />draft-hausenblas-csv-fragment-04</h1>
+
+<h3>Abstract</h3>
+
+<p>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell. Fragment identification can use single items, or ranges.
+</p>
+<h3>Note to Readers</h3>
+
+<p>This draft should be discussed on the <a href='https://www.ietf.org/mailman/listinfo/apps-discuss'>apps-discuss mailing list</a>.
+</p>
+<p>Online access to all versions and files is available on <a href='https://github.com/dret/I-D/tree/master/csv-fragment'>github</a>.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on January 3, 2014.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2013 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#anchor1">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">1.1.</a>&nbsp;
+What is text/csv?<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#why">1.2.</a>&nbsp;
+Why text/csv Fragment Identifiers?<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">1.2.1.</a>&nbsp;
+Motivation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">1.2.2.</a>&nbsp;
+Use Cases<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#incremental">1.3.</a>&nbsp;
+Incremental Deployment<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">1.4.</a>&nbsp;
+Notation Used in this Memo<br />
+<a href="#methods">2.</a>&nbsp;
+Fragment Identification Methods<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-row">2.1.</a>&nbsp;
+Row-based selection<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-column">2.2.</a>&nbsp;
+Column-based selection<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#method-cell">2.3.</a>&nbsp;
+Cell-based selection<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#multi-select">2.4.</a>&nbsp;
+Multi-Selections<br />
+<a href="#syntax">3.</a>&nbsp;
+Fragment Identification Syntax<br />
+<a href="#processing">4.</a>&nbsp;
+Fragment Identifier Processing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#error-handling">4.1.</a>&nbsp;
+Syntax Errors in Fragment Identifiers<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#semantics">4.2.</a>&nbsp;
+Semantics of Fragment Identifiers<br />
+<a href="#anchor6">5.</a>&nbsp;
+IANA Considerations<br />
+<a href="#security">6.</a>&nbsp;
+Security Considerations<br />
+<a href="#implementation-status">7.</a>&nbsp;
+Implementation Status<br />
+<a href="#anchor7">8.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">8.1.</a>&nbsp;
+From -03 to -04<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">8.2.</a>&nbsp;
+From -02 to -03<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">8.3.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">8.4.</a>&nbsp;
+From -00 to -01<br />
+<a href="#rfc.references1">9.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">9.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
+Non-Normative References<br />
+<a href="#anchor14">Appendix&nbsp;A.</a>&nbsp;
+Acknowledgements<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Authors' Addresses<br />
+</p>
+<br clear="all" />
+
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>This memo updates the text/csv media type defined in RFC 4180 <a class='info' href='#RFC4180'>[1]<span> (</span><span class='info'>Shafranovich, Y., &ldquo;Common Format and MIME Type for Comma-Separated Values (CSV) Files,&rdquo; October&nbsp;2005.</span><span>)</span></a> by defining URI fragment identifiers for text/csv MIME entities.
+</p>
+<p>This section gives an introduction to the general concepts of text/csv MIME entities and URI fragment identifiers, and discusses the need for fragment identifiers for text/csv and deployment issues. <a class='info' href='#methods'>Section&nbsp;2<span> (</span><span class='info'>Fragment Identification Methods</span><span>)</span></a> discusses the principles and methods on which this memo is based. <a class='info' href='#syntax'>Section&nbsp;3<span> (</span><span class='info'>Fragment Identification Syntax</span><span>)</span></a> defines the syntax, and <a class='info' href='#processing'>Section&nbsp;4<span> (</span><span class='info'>Fragment Identifier Processing</span><span>)</span></a> discusses processing of text/csv fragment identifiers.
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+What is text/csv?</h3>
+
+<p>Internet Media Types (often referred to as "MIME types") as defined in RFC 2045 <a class='info' href='#RFC2045'>[2]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies,&rdquo; November&nbsp;1996.</span><span>)</span></a> and RFC 2046 <a class='info' href='#RFC2046'>[3]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a> are used to identify different types and sub-types of media. The text/csv media type is defined in RFC 4180 <a class='info' href='#RFC4180'>[1]<span> (</span><span class='info'>Shafranovich, Y., &ldquo;Common Format and MIME Type for Comma-Separated Values (CSV) Files,&rdquo; October&nbsp;2005.</span><span>)</span></a>, using US-ASCII <a class='info' href='#ASCII'>[8]<span> (</span><span class='info'>ANSI X3.4-1986, &ldquo;Coded Character Set - 7-Bit American National Standard Code for Information Interchange,&rdquo; 1992.</span><span>)</span></a> as the default character encoding (other character encodings can be used as well). Apart from a media type parameter for specifying the character encoding ("charset"), there is a second media type parameter ("header") that indicates whether there is a header row in the CSV document or not.
+</p>
+<a name="why"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+Why text/csv Fragment Identifiers?</h3>
+
+<p>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <a class='info' href='#RFC3986'>[4]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> optionally includes a so-called "fragment identifier", separated by a number sign ("#"). The fragment identifier consists of additional reference information to be interpreted by the client after the retrieval action has been successfully completed. The semantics of a fragment identifier is a property of the media type resulting from a retrieval action, regardless of the URI scheme used in the URI reference. Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2.1"></a><h3>1.2.1.&nbsp;
+Motivation</h3>
+
+<p>Similar to the motivation in RFC 5147 <a class='info' href='#RFC5147'>[9]<span> (</span><span class='info'>Wilde, E. and M. Duerst, &ldquo;URI Fragment Identifiers for the text/plain Media Type,&rdquo; April&nbsp;2008.</span><span>)</span></a>, which defines fragment identifiers for plain text files, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's registration (see <a class='info' href='#RFC6838'>[10]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a>), many media types do not have fragment identification methods associated with them.
+</p>
+<p>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2.2"></a><h3>1.2.2.&nbsp;
+Use Cases</h3>
+
+<p>Fragment identifiers for text/csv as defined in this memo make it possible to refer to specific parts of a text/csv MIME entity. Use cases include, but are not limited to, selecting a part for visual rendering, stream processing, making assertions about a certain value (provenance, confidence, comments, etc.), or data integration.
+</p>
+<a name="incremental"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.3"></a><h3>1.3.&nbsp;
+Incremental Deployment</h3>
+
+<p>As long as text/csv fragment identifiers are not supported universally, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/csv fragment identifier described in this memo will work with URI references to text/csv MIME entities, but they will fail to understand the identification of the sub-resource specified by the fragment identifier, and thus will behave as if the complete resource was referenced. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no reliable way for a server to determine whether a requesting client is using a URI containing a fragment identifier.
+</p>
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.4"></a><h3>1.4.&nbsp;
+Notation Used in this Memo</h3>
+
+<p>The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[5]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+</p>
+<a name="methods"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Fragment Identification Methods</h3>
+
+<p>This memo specifies fragment identification using following methods: "row" for row selections, "col" for columns selections, and "cell" for cell selections.
+</p>
+<p>Throughout the sections below, the following example table in CSV (having 7 rows, including one header row, and 3 columns) is used:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>date,temperature,place
+2011-01-01,1,Galway
+2011-01-02,-1,Galway
+2011-01-03,0,Galway
+2011-01-01,6,Berkeley
+2011-01-02,8,Berkeley
+2011-01-03,5,Berkeley</pre></div>
+<a name="method-row"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
+Row-based selection</h3>
+
+<p>To select a specific record, the "row" scheme followed by a single number is used (the first row is at position 1).
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#row=4</pre></div>
+<p>The above CSV fragment identifies the fourth row:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>2011-01-03,0,Galway</pre></div>
+<p>Fragments can also select ranges of rows:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#row=5-7</pre></div>
+<p>The above CSV fragment identifies three consecutive rows:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>2011-01-01,6,Berkeley
+2011-01-02,8,Berkeley
+2011-01-03,5,Berkeley</pre></div>
+<p>The value "*" can be used to indicate the last row, so the previous URI is equivalent to:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#row=5-*</pre></div>
+<a name="method-column"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
+Column-based selection</h3>
+
+<p>To select values from a certain column, the "col" scheme is used, followed by a position (the first column is at position 1):
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#col=2</pre></div>
+<p>The above CSV fragment addresses the second column, identifying the column:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>temperature
+1
+-1
+0
+6
+8
+5</pre></div>
+<p>The "col" scheme can also be used to identify ranges of columns:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#col=1-2</pre></div>
+<p>The above CSV fragment addresses the first and second column:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>date,temperature
+2011-01-01,1
+2011-01-02,-1
+2011-01-03,0
+2011-01-01,6
+2011-01-02,8
+2011-01-03,5</pre></div>
+<p>As for rows, the value "*" can be used to indicate the last column.
+</p>
+<a name="method-cell"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.3"></a><h3>2.3.&nbsp;
+Cell-based selection</h3>
+
+<p>To select particular fields, the "cell" scheme is used, followed by a row number, a comma, and a column number.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#cell=4,1</pre></div>
+<p>The above CSV fragment addresses the field in the first column within the fourth row, yielding:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>2011-01-03</pre></div>
+<p>It is also possible to select cell-based fragments that have more than just one cell, in which case the cell selection uses the same range syntax as for row and column range selections. For these selections, the syntax uses the upper-lefthand cell as the starting point of the selection, followed by a minus sign, and then the lower-righthand cell as the end point of the selection.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://example.com/data.csv#cell=4,1-6,2</pre></div>
+<p>The above CSV fragment selects a region that starts at the fourth row and the first column, and ends at the sixth row and the second column:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>2011-01-03,0
+2011-01-01,6
+2011-01-02,8</pre></div>
+<a name="multi-select"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2.4"></a><h3>2.4.&nbsp;
+Multi-Selections</h3>
+
+<p>Row, column, and cell selections can make more than one selection, in which case the individual selections are separated by semicolons. In these cases, the resulting fragment may be a disjoint fragment, such as the selection "#row=3;6" for the example CSV, which would select the third and the sixth row. It is up to the user agent to decide how to handle disjoint fragments, but since they are allowed, user agents should be prepared to handle disjoint fragments.
+</p>
+<a name="syntax"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Fragment Identification Syntax</h3>
+
+<p>The syntax for the text/csv fragment identifiers is as follows.
+</p>
+<p>The following syntax definition uses ABNF as defined in RFC 4234 <a class='info' href='#RFC4234'>[6]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>, including the rule DIGIT.
+</p>
+<p>
+				</p>
+<blockquote class="text"><dl>
+<dt>NOTE:</dt>
+<dd>In the descriptions that follow, specified text values MUST be used exactly as given, using exactly the indicated lower-case letters. In this respect, the ABNF usage differs from <a class='info' href='#RFC4234'>[6]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+</dd>
+</dl></blockquote><p>
+			
+</p>
+<p>
+				</p>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><dfn>csv-fragment</dfn> =  <cite class='id'>rowsel</cite> / <cite class='id'>colsel</cite> / <cite class='id'>cellsel</cite>
+<dfn>rowsel</dfn>       =  "<span class='str'>row=</span>" <cite class='id'>singlespec</cite> <span class='rep'>0*</span>( "<span class='str'>;</span>" <cite class='id'>singlespec</cite>)
+<dfn>colsel</dfn>       =  "<span class='str'>col=</span>" <cite class='id'>singlespec</cite> <span class='rep'>0*</span>( "<span class='str'>;</span>" <cite class='id'>singlespec</cite>)
+<dfn>cellsel</dfn>      =  "<span class='str'>cell=</span>" <cite class='id'>cellspec</cite> <span class='rep'>0*</span>( "<span class='str'>;</span>" <cite class='id'>cellspec</cite>)
+<dfn>singlespec</dfn>   =  <cite class='id'>position</cite> [ "<span class='str'>-</span>" <cite class='id'>position</cite> ]
+<dfn>cellspec</dfn>     =  <cite class='id'>cellrow</cite> "<span class='str'>,</span>" <cite class='id'>cellcol</cite> [ "<span class='str'>-</span>" <cite class='id'>cellrow</cite> "<span class='str'>,</span>" <cite class='id'>cellcol</cite> ]
+<dfn>cellrow</dfn>      =  <cite class='id'>position</cite>
+<dfn>cellcol</dfn>      =  <cite class='id'>position</cite>
+<dfn>position</dfn>     =  <cite class='id'>number</cite> / "<span class='str'>*</span>"
+<dfn>number</dfn>       =  <span class='rep'>1*</span>( <cite class='key'>DIGIT</cite> )</pre></div><p>
+
+			
+</p>
+<a name="processing"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Fragment Identifier Processing</h3>
+
+<p>Applications implementing support for the mechanism described in this memo MUST behave as described in the following sections.
+</p>
+<a name="error-handling"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+Syntax Errors in Fragment Identifiers</h3>
+
+<p>If a fragment identifier contains a syntax error (i.e., does not conform to the syntax specified in <a class='info' href='#syntax'>Section&nbsp;3<span> (</span><span class='info'>Fragment Identification Syntax</span><span>)</span></a>), then it MUST be ignored by clients. Clients MUST NOT make any attempt to correct or guess fragment identifiers. Syntax errors MAY be reported by clients.
+</p>
+<a name="semantics"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+Semantics of Fragment Identifiers</h3>
+
+<p>Rows and columns in CSV are counted from one. Positions thus refer to the rows and columns starting from position 1, which identifies the first row or column of a CSV. The special character "*" can be used to refer to the last row or column of a CSV, thus allowing fragment identifiers to easily identify ranges that extend to the last row or column.
+</p>
+<p>If single selections refer to non-existing rows or columns (i.e., beyond the size of of the CSV), they MUST be ignored.
+</p>
+<p>If ranges extend beyond the size of the CSV (by extending to rows or columns beyond the size of the CSV), they MUST be interpreted to only extend to the actual size of the CSV.
+</p>
+<p>If selections of ranges of rows or columns or selections of cell ranges are specified in a way so that they select "inversely" (i.e., "#row=10-5" or "#cell=10,10-5,5"), they MUST be ignored.
+</p>
+<p>Each specification of an identified region is processed independently, and ignored specifications (because of reason listed in the previous paragraphs) do not cause the whole fragment identifier to fail, they just mean that this single specification is ignored. For the example file, the fragment identifier "#row=1-2;5-4;13-16" does identify the first two rows: the second specification is an "inverse" specification and thus is ignored, and the third specification targets rows beyond the actual size of the CSV and thus is also ignored.
+</p>
+<p>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=3-6;4-5" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+IANA Considerations</h3>
+
+<p>Note to RFC Editor: Please change this section to read as follows after the IANA action has been completed: "IANA has added a reference to this specification in the text/csv Media Type registration."
+</p>
+<p>IANA is requested to update the registration of the MIME Media type text/csv at http://www.iana.org/assignments/media-types/text/ with the fragment identifier defined in this memo by adding a reference to this memo (with the appropriate RFC number once it is known).
+</p>
+<a name="security"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+Security Considerations</h3>
+
+<p>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.
+</p>
+<p>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <a class='info' href='#RFC3986'>[4]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> and RFC 3987 <a class='info' href='#RFC3987'>[7]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRI),&rdquo; January&nbsp;2005.</span><span>)</span></a>.
+</p>
+<a name="implementation-status"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Implementation Status</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<p>As explained in a draft currently under development <a href='http://tools.ietf.org/html/draft-sheffer-running-code'>http://tools.ietf.org/html/draft-sheffer-running-code</a>, this section contains information about implementation status, so that reviews of the draft document can take implementation reports into account as well. If you are implementing this draft, please contact this draft's authors. Any implementation status reports are intended for draft publications only; the section will be removed when the draft is published in RFC form.
+</p>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Change Log</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<a name="anchor8"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
+From -03 to -04</h3>
+
+<p>
+					</p>
+<ul class="text">
+<li>Switched category from "std" to "info".
+</li>
+<li>Changed the definition of positions to start counting from 1 instead of 0.
+</li>
+</ul><p>
+				
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
+From -02 to -03</h3>
+
+<p>
+					</p>
+<ul class="text">
+<li>Added section on "Implementation Status" (<a class='info' href='#implementation-status'>Section&nbsp;7<span> (</span><span class='info'>Implementation Status</span><span>)</span></a>).
+</li>
+<li>Added examples of ranges of rows and columns.
+</li>
+<li>Corrected errors in examples.
+</li>
+</ul><p>
+				
+</p>
+<a name="anchor10"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
+From -01 to -02</h3>
+
+<p>
+					</p>
+<ul class="text">
+<li>Removed slices ("#where:") as fragment identification method.
+</li>
+<li>Removed any special support for headers, which means that they are now treated as a regular (the first) row (if a header row is present).
+</li>
+<li>Changed semantics and syntax to allow multiple selection of rows, columns, and cells, and to allow ranges of rows and columns.
+</li>
+</ul><p>
+				
+</p>
+<a name="anchor11"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
+From -00 to -01</h3>
+
+<p>
+					</p>
+<ul class="text">
+<li>Added cell-based selections.
+</li>
+<li>Added Jeni Tennison as author; updated Erik Wilde's affiliation to EMC.
+</li>
+</ul><p>
+				
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>9.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC4180">[1]</a></td>
+<td class="author-text"><a href="mailto:ietf@shaftek.org">Shafranovich, Y.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4180">Common Format and MIME Type for Comma-Separated Values (CSV) Files</a>,&rdquo; RFC&nbsp;4180, October&nbsp;2005.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2045">[2]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2046">[3]</a></td>
+<td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2046">Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types</a>,&rdquo; RFC&nbsp;2046, November&nbsp;1996.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[4]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; RFC&nbsp;3986, January&nbsp;2005.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[5]</a></td>
+<td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4234">[6]</a></td>
+<td class="author-text">Crocker, D. and P. Overell, &ldquo;<a href="http://tools.ietf.org/html/rfc4234">Augmented BNF for Syntax Specifications: ABNF</a>,&rdquo; RFC&nbsp;4234, October&nbsp;2005.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3987">[7]</a></td>
+<td class="author-text">Duerst, M. and M. Suignard, &ldquo;<a href="http://tools.ietf.org/html/rfc3987">Internationalized Resource Identifiers (IRI)</a>,&rdquo; RFC&nbsp;3987, January&nbsp;2005.</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>9.2.&nbsp;Non-Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="ASCII">[8]</a></td>
+<td class="author-text">ANSI X3.4-1986, &ldquo;<a href="http://tools.ietf.org/html/rfc3629">Coded Character Set - 7-Bit American National Standard Code for Information Interchange</a>,&rdquo; STD&nbsp;63, RFC&nbsp;3629, 1992.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5147">[9]</a></td>
+<td class="author-text"><a href="mailto:dret@berkeley.edu">Wilde, E.</a> and <a href="mailto:mailto:duerst@it.aoyama.ac.jp">M. Duerst</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc5147">URI Fragment Identifiers for the text/plain Media Type</a>,&rdquo; RFC&nbsp;5147, April&nbsp;2008.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6838">[10]</a></td>
+<td class="author-text">Freed, N., Klensin, J., and T. Hansen, &ldquo;<a href="http://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>,&rdquo; BCP&nbsp;13, RFC&nbsp;6838, January&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6838.txt">TXT</a>).</td></tr>
+</table>
+
+<a name="anchor14"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Acknowledgements</h3>
+
+<p>Thanks for comments and suggestions provided by Richard Cyganiak, Ian Davis, Leigh Dodds, and Gannon Dick.
+</p>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Authors' Addresses</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Michael Hausenblas</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">DERI, NUI Galway</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">IDA Business Park</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Galway</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Ireland</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+353-91-495730</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:michael.hausenblas@deri.org">michael.hausenblas@deri.org</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://sw-app.org/about.html">http://sw-app.org/about.html</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Erik Wilde</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">EMC Corporation</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">6801 Koll Center Parkway</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Pleasanton, CA 94566</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">U.S.A.</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1-925-6006244</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
+<tr cellpadding="3"><td>&nbsp;</td><td>&nbsp;</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Jeni Tennison</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Open Data Institute</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">65 Clifton Street</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">London EC2A 4JE</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">U.K.</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+44-797-4420482</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:jeni@jenitennison.com">jeni@jenitennison.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://www.jenitennison.com/blog/">http://www.jenitennison.com/blog/</a></td></tr>
+</table>
+</body></html>
