@@ -3,8 +3,8 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                           EMC Corporation
-Intended status: Informational                             June 17, 2013
-Expires: December 19, 2013
+Intended status: Informational                             July 31, 2013
+Expires: February 1, 2014
 
 
                          HTTP Link Descriptions
@@ -48,13 +48,13 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 19, 2013.
+   This Internet-Draft will expire on February 1, 2014.
 
 
 
-Wilde                   Expires December 19, 2013               [Page 1]
+Wilde                   Expires February 1, 2014                [Page 1]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
 Copyright Notice
@@ -91,7 +91,7 @@ Table of Contents
      5.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 11
    6.  Security Considerations  . . . . . . . . . . . . . . . . . . . 11
    7.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
-     7.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . . 11
+     7.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . . 12
      7.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . . 12
    8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 12
    9.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 12
@@ -108,26 +108,27 @@ Table of Contents
 
 
 
-Wilde                   Expires December 19, 2013               [Page 2]
+Wilde                   Expires February 1, 2014                [Page 2]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
 1.  Introduction
 
    Interactions with resources found on the Web often are driven by
-   following links, which can be either fixed links (described in
-   Section 1.1), or can be templated links containing variables
-   (described in Section 1.2).  In both cases, the context of the link
-   in most cases provides information that can be essential or helpful
-   when it comes to interacting with a link: For fixed links, the
-   context may specify allowed interaction methods (such as HTTP verbs)
-   or expectations around the expected media type in requests; for
-   templated links, the context additionally may provide information
-   about how to instantiate the variables provided in the URI Template.
-   This memo defines a schema and a media type that can be used to
-   (partially) represent this information, so that it becomes possible
-   to represent a change in interaction affordances at runtime.
+   following links (targeted at URIs [9]), which can be either fixed
+   links (described in Section 1.1), or can be templated links
+   containing variables (described in Section 1.2).  In both cases, the
+   context of the link in most cases provides information that can be
+   essential or helpful when it comes to interacting with a link: For
+   fixed links, the context may provide (in most cases implicitly,
+   through the use of typed links) allowed interaction methods (such as
+   HTTP verbs) or expectations around the expected media type in
+   requests; for templated links, the context additionally may provide
+   information about how to instantiate the variables provided in the
+   URI Template.  This memo defines a schema and a media type that can
+   be used to (partially) represent this information, so that it becomes
+   possible to represent a change in interaction affordances at runtime.
 
    Possible use cases for both scenarios (fixed and templated links) are
    as follows:
@@ -163,10 +164,9 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 
-
-Wilde                   Expires December 19, 2013               [Page 3]
+Wilde                   Expires February 1, 2014                [Page 3]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
 <?xml version="1.0" encoding="utf-8"?>
@@ -220,9 +220,9 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 
-Wilde                   Expires December 19, 2013               [Page 4]
+Wilde                   Expires February 1, 2014                [Page 4]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
    typed links, which then can be followed by clients.  While this
@@ -276,9 +276,9 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 
-Wilde                   Expires December 19, 2013               [Page 5]
+Wilde                   Expires February 1, 2014                [Page 5]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
    exchange information about the URIs that a service accepts.  The
@@ -332,15 +332,21 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 
-Wilde                   Expires December 19, 2013               [Page 6]
+Wilde                   Expires February 1, 2014                [Page 6]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
    This link description allows a URI Template's variables to be
    described in terms of URI-identified concepts.  By using such a
    model, it is possible to use global names for URI Template
-   parameters, by binding them to the local variable names.
+   parameters, by binding them to the local variable names.  The concept
+   URIs are pure identifiers for the purpose of link descriptions; i.e.
+   they should not be considered dereferenceable, and the assumption is
+   that consumers of link descriptions will only use them to match
+   discovered concepts against known concepts.  This design does not
+   prohibit to make concept URIs dereferenceable, but this is outside of
+   the scope of link descriptions.
 
 
 2.  Terminology
@@ -356,7 +362,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
 3.1.  Link Hints
 
-   ...
+   Link Hints [4] ...
 
 3.2.  Describing Variables
 
@@ -370,7 +376,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       in URI Templates.  Concepts can be referred to by using a URI as
       an identifier.  This specification defines no interactions with
       this URI identifier and makes no assumption about possible
-      representations, should this URI be dereferncable and yield some
+      representations, should this URI be dereferenceable and yield some
       representation.
 
       Datatype: Variables can be described in terms of using certain
@@ -379,20 +385,20 @@ Internet-Draft           HTTP Link Descriptions                June 2013
       allows Link Descriptions to constrain the set of allowed values.
       (This model does not cover any "co-constraints", i.e. dependencies
       across variables, or between variables and externally defined
+
+
+
+Wilde                   Expires February 1, 2014                [Page 7]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
       values.)
 
       Documentation: Documentation constructs can be associated with
       variables, which allows Link Descriptions to attach human-readable
       information to individual variables.  The documentation constructs
       use the documentation design of XML Schema Part 1 [7].  XML
-
-
-
-Wilde                   Expires December 19, 2013               [Page 7]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
       Schema's documentation model has the ability to support multi-
       lingual human-oriented documentation.
 
@@ -436,18 +442,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    clients encountering URI Templates as part of HTTP services can find
    more information about the template itself.
 
+
+
+Wilde                   Expires February 1, 2014                [Page 8]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
    Ideally, every URI template exposed in an HTTP service should be
    accompanied by a link to a Link Description.  In those XML-based HTTP
    services where URI Templates are exposed in XML attributes named
    "hreft", the suggestion is to add a link to the corresponding Link
    Description in an "hrefd" XML attribute.
-
-
-
-Wilde                   Expires December 19, 2013               [Page 8]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
 
 4.1.  General Concepts
 
@@ -491,18 +497,16 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    not use a different value between the time when the Link Description
    was retrieved, and the time when a request based on it is being sent.
 
+
+
+
+Wilde                   Expires February 1, 2014                [Page 9]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
    Variable descriptions can optionally add documentation and/or appinfo
    elements to add human- or machine-readable descriptions.
-
-
-
-
-
-
-
-Wilde                   Expires December 19, 2013               [Page 9]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
 
 
 5.  IANA Considerations
@@ -510,12 +514,12 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 5.1.  Media Type
 
    The Internet media type [11] for a Link Description document is
-   application/ld+xml (using the "+xml" suffix as defined and registered
-   by RFC 6839 [12]).
+   application/ldesc+xml (using the "+xml" suffix as defined and
+   registered by RFC 6839 [12]).
 
       Type name: application
 
-      Subtype name: ld+xml
+      Subtype name: ldesc+xml
 
       Required parameters: none
 
@@ -528,7 +532,7 @@ Internet-Draft           HTTP Link Descriptions                June 2013
          learn about additional semantics (constraints, conventions,
          extensions) that are associated with the resource
          representation, in addition to those defined by the media type
-         and possibly other mechanisms."  If the application/ld+xml
+         and possibly other mechanisms."  If the application/ldesc+xml
          media type is use with a profile parameter, this refers to a
          profile as defined by [13], making it easier for extensions of
          the link description media type to identify themselves.
@@ -548,18 +552,19 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
       Additional information:
 
+
+
+
+
+Wilde                   Expires February 1, 2014               [Page 10]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
          Magic number(s): none
 
          File extension(s): XML data should use ".xml" as the file
          extension.
-
-
-
-
-Wilde                   Expires December 19, 2013              [Page 10]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
 
          Macintosh file type code(s): TEXT
 
@@ -579,10 +584,11 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    The link relation type below will be registered by IANA per Section
    6.2.1 of RFC 5988 [3]:
 
-      Relation Name: link-desc
+      Relation Name: ldesc
 
       Description: Linking to a resource that can be used as a link
-      description for creating a request URI for the context resource.
+      description for requesting runtime information about a particular
+      link's interaction affordances.
 
       Reference: RFC XXXX
 
@@ -602,20 +608,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
    ...
 
+
+
+
+
+Wilde                   Expires February 1, 2014               [Page 11]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
 7.1.  OpenSearch
 
    ...
-
-
-
-
-
-
-
-Wilde                   Expires December 19, 2013              [Page 11]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
 
 7.2.  Atom Feeds
 
@@ -661,18 +665,18 @@ Internet-Draft           HTTP Link Descriptions                June 2013
    As explained in a draft currently under development
    <http://tools.ietf.org/html/draft-sheffer-running-code>, this section
    contains information about implementation status, so that reviews of
+
+
+
+Wilde                   Expires February 1, 2014               [Page 12]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
    the draft document can take implementation reports into account as
    well.  If you are implementing this draft, please contact this
    draft's authors.  Any implementation status reports are intended for
    draft publications only; the section will be removed when the draft
-
-
-
-Wilde                   Expires December 19, 2013              [Page 12]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    is published in RFC form.
 
       DescProc: <https://github.com/dret/DescProc>
@@ -717,28 +721,26 @@ Internet-Draft           HTTP Link Descriptions                June 2013
 
    [7]   Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, "XML
          Schema Part 1: Structures Second Edition", World Wide Web
+
+
+
+Wilde                   Expires February 1, 2014               [Page 13]
+
+Internet-Draft           HTTP Link Descriptions                July 2013
+
+
          Consortium Recommendation REC-xmlschema-1-20041028,
          October 2004,
          <http://www.w3.org/TR/2004/REC-xmlschema-1-20041028>.
 
-
-
-
-Wilde                   Expires December 19, 2013              [Page 13]
-
-Internet-Draft           HTTP Link Descriptions                June 2013
-
-
    [8]   Murata, M., St. Laurent, S., and D. Kohn, "XML Media Types",
          RFC 3023, January 2001.
 
-   [9]   Hollander, D., Layman, A., Thompson, H., Tobin, R., and T.
-         Bray, "Namespaces in XML 1.0 (Third Edition)", World Wide Web
-         Consortium Recommendation REC-xml-names-20091208,
-         December 2009,
-         <http://www.w3.org/TR/2009/REC-xml-names-20091208>.
-
 11.2.  Informative References
+
+   [9]   Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+         Resource Identifier (URI): Generic Syntax", STD 66, RFC 3986,
+         January 2005.
 
    [10]  Gregorio, J. and B. de hOra, "The Atom Publishing Protocol",
          RFC 5023, October 2007.
@@ -778,11 +780,9 @@ URIs
 
 
 
-
-
-Wilde                   Expires December 19, 2013              [Page 14]
+Wilde                   Expires February 1, 2014               [Page 14]
 
-Internet-Draft           HTTP Link Descriptions                June 2013
+Internet-Draft           HTTP Link Descriptions                July 2013
 
 
 Author's Address
@@ -836,5 +836,5 @@ Author's Address
 
 
 
-Wilde                   Expires December 19, 2013              [Page 15]
+Wilde                   Expires February 1, 2014               [Page 15]
 

@@ -143,8 +143,8 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">June 17, 2013</td></tr>
-<tr><td class="header">Expires: December 19, 2013</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">July 31, 2013</td></tr>
+<tr><td class="header">Expires: February 1, 2014</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />HTTP Link Descriptions<br />draft-wilde-link-desc-00</h1>
 
@@ -173,7 +173,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on December 19, 2013.</p>
+This Internet-Draft will expire on February 1, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -252,7 +252,7 @@ Author's Address<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>Interactions with resources found on the Web often are driven by following links, which can be either fixed links (described in <a class='info' href='#intro-links'>Section&nbsp;1.1<span> (</span><span class='info'>Web Links</span><span>)</span></a>), or can be templated links containing variables (described in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>). In both cases, the context of the link in most cases provides information that can be essential or helpful when it comes to interacting with a link: For fixed links, the context may specify allowed interaction methods (such as HTTP verbs) or expectations around the expected media type in requests; for templated links, the context additionally may provide information about how to instantiate the variables provided in the URI Template. This memo defines a schema and a media type that can be used to (partially) represent this information, so that it becomes possible to represent a change in interaction affordances at runtime.
+<p>Interactions with resources found on the Web often are driven by following links (targeted at URIs <a class='info' href='#RFC3986'>[9]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>), which can be either fixed links (described in <a class='info' href='#intro-links'>Section&nbsp;1.1<span> (</span><span class='info'>Web Links</span><span>)</span></a>), or can be templated links containing variables (described in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>). In both cases, the context of the link in most cases provides information that can be essential or helpful when it comes to interacting with a link: For fixed links, the context may provide (in most cases implicitly, through the use of typed links) allowed interaction methods (such as HTTP verbs) or expectations around the expected media type in requests; for templated links, the context additionally may provide information about how to instantiate the variables provided in the URI Template. This memo defines a schema and a media type that can be used to (partially) represent this information, so that it becomes possible to represent a change in interaction affordances at runtime.
 </p>
 <p>Possible use cases for both scenarios (fixed and templated links) are as follows:
 </p>
@@ -331,7 +331,7 @@ URI Templates</h3>
   &lt;var name="pagesize" concept="http://example.com/feedpaging/pagesize"/&gt;
   &lt;var name="page" concept="http://example.com/feedpaging/page"/&gt;
 &lt;/link&gt;</pre></div>
-<p>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, by binding them to the local variable names.
+<p>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, by binding them to the local variable names. The concept URIs are pure identifiers for the purpose of link descriptions; i.e. they should not be considered dereferenceable, and the assumption is that consumers of link descriptions will only use them to match discovered concepts against known concepts. This design does not prohibit to make concept URIs dereferenceable, but this is outside of the scope of link descriptions.
 </p>
 <a name="terminology"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -352,7 +352,7 @@ Description Concepts</h3>
 <a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
 Link Hints</h3>
 
-<p>...
+<p>Link Hints <a class='info' href='#I-D.nottingham-link-hint'>[4]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> ...
 </p>
 <a name="describing-variables"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -364,7 +364,7 @@ Describing Variables</h3>
 <p>
                </p>
 <blockquote class="text">
-<p>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be referred to by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferncable and yield some representation.
+<p>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be referred to by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferenceable and yield some representation.
 </p>
 <p>Datatype: Variables can be described in terms of using certain datatypes. The datatype vocabulary is that of XML Schema Part 2 <a class='info' href='#XSD-2'>[6]<span> (</span><span class='info'>Malhotra, A. and P. Biron, &ldquo;XML Schema Part 2: Datatypes Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>, plus all of the applicable facets of those datatypes. This allows Link Descriptions to constrain the set of allowed values. (This model does not cover any "co-constraints", i.e. dependencies across variables, or between variables and externally defined values.)
 </p>
@@ -423,21 +423,21 @@ IANA Considerations</h3>
 <a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
 Media Type</h3>
 
-<p>The Internet media type <a class='info' href='#RFC6838'>[11]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for a Link Description document is application/ld+xml (using the "+xml" suffix as defined and registered by RFC 6839 <a class='info' href='#RFC6839'>[12]<span> (</span><span class='info'>Hansen, T. and A. Melnikov, &ldquo;Additional Media Type Structured Syntax Suffixes,&rdquo; January&nbsp;2013.</span><span>)</span></a>).
+<p>The Internet media type <a class='info' href='#RFC6838'>[11]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for a Link Description document is application/ldesc+xml (using the "+xml" suffix as defined and registered by RFC 6839 <a class='info' href='#RFC6839'>[12]<span> (</span><span class='info'>Hansen, T. and A. Melnikov, &ldquo;Additional Media Type Structured Syntax Suffixes,&rdquo; January&nbsp;2013.</span><span>)</span></a>).
 </p>
 <p>
                </p>
 <blockquote class="text">
 <p>Type name: application
 </p>
-<p>Subtype name: ld+xml
+<p>Subtype name: ldesc+xml
 </p>
 <p>Required parameters: none
 </p>
 <p>Optional parameters: profile
                      </p>
 <blockquote class="text">
-<p>The "profile" link relation <a class='info' href='#RFC6906'>[13]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a> allows "resource representations to indicate that they are following one or more profiles. A profile is defined not to alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms." If the application/ld+xml media type is use with a profile parameter, this refers to a profile as defined by <a class='info' href='#RFC6906'>[13]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>, making it easier for extensions of the link description media type to identify themselves.
+<p>The "profile" link relation <a class='info' href='#RFC6906'>[13]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a> allows "resource representations to indicate that they are following one or more profiles. A profile is defined not to alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms." If the application/ldesc+xml media type is use with a profile parameter, this refers to a profile as defined by <a class='info' href='#RFC6906'>[13]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>, making it easier for extensions of the link description media type to identify themselves.
 </p>
 </blockquote>
                   
@@ -487,9 +487,9 @@ Link Relation</h3>
 <p>
                </p>
 <blockquote class="text">
-<p>Relation Name: link-desc
+<p>Relation Name: ldesc
 </p>
-<p>Description: Linking to a resource that can be used as a link description for creating a request URI for the context resource.
+<p>Description: Linking to a resource that can be used as a link description for requesting runtime information about a particular link's interaction affordances.
 </p>
 <p>Reference: RFC XXXX
 </p>
@@ -609,14 +609,14 @@ References</h3>
 <td class="author-text">Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">XML Schema Part 1: Structures Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-1-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">HTML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC3023">[8]</a></td>
 <td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="XMLNS">[9]</a></td>
-<td class="author-text">Hollander, D., Layman, A., Thompson, H., Tobin, R., and T. Bray, &ldquo;<a href="http://www.w3.org/TR/2009/REC-xml-names-20091208">Namespaces in XML 1.0 (Third Edition)</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xml-names-20091208, December&nbsp;2009 (<a href="http://www.w3.org/TR/2009/REC-xml-names-20091208">HTML</a>).</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>11.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="RFC3986">[9]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5023">[10]</a></td>
 <td class="author-text">Gregorio, J. and B. de hOra, &ldquo;<a href="http://tools.ietf.org/html/rfc5023">The Atom Publishing Protocol</a>,&rdquo; RFC&nbsp;5023, October&nbsp;2007 (<a href="ftp://ftp.isi.edu/in-notes/rfc5023.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC6838">[11]</a></td>
