@@ -21,7 +21,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="17" month="June" year="2013"/>
+      <date day="31" month="July" year="2013"/>
       <abstract>
          <t>Interactions with many resources on the Web are driven by links, and these links often define certain expectations about the interactions (such as HTTP methods being used, media types being sent in the request, or URI parameters being used in a certain way). While these expectations are essential to define the possible framework for interactions, it may be useful to further narrow them down by providing link descriptions, which can help clients to gain more runtime knowledge about the resource they are about to interact with. This memo defines Link Descriptions, a schema and a media type that can be used to describe links by supporting descriptive markup for representing interaction information with links. Link Descriptions can be used by media types (by inclusion or by reference) that seek to make Link Descriptions runtime-capable, without having to create their own representation.</t>
       </abstract>
@@ -98,7 +98,7 @@
   <var name="page" concept="http://example.com/feedpaging/page"/>
 </link>]]></artwork>
             </figure>
-            <t>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, by binding them to the local variable names.</t>
+            <t>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, by binding them to the local variable names. The concept URIs are pure identifiers for the purpose of link descriptions; i.e. they should not be considered dereferenceable, and the assumption is that consumers of link descriptions will only use them to match discovered concepts against known concepts. This design does not prohibit to make concept URIs dereferenceable, but this is outside of the scope of link descriptions.</t>
          </section>
       </section>
       <section title="Terminology" anchor="terminology">
@@ -113,7 +113,7 @@
             <t>Variables can be described in a variety of ways when using Link Descriptions. For each variable contained in the URI Template, it is possible to use the following description methods:</t>
             <t>
                <list>
-                  <t>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be referred to by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferncable and yield some representation.</t>
+                  <t>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be referred to by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferenceable and yield some representation.</t>
                   <t>Datatype: Variables can be described in terms of using certain datatypes. The datatype vocabulary is that of XML Schema Part 2 <xref target="XSD-2"/>, plus all of the applicable facets of those datatypes. This allows Link Descriptions to constrain the set of allowed values. (This model does not cover any "co-constraints", i.e. dependencies across variables, or between variables and externally defined values.)</t>
                   <t>Documentation: Documentation constructs can be associated with variables, which allows Link Descriptions to attach human-readable information to individual variables. The documentation constructs use the documentation design of XML Schema Part 1 <xref target="XSD-1"/>. XML Schema's documentation model has the ability to support multi-lingual human-oriented documentation.</t>
                   <t>Application Information: Application information constructs can be associated with variables, which allows Link Descriptions to attach machine-readable information to individual variables. The application information constructs use the application information design of XML Schema Part 1 <xref target="XSD-1"/>.</t>
