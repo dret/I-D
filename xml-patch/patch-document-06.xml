@@ -1,0 +1,13 @@
+<p:patch xmlns="urn:ietf:params:xml:ns:xxx"
+         xmlns:y="urn:ietf:params:xml:ns:yyy"
+         xmlns:p="urn:ietf:rfc:XXXX">
+    <p:add sel="doc/elem[@a='foo']">
+        <!-- This is a new child -->
+        <child id="ert4773">
+            <y:node/>
+        </child>
+    </p:add>
+    <p:replace sel="doc/note/text()">Patched doc</p:replace>
+    <p:remove sel="*/elem[@a='bar']/y:child" ws="both"/>
+    <p:add sel="*/elem[@a='bar']" type="@b">new attr</p:add>
+</p:patch>
