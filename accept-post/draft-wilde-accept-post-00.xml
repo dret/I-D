@@ -35,7 +35,7 @@
       </author>
       <date day="29" month="July" year="2013"/>
       <abstract>
-         <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types in HTTP POST requests.</t>
+         <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests.</t>
       </abstract>
       <note title="Note to Readers">
          <t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
@@ -44,7 +44,7 @@
    </front>
    <middle>
       <section title="Introduction" anchor="intro">
-         <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <xref target="RFC5789"/>.</t>
+         <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <xref target="RFC5789"/>.</t>
       </section>
       <section title="Terminology">
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
@@ -69,6 +69,9 @@
          </section>
          <section title="Atom Publishing Protocol" anchor="example-atompub">
             <t>... <xref target="RFC5023"/></t>
+         </section>
+         <section title="Additional Information in Error Responses" anchor="example-415">
+            <t>If a client POSTs an unsupported POST document, it is possible for the server to use Accept-Post to indicate the supported media types. These can be specified using a 415 (Unsupported Media Type) response when the client sends a POST document format that the server does not support for the resource identified by the Request-URI. Such a response then MAY include an Accept-Post response header notify the client what POST document media types are supported.</t>
          </section>
       </section>
       <section title="Implementation Status" anchor="implementation-status">

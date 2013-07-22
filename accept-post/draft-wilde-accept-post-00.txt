@@ -15,8 +15,8 @@ Expires: January 30, 2014                                       E. Wilde
 Abstract
 
    This specification defines a new HTTP response header field Accept-
-   Post, which indicates server support for specific media types in HTTP
-   POST requests.
+   Post, which indicates server support for specific media types for
+   entity bodies in HTTP POST requests.
 
 Note to Readers
 
@@ -75,14 +75,14 @@ Table of Contents
    5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
      5.1.  Linked Data Platform  . . . . . . . . . . . . . . . . . . . 4
      5.2.  Atom Publishing Protocol  . . . . . . . . . . . . . . . . . 4
+     5.3.  Additional Information in Error Responses . . . . . . . . . 4
    6.  Implementation Status . . . . . . . . . . . . . . . . . . . . . 4
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . . . 4
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 4
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 4
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . . . 5
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 5
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 5
      8.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 5
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 5
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 5
-
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 6
 
 
 
@@ -116,10 +116,10 @@ Internet-Draft                 Accept-Post                     July 2013
 1.  Introduction
 
    This specification defines a new HTTP response header field Accept-
-   Post, which indicates server support for specific media types in HTTP
-   POST requests.  This header field is comparable to the Accept-Patch
-   response header field specified together with the HTTP PATCH method
-   [4].
+   Post, which indicates server support for specific media types for
+   entity bodies in HTTP POST requests.  This header field is comparable
+   to the Accept-Patch response header field specified together with the
+   HTTP PATCH method [4].
 
 
 2.  Terminology
@@ -177,6 +177,16 @@ Internet-Draft                 Accept-Post                     July 2013
 
    ...  [6]
 
+5.3.  Additional Information in Error Responses
+
+   If a client POSTs an unsupported POST document, it is possible for
+   the server to use Accept-Post to indicate the supported media types.
+   These can be specified using a 415 (Unsupported Media Type) response
+   when the client sends a POST document format that the server does not
+   support for the resource identified by the Request-URI.  Such a
+   response then MAY include an Accept-Post response header notify the
+   client what POST document media types are supported.
+
 
 6.  Implementation Status
 
@@ -205,6 +215,16 @@ Internet-Draft                 Accept-Post                     July 2013
       ...
 
 
+
+
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 4]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
 7.  Security Considerations
 
    ...
@@ -216,14 +236,6 @@ Internet-Draft                 Accept-Post                     July 2013
 
    [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
         Levels", RFC 2119, March 1997.
-
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 4]
-
-Internet-Draft                 Accept-Post                     July 2013
-
 
    [2]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L.,
         Leach, P., and T. Berners-Lee, "Hypertext Transfer Protocol --
@@ -262,23 +274,19 @@ Appendix A.  Acknowledgements
    suggestions provided by the working group as a whole.
 
 
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 5]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
 Authors' Addresses
 
    John Arwe
    IBM
 
    Email: johnarwe@us.ibm.com
-
-
-
-
-
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 5]
-
-Internet-Draft                 Accept-Post                     July 2013
 
 
    Steve Speicher
@@ -296,14 +304,6 @@ Internet-Draft                 Accept-Post                     July 2013
    Phone: +1-925-6006244
    Email: erik.wilde@emc.com
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
 
 
 

@@ -152,7 +152,7 @@
 
 <h3>Abstract</h3>
 
-<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types in HTTP POST requests.
+<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests.
 </p>
 <h3>Note to Readers</h3>
 
@@ -210,6 +210,8 @@ Examples<br />
 Linked Data Platform<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-atompub">5.2.</a>&nbsp;
 Atom Publishing Protocol<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-415">5.3.</a>&nbsp;
+Additional Information in Error Responses<br />
 <a href="#implementation-status">6.</a>&nbsp;
 Implementation Status<br />
 <a href="#anchor2">7.</a>&nbsp;
@@ -232,7 +234,7 @@ Authors' Addresses<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <a class='info' href='#RFC5789'>[4]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a>.
+<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <a class='info' href='#RFC5789'>[4]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a>.
 </p>
 <a name="anchor1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -284,6 +286,13 @@ Linked Data Platform</h3>
 Atom Publishing Protocol</h3>
 
 <p>... <a class='info' href='#RFC5023'>[6]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a>
+</p>
+<a name="example-415"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+Additional Information in Error Responses</h3>
+
+<p>If a client POSTs an unsupported POST document, it is possible for the server to use Accept-Post to indicate the supported media types. These can be specified using a 415 (Unsupported Media Type) response when the client sends a POST document format that the server does not support for the resource identified by the Request-URI. Such a response then MAY include an Accept-Post response header notify the client what POST document media types are supported.
 </p>
 <a name="implementation-status"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
