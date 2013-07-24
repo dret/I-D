@@ -199,7 +199,7 @@ Introduction<br />
 <a href="#anchor1">2.</a>&nbsp;
 Terminology<br />
 <a href="#accept-post">3.</a>&nbsp;
-The Accept-Post Response Header<br />
+The Accept-Post Response Header Field<br />
 <a href="#iana">4.</a>&nbsp;
 IANA Considerations<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-accept-post">4.1.</a>&nbsp;
@@ -222,7 +222,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
 Non-Normative References<br />
-<a href="#anchor5">Appendix&nbsp;A.</a>&nbsp;
+<a href="#acknowledgements">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -246,7 +246,7 @@ Terminology</h3>
 <a name="accept-post"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
-The Accept-Post Response Header</h3>
+The Accept-Post Response Header Field</h3>
 
 <p>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.
 </p>
@@ -271,14 +271,16 @@ The Accept-Post Response Header</h3>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
 Examples</h3>
 
-<p>
+<p>Accept-Post extends the way in which interaction information can be exposed in HTTP itself. The following sections contain some examples how this can be used in concrete HTTP-based services.
 </p>
 <a name="example-ldp"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
 Linked Data Platform</h3>
 
-<p>... <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a>
+<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
+</p>
+<p>In fact, the Accept-Post header has been developed within the LDP Working Group (LPDWG) <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a>, and it was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
 </p>
 <a name="example-atompub"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -358,7 +360,7 @@ References</h3>
 <td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
 </table>
 
-<a name="anchor5"></a><br /><hr />
+<a name="acknowledgements"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>

@@ -49,7 +49,7 @@
       <section title="Terminology">
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
       </section>
-      <section title="The Accept-Post Response Header" anchor="accept-post">
+      <section title="The Accept-Post Response Header Field" anchor="accept-post">
          <t>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.</t>
          <t>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 2.1 of RFC 2616 <xref target="RFC2616"/>, is given by the following definition.</t>
          <figure>
@@ -65,7 +65,8 @@
       <section title="Examples" anchor="examples">
          <t>Accept-Post extends the way in which interaction information can be exposed in HTTP itself. The following sections contain some examples how this can be used in concrete HTTP-based services.</t>
          <section title="Linked Data Platform" anchor="example-ldp">
-            <t>... <xref target="W3C.WD-ldp-20130307"/></t>
+            <t>The Linked Data Platform (LDP) <xref target="W3C.WD-ldp-20130307"/> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.</t>
+            <t>In fact, the Accept-Post header has been developed within the LDP Working Group (LPDWG) <xref target="acknowledgements"/>, and it was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.</t>
          </section>
          <section title="Atom Publishing Protocol" anchor="example-atompub">
             <t>The Atom Publishing Protocol (AtomPub) <xref target="RFC5023"/> defines a model of interacting with collections and members, based on representations using the Atom <xref target="RFC4287"/> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".</t>
@@ -339,7 +340,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             <format type='HTML' target='http://www.w3.org/TR/2013/WD-ldp-20130307' />
          </reference>
       </references>
-      <section title="Acknowledgements">
+      <section title="Acknowledgements" anchor="acknowledgements">
          <t>This work has been done in the context of the W3C Linked Data Platform (LDP) Working Group <xref target="W3C.WD-ldp-20130307"/>. Thanks for comments and suggestions provided by the working group as a whole.</t>
       </section>
    </back>
