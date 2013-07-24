@@ -68,7 +68,9 @@
             <t>... <xref target="W3C.WD-ldp-20130307"/></t>
          </section>
          <section title="Atom Publishing Protocol" anchor="example-atompub">
-            <t>... <xref target="RFC5023"/></t>
+            <t>The Atom Publishing Protocol (AtomPub) <xref target="RFC5023"/> defines a model of interacting with collections and members, based on representations using the Atom <xref target="RFC4287"/> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".</t>
+            <t>The Accept-Post header field does allow an AtomPub server to advertise its support for specific media types in interactions with the collection resource, without the need for a client to locate the service document and interact with it. This increases the visibility of the "POST to Create" model of AtomPub, and makes it easier for clients to find out about the capabilities of a specific collection.</t>
+            <t>While the AtomPub protocol cannot be changed retroactively, this additional way of exposing interaction guidance could make it easier for clients to interact with AtomPub services that do support the Accept-Post header field. For those that do not support Accept-Post, clients would still have to rely on using the information contained in the service document (including the sometimes tricky issue of how to locate the service document for a given collection).</t>
          </section>
          <section title="Additional Information in Error Responses" anchor="example-415">
             <t>If a client POSTs an unsupported POST document, it is possible for the server to use Accept-Post to indicate the supported media types. These can be specified using a 415 (Unsupported Media Type) response when the client sends a POST document format that the server does not support for the resource identified by the Request-URI. Such a response then MAY include an Accept-Post response header notify the client what POST document media types are supported.</t>
@@ -249,6 +251,33 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
          </reference>
       </references>
       <references title="Non-Normative References">
+         <reference anchor='RFC4287'>
+            <front>
+               <title abbrev='Atom Format'>The Atom Syndication Format</title>
+               <author initials='M.' surname='Nottingham' fullname='Mark Nottingham' role='editor'>
+                  <organization />
+                  <address>
+                     <email>mnot@pobox.com</email>
+                     <uri>http://www.mnot.net/</uri>
+                  </address>
+               </author>
+               <author initials='R.' surname='Sayre' fullname='Robert Sayre' role='editor'>
+                  <organization />
+                  <address>
+                     <email>rfsayre@boswijck.com</email>
+                     <uri>http://boswijck.com</uri>
+                  </address>
+               </author>
+               <date year='2005' month='December' />
+               <abstract>
+                  <t>This document specifies Atom, an XML-based Web content and metadata syndication format.</t>
+               </abstract>
+            </front>            
+            <seriesInfo name='RFC' value='4287' />
+            <format type='TXT' octets='81922' target='http://www.rfc-editor.org/rfc/rfc4287.txt' />
+            <format type='HTML' octets='150786' target='http://xml.resource.org/public/rfc/html/rfc4287.html' />
+            <format type='XML' octets='108706' target='http://xml.resource.org/public/rfc/xml/rfc4287.xml' />
+         </reference>
          <reference anchor='RFC5023'>
             <front>
                <title>The Atom Publishing Protocol</title>

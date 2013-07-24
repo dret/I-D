@@ -285,7 +285,11 @@ Linked Data Platform</h3>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 Atom Publishing Protocol</h3>
 
-<p>... <a class='info' href='#RFC5023'>[6]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a>
+<p>The Atom Publishing Protocol (AtomPub) <a class='info' href='#RFC5023'>[6]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a> defines a model of interacting with collections and members, based on representations using the Atom <a class='info' href='#RFC4287'>[7]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".
+</p>
+<p>The Accept-Post header field does allow an AtomPub server to advertise its support for specific media types in interactions with the collection resource, without the need for a client to locate the service document and interact with it. This increases the visibility of the "POST to Create" model of AtomPub, and makes it easier for clients to find out about the capabilities of a specific collection.
+</p>
+<p>While the AtomPub protocol cannot be changed retroactively, this additional way of exposing interaction guidance could make it easier for clients to interact with AtomPub services that do support the Accept-Post header field. For those that do not support Accept-Post, clients would still have to rely on using the information contained in the service document (including the sometimes tricky issue of how to locate the service document for a given collection).
 </p>
 <a name="example-415"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -301,7 +305,7 @@ Implementation Status</h3>
 
 <p>Note to RFC Editor: Please remove this section before publication.
 </p>
-<p>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <a class='info' href='#RFC6982'>[7]<span> (</span><span class='info'>Sheffer, Y. and A. Farrel, &ldquo;Improving Awareness of Running Code: The Implementation Status Section,&rdquo; July&nbsp;2013.</span><span>)</span></a>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.
+<p>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <a class='info' href='#RFC6982'>[8]<span> (</span><span class='info'>Sheffer, Y. and A. Farrel, &ldquo;Improving Awareness of Running Code: The Implementation Status Section,&rdquo; July&nbsp;2013.</span><span>)</span></a>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.
 </p>
 <p>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".
 </p>
@@ -348,7 +352,9 @@ References</h3>
 <td class="author-text">Speicher, S. and J. Arwe, &ldquo;<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">Linked Data Platform 1.0</a>,&rdquo; World Wide Web Consortium WD&nbsp;WD-ldp-20130307, March&nbsp;2013 (<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">HTML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5023">[6]</a></td>
 <td class="author-text">Gregorio, J. and B. de hOra, &ldquo;<a href="http://tools.ietf.org/html/rfc5023">The Atom Publishing Protocol</a>,&rdquo; RFC&nbsp;5023, October&nbsp;2007 (<a href="ftp://ftp.isi.edu/in-notes/rfc5023.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC6982">[7]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC4287">[7]</a></td>
+<td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6982">[8]</a></td>
 <td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
 </table>
 

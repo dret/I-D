@@ -20,9 +20,9 @@ Abstract
 
 Note to Readers
 
-   This draft should be discussed on the apps-discuss mailing list [8].
+   This draft should be discussed on the apps-discuss mailing list [9].
 
-   Online access to all versions and files is available on github [9].
+   Online access to all versions and files is available on github [10].
 
 Status of this Memo
 
@@ -81,7 +81,7 @@ Table of Contents
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 5
      8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 5
      8.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 5
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 5
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 6
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 6
 
 
@@ -175,7 +175,28 @@ Internet-Draft                 Accept-Post                     July 2013
 
 5.2.  Atom Publishing Protocol
 
-   ...  [6]
+   The Atom Publishing Protocol (AtomPub) [6] defines a model of
+   interacting with collections and members, based on representations
+   using the Atom [7] syntax.  AtomPub allows clients to create new
+   collection members by using HTTP POST, with the request being sent to
+   the collection URI.  AtomPub servers can limit the media types they
+   accept in these POST requests, and the accepted media types are
+   listed in an "AtomPub service document".
+
+   The Accept-Post header field does allow an AtomPub server to
+   advertise its support for specific media types in interactions with
+   the collection resource, without the need for a client to locate the
+   service document and interact with it.  This increases the visibility
+   of the "POST to Create" model of AtomPub, and makes it easier for
+   clients to find out about the capabilities of a specific collection.
+
+   While the AtomPub protocol cannot be changed retroactively, this
+   additional way of exposing interaction guidance could make it easier
+   for clients to interact with AtomPub services that do support the
+   Accept-Post header field.  For those that do not support Accept-Post,
+   clients would still have to rely on using the information contained
+   in the service document (including the sometimes tricky issue of how
+   to locate the service document for a given collection).
 
 5.3.  Additional Information in Error Responses
 
@@ -194,8 +215,16 @@ Internet-Draft                 Accept-Post                     July 2013
 
    This section records the status of known implementations of the
    protocol defined by this specification at the time of posting of this
-   Internet-Draft, and is based on a proposal described in RFC 6982 [7].
+   Internet-Draft, and is based on a proposal described in RFC 6982 [8].
    The description of implementations in this section is intended to
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 4]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
    assist the IETF in its decision processes in progressing drafts to
    RFCs.  Please note that the listing of any individual implementation
    here does not imply endorsement by the IETF.  Furthermore, no effort
@@ -213,16 +242,6 @@ Internet-Draft                 Accept-Post                     July 2013
    they see fit".
 
       ...
-
-
-
-
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 4]
-
-Internet-Draft                 Accept-Post                     July 2013
 
 
 7.  Security Considerations
@@ -254,17 +273,28 @@ Internet-Draft                 Accept-Post                     July 2013
         Web Consortium WD WD-ldp-20130307, March 2013,
         <http://www.w3.org/TR/2013/WD-ldp-20130307>.
 
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 5]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
    [6]  Gregorio, J. and B. de hOra, "The Atom Publishing Protocol",
         RFC 5023, October 2007.
 
-   [7]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running Code:
+   [7]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom Syndication
+        Format", RFC 4287, December 2005.
+
+   [8]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running Code:
         The Implementation Status Section", RFC 6982, July 2013.
 
 URIs
 
-   [8]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
+   [9]   <https://www.ietf.org/mailman/listinfo/apps-discuss>
 
-   [9]  <https://github.com/dret/I-D/tree/master/accept-post>
+   [10]  <https://github.com/dret/I-D/tree/master/accept-post>
 
 
 Appendix A.  Acknowledgements
@@ -272,13 +302,6 @@ Appendix A.  Acknowledgements
    This work has been done in the context of the W3C Linked Data
    Platform (LDP) Working Group [5].  Thanks for comments and
    suggestions provided by the working group as a whole.
-
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 5]
-
-Internet-Draft                 Accept-Post                     July 2013
 
 
 Authors' Addresses
@@ -304,29 +327,6 @@ Authors' Addresses
    Phone: +1-925-6006244
    Email: erik.wilde@emc.com
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
