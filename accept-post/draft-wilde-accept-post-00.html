@@ -214,13 +214,15 @@ Atom Publishing Protocol<br />
 Additional Information in Error Responses<br />
 <a href="#implementation-status">6.</a>&nbsp;
 Implementation Status<br />
-<a href="#anchor2">7.</a>&nbsp;
+<a href="#security-considerations">7.</a>&nbsp;
 Security Considerations<br />
-<a href="#rfc.references1">8.</a>&nbsp;
+<a href="#open-issues">8.</a>&nbsp;
+Open Issues<br />
+<a href="#rfc.references1">9.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">8.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">9.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">8.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
 Non-Normative References<br />
 <a href="#acknowledgements">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
@@ -234,7 +236,7 @@ Authors' Addresses<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <a class='info' href='#RFC5789'>[4]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a>.
+<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <a class='info' href='#RFC5789'>[4]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a> (notice, however, that while Accept-Patch is defined to only list specific media types, Accept-Post reuses the "media range" concept of HTTP's Accept header and thus allows media type wildcards as well).
 </p>
 <a name="anchor1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -251,8 +253,10 @@ The Accept-Post Response Header Field</h3>
 <p>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.
 </p>
 <p>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 2.1 of RFC 2616 <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, is given by the following definition.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><span class='err'>Accept-Post = "Accept-Post" ":" 1#media-type</span></pre></div>
-<p>The Accept-Post header specifies a comma-separated listing of media-types (with optional parameters) as defined by RFC 2616 <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, Section 3.7.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><span class='err'>Accept-Post = "Accept-Post" ":" #( media-range [ accept-params ] )</span></pre></div>
+<p>The Accept-Post header specifies a media range as defined by HTTP <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>. The media range specifies a type of representation that can be POSTed to the Request-URI.
+</p>
+<p>The app:accept element is similar to the HTTP Accept request header field <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>. Media type parameters are allowed within Accept-Post, but Accept-Post has no notion of preference - "accept-params" or "q" arguments, as specified in Section 14.1 of <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, are not significant.
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -280,7 +284,7 @@ Linked Data Platform</h3>
 
 <p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
 </p>
-<p>In fact, the Accept-Post header has been developed within the LDP Working Group (LPDWG) <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a>, and it was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
+<p>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
 </p>
 <a name="example-atompub"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -320,21 +324,36 @@ Implementation Status</h3>
 </blockquote><p>
          
 </p>
-<a name="anchor2"></a><br /><hr />
+<a name="security-considerations"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.7"></a><h3>7.&nbsp;
 Security Considerations</h3>
 
 <p>...
 </p>
-<a name="rfc.references"></a><br /><hr />
+<a name="open-issues"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8"></a><h3>8.&nbsp;
+Open Issues</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<p>
+            </p>
+<ul class="text">
+<li>Need to complete "Security Considerations" <a class='info' href='#security-considerations'>Section&nbsp;7<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+</li>
+</ul><p>
+         
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.1.&nbsp;Normative References</h3>
+<h3>9.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2119">[1]</a></td>
 <td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
@@ -346,7 +365,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>8.2.&nbsp;Non-Normative References</h3>
+<h3>9.2.&nbsp;Non-Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC5789">[4]</a></td>
 <td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
@@ -365,7 +384,7 @@ References</h3>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>
 
-<p>This work has been done in the context of the W3C Linked Data Platform (LDP) Working Group <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a>. Thanks for comments and suggestions provided by the working group as a whole.
+<p>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a>. Thanks for comments and suggestions provided by the working group as a whole.
 </p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>

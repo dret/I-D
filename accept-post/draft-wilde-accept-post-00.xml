@@ -44,7 +44,7 @@
    </front>
    <middle>
       <section title="Introduction" anchor="intro">
-         <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <xref target="RFC5789"/>.</t>
+         <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <xref target="RFC5789"/> (notice, however, that while Accept-Patch is defined to only list specific media types, Accept-Post reuses the "media range" concept of HTTP's Accept header and thus allows media type wildcards as well).</t>
       </section>
       <section title="Terminology">
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
@@ -53,9 +53,10 @@
          <t>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.</t>
          <t>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 2.1 of RFC 2616 <xref target="RFC2616"/>, is given by the following definition.</t>
          <figure>
-            <artwork type="abnf">Accept-Post = "Accept-Post" ":" 1#media-type</artwork>
+            <artwork type="abnf">Accept-Post = "Accept-Post" ":" #( media-range [ accept-params ] )</artwork>
          </figure>
-         <t>The Accept-Post header specifies a comma-separated listing of media-types (with optional parameters) as defined by RFC 2616 <xref target="RFC2616"/>, Section 3.7.</t>
+         <t>The Accept-Post header specifies a media range as defined by HTTP <xref target="RFC2616"/>. The media range specifies a type of representation that can be POSTed to the Request-URI.</t>
+         <t>The app:accept element is similar to the HTTP Accept request header field <xref target="RFC2616"/>. Media type parameters are allowed within Accept-Post, but Accept-Post has no notion of preference - "accept-params" or "q" arguments, as specified in Section 14.1 of <xref target="RFC2616"/>, are not significant.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
          <section title="The Accept-Post Response Header" anchor="iana-accept-post">
@@ -98,14 +99,26 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             </list>
          </t>
       </section>
-      <section title="Security Considerations">
+      <section title="Security Considerations" anchor="security-considerations">
          <t>...</t>
+      </section>
+      <section title="Open Issues" anchor="open-issues">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <t>
+            <list style="symbols">
+               <t>Need to complete "Security Considerations" <xref target="security-considerations"/>.</t>
+            </list>
+         </t>
       </section>
 <!--
       <section title="Change Log">
          <t>Note to RFC Editor: Please remove this section before publication.</t>
          <section title="From -00 to -01">
-            <t>...</t>
+            <t>
+               <list style="symbols">
+                  <t>...</t>
+               </list>
+            </t>
          </section>
       </section>
 -->

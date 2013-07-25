@@ -71,19 +71,19 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . . . 3
    3.  The Accept-Post Response Header Field . . . . . . . . . . . . . 3
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 3
-     4.1.  The Accept-Post Response Header . . . . . . . . . . . . . . 3
-   5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+     4.1.  The Accept-Post Response Header . . . . . . . . . . . . . . 4
+   5.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
      5.1.  Linked Data Platform  . . . . . . . . . . . . . . . . . . . 4
      5.2.  Atom Publishing Protocol  . . . . . . . . . . . . . . . . . 4
-     5.3.  Additional Information in Error Responses . . . . . . . . . 4
+     5.3.  Additional Information in Error Responses . . . . . . . . . 5
    6.  Implementation Status . . . . . . . . . . . . . . . . . . . . . 5
    7.  Security Considerations . . . . . . . . . . . . . . . . . . . . 5
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 5
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . . . 5
-     8.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 6
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 6
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 6
-
+   8.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 6
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . . . 6
+     9.2.  Non-Normative References  . . . . . . . . . . . . . . . . . 6
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . . 7
 
 
 
@@ -119,7 +119,10 @@ Internet-Draft                 Accept-Post                     July 2013
    Post, which indicates server support for specific media types for
    entity bodies in HTTP POST requests.  This header field is comparable
    to the Accept-Patch response header field specified together with the
-   HTTP PATCH method [4].
+   HTTP PATCH method [4] (notice, however, that while Accept-Patch is
+   defined to only list specific media types, Accept-Post reuses the
+   "media range" concept of HTTP's Accept header and thus allows media
+   type wildcards as well).
 
 
 2.  Terminology
@@ -143,14 +146,28 @@ Internet-Draft                 Accept-Post                     July 2013
 
    The syntax for Accept-Post headers, using the ABNF syntax defined in
    Section 2.1 of RFC 2616 [2], is given by the following definition.
-   Accept-Post = "Accept-Post" ":" 1#media-type
+   Accept-Post = "Accept-Post" ":" #( media-range [ accept-params ] )
 
-   The Accept-Post header specifies a comma-separated listing of media-
-   types (with optional parameters) as defined by RFC 2616 [2], Section
-   3.7.
+   The Accept-Post header specifies a media range as defined by HTTP
+   [2].  The media range specifies a type of representation that can be
+   POSTed to the Request-URI.
+
+   The app:accept element is similar to the HTTP Accept request header
+   field [2].  Media type parameters are allowed within Accept-Post, but
+   Accept-Post has no notion of preference - "accept-params" or "q"
+   arguments, as specified in Section 14.1 of [2], are not significant.
 
 
 4.  IANA Considerations
+
+
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 3]
+
+Internet-Draft                 Accept-Post                     July 2013
+
 
 4.1.  The Accept-Post Response Header
 
@@ -161,14 +178,6 @@ Internet-Draft                 Accept-Post                     July 2013
 5.  Examples
 
    Accept-Post extends the way in which interaction information can be
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 3]
-
-Internet-Draft                 Accept-Post                     July 2013
-
-
    exposed in HTTP itself.  The following sections contain some examples
    how this can be used in concrete HTTP-based services.
 
@@ -183,10 +192,11 @@ Internet-Draft                 Accept-Post                     July 2013
    accepting for these POST requests, and MUST expose its support for
    accepted media types via Accept-Post.
 
-   In fact, the Accept-Post header has been developed within the LDP
-   Working Group (LPDWG) Appendix A, and it was then decided that the
-   header itself might be useful in other contexts as well, and thus
-   should be specified in a standalone document.
+   In fact, the Accept-Post header was initially developed within the
+   W3C's LDP Working Group (LDPWG), see Appendix A for acknowledgements.
+   It was then decided that the header itself might be useful in other
+   contexts as well, and thus should be specified in a standalone
+   document.
 
 5.2.  Atom Publishing Protocol
 
@@ -207,6 +217,14 @@ Internet-Draft                 Accept-Post                     July 2013
 
    While the AtomPub protocol cannot be changed retroactively, this
    additional way of exposing interaction guidance could make it easier
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 4]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
    for clients to interact with AtomPub services that do support the
    Accept-Post header field.  For those that do not support Accept-Post,
    clients would still have to rely on using the information contained
@@ -217,14 +235,6 @@ Internet-Draft                 Accept-Post                     July 2013
 
    If a client POSTs an unsupported POST document, it is possible for
    the server to use Accept-Post to indicate the supported media types.
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 4]
-
-Internet-Draft                 Accept-Post                     July 2013
-
-
    These can be specified using a 415 (Unsupported Media Type) response
    when the client sends a POST document format that the server does not
    support for the resource identified by the Request-URI.  Such a
@@ -264,16 +274,6 @@ Internet-Draft                 Accept-Post                     July 2013
    ...
 
 
-8.  References
-
-8.1.  Normative References
-
-   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
-        Levels", RFC 2119, March 1997.
-
-   [2]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L.,
-        Leach, P., and T. Berners-Lee, "Hypertext Transfer Protocol --
-
 
 
 Arwe, et al.            Expires January 30, 2014                [Page 5]
@@ -281,13 +281,29 @@ Arwe, et al.            Expires January 30, 2014                [Page 5]
 Internet-Draft                 Accept-Post                     July 2013
 
 
+8.  Open Issues
+
+   Note to RFC Editor: Please remove this section before publication.
+
+   o  Need to complete "Security Considerations" Section 7.
+
+
+9.  References
+
+9.1.  Normative References
+
+   [1]  Bradner, S., "Key words for use in RFCs to Indicate Requirement
+        Levels", RFC 2119, March 1997.
+
+   [2]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L.,
+        Leach, P., and T. Berners-Lee, "Hypertext Transfer Protocol --
         HTTP/1.1", RFC 2616, June 1999.
 
    [3]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
         Procedures for Message Header Fields", BCP 90, RFC 3864,
         September 2004.
 
-8.2.  Non-Normative References
+9.2.  Non-Normative References
 
    [4]  Dusseault, L. and J. Snell, "PATCH Method for HTTP", RFC 5789,
         March 2010.
@@ -312,10 +328,19 @@ URIs
    [10]  <https://github.com/dret/I-D/tree/master/accept-post>
 
 
+
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 6]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
 Appendix A.  Acknowledgements
 
    This work has been done in the context of the W3C Linked Data
-   Platform (LDP) Working Group [5].  Thanks for comments and
+   Platform Working Group (LDPWG) [5].  Thanks for comments and
    suggestions provided by the working group as a whole.
 
 
@@ -325,16 +350,6 @@ Authors' Addresses
    IBM
 
    Email: johnarwe@us.ibm.com
-
-
-
-
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 6]
-
-Internet-Draft                 Accept-Post                     July 2013
 
 
    Steve Speicher
@@ -352,21 +367,6 @@ Internet-Draft                 Accept-Post                     July 2013
    Phone: +1-925-6006244
    Email: erik.wilde@emc.com
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
