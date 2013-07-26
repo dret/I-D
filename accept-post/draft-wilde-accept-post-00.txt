@@ -271,8 +271,8 @@ Internet-Draft                 Accept-Post                     July 2013
 
 7.  Security Considerations
 
-   ...
-
+   The Accept-Post header may expose information that a server would
+   prefer to not publish.  In such a case, a server can simply stop
 
 
 
@@ -281,11 +281,21 @@ Arwe, et al.            Expires January 30, 2014                [Page 5]
 Internet-Draft                 Accept-Post                     July 2013
 
 
+   exposing the header, in which case HTTP interactions would be back to
+   the level of standard HTTP (i.e., with no indication what kind of
+   media types a resource accepts in POST requests).
+
+
 8.  Open Issues
 
    Note to RFC Editor: Please remove this section before publication.
 
-   o  Need to complete "Security Considerations" Section 7.
+   o  Accept-Post currently uses the "media range" concept of HTTP's
+      Accept header field.  An alternative would be only support fully
+      specified media types, which is what the Accept-Patch header field
+      is doing.  This latter solution is more constrained, and fails to
+      address some uses cases, such as AtomPub's way of exposing
+      collection support for POST requests.
 
 
 9.  References
@@ -319,6 +329,14 @@ Internet-Draft                 Accept-Post                     July 2013
         Format", RFC 4287, December 2005.
 
    [8]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running Code:
+
+
+
+Arwe, et al.            Expires January 30, 2014                [Page 6]
+
+Internet-Draft                 Accept-Post                     July 2013
+
+
         The Implementation Status Section", RFC 6982, July 2013.
 
 URIs
@@ -326,15 +344,6 @@ URIs
    [9]   <https://www.ietf.org/mailman/listinfo/apps-discuss>
 
    [10]  <https://github.com/dret/I-D/tree/master/accept-post>
-
-
-
-
-
-
-Arwe, et al.            Expires January 30, 2014                [Page 6]
-
-Internet-Draft                 Accept-Post                     July 2013
 
 
 Appendix A.  Acknowledgements
@@ -367,15 +376,6 @@ Authors' Addresses
    Phone: +1-925-6006244
    Email: erik.wilde@emc.com
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
 
 
 

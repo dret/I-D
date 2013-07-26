@@ -316,7 +316,7 @@ Implementation Status</h3>
 <p>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".
 </p>
 <p>
-            
+
             </p>
 <blockquote class="text">
 <p>...
@@ -329,7 +329,7 @@ Implementation Status</h3>
 <a name="rfc.section.7"></a><h3>7.&nbsp;
 Security Considerations</h3>
 
-<p>...
+<p>The Accept-Post header may expose information that a server would prefer to not publish. In such a case, a server can simply stop exposing the header, in which case HTTP interactions would be back to the level of standard HTTP (i.e., with no indication what kind of media types a resource accepts in POST requests).
 </p>
 <a name="open-issues"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -341,7 +341,7 @@ Open Issues</h3>
 <p>
             </p>
 <ul class="text">
-<li>Need to complete "Security Considerations" <a class='info' href='#security-considerations'>Section&nbsp;7<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+<li>Accept-Post currently uses the "media range" concept of HTTP's Accept header field. An alternative would be only support fully specified media types, which is what the Accept-Patch header field is doing. This latter solution is more constrained, and fails to address some uses cases, such as AtomPub's way of exposing collection support for POST requests.
 </li>
 </ul><p>
          
