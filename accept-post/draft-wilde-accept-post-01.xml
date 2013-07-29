@@ -51,10 +51,11 @@
       </section>
       <section title="The Accept-Post Response Header Field" anchor="accept-post">
          <t>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.</t>
-         <t>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 2.1 of RFC 2616 <xref target="RFC2616"/>, is given by the following definition.</t>
+         <t>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <xref target="I-D.ietf-httpbis-p2-semantics"/>, is given by the following definition.</t>
          <figure>
-            <artwork type="abnf">Accept-Post = "Accept-Post" ":" #( media-range [ accept-params ] )</artwork>
+            <artwork type="abnf">Accept-Post = #( media-range [ accept-params ] )</artwork>
          </figure>
+         <t>(Please note that this ABNF differs from the one given in Section 14.1 of RFC 2616 <xref target="RFC2616"/>, which includes the header field name.)</t>
          <t>The Accept-Post header specifies a media range as defined by HTTP <xref target="RFC2616"/>. The media range specifies a type of representation that can be POSTed to the Request-URI.</t>
          <t>The app:accept element is similar to the HTTP Accept request header field <xref target="RFC2616"/>. Media type parameters are allowed within Accept-Post, but Accept-Post has no notion of preference - "accept-params" or "q" arguments, as specified in Section 14.1 of <xref target="RFC2616"/>, are not significant.</t>
       </section>
@@ -115,7 +116,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
          <section title="From -00 to -01">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Changed ABNF for header field from RFC 2616 to HTTPbis convention (only specify the header field value grammar).</t>
                </list>
             </t>
          </section>
@@ -350,9 +351,24 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             <seriesInfo name='World Wide Web Consortium WD' value='WD-ldp-20130307' />
             <format type='HTML' target='http://www.w3.org/TR/2013/WD-ldp-20130307' />
          </reference>
+         <reference anchor='I-D.ietf-httpbis-p2-semantics'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</title>
+               <author initials='R' surname='Fielding' fullname='Roy Fielding'>
+                  <organization />
+               </author>
+               <author initials='J' surname='Reschke' fullname='Julian Reschke'>
+                  <organization />
+               </author>
+               <date month='July' day='15' year='2013' />
+            </front>
+            <seriesInfo name='Internet-Draft' value='draft-ietf-httpbis-p2-semantics-23' />
+            <format type='TXT' target='http://www.ietf.org/internet-drafts/draft-ietf-httpbis-p2-semantics-23.txt' />
+         </reference>
       </references>
       <section title="Acknowledgements" anchor="acknowledgements">
-         <t>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <xref target="W3C.WD-ldp-20130307"/>. Thanks for comments and suggestions provided by the working group as a whole.</t>
+         <t>Thanks for comments and suggestions provided by Julian Reschke.</t>
+         <t>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <xref target="W3C.WD-ldp-20130307"/>; thanks for comments and suggestions provided by the working group as a whole.</t>
       </section>
    </back>
 </rfc>
