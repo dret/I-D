@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+    targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
+        schemaLocation="http://www.w3.org/2001/xml.xsd">
         <xs:annotation>
             <xs:documentation>Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.</xs:documentation>
         </xs:annotation>
     </xs:import>
     <xs:element name="link" type="ld:link-type"> </xs:element>
     <xs:simpleType name="uriTemplate">
+        <xs:annotation>
+            <xs:documentation>Representing the type for URI template values according to RFC 6570. This is probably too complicated to cover with a regular expression in any reasonable way, so type enforcement is not done by the schema.</xs:documentation>
+        </xs:annotation>
         <xs:restriction base="xs:string"/>
     </xs:simpleType>
     <xs:group name="descriptions">
