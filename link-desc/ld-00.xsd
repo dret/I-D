@@ -128,11 +128,18 @@
                     <xs:sequence>
                         <xs:group maxOccurs="unbounded" minOccurs="0" ref="ld:descriptions"/>
                     </xs:sequence>
-                    <xs:attribute name="name">
+                    <xs:attribute name="name" use="required">
+                        <xs:annotation>
+                            <xs:documentation>A hint is either a registered hint with a simple name (defined by a regular expression), or an unregistered hint which is identified by URI.</xs:documentation>
+                        </xs:annotation>
                         <xs:simpleType>
-                            <xs:restriction base="xs:token">
-                                <xs:pattern value="[a-z][a-z0-9_-]*"/>
-                            </xs:restriction>
+                            <xs:union memberTypes="xs:anyURI">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:token">
+                                        <xs:pattern value="[a-z][a-z0-9_-]*"/>
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:union>
                         </xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="value"/>
