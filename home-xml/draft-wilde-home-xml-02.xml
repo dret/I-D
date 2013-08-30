@@ -21,7 +21,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
      </author>
-     <date day="11" month="June" year="2013"/>
+     <date day="29" month="August" year="2013"/>
   	<abstract>
       <t>The current draft for HTTP Home Documents provides a JSON syntax only. This draft provides an XML syntax for the same underlying data model, so that the concept of HTTP Home Documents can be consistently exposed in both JSON- and XML-based HTTP services.</t>
     </abstract>
@@ -36,13 +36,14 @@
       <t>"This document proposes a 'home document' format for non-browser HTTP clients. [...] The goal of home documents is to serve as a starting point for hypermedia APIs, where clients need to have an entry point, and then can use the API by following links. Home documents thus serve the same purpose as home pages on web sites: They are stable entry points that provide starting points for clients with some knowledge of the services linked from them."</t>
       <t>While this general concept of a home document is independent of the representation format, the current draft only defines a JSON syntax. In order to make this concept available across representations, this draft defines an XML syntax for the concepts defined in <xref target="I-D.nottingham-json-home"/>.</t>
       <t>At this point it is undecided whether both drafts will be merged eventually, or whether they will both be published as separate documents. Regardless of the final publication setup, it should be noted that this draft is only defining the XML syntax, whereas all the concepts represented in this syntax are defined by <xref target="I-D.nottingham-json-home"/>.</t>
+      <t>One notable difference is the handling of links found in "href" or "href-template" attributes on "resource" elements: In the JSON syntax, these are (if they are relative URIs) resolved against the URI of the home document itself. The XML syntax adds support for an optional "xml:base" attribute <xref target="W3C.REC-xmlbase-20090128"/> on the "resources" document element. If this attribute is present, it has to be used according to its specification, and thus becomes part of a possible resolution chain of relative URIs.</t>
     </section>
     <section title="XML Example" anchor="xml-example">
-      <t>The following Home Document in XML syntax uses the same data as the Home Document shown in <eref target="http://tools.ietf.org/html/draft-nottingham-json-home-03#section-2">Section 2</eref> of <xref target="I-D.nottingham-json-home"/>:</t>
+      <t>The following Home Document in XML syntax uses the same data as the Home Document shown in <eref target="http://tools.ietf.org/html/draft-nottingham-json-home-03#section-2">Section 2</eref> of <xref target="I-D.nottingham-json-home"/> (but adding xml:base="http://example.com" to demonstrate the mechanism):</t>
       <figure>
-        <artwork type="xml"><![CDATA[<resources xmlns="urn:ietf:rfc:XXXX">
+        <artwork type="xml"><![CDATA[<resources xmlns="urn:ietf:rfc:XXXX" xml:base="http://example.com">
  <resource rel="http://example.org/rel/widgets">
-  <link href="/widgets/"/>
+  <link href="/"/>
  </resource>
  <resource rel="http://example.org/rel/widget">
   <template href-template="/widgets/{widget_id}">
@@ -77,9 +78,8 @@
     <section title="XML Schema" anchor="xml-schema">
       <t>The following XML Schema is describing the XML shown in <xref target="xml-example"/>. Since there currently is no extension model, the XML Schema does currently not contain any extension points.</t>
       <figure>
-        <artwork type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:ietf:rfc:XXXX"
- elementFormDefault="qualified" xmlns:home="urn:ietf:rfc:XXXX">
+        <artwork type="xml"><![CDATA[<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" targetNamespace="urn:ietf:rfc:XXXX" elementFormDefault="qualified" xmlns:home="urn:ietf:rfc:XXXX">
+ <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
  <xs:element name="resources">
   <xs:complexType>
    <xs:sequence maxOccurs="unbounded" minOccurs="0">
@@ -148,6 +148,7 @@
      </xs:complexType>
     </xs:element>
    </xs:sequence>
+   <xs:attribute ref="xml:base" use="optional"/>
   </xs:complexType>
  </xs:element>
  <xs:complexType name="arrayType">
@@ -222,6 +223,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
         <t>
           <list style="symbols">
             <t>Adding "Implementation Status" section according to RFC 6982 <xref target="RFC6982"/>.</t>
+            <t>Adding support for @xml:base on the "resources" document element.</t>
           </list>
         </t>
       </section>
@@ -312,6 +314,20 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
         <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xml-20081126' />
         <format type='HTML' target='http://www.w3.org/TR/2008/REC-xml-20081126' />
       </reference>
+      <reference anchor='W3C.REC-xmlbase-20090128' target='http://www.w3.org/TR/2009/REC-xmlbase-20090128'>
+        <front>
+          <title>XML Base (Second Edition)</title>
+          <author initials='J.' surname='Marsh' fullname='Jonathan Marsh'>
+            <organization />
+          </author>
+          <author initials='R.' surname='Tobin' fullname='Richard Tobin'>
+            <organization />
+          </author>
+          <date month='January' day='28' year='2009' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xmlbase-20090128' />
+        <format type='HTML' target='http://www.w3.org/TR/2009/REC-xmlbase-20090128' />
+      </reference>
     </references>
     <references title="Informative References">
       <reference anchor='W3C.REC-xslt-19991116' target='http://www.w3.org/TR/1999/REC-xslt-19991116'>
@@ -361,8 +377,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
     <section title="XML-to-HTML for Home Documents">
       <t>The following XSLT 1.0 stylesheet <xref target="W3C.REC-xslt-19991116"/> transforms XML Home Documents to very simple HTML renditions. By associating this stylesheet <xref target="W3C.REC-xml-stylesheet-20101028"/> with an XML Home Document, it is possible to serve XML Home Documents that will be rendered in a human-friendly way when viewed in a browser.</t>
       <t><figure>
-        <artwork type="xml"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:home="urn:ietf:rfc:XXXX" exclude-result-prefixes="home">
+        <artwork type="xml"><![CDATA[<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xml="http://www.w3.org/XML/1998/namespace" version="1.0" xmlns:home="urn:ietf:rfc:XXXX" exclude-result-prefixes="home">
  <xsl:output method="html"/>
  <xsl:template match="home:resources">
   <html>
@@ -374,16 +389,29 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
     <ul>
      <xsl:for-each select="home:resource">
       <li>
-       <span title="Link Relation"><xsl:value-of select="@rel"/></span>
-       <xsl:text>: </xsl:text>
-       <xsl:choose>
-        <xsl:when test="home:link">
-         <a href="{home:link/@href}" title="URI"><xsl:value-of select="home:link/@href"/></a>
-        </xsl:when>
-        <xsl:otherwise>
-         <a href="{home:template/@href-template}" title="URI template"><xsl:value-of select="home:template/@href-template"/></a>
-        </xsl:otherwise>
-       </xsl:choose>
+       <xsl:text>Link Relation </xsl:text>
+       <code><xsl:value-of select="@rel"/></code>
+       <xsl:text>: Link </xsl:text>
+       <code>
+        <xsl:choose>
+         <xsl:when test="home:link">
+          <xsl:variable name="link-URI">
+           <xsl:call-template name="resolve-URI">
+            <xsl:with-param name="URI" select="home:link/@href"/>
+           </xsl:call-template>
+          </xsl:variable>
+          <a href="{$link-URI}" title="URI"><xsl:value-of select="$link-URI"/></a>
+         </xsl:when>
+         <xsl:otherwise>
+          <xsl:variable name="template-URI">
+           <xsl:call-template name="resolve-URI">
+            <xsl:with-param name="URI" select="home:template/@href-template"/>
+           </xsl:call-template>
+          </xsl:variable>
+          <a href="{$template-URI}" title="URI template"><xsl:value-of select="$template-URI"/></a>
+         </xsl:otherwise>
+        </xsl:choose>
+       </code>
        <dl>
         <xsl:if test="home:template/home:var">
          <dt>Variables: </dt>
@@ -433,6 +461,11 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
     </ul>
    </body>
   </html>
+ </xsl:template>
+ <xsl:template name="resolve-URI">
+  <xsl:param name="URI"/>
+  <!-- This is not how URI resolution should be done; http://tools.ietf.org/html/rfc3986#section-5 describes the correct process. -->
+  <xsl:value-of select="concat(/home:resources/@xml:base, $URI)"/>
  </xsl:template>
 </xsl:stylesheet>]]></artwork>
       </figure></t>
