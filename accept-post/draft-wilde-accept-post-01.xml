@@ -118,7 +118,21 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                   <t>Coverage: All parts of the specification were covered for server requirements.</t>
                   <t>Licensing: Freely distributable (<eref target="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License (EPL)</eref> and <eref target="http://www.eclipse.org/org/documents/edl-v10.php">Eclipse Distribution License (EDL)</eref>).</t>
                   <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described <eref target="http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html">this blog post</eref>.</t>
-                  <t>Contact: Steve Speicher (sspeiche@gmail.com)</t>
+                  <t>Contact: Steve Speicher &lt;sspeiche@gmail.com></t>
+               </list>
+            </t>
+         </section>
+         <section title="" anchor="implementation-rwwio">
+            <t>
+               <list>
+                  <t>Organization: No particular organization. The work done is part of project <eref target="https://rww.io/">RWW.I/O</eref>.</t>
+                  <t>Name: RWW.I/O - personal linked data storage.</t>
+                  <t>Description: A minimal support for LDP is now included in RWW.I/O, which is a personal linked data storage space, following the structure of a unix file system. Currently, only LDPCs are supported, since the LDPRs are always files or directories that are being managed through RESTful operations. RWW.I/O encourages the use of .meta files to semantically describe non-LD resources (e.g. images, html, js, css, etc.), and the use of .acl files for access control rules using the WAC vocabulary. Both .meta and .acl should be used per file (i.e. photo.jpg will have a .meta.photo.jpg and a .acl.photo.jpg).</t>
+                  <t>Maturity: Beta until more features from LDP spec are included (if necessary).</t>
+                  <t>Coverage: LDPCs on the server side, pagination and Accept-Post header. You can test LDPC support like this: curl -H "Accept: text/turtle" https://deiu.rww.io/public/?p=1 ; You can test Accept-Post header like this: curl -v -X OPTIONS -H "Accept: text/turtle" https://deiu.rww.io/public/</t>
+                  <t>Licensing: MIT license. Source code is available <eref target="https://github.com/deiu/rww.io">on GitHub</eref>.</t>
+                  <t>Implementation Experience: Implementing current LDP features in RWW.I/O was trivial. I've also decided to add the Accept-Post header to HEAD replies, as it helps to reduce the number of requests for a client trying to discover more information about the server.</t>
+                  <t>Contact: Andrei Sambra &lt;andrei.sambra@gmail.com></t>
                </list>
             </t>
          </section>
