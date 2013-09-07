@@ -80,11 +80,7 @@
          </section>
       </section>
       <section title="Implementation Status" anchor="implementation-status">
-         <t>Note to RFC Editor: Please remove this section before publication.</t>
-         <t>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <xref target="RFC6982"/>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.</t>
-         <t>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".</t>
-         <t>
-<!-- 
+         <!-- 
 RFC 6982: This section, if it appears, should be located just before the "Security Considerations" section and contain, for each existing implementation, some or all of the following:
  -  The organization responsible for the implementation, if any.
  -  The implementation's name and/or a link to a web page describing the implementation.
@@ -94,11 +90,38 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
  -  Licensing: the terms under which the implementation can be used. For example: proprietary, royalty licensing, freely distributable with acknowledgement (BSD style), freely distributable with requirement to redistribute source (General Public License (GPL) style), and other (specify).
  -  Implementation experience: any useful information the implementers want to share with the community.
  -  Contact information: ideally a person's name and email address, but possibly just a URL or mailing list.
+         <section title="" anchor="implementation-">
+            <t>
+               <list>
+                  <t>Organization: </t>
+                  <t>Name: </t>
+                  <t>Description: </t>
+                  <t>Maturity: </t>
+                  <t>Coverage: </t>
+                  <t>Licensing: </t>
+                  <t>Implementation Experience: </t>
+                  <t>Contact: </t>
+               </list>
+            </t>
+         </section>
 -->
-            <list>
-               <t>...</t>
-            </list>
-         </t>
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <t>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <xref target="RFC6982"/>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.</t>
+         <t>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".</t>
+         <section title="Eclipse Lyo" anchor="implementation-eclipse-lyo">
+            <t>
+               <list>
+                  <t>Organization: IBM developed and contributed to the <eref target="http://eclipse.org/lyo">Eclipse Lyo project</eref>.</t>
+                  <t>Name: Eclipse Lyo <eref target="http://wiki.eclipse.org/Lyo/BuildLDPSample">"LDP reference implementation"</eref></t>
+                  <t>Description: A very simple reference implementation for W3C Linked Data Platform (LDP) using some base Java technologies such as JAX-RS 2.0 and Apache Jena. The goals of this reference implementation is to experiment with validating the concepts in the specification and understanding what a SDK might look like to build LDP-compliant servers. Additional goal is to validate the approach for usage in OSLC4J SDK for building <eref target="http://open-services.net">OSLC</eref> clients and servers.</t>
+                  <t>Maturity: Early prototype/alpha.</t>
+                  <t>Coverage: All parts of the specification were covered for server requirements.</t>
+                  <t>Licensing: Freely distributable (<eref target="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License (EPL)</eref> and <eref target="http://www.eclipse.org/org/documents/edl-v10.php">Eclipse Distribution License (EDL)</eref>).</t>
+                  <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described <eref target="http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html">this blog post</eref>.</t>
+                  <t>Contact: Steve Speicher (sspeiche@gmail.com)</t>
+               </list>
+            </t>
+         </section>
       </section>
       <section title="Security Considerations" anchor="security-considerations">
          <t>The Accept-Post header may expose information that a server would prefer to not publish. In such a case, a server can simply stop exposing the header, in which case HTTP interactions would be back to the level of standard HTTP (i.e., with no indication what kind of media types a resource accepts in POST requests).</t>
@@ -118,6 +141,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             <t>
                <list style="symbols">
                   <t>Changed ABNF for header field from RFC 2616 to HTTPbis convention (only specify the header field value grammar).</t>
+                  <t>Added implementations (all from the LDP community for now).</t>
                </list>
             </t>
          </section>
