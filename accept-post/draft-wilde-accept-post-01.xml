@@ -33,7 +33,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="5" month="September" year="2013"/>
+      <date day="6" month="September" year="2013"/>
       <abstract>
          <t>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests.</t>
       </abstract>
@@ -117,12 +117,12 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                   <t>Maturity: Early prototype/alpha.</t>
                   <t>Coverage: All parts of the specification were covered for server requirements.</t>
                   <t>Licensing: Freely distributable (<eref target="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License (EPL)</eref> and <eref target="http://www.eclipse.org/org/documents/edl-v10.php">Eclipse Distribution License (EDL)</eref>).</t>
-                  <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described <eref target="http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html">this blog post</eref>.</t>
+                  <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described in <eref target="http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html">this blog post</eref>.</t>
                   <t>Contact: Steve Speicher &lt;sspeiche@gmail.com></t>
                </list>
             </t>
          </section>
-         <section title="" anchor="implementation-rwwio">
+         <section title="RWW.I/O" anchor="implementation-rwwio">
             <t>
                <list>
                   <t>Organization: No particular organization. The work done is part of project <eref target="https://rww.io/">RWW.I/O</eref>.</t>
@@ -146,6 +146,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             <list style="symbols">
                <t>All references to HTTP currently reference RFC 2616, except for the ABNF reference of the header field value, which references the latest HTTPbis draft. The final version should make sure that all references are to the same version of HTTP, either RFC 2616, or the updated HTTPbis version currently being finalized.</t>
                <t>Accept-Post currently uses the "media range" concept of HTTP's Accept header field. An alternative would be only support fully specified media types, which is what the Accept-Patch header field is doing. This latter solution is more constrained, and fails to address some uses cases, such as AtomPub's way of exposing collection support for POST requests.</t>
+               <t>While "accept-post" is currently defined in the "HTTP Link Hints" draft <xref target="I-D.nottingham-link-hint"/>, it would be good to align the way in which they work. Currently, the "accept-post" of link hints allows a list of specific media types, whereas the Accept-Post header field may contain "media ranges".</t>
             </list>
          </t>
       </section>
@@ -156,6 +157,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                <list style="symbols">
                   <t>Changed ABNF for header field from RFC 2616 to HTTPbis convention (only specify the header field value grammar).</t>
                   <t>Added implementations (all from the LDP community for now).</t>
+                  <t>Added open issue for aligning accept-post as defined by the "HTTP Link Hints" draft.</t>
                </list>
             </t>
          </section>
@@ -403,6 +405,18 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             </front>
             <seriesInfo name='Internet-Draft' value='draft-ietf-httpbis-p2-semantics-23' />
             <format type='TXT' target='http://www.ietf.org/internet-drafts/draft-ietf-httpbis-p2-semantics-23.txt' />
+         </reference>
+         <reference anchor='I-D.nottingham-link-hint'>
+            <front>
+               <title>HTTP Link Hints</title>
+               <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+                  <organization />
+               </author>
+               <date month='June' day='9' year='2013' />
+               <abstract><t>This memo specifies "HTTP Link Hints", a mechanism for annotating Web links to HTTP(S) resources with information that otherwise might be discovered by interacting with them.  Note to Readers  This draft should be discussed on the apps-discuss mailing list; see [apps-discuss].</t></abstract>
+            </front>
+            <seriesInfo name='Internet-Draft' value='draft-nottingham-link-hint-00' />
+            <format type='TXT' target='http://www.ietf.org/internet-drafts/draft-nottingham-link-hint-00.txt' />
          </reference>
       </references>
       <section title="Acknowledgements" anchor="acknowledgements">

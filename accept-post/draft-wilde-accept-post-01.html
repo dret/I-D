@@ -144,11 +144,11 @@
 <tr><td class="header">Network Working Group</td><td class="header">J. Arwe</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">S. Speicher</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">IBM</td></tr>
-<tr><td class="header">Expires: January 30, 2014</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Expires: March 10, 2014</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">July 29, 2013</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">September 6, 2013</td></tr>
 </table></td></tr></table>
-<h1><br />The Accept-Post HTTP Header<br />draft-wilde-accept-post-00</h1>
+<h1><br />The Accept-Post HTTP Header<br />draft-wilde-accept-post-01</h1>
 
 <h3>Abstract</h3>
 
@@ -175,7 +175,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on January 30, 2014.</p>
+This Internet-Draft will expire on March 10, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -214,15 +214,23 @@ Atom Publishing Protocol<br />
 Additional Information in Error Responses<br />
 <a href="#implementation-status">6.</a>&nbsp;
 Implementation Status<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#implementation-eclipse-lyo">6.1.</a>&nbsp;
+Eclipse Lyo<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#implementation-rwwio">6.2.</a>&nbsp;
+RWW.I/O<br />
 <a href="#security-considerations">7.</a>&nbsp;
 Security Considerations<br />
 <a href="#open-issues">8.</a>&nbsp;
 Open Issues<br />
-<a href="#rfc.references1">9.</a>&nbsp;
+<a href="#anchor2">9.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">9.1.</a>&nbsp;
+From -00 to -01<br />
+<a href="#rfc.references1">10.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">9.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">10.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">10.2.</a>&nbsp;
 Non-Normative References<br />
 <a href="#acknowledgements">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
@@ -236,14 +244,14 @@ Authors' Addresses<br />
 <a name="rfc.section.1"></a><h3>1.&nbsp;
 Introduction</h3>
 
-<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <a class='info' href='#RFC5789'>[4]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a> (notice, however, that while Accept-Patch is defined to only list specific media types, Accept-Post reuses the "media range" concept of HTTP's Accept header and thus allows media type wildcards as well).
+<p>This specification defines a new HTTP response header field Accept-Post, which indicates server support for specific media types for entity bodies in HTTP POST requests. This header field is comparable to the Accept-Patch response header field specified together with the HTTP PATCH method <a class='info' href='#RFC5789'>[RFC5789]<span> (</span><span class='info'>Dusseault, L. and J. Snell, &ldquo;PATCH Method for HTTP,&rdquo; March&nbsp;2010.</span><span>)</span></a> (notice, however, that while Accept-Patch is defined to only list specific media types, Accept-Post reuses the "media range" concept of HTTP's Accept header and thus allows media type wildcards as well).
 </p>
 <a name="anchor1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Terminology</h3>
 
-<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[1]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
 </p>
 <a name="accept-post"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -252,11 +260,13 @@ The Accept-Post Response Header Field</h3>
 
 <p>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.
 </p>
-<p>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 2.1 of RFC 2616 <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, is given by the following definition.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><span class='err'>Accept-Post = "Accept-Post" ":" #( media-range [ accept-params ] )</span></pre></div>
-<p>The Accept-Post header specifies a media range as defined by HTTP <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>. The media range specifies a type of representation that can be POSTed to the Request-URI.
+<p>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <a class='info' href='#I-D.ietf-httpbis-p2-semantics'>[I&#8209;D.ietf&#8209;httpbis&#8209;p2&#8209;semantics]<span> (</span><span class='info'>Fielding, R. and J. Reschke, &ldquo;Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content,&rdquo; July&nbsp;2013.</span><span>)</span></a>, is given by the following definition.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><span class='err'>Accept-Post = #( media-range [ accept-params ] )</span></pre></div>
+<p>(Please note that this ABNF differs from the one given in Section 14.1 of RFC 2616 <a class='info' href='#RFC2616'>[RFC2616]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, which includes the header field name.)
 </p>
-<p>The app:accept element is similar to the HTTP Accept request header field <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>. Media type parameters are allowed within Accept-Post, but Accept-Post has no notion of preference - "accept-params" or "q" arguments, as specified in Section 14.1 of <a class='info' href='#RFC2616'>[2]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, are not significant.
+<p>The Accept-Post header specifies a media range as defined by HTTP <a class='info' href='#RFC2616'>[RFC2616]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>. The media range specifies a type of representation that can be POSTed to the Request-URI.
+</p>
+<p>The app:accept element is similar to the HTTP Accept request header field <a class='info' href='#RFC2616'>[RFC2616]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>. Media type parameters are allowed within Accept-Post, but Accept-Post has no notion of preference - "accept-params" or "q" arguments, as specified in Section 14.1 of <a class='info' href='#RFC2616'>[RFC2616]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, are not significant.
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -268,7 +278,7 @@ IANA Considerations</h3>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 The Accept-Post Response Header</h3>
 
-<p>The Accept-Post response header should be added to the permanent registry of message header fields (see <a class='info' href='#RFC3864'>[3]<span> (</span><span class='info'>Klyne, G., Nottingham, M., and J. Mogul, &ldquo;Registration Procedures for Message Header Fields,&rdquo; September&nbsp;2004.</span><span>)</span></a>).
+<p>The Accept-Post response header should be added to the permanent registry of message header fields (see <a class='info' href='#RFC3864'>[RFC3864]<span> (</span><span class='info'>Klyne, G., Nottingham, M., and J. Mogul, &ldquo;Registration Procedures for Message Header Fields,&rdquo; September&nbsp;2004.</span><span>)</span></a>).
 </p>
 <a name="examples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -282,7 +292,7 @@ Examples</h3>
 <a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
 Linked Data Platform</h3>
 
-<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
+<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130307'>[W3C.WD&#8209;ldp&#8209;20130307]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
 </p>
 <p>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
 </p>
@@ -291,7 +301,7 @@ Linked Data Platform</h3>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 Atom Publishing Protocol</h3>
 
-<p>The Atom Publishing Protocol (AtomPub) <a class='info' href='#RFC5023'>[6]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a> defines a model of interacting with collections and members, based on representations using the Atom <a class='info' href='#RFC4287'>[7]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".
+<p>The Atom Publishing Protocol (AtomPub) <a class='info' href='#RFC5023'>[RFC5023]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a> defines a model of interacting with collections and members, based on representations using the Atom <a class='info' href='#RFC4287'>[RFC4287]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".
 </p>
 <p>The Accept-Post header field does allow an AtomPub server to advertise its support for specific media types in interactions with the collection resource, without the need for a client to locate the service document and interact with it. This increases the visibility of the "POST to Create" model of AtomPub, and makes it easier for clients to find out about the capabilities of a specific collection.
 </p>
@@ -311,18 +321,63 @@ Implementation Status</h3>
 
 <p>Note to RFC Editor: Please remove this section before publication.
 </p>
-<p>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <a class='info' href='#RFC6982'>[8]<span> (</span><span class='info'>Sheffer, Y. and A. Farrel, &ldquo;Improving Awareness of Running Code: The Implementation Status Section,&rdquo; July&nbsp;2013.</span><span>)</span></a>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.
+<p>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <a class='info' href='#RFC6982'>[RFC6982]<span> (</span><span class='info'>Sheffer, Y. and A. Farrel, &ldquo;Improving Awareness of Running Code: The Implementation Status Section,&rdquo; July&nbsp;2013.</span><span>)</span></a>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.
 </p>
 <p>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".
 </p>
-<p>
+<a name="implementation-eclipse-lyo"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+Eclipse Lyo</h3>
 
-            </p>
+<p>
+               </p>
 <blockquote class="text">
-<p>...
+<p>Organization: IBM developed and contributed to the <a href='http://eclipse.org/lyo'>Eclipse Lyo project</a>.
+</p>
+<p>Name: Eclipse Lyo <a href='http://wiki.eclipse.org/Lyo/BuildLDPSample'>"LDP reference implementation"</a>
+</p>
+<p>Description: A very simple reference implementation for W3C Linked Data Platform (LDP) using some base Java technologies such as JAX-RS 2.0 and Apache Jena. The goals of this reference implementation is to experiment with validating the concepts in the specification and understanding what a SDK might look like to build LDP-compliant servers. Additional goal is to validate the approach for usage in OSLC4J SDK for building <a href='http://open-services.net'>OSLC</a> clients and servers.
+</p>
+<p>Maturity: Early prototype/alpha.
+</p>
+<p>Coverage: All parts of the specification were covered for server requirements.
+</p>
+<p>Licensing: Freely distributable (<a href='http://www.eclipse.org/legal/epl-v10.html'>Eclipse Public License (EPL)</a> and <a href='http://www.eclipse.org/org/documents/edl-v10.php'>Eclipse Distribution License (EDL)</a>).
+</p>
+<p>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described in <a href='http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html'>this blog post</a>.
+</p>
+<p>Contact: Steve Speicher &lt;sspeiche@gmail.com>
 </p>
 </blockquote><p>
-         
+            
+</p>
+<a name="implementation-rwwio"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
+RWW.I/O</h3>
+
+<p>
+               </p>
+<blockquote class="text">
+<p>Organization: No particular organization. The work done is part of project <a href='https://rww.io/'>RWW.I/O</a>.
+</p>
+<p>Name: RWW.I/O - personal linked data storage.
+</p>
+<p>Description: A minimal support for LDP is now included in RWW.I/O, which is a personal linked data storage space, following the structure of a unix file system. Currently, only LDPCs are supported, since the LDPRs are always files or directories that are being managed through RESTful operations. RWW.I/O encourages the use of .meta files to semantically describe non-LD resources (e.g. images, html, js, css, etc.), and the use of .acl files for access control rules using the WAC vocabulary. Both .meta and .acl should be used per file (i.e. photo.jpg will have a .meta.photo.jpg and a .acl.photo.jpg).
+</p>
+<p>Maturity: Beta until more features from LDP spec are included (if necessary).
+</p>
+<p>Coverage: LDPCs on the server side, pagination and Accept-Post header. You can test LDPC support like this: curl -H "Accept: text/turtle" https://deiu.rww.io/public/?p=1 ; You can test Accept-Post header like this: curl -v -X OPTIONS -H "Accept: text/turtle" https://deiu.rww.io/public/
+</p>
+<p>Licensing: MIT license. Source code is available <a href='https://github.com/deiu/rww.io'>on GitHub</a>.
+</p>
+<p>Implementation Experience: Implementing current LDP features in RWW.I/O was trivial. I've also decided to add the Accept-Post header to HEAD replies, as it helps to reduce the number of requests for a client trying to discover more information about the server.
+</p>
+<p>Contact: Andrei Sambra &lt;andrei.sambra@gmail.com>
+</p>
+</blockquote><p>
+            
 </p>
 <a name="security-considerations"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -341,42 +396,74 @@ Open Issues</h3>
 <p>
             </p>
 <ul class="text">
+<li>All references to HTTP currently reference RFC 2616, except for the ABNF reference of the header field value, which references the latest HTTPbis draft. The final version should make sure that all references are to the same version of HTTP, either RFC 2616, or the updated HTTPbis version currently being finalized.
+</li>
 <li>Accept-Post currently uses the "media range" concept of HTTP's Accept header field. An alternative would be only support fully specified media types, which is what the Accept-Patch header field is doing. This latter solution is more constrained, and fails to address some uses cases, such as AtomPub's way of exposing collection support for POST requests.
+</li>
+<li>While "accept-post" is currently defined in the "HTTP Link Hints" draft <a class='info' href='#I-D.nottingham-link-hint'>[I&#8209;D.nottingham&#8209;link&#8209;hint]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a>, it would be good to align the way in which they work. Currently, the "accept-post" of link hints allows a list of specific media types, whereas the Accept-Post header field may contain "media ranges".
 </li>
 </ul><p>
          
 </p>
-<a name="rfc.references"></a><br /><hr />
+<a name="anchor2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.9"></a><h3>9.&nbsp;
+Change Log</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.1"></a><h3>9.1.&nbsp;
+From -00 to -01</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Changed ABNF for header field from RFC 2616 to HTTPbis convention (only specify the header field value grammar).
+</li>
+<li>Added implementations (all from the LDP community for now).
+</li>
+<li>Added open issue for aligning accept-post as defined by the "HTTP Link Hints" draft.
+</li>
+</ul><p>
+            
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.10"></a><h3>10.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>9.1.&nbsp;Normative References</h3>
+<h3>10.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="RFC2119">[1]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
 <td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC2616">[2]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC3864">[3]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC3864">[RFC3864]</a></td>
 <td class="author-text">Klyne, G., Nottingham, M., and J. Mogul, &ldquo;<a href="http://tools.ietf.org/html/rfc3864">Registration Procedures for Message Header Fields</a>,&rdquo; BCP&nbsp;90, RFC&nbsp;3864, September&nbsp;2004 (<a href="http://www.rfc-editor.org/rfc/rfc3864.txt">TXT</a>).</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>9.2.&nbsp;Non-Normative References</h3>
+<h3>10.2.&nbsp;Non-Normative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="RFC5789">[4]</a></td>
-<td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="W3C.WD-ldp-20130307">[5]</a></td>
-<td class="author-text">Speicher, S. and J. Arwe, &ldquo;<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">Linked Data Platform 1.0</a>,&rdquo; World Wide Web Consortium WD&nbsp;WD-ldp-20130307, March&nbsp;2013 (<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">HTML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC5023">[6]</a></td>
-<td class="author-text">Gregorio, J. and B. de hOra, &ldquo;<a href="http://tools.ietf.org/html/rfc5023">The Atom Publishing Protocol</a>,&rdquo; RFC&nbsp;5023, October&nbsp;2007 (<a href="ftp://ftp.isi.edu/in-notes/rfc5023.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC4287">[7]</a></td>
+<tr><td class="author-text" valign="top"><a name="I-D.ietf-httpbis-p2-semantics">[I-D.ietf-httpbis-p2-semantics]</a></td>
+<td class="author-text">Fielding, R. and J. Reschke, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-httpbis-p2-semantics-23">Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a>,&rdquo; draft-ietf-httpbis-p2-semantics-23 (work in progress), July&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-httpbis-p2-semantics-23.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="I-D.nottingham-link-hint">[I-D.nottingham-link-hint]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/draft-nottingham-link-hint-00">HTTP Link Hints</a>,&rdquo; draft-nottingham-link-hint-00 (work in progress), June&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-nottingham-link-hint-00.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4287">[RFC4287]</a></td>
 <td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="RFC6982">[8]</a></td>
+<tr><td class="author-text" valign="top"><a name="RFC5023">[RFC5023]</a></td>
+<td class="author-text">Gregorio, J. and B. de hOra, &ldquo;<a href="http://tools.ietf.org/html/rfc5023">The Atom Publishing Protocol</a>,&rdquo; RFC&nbsp;5023, October&nbsp;2007 (<a href="ftp://ftp.isi.edu/in-notes/rfc5023.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5789">[RFC5789]</a></td>
+<td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6982">[RFC6982]</a></td>
 <td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.WD-ldp-20130307">[W3C.WD-ldp-20130307]</a></td>
+<td class="author-text">Speicher, S. and J. Arwe, &ldquo;<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">Linked Data Platform 1.0</a>,&rdquo; World Wide Web Consortium WD&nbsp;WD-ldp-20130307, March&nbsp;2013 (<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">HTML</a>).</td></tr>
 </table>
 
 <a name="acknowledgements"></a><br /><hr />
@@ -384,7 +471,9 @@ References</h3>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>
 
-<p>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <a class='info' href='#W3C.WD-ldp-20130307'>[5]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a>. Thanks for comments and suggestions provided by the working group as a whole.
+<p>Thanks for comments and suggestions provided by Julian Reschke.
+</p>
+<p>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <a class='info' href='#W3C.WD-ldp-20130307'>[W3C.WD&#8209;ldp&#8209;20130307]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a>; thanks for comments and suggestions provided by the working group as a whole.
 </p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
