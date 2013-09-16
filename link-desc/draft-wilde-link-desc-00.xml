@@ -141,6 +141,43 @@
             <t>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.</t>
          </section>
       </section>
+      <section title="Examples" anchor="examples">
+         <t>...</t>
+         <section title="Editable Entry" anchor="example-edit">
+            <t>...</t>
+            <t>All the example use "documentation" elements which are entirely optional, but can help to improve the usefulness of link descriptions for developers.</t>
+            <figure>
+               <artwork type="xml"><![CDATA[<link xmlns="urn:ietf:rfc:XXXX" href="http://example.org/item42">
+   <hint name="allow" value=' [ "PUT" ] '>
+      <documentation xml:lang="en">For this particular resource, only PUT is supported. Specifically, this resource does not accept DELETE requests.</documentation>
+   </hint>
+   <hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '>
+      <documentation xml:lang="en">Updates are accepted as PNG or JPEG representations.</documentation>
+   </hint>
+   <documentation xml:lang="en">Template for accessing an AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link by default allowing PUT/DELETE as per RFC 5023.</documentation>
+</link>]]></artwork>
+            </figure>
+         </section>
+         <section title="Pageable Collection" anchor="example-paging">
+            <t>...</t>
+            <figure>
+               <artwork type="xml"><![CDATA[<link xmlns="urn:ietf:rfc:XXXX" hreft="http://example.org/{?pagesize,page}">
+   <var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10">
+      <restriction base="positiveInteger">
+         <minInclusive value="1"/>
+         <maxInclusive value="100"/>
+      </restriction>
+      <documentation xml:lang="en">Number of returned items per page.</documentation>
+   </var>
+   <var name="page" concept="http://example.com/feedpaging/page" default="1">
+      <restriction base="positiveInteger"/>
+      <documentation xml:lang="en">Page number of the returned page (based on the requested pagesize or a service-defined default).</documentation>
+   </var>
+   <documentation xml:lang="en">Template for accessing a paged feed of entries at http://www.example.com/feed, with client controls for the page size, and the returned page.</documentation>
+</link>]]></artwork>
+            </figure>
+         </section>
+      </section>
       <section title="IANA Considerations" anchor="iana">
          <section title="Media Type" anchor="iana-media-type">
             <t>The Internet media type <xref target="RFC6838"/> for a Link Description document is application/ldesc+xml (using the "+xml" suffix as defined and registered by RFC 6839 <xref target="RFC6839"/>).</t>
@@ -179,7 +216,7 @@
             <t>
                <list>
                   <t>Relation Name: ldesc</t>
-                  <t>Description: Linking to a resource that can be used as a link description for requesting runtime information about a particular link's interaction affordances.</t>
+                  <t>Description: Linking to a resource that can be used as a link description for requesting runtime information about a particular context's interaction affordances.</t>
                   <t>Reference: RFC XXXX</t>
                   <t>Notes: Link Descriptions can be used in all scenarios where clients want to create requests that represent a query into the context resource. The media type of the context resource and the media type of the link description resource are not constrained by this specification.</t>
                </list>
