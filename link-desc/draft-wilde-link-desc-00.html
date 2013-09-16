@@ -214,22 +214,22 @@ General Concepts<br />
 Link Description Structure<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#variable-struct">4.3.</a>&nbsp;
 Variable Description Structure<br />
-<a href="#iana">5.</a>&nbsp;
-IANA Considerations<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-media-type">5.1.</a>&nbsp;
-Media Type<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-link-relation">5.2.</a>&nbsp;
-Link Relation<br />
-<a href="#implementation-status">6.</a>&nbsp;
-Implementation Status<br />
-<a href="#security-considerations">7.</a>&nbsp;
-Security Considerations<br />
-<a href="#examples">8.</a>&nbsp;
+<a href="#examples">5.</a>&nbsp;
 Examples<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#opensearch">8.1.</a>&nbsp;
-OpenSearch<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#feed-queries">8.2.</a>&nbsp;
-Atom Feeds<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-edit">5.1.</a>&nbsp;
+Editable Entry<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-paging">5.2.</a>&nbsp;
+Pageable Collection<br />
+<a href="#iana">6.</a>&nbsp;
+IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-media-type">6.1.</a>&nbsp;
+Media Type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-link-relation">6.2.</a>&nbsp;
+Link Relation<br />
+<a href="#implementation-status">7.</a>&nbsp;
+Implementation Status<br />
+<a href="#security-considerations">8.</a>&nbsp;
+Security Considerations<br />
 <a href="#open-issues">9.</a>&nbsp;
 Open Issues<br />
 <a href="#anchor1">10.</a>&nbsp;
@@ -426,14 +426,58 @@ Variable Description Structure</h3>
 </p>
 <p>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.
 </p>
-<a name="iana"></a><br /><hr />
+<a name="examples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
+Examples</h3>
+
+<p>...
+</p>
+<a name="example-edit"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+Editable Entry</h3>
+
+<p>...
+</p>
+<p>All the example use "documentation" elements which are entirely optional, but can help to improve the usefulness of link descriptions for developers.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;link xmlns="urn:ietf:rfc:XXXX" href="http://example.org/item42"&gt;
+   &lt;hint name="allow" value=' [ "PUT" ] '&gt;
+      &lt;documentation xml:lang="en"&gt;For this particular resource, only PUT is supported. Specifically, this resource does not accept DELETE requests.&lt;/documentation&gt;
+   &lt;/hint&gt;
+   &lt;hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '&gt;
+      &lt;documentation xml:lang="en"&gt;Updates are accepted as PNG or JPEG representations.&lt;/documentation&gt;
+   &lt;/hint&gt;
+   &lt;documentation xml:lang="en"&gt;Template for accessing an AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link by default allowing PUT/DELETE as per RFC 5023.&lt;/documentation&gt;
+&lt;/link&gt;</pre></div>
+<a name="example-paging"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Pageable Collection</h3>
+
+<p>...
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;link xmlns="urn:ietf:rfc:XXXX" hreft="http://example.org/{?pagesize,page}"&gt;
+   &lt;var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10"&gt;
+      &lt;restriction base="positiveInteger"&gt;
+         &lt;minInclusive value="1"/&gt;
+         &lt;maxInclusive value="100"/&gt;
+      &lt;/restriction&gt;
+      &lt;documentation xml:lang="en"&gt;Number of returned items per page.&lt;/documentation&gt;
+   &lt;/var&gt;
+   &lt;var name="page" concept="http://example.com/feedpaging/page" default="1"&gt;
+      &lt;restriction base="positiveInteger"/&gt;
+      &lt;documentation xml:lang="en"&gt;Page number of the returned page (based on the requested pagesize or a service-defined default).&lt;/documentation&gt;
+   &lt;/var&gt;
+   &lt;documentation xml:lang="en"&gt;Template for accessing a paged feed of entries at http://www.example.com/feed, with client controls for the page size, and the returned page.&lt;/documentation&gt;
+&lt;/link&gt;</pre></div>
+<a name="iana"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 IANA Considerations</h3>
 
 <a name="iana-media-type"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
 Media Type</h3>
 
 <p>The Internet media type <a class='info' href='#RFC6838'>[RFC6838]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for a Link Description document is application/ldesc+xml (using the "+xml" suffix as defined and registered by RFC 6839 <a class='info' href='#RFC6839'>[RFC6839]<span> (</span><span class='info'>Hansen, T. and A. Melnikov, &ldquo;Additional Media Type Structured Syntax Suffixes,&rdquo; January&nbsp;2013.</span><span>)</span></a>).
@@ -457,7 +501,7 @@ Media Type</h3>
 
 <p>Encoding considerations: Same as encoding considerations of application/xml as specified in <a class='info' href='#RFC3023'>[RFC3023]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
 </p>
-<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[RFC3023]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;7<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[RFC3023]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;8<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
 </p>
 <p>Interoperability considerations: N/A
 </p>
@@ -492,7 +536,7 @@ Media Type</h3>
 </p>
 <a name="iana-link-relation"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
 Link Relation</h3>
 
 <p>The link relation type below will be registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
@@ -502,7 +546,7 @@ Link Relation</h3>
 <blockquote class="text">
 <p>Relation Name: ldesc
 </p>
-<p>Description: Linking to a resource that can be used as a link description for requesting runtime information about a particular link's interaction affordances.
+<p>Description: Linking to a resource that can be used as a link description for requesting runtime information about a particular context's interaction affordances.
 </p>
 <p>Reference: RFC XXXX
 </p>
@@ -513,7 +557,7 @@ Link Relation</h3>
 </p>
 <a name="implementation-status"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.7"></a><h3>7.&nbsp;
 Implementation Status</h3>
 
 <p>Note to RFC Editor: Please remove this section before publication.
@@ -528,35 +572,10 @@ Implementation Status</h3>
 </p>
 <a name="security-considerations"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.8"></a><h3>8.&nbsp;
 Security Considerations</h3>
 
 <p>...
-</p>
-<a name="examples"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8"></a><h3>8.&nbsp;
-Examples</h3>
-
-<p>...
-</p>
-<a name="opensearch"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
-OpenSearch</h3>
-
-<p>...
-</p>
-<a name="feed-queries"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
-Atom Feeds</h3>
-
-<p>...
-</p>
-<p>"Feed Paging and Archiving" specified in RFC 5005 <a class='info' href='#RFC5005'>[RFC5005]<span> (</span><span class='info'>Nottingham, M., &ldquo;Feed Paging and Archiving,&rdquo; September&nbsp;2007.</span><span>)</span></a> 
-</p>
-<p>Maybe suggest to use profiles?
 </p>
 <a name="open-issues"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -566,7 +585,7 @@ Open Issues</h3>
 <p>
             </p>
 <blockquote class="text">
-<p>If and how to use profiles (example in <a class='info' href='#examples'>Section&nbsp;8<span> (</span><span class='info'>Examples</span><span>)</span></a>); if profile use is recommended, define a suggested profile URI for other specs to use?
+<p>If and how to use profiles (example in <a class='info' href='#examples'>Section&nbsp;5<span> (</span><span class='info'>Examples</span><span>)</span></a>); if profile use is recommended, define a suggested profile URI for other specs to use?
 </p>
 <p>How to handle variables in Level 4 templates that are supposed to have composite values?
 </p>

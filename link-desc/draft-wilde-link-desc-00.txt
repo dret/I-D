@@ -86,24 +86,24 @@ Table of Contents
      4.1.  General Concepts . . . . . . . . . . . . . . . . . . . . . 10
      4.2.  Link Description Structure . . . . . . . . . . . . . . . . 11
      4.3.  Variable Description Structure . . . . . . . . . . . . . . 11
-   5.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 11
-     5.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . . 11
-     5.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 13
-   6.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 13
-   7.  Security Considerations  . . . . . . . . . . . . . . . . . . . 14
-   8.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
-     8.1.  OpenSearch . . . . . . . . . . . . . . . . . . . . . . . . 14
-     8.2.  Atom Feeds . . . . . . . . . . . . . . . . . . . . . . . . 14
-   9.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   5.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 11
+     5.1.  Editable Entry . . . . . . . . . . . . . . . . . . . . . . 11
+     5.2.  Pageable Collection  . . . . . . . . . . . . . . . . . . . 12
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 12
+     6.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . . 12
+     6.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 14
+   7.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 14
+   8.  Security Considerations  . . . . . . . . . . . . . . . . . . . 15
+   9.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 15
    10. Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 15
      10.1. Prior to -00 . . . . . . . . . . . . . . . . . . . . . . . 15
-   11. References . . . . . . . . . . . . . . . . . . . . . . . . . . 15
-     11.1. Normative References . . . . . . . . . . . . . . . . . . . 15
+   11. References . . . . . . . . . . . . . . . . . . . . . . . . . . 16
+     11.1. Normative References . . . . . . . . . . . . . . . . . . . 16
      11.2. Non-Normative References . . . . . . . . . . . . . . . . . 16
    Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 17
    Appendix B.  Link Description Schema . . . . . . . . . . . . . . . 17
-   Appendix C.  XSLT for Generating Link Description HTML . . . . . . 20
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 25
+   Appendix C.  XSLT for Generating Link Description HTML . . . . . . 21
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 26
 
 
 
@@ -600,15 +600,15 @@ Internet-Draft           HTTP Link Descriptions           September 2013
    elements to add human- or machine-readable descriptions.
 
 
-5.  IANA Considerations
+5.  Examples
 
-5.1.  Media Type
+   ...
 
-   The Internet media type [RFC6838] for a Link Description document is
-   application/ldesc+xml (using the "+xml" suffix as defined and
-   registered by RFC 6839 [RFC6839]).
+5.1.  Editable Entry
 
+   ...
 
+   All the example use "documentation" elements which are entirely
 
 
 
@@ -617,6 +617,45 @@ Wilde                    Expires March 20, 2014                [Page 11]
 Internet-Draft           HTTP Link Descriptions           September 2013
 
 
+   optional, but can help to improve the usefulness of link descriptions
+   for developers.
+<link xmlns="urn:ietf:rfc:XXXX" href="http://example.org/item42">
+   <hint name="allow" value=' [ "PUT" ] '>
+      <documentation xml:lang="en">For this particular resource, only PUT is supported. Specifically, this resource does not accept DELETE requests.</documentation>
+   </hint>
+   <hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '>
+      <documentation xml:lang="en">Updates are accepted as PNG or JPEG representations.</documentation>
+   </hint>
+   <documentation xml:lang="en">Template for accessing an AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link by default allowing PUT/DELETE as per RFC 5023.</documentation>
+</link>
+
+5.2.  Pageable Collection
+
+   ...
+<link xmlns="urn:ietf:rfc:XXXX" hreft="http://example.org/{?pagesize,page}">
+   <var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10">
+      <restriction base="positiveInteger">
+         <minInclusive value="1"/>
+         <maxInclusive value="100"/>
+      </restriction>
+      <documentation xml:lang="en">Number of returned items per page.</documentation>
+   </var>
+   <var name="page" concept="http://example.com/feedpaging/page" default="1">
+      <restriction base="positiveInteger"/>
+      <documentation xml:lang="en">Page number of the returned page (based on the requested pagesize or a service-defined default).</documentation>
+   </var>
+   <documentation xml:lang="en">Template for accessing a paged feed of entries at http://www.example.com/feed, with client controls for the page size, and the returned page.</documentation>
+</link>
+
+
+6.  IANA Considerations
+
+6.1.  Media Type
+
+   The Internet media type [RFC6838] for a Link Description document is
+   application/ldesc+xml (using the "+xml" suffix as defined and
+   registered by RFC 6839 [RFC6839]).
+
       Type name: application
 
       Subtype name: ldesc+xml
@@ -624,6 +663,15 @@ Internet-Draft           HTTP Link Descriptions           September 2013
       Required parameters: none
 
       Optional parameters: profile
+
+
+
+
+
+Wilde                    Expires March 20, 2014                [Page 12]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
 
          The "profile" link relation [RFC6906] allows "resource
          representations to indicate that they are following one or more
@@ -643,7 +691,7 @@ Internet-Draft           HTTP Link Descriptions           September 2013
 
       Security considerations: This media type has all of the security
       considerations described in [RFC3023], plus those listed in
-      Section 7.
+      Section 8.
 
       Interoperability considerations: N/A
 
@@ -665,14 +713,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
       Person & email address to contact for further information: Erik
       Wilde <dret@berkeley.edu>
 
-
-
-
-Wilde                    Expires March 20, 2014                [Page 12]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
       Intended usage: COMMON
 
       Restrictions on usage: none
@@ -681,7 +721,15 @@ Internet-Draft           HTTP Link Descriptions           September 2013
 
       Change controller: IETF
 
-5.2.  Link Relation
+
+
+
+Wilde                    Expires March 20, 2014                [Page 13]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
+6.2.  Link Relation
 
    The link relation type below will be registered by IANA per Section
    6.2.1 of RFC 5988 [RFC5988]:
@@ -690,7 +738,7 @@ Internet-Draft           HTTP Link Descriptions           September 2013
 
       Description: Linking to a resource that can be used as a link
       description for requesting runtime information about a particular
-      link's interaction affordances.
+      context's interaction affordances.
 
       Reference: RFC XXXX
 
@@ -701,7 +749,7 @@ Internet-Draft           HTTP Link Descriptions           September 2013
       this specification.
 
 
-6.  Implementation Status
+7.  Implementation Status
 
    Note to RFC Editor: Please remove this section before publication.
 
@@ -721,44 +769,30 @@ Internet-Draft           HTTP Link Descriptions           September 2013
    According to RFC 6982, "this will allow reviewers and working groups
    to assign due consideration to documents that have the benefit of
    running code, which may serve as evidence of valuable experimentation
-
-
-
-Wilde                    Expires March 20, 2014                [Page 13]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
    and feedback that have made the implemented protocols more mature.
    It is up to the individual working groups to use this information as
    they see fit".
 
 
-7.  Security Considerations
+
+
+
+
+
+
+Wilde                    Expires March 20, 2014                [Page 14]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
+8.  Security Considerations
 
    ...
-
-
-8.  Examples
-
-   ...
-
-8.1.  OpenSearch
-
-   ...
-
-8.2.  Atom Feeds
-
-   ...
-
-   "Feed Paging and Archiving" specified in RFC 5005 [RFC5005]
-
-   Maybe suggest to use profiles?
 
 
 9.  Open Issues
 
-      If and how to use profiles (example in Section 8); if profile use
+      If and how to use profiles (example in Section 5); if profile use
       is recommended, define a suggested profile URI for other specs to
       use?
 
@@ -777,14 +811,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
       Is there a concept of how Template Descriptions (and thus URI
       Templates) can be reused?  Should there be an inclusion facility
       or something along those lines?  If so, what's the model for that?
-
-
-
-Wilde                    Expires March 20, 2014                [Page 14]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
       Initial thoughts on possibilities can be found on this page [3]
 
       Should there be some recommended link relation to use when linking
@@ -807,6 +833,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
    draft was exclusively focusing on interactions with links driven by
    URI Templates [RFC6570], instead of looking at links in general, it
    was sufficiently distinct to start a new draft, instead of evolving
+
+
+
+Wilde                    Expires March 20, 2014                [Page 15]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
    the existing one.
 
 
@@ -833,14 +867,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
    [RFC6570]  Gregorio, J., Fielding, R., Hadley, M., Nottingham, M.,
               and D. Orchard, "URI Template", RFC 6570, March 2012.
 
-
-
-
-Wilde                    Expires March 20, 2014                [Page 15]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
    [XSD-1]    Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney,
               "XML Schema Part 1: Structures Second Edition", World Wide
               Web Consortium Recommendation REC-xmlschema-1-20041028,
@@ -862,6 +888,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
               RFC 3986, January 2005.
+
+
+
+
+Wilde                    Expires March 20, 2014                [Page 16]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
 
    [RFC5005]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
               September 2007.
@@ -889,14 +923,6 @@ URIs
 
    [2]  <https://github.com/dret/I-D/tree/master/link-desc>
 
-
-
-
-Wilde                    Expires March 20, 2014                [Page 16]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
    [3]  <http://dret.typepad.com/dretblog/2012/12/
         structuring-uri-templates.html>
 
@@ -919,6 +945,14 @@ Appendix B.  Link Description Schema
             <xs:documentation>Representing the type for URI template values according to RFC 6570. This is probably too complicated to cover with a regular expression in any reasonable way, so type enforcement is not done by the schema.</xs:documentation>
         </xs:annotation>
         <xs:restriction base="xs:string"/>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 17]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
     </xs:simpleType>
     <xs:group name="descriptions">
         <xs:choice>
@@ -945,14 +979,6 @@ Appendix B.  Link Description Schema
     </xs:group>
     <!-- these are simplified versions of the types for facet elements as defined in the schema for schemas at http://www.w3.org/2001/XMLSchema.xsd -->
     <xs:complexType name="facet">
-
-
-
-Wilde                    Expires March 20, 2014                [Page 17]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
         <xs:complexContent>
             <xs:restriction base="xs:anyType">
                 <xs:attribute name="value" use="required"/>
@@ -975,6 +1001,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                             <xs:complexType>
                                 <xs:choice maxOccurs="unbounded" minOccurs="0">
                                     <xs:element name="minExclusive" type="ld:facet"/>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 18]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                                     <xs:element name="minInclusive" type="ld:facet"/>
                                     <xs:element name="maxExclusive" type="ld:facet"/>
                                     <xs:element name="maxInclusive" type="ld:facet"/>
@@ -1001,14 +1035,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                                             <xs:restriction base="xs:NMTOKEN">
                                                                 <xs:enumeration value="preserve"/>
                                                                 <xs:enumeration value="replace"/>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 18]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
                                                                 <xs:enumeration value="collapse"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
@@ -1031,6 +1057,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                     </xs:sequence>
                     <xs:attribute name="name" use="required"/>
                     <xs:attribute name="concept" type="xs:anyURI" use="optional">
+
+
+
+Wilde                    Expires March 20, 2014                [Page 19]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                         <xs:annotation>
                             <xs:documentation>Identifies the variable by referring to a concept URI.</xs:documentation>
                         </xs:annotation>
@@ -1057,14 +1091,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                 <xs:simpleType>
                                     <xs:restriction base="xs:token">
                                         <xs:annotation>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 19]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
                                             <xs:documentation>The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.</xs:documentation>
                                         </xs:annotation>
                                         <xs:enumeration value="allow"/>
@@ -1087,6 +1113,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                         <xs:annotation>
                             <xs:documentation>It is not allowed to have more than one hint with the same @name on the same link.</xs:documentation>
                         </xs:annotation>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 20]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                     </xs:assert>
                 </xs:complexType>
             </xs:element>
@@ -1113,14 +1147,6 @@ Appendix C.  XSLT for Generating Link Description HTML
                     ul { margin : 0 }
                     .msg { color : #C0C0C0 }
                 </style>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 20]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
             </head>
             <body>
                 <h1>Link Descriptions</h1>
@@ -1143,6 +1169,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                             <code>
                                 <xsl:text>rel="</xsl:text>
                                 <xsl:value-of select="@rel"/>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 21]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                                 <xsl:text>"</xsl:text>
                             </code>
                         </h3>
@@ -1169,14 +1203,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                     <th>Variable</th>
                                     <th>Concept</th>
                                     <th>Default</th>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 21]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
                                     <th>Value Range</th>
                                     <th>Documentation</th>
                                     <th>Appinfo</th>
@@ -1199,6 +1225,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                                 <span class="msg">n/a</span>
                                             </xsl:otherwise>
                                         </xsl:choose>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 22]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                                     </td>
                                     <td>
                                         <xsl:choose>
@@ -1225,14 +1259,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                                                 <xsl:value-of select="ld:restriction/@base"/>
                                                             </xsl:when>
                                                             <xsl:otherwise>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 22]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
                                                                 <a href="http://www.w3.org/TR/xmlschema-2/#{ld:restriction/@base}">
                                                                     <xsl:value-of select="concat('xs:', ld:restriction/@base)"/>
                                                                 </a>
@@ -1255,6 +1281,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                                                 </code>
                                                             </li>
                                                         </xsl:for-each>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 23]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                                                     </ul>
                                                 </xsl:if>
                                             </xsl:when>
@@ -1281,14 +1315,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                     <th>Name</th>
                                     <th>Value</th>
                                     <th>Documentation</th>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 23]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
                                     <th>Appinfo</th>
                                 </tr>
                             </thead>
@@ -1311,6 +1337,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                     </td>
                                 </tr>
                             </xsl:for-each>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 24]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
                         </table>
                     </xsl:if>
                 </xsl:for-each>
@@ -1337,14 +1371,6 @@ Internet-Draft           HTTP Link Descriptions           September 2013
                                 </span>
                             </xsl:if>
                         </li>
-
-
-
-Wilde                    Expires March 20, 2014                [Page 24]
-
-Internet-Draft           HTTP Link Descriptions           September 2013
-
-
                     </xsl:for-each>
                 </ul>
             </xsl:when>
@@ -1367,6 +1393,14 @@ Internet-Draft           HTTP Link Descriptions           September 2013
             </xsl:when>
             <xsl:otherwise>
                 <span class="msg">n/a</span>
+
+
+
+Wilde                    Expires March 20, 2014                [Page 25]
+
+Internet-Draft           HTTP Link Descriptions           September 2013
+
+
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -1396,5 +1430,27 @@ Author's Address
 
 
 
-Wilde                    Expires March 20, 2014                [Page 25]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires March 20, 2014                [Page 26]
 
