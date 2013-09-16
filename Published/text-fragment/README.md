@@ -1,0 +1,1 @@
+Published as [RFC 5147: "URI Fragment Identifiers for the text/plain Media Type"](http://tools.ietf.org/html/rfc5147) (April 2008)

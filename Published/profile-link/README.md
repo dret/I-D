@@ -1,0 +1,1 @@
+Published as [RFC 6906: "The 'profile' Link Relation Type"](http://tools.ietf.org/html/rfc6906) (March 2013)

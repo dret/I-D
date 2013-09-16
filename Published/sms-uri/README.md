@@ -1,0 +1,1 @@
+Published as [RFC 5724: "URI Scheme for Global System for Mobile Communications \(GSM\) Short Message Service \(SMS\)"](http://tools.ietf.org/html/rfc5724) (January 2010)

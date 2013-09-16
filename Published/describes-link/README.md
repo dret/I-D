@@ -1,0 +1,1 @@
+Published as [RFC 6892: "The 'describes' Link Relation Type"](http://tools.ietf.org/html/rfc6892) (March 2013)
