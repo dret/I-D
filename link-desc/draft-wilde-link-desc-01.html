@@ -1,0 +1,1101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head><title>HTTP Link Descriptions</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="HTTP Link Descriptions">
+<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<style type='text/css'><!--
+        body {
+                font-family: verdana, charcoal, helvetica, arial, sans-serif;
+                font-size: small; color: #000; background-color: #FFF;
+                margin: 2em;
+        }
+        h1, h2, h3, h4, h5, h6 {
+                font-family: helvetica, monaco, "MS Sans Serif", arial, sans-serif;
+                font-weight: bold; font-style: normal;
+        }
+        h1 { color: #900; background-color: transparent; text-align: right; }
+        h3 { color: #333; background-color: transparent; }
+
+        td.RFCbug {
+                font-size: x-small; text-decoration: none;
+                width: 30px; height: 30px; padding-top: 2px;
+                text-align: justify; vertical-align: middle;
+                background-color: #000;
+        }
+        td.RFCbug span.RFC {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: bold; color: #666;
+        }
+        td.RFCbug span.hotText {
+                font-family: charcoal, monaco, geneva, "MS Sans Serif", helvetica, verdana, sans-serif;
+                font-weight: normal; text-align: center; color: #FFF;
+        }
+
+        table.TOCbug { width: 30px; height: 15px; }
+        td.TOCbug {
+                text-align: center; width: 30px; height: 15px;
+                color: #FFF; background-color: #900;
+        }
+        td.TOCbug a {
+                font-family: monaco, charcoal, geneva, "MS Sans Serif", helvetica, sans-serif;
+                font-weight: bold; font-size: x-small; text-decoration: none;
+                color: #FFF; background-color: transparent;
+        }
+
+        td.header {
+                font-family: arial, helvetica, sans-serif; font-size: x-small;
+                vertical-align: top; width: 33%;
+                color: #FFF; background-color: #666;
+        }
+        td.author { font-weight: bold; font-size: x-small; margin-left: 4em; }
+        td.author-text { font-size: x-small; }
+
+        /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+        a.info {
+                /* This is the key. */
+                position: relative;
+                z-index: 24;
+                text-decoration: none;
+        }
+        a.info:hover {
+                z-index: 25;
+                color: #FFF; background-color: #900;
+        }
+        a.info span { display: none; }
+        a.info:hover span.info {
+                /* The span will display just on :hover state. */
+                display: block;
+                position: absolute;
+                font-size: smaller;
+                top: 2em; left: -5em; width: 15em;
+                padding: 2px; border: 1px solid #333;
+                color: #900; background-color: #EEE;
+                text-align: left;
+        }
+
+        a { font-weight: bold; }
+        a:link    { color: #900; background-color: transparent; }
+        a:visited { color: #633; background-color: transparent; }
+        a:active  { color: #633; background-color: transparent; }
+
+        p { margin-left: 2em; margin-right: 2em; }
+        p.copyright { font-size: x-small; }
+        p.toc { font-size: small; font-weight: bold; margin-left: 3em; }
+        table.toc { margin: 0 0 0 3em; padding: 0; border: 0; vertical-align: text-top; }
+        td.toc { font-size: small; font-weight: bold; vertical-align: text-top; }
+
+        ol.text { margin-left: 2em; margin-right: 2em; }
+        ul.text { margin-left: 2em; margin-right: 2em; }
+        li      { margin-left: 3em; }
+
+        /* RFC-2629 <spanx>s and <artwork>s. */
+        em     { font-style: italic; }
+        strong { font-weight: bold; }
+        dfn    { font-weight: bold; font-style: normal; }
+        cite   { font-weight: normal; font-style: normal; }
+        tt     { color: #036; }
+        tt, pre, pre dfn, pre em, pre cite, pre span {
+                font-family: "Courier New", Courier, monospace; font-size: small;
+        }
+        pre {
+                text-align: left; padding: 4px;
+                color: #000; background-color: #CCC;
+        }
+        pre dfn  { color: #900; }
+        pre em   { color: #66F; background-color: #FFC; font-weight: normal; }
+        pre .key { color: #33C; font-weight: bold; }
+        pre .id  { color: #900; }
+        pre .str { color: #000; background-color: #CFF; }
+        pre .val { color: #066; }
+        pre .rep { color: #909; }
+        pre .oth { color: #000; background-color: #FCF; }
+        pre .err { background-color: #FCC; }
+
+        /* RFC-2629 <texttable>s. */
+        table.all, table.full, table.headers, table.none {
+                font-size: small; text-align: center; border-width: 2px;
+                vertical-align: top; border-collapse: collapse;
+        }
+        table.all, table.full { border-style: solid; border-color: black; }
+        table.headers, table.none { border-style: none; }
+        th {
+                font-weight: bold; border-color: black;
+                border-width: 2px 2px 3px 2px;
+        }
+        table.all th, table.full th { border-style: solid; }
+        table.headers th { border-style: none none solid none; }
+        table.none th { border-style: none; }
+        table.all td {
+                border-style: solid; border-color: #333;
+                border-width: 1px 2px;
+        }
+        table.full td, table.headers td, table.none td { border-style: none; }
+
+        hr { height: 1px; }
+        hr.insert {
+                width: 80%; border-style: none; border-width: 0;
+                color: #CCC; background-color: #CCC;
+        }
+--></style>
+</head>
+<body>
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
+<tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">EMC Corporation</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">September 16, 2013</td></tr>
+<tr><td class="header">Expires: March 20, 2014</td><td class="header">&nbsp;</td></tr>
+</table></td></tr></table>
+<h1><br />HTTP Link Descriptions<br />draft-wilde-link-desc-00</h1>
+
+<h3>Abstract</h3>
+
+<p>Interactions with many resources on the Web are driven by links, and these links often define certain expectations about the interactions (such as HTTP methods being used, media types being sent in the request, or URI parameters being used in a certain way). While these expectations are essential to define the possible framework for interactions, it may be useful to further narrow them down by providing link descriptions, which can help clients to gain more runtime knowledge about the resource they are about to interact with. This memo defines Link Descriptions, a model and associated media type that can be used to describe links by supporting descriptive markup for representing interaction information with links. Link Descriptions can be used by media types (by inclusion or by reference) that seek to make Link Descriptions runtime-capable, without having to create their own representation.
+</p>
+<h3>Note to Readers</h3>
+
+<p>Please discuss this draft on the <a href='https://www.ietf.org/mailman/listinfo/apps-discuss'>apps-discuss mailing list</a>.
+</p>
+<p>Online access to all versions and files is available on <a href='https://github.com/dret/I-D/tree/master/link-desc'>github</a>.
+</p>
+<h3>Status of this Memo</h3>
+<p>
+This Internet-Draft is submitted  in full
+conformance with the provisions of BCP&nbsp;78 and BCP&nbsp;79.</p>
+<p>
+Internet-Drafts are working documents of the Internet Engineering
+Task Force (IETF).  Note that other groups may also distribute
+working documents as Internet-Drafts.  The list of current
+Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>
+Internet-Drafts are draft documents valid for a maximum of six months
+and may be updated, replaced, or obsoleted by other documents at any time.
+It is inappropriate to use Internet-Drafts as reference material or to cite
+them other than as &ldquo;work in progress.&rdquo;</p>
+<p>
+This Internet-Draft will expire on March 20, 2014.</p>
+
+<h3>Copyright Notice</h3>
+<p>
+Copyright (c) 2013 IETF Trust and the persons identified as the
+document authors.  All rights reserved.</p>
+<p>
+This document is subject to BCP 78 and the IETF Trust's Legal
+Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info) in effect on the date of
+publication of this document.  Please review these documents
+carefully, as they describe your rights and restrictions with respect
+to this document. Code Components extracted from this document must
+include Simplified BSD License text as described in Section 4.e of
+the Trust Legal Provisions and are provided without warranty as
+described in the Simplified BSD License.</p>
+<a name="toc"></a><br /><hr />
+<h3>Table of Contents</h3>
+<p class="toc">
+<a href="#intro">1.</a>&nbsp;
+Introduction<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#intro-links">1.1.</a>&nbsp;
+Web Links<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#intro-templates">1.2.</a>&nbsp;
+URI Templates<br />
+<a href="#terminology">2.</a>&nbsp;
+Terminology<br />
+<a href="#description-concepts">3.</a>&nbsp;
+Description Concepts<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#describing-link-hints">3.1.</a>&nbsp;
+Link Hints<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#describing-variables">3.2.</a>&nbsp;
+Describing Variables<br />
+<a href="#link-desc">4.</a>&nbsp;
+Link Descriptions<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#concepts">4.1.</a>&nbsp;
+General Concepts<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#link-desc-struct">4.2.</a>&nbsp;
+Link Description Structure<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#variable-struct">4.3.</a>&nbsp;
+Variable Description Structure<br />
+<a href="#examples">5.</a>&nbsp;
+Examples<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-edit">5.1.</a>&nbsp;
+Editable Entry<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-paging">5.2.</a>&nbsp;
+Pageable Collection<br />
+<a href="#iana">6.</a>&nbsp;
+IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-media-type">6.1.</a>&nbsp;
+Media Type<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#iana-link-relation">6.2.</a>&nbsp;
+Link Relation<br />
+<a href="#implementation-status">7.</a>&nbsp;
+Implementation Status<br />
+<a href="#security-considerations">8.</a>&nbsp;
+Security Considerations<br />
+<a href="#open-issues">9.</a>&nbsp;
+Open Issues<br />
+<a href="#anchor1">10.</a>&nbsp;
+Change Log<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">10.1.</a>&nbsp;
+Prior to -00<br />
+<a href="#rfc.references1">11.</a>&nbsp;
+References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">11.1.</a>&nbsp;
+Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">11.2.</a>&nbsp;
+Non-Normative References<br />
+<a href="#anchor5">Appendix&nbsp;A.</a>&nbsp;
+Acknowledgements<br />
+<a href="#anchor6">Appendix&nbsp;B.</a>&nbsp;
+Link Description Schema<br />
+<a href="#anchor7">Appendix&nbsp;C.</a>&nbsp;
+XSLT for Generating Link Description HTML<br />
+<a href="#rfc.authors">&#167;</a>&nbsp;
+Author's Address<br />
+</p>
+<br clear="all" />
+
+<a name="intro"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1"></a><h3>1.&nbsp;
+Introduction</h3>
+
+<p>Interactions with resources found on the Web often are driven by following links (targeted at URIs <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a>), which can be either fixed links (described in <a class='info' href='#intro-links'>Section&nbsp;1.1<span> (</span><span class='info'>Web Links</span><span>)</span></a>), or can be templated links (using URI Templates <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a>) containing variables (described in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>). In both cases, the context of the link in most cases provides information that can be essential or helpful when it comes to following a link, which essentially means interacting with the link target: For fixed links, the context may provide (in most cases implicitly, through the use of typed links) allowed interaction methods (such as HTTP verbs) or expectations around the expected media type(s) in requests; for templated links, the context additionally may provide information about how to instantiate the variables provided in the URI Template. This memo defines a schema and a media type that can be used to (partially) represent this information, so that it becomes possible to represent a change in interaction affordances at runtime.
+</p>
+<p>Possible use cases for both scenarios (fixed and templated links) are as follows:
+</p>
+<p>
+            </p>
+<blockquote class="text">
+<p>Fixed Links: AtomPub <a class='info' href='#RFC5023'>[RFC5023]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a> defines an "edit" link relation, that informs clients that a link can be followed to read, update, or delete a resource. This means that a client encountering such a link would conclude that it can try to read, update, or delete the target resource. However, if the resource is not deletable, then an "edit" link could be annotated to indicate that the linked resource cannot be deleted. A client could ignore the annotation and still attempt to delete the resource, but the request would be likely to fail (unless the state of the resource changed in the meantime). This kind of information can be very useful for UIs, where it can be used to drive usability features such as disabling certain UI elements.
+</p>
+<p>Templated Links: URI Templates <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a> define a framework for how to represent and instantiate (with concrete variable values) templated URIs, but they don't describe how variables themselves are described, or can be constrained. If a collection resource for example supports paged access to the set of collection members, then it might be useful for a client to know the number of available pages. With this additional knowledge, it is possible to build applications and UIs that specifically take this knowledge into account to drive further interactions with the resource. For a paged collection, it may be a UI that provides direct links to all available pages (if that number is reasonably small). Again, if the collection changes in size between the link being generated, and the link interaction taking place, the information in the link description has become outdated. But this just means that either a client may request a page that doesn't exist anymore, or will not expect a page to exist that now exists. Both of these conditions can be handled well at the time when the client starts interacting with the linked resource.
+</p>
+</blockquote><p>
+         
+</p>
+<p>As described in both cases, it is possible for the link description to become outdated, leading to cases where the assumptions made by the client (based on the link description) and the link target itself do not match anymore. For this reason, ideally a resource should provide a (link) description for itself, allowing a client to update its expectations. However, since the service generating the link and the service providing the link target are loosely coupled, link descriptions can be used in links, in descriptions where services expose more runtime information about resources by providing link descriptions for themselves, or in both places.
+</p>
+<p>The following example shows hows both of these mechanisms can be used in one representation, which is based on Atom <a class='info' href='#RFC4287'>[RFC4287]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> and AtomPub <a class='info' href='#RFC5023'>[RFC5023]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a>. It also shows the two cases just described, with the first link description being one to "self", while the second link description is about a different resource.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX" &gt;
+    &lt;title&gt;Example Feed&lt;/title&gt;
+    &lt;link rel="self" href="http://example.org/?page=3" ld:hreft="http://example.org/{?page}"&gt;
+        &lt;ld:var name="page" concept="http://example.com/feedpaging/page" default="1"&gt;
+            &lt;ld:restriction base="positiveInteger"&gt;
+                &lt;ld:minInclusive value="1"/&gt;
+                &lt;ld:maxInclusive value="42"/&gt;
+            &lt;/ld:restriction&gt;
+        &lt;/ld:var&gt;
+    &lt;/link&gt;
+    &lt;link rel="next" href="http://example.org/?page=4"/&gt;
+    &lt;link rel="previous" href="http://example.org/?page=2"/&gt;
+    &lt;updated&gt;2003-12-13T18:30:02Z&lt;/updated&gt;
+    &lt;author&gt;
+        &lt;name&gt;John Doe&lt;/name&gt;
+    &lt;/author&gt;
+    &lt;id&gt;urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6&lt;/id&gt;
+    &lt;entry&gt;
+        &lt;title&gt;Atom-Powered Robots Run Amok&lt;/title&gt;
+        &lt;link href="http://example.org/2003/12/13/atom03"/&gt;
+        &lt;link rel="edit" href="http://example.org/item42"&gt;
+            &lt;ld:hint name="allow" value=' [ "PUT" ] '/&gt;
+            &lt;ld:hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '/&gt;
+        &lt;/link&gt;
+        &lt;id&gt;urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a&lt;/id&gt;
+        &lt;updated&gt;2003-12-13T18:30:02Z&lt;/updated&gt;
+        &lt;summary&gt;Some text.&lt;/summary&gt;
+    &lt;/entry&gt;
+&lt;/feed&gt;</pre></div>
+<p>The link to the feed itself is augmented with a URI Template described in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, which allows a client to understand that individual feed pages can be requested (assuming the consumer understands the "concept" identifiers for the described variables). The link to the entry is an augmented typed Web Link described in <a class='info' href='#intro-links'>Section&nbsp;1.1<span> (</span><span class='info'>Web Links</span><span>)</span></a>, which allows a consumer to understand that even though "edit" links typically can be followed via GET, PUT, and DELETE, this particular link should only be followed using a PUT request.
+</p>
+<p>It is worth noting that link descriptions of course can become outdated between the time such a link decription has been received by a client, and the time a client actually sends a request when following such a link (this is the case both for "self" links and links to other resources). This means that clients should never depend on link description being correct, because for example the "edit" link description shown above might start allowing DELETE requests again at any point in time.
+</p>
+<a name="intro-links"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.1"></a><h3>1.1.&nbsp;
+Web Links</h3>
+
+<p>One of the defining principles of many services provided on the Web is that they expose linked resources, so that clients can follow the links in order to accomplish application goals. "Web Linking" <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a> establishes a framework of typed links, allowing resources to expose typed links, which then can be followed by clients. While this framework allows clients to select links based on their types, it does not provide any support for additional runtime information about possible interactions with such a link. As outlined in the AtomPub example above, a link typed as "edit" (as defined and registered by AtomPub) by definition can be followed by using HTTP GET, PUT, or DELETE, and the typed link by itself cannot provide the additional information that some resource may allow updates, but disallows deletion.
+</p>
+<p>"Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[I&#8209;D.nottingham&#8209;link&#8209;hint]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> provide a framework of runtime hints that can be used to indicate information that might be made available by the link target resource itself, but ahead of time. For example, a link hint would be able to indicate on an "edit" link that the resource only allows PUT requests, which is something that could also be discovered by sending an HTTP request and getting an HTTP Allow header in the response. However, link hints can save overhead by avoiding round trips, and they also allow to minimize the chances of sending requests that will not succeed.
+</p>
+<p>While link hints can help to avoid overhead and drive client behavior, they are strictly optional. There should be no functional difference of what a client can achieve by using or ignoring link hints; they simply expose information that otherwise would be more costly to acquire.
+</p>
+<p>Since it is potentially expensive to provide link hints in representations (because they may involve interpreting access control data), it is perfectly possible that services provide link hints only on some requests. For example, it would be possible to design a service that served http://example.com/collection as a collection of items with embedded "edit" links, whereas http://example.com/collection?hints=true would result in a representation that would contain additional link hints for each individual "edit" link. This kind of design is outside of the scope of this memo, but it's helpful to illustrate the fact that link hints are nothing but optimizations of at which point during interactions certain information is provided.
+</p>
+<p>Currently, there is an overlap in what "Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[I&#8209;D.nottingham&#8209;link&#8209;hint]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> define, and what is proposed in this memo. Removing this overlap is captured in the "Open Issues" <a class='info' href='#open-issues'>Section&nbsp;9<span> (</span><span class='info'>Open Issues</span><span>)</span></a> and should be addressed during the development of both drafts.
+</p>
+<a name="intro-templates"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.1.2"></a><h3>1.2.&nbsp;
+URI Templates</h3>
+
+<p>While following links is the basic principle of interacting with resources on the web, in many cases, interactions with resources require clients to provide information in addition to just using a fixed URI in a request. In these cases, information can be provided in any way supported by the interaction protocol, and in case of HTTP, this often means that information is either embedded in the URI, and/or in the body of the request. For the first case, "URI Template" <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a> provides a standard that allows servers and clients to exchange information about the URIs that a service accepts. The standard specifies "a compact sequence of characters for describing a range of Uniform Resource Identifiers through variable expansion." It allows servers to publish their expectation how a URI should be created by substituting variables with values. Consider the following URI Template:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://www.example.com/collection{?pagesize,page}</pre></div>
+<p>This URI Template allows clients to expand it with two variables values, to end up with a concrete URI such as the following:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>http://www.example.com/collection?pagesize=10&amp;page=42</pre></div>
+<p>URI Templates cover the aspect of starting with a template with variables in it, assigning values to these variables, and then expanding the template into a URI that can be used for sending a request. URI Templates make no assumptions or statements about the value range of the variables, except for those aspects which are required to cover the process of expanding the template. In particular, for the example given above, there is no indication that the values are supposed to be positive integers (the simple data type), nor is there any indication that the service may apply certain limits such as a maximum page size (which may change depending on which paged resource is being accessed). As a side note, even if this basic type information was known, URI template expansion could still result in URIs that would not yield successful requests, such as when asking for a page that is beyond the number of pages that a collection has (in a given page size).
+</p>
+<p>The goal of Link Descriptions as defined in this memo is to allow servers to expose a description that provides support both at development time (when a developer looks at a media type that uses URI Templates) and at runtime (when a client wants to use a URI template as part of its application flow). Link Descriptions are intended to provide additional information that is not communicated by publishing URI Templates alone. The additional information is both targeted at machines and at humans. On the human-oriented Web, a Template Description can be seen as the equivalent of a help or documentation page that is linked to from a form, where users can learn more about the values they are supposed to submit within the form.
+</p>
+<p>As a concrete example, a link to a collection like the one above may be exposed in a link description as follows:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;link rel="items" href="http://www.example.com/collection" hreft="http://www.example.com/collection{?pagesize,page}"&gt;
+  &lt;var name="pagesize" concept="http://example.com/feedpaging/pagesize"/&gt;
+  &lt;var name="page" concept="http://example.com/feedpaging/page"/&gt;
+&lt;/link&gt;</pre></div>
+<p>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, by binding them to the local variable names. The concept URIs are pure identifiers for the purpose of link descriptions; i.e. they should not be considered dereferenceable, and the assumption is that consumers of link descriptions will only use them to match discovered concepts against known concepts. This design does not prohibit to make concept URIs dereferenceable, but this is outside of the scope of link descriptions.
+</p>
+<a name="terminology"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.2"></a><h3>2.&nbsp;
+Terminology</h3>
+
+<p>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a class='info' href='#RFC2119'>[RFC2119]<span> (</span><span class='info'>Bradner, S., &ldquo;Key words for use in RFCs to Indicate Requirement Levels,&rdquo; March&nbsp;1997.</span><span>)</span></a>.
+</p>
+<a name="description-concepts"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3"></a><h3>3.&nbsp;
+Description Concepts</h3>
+
+<p>The general idea of link descriptions is that they allow to annotate links (URIs or URI Templates) with context that clients can use when they choose to follow those links. In the XML syntax, descriptions are deliberately designed to echo the design of Atom's popular &lt;link> element, which serves as a blueprint for links in many media types. The main idea of link descriptions is to provide a framework which provides services that want to serve this kind of description with a starting point. If these services want, they can reuse the representations for this framework, in whole or in part.
+</p>
+<a name="describing-link-hints"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
+Link Hints</h3>
+
+<p>As mentioned already, "Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[I&#8209;D.nottingham&#8209;link&#8209;hint]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> as currently defined overlap with the concepts proposed in this memo. However, this memo goes further that link hints by not just providing hints for URIs, but for URI Templates as well. Based on the current link hint model, a link hint is a name/value pair, where the name is either a registered link hint, or a URI. The allowed value space depends on the link hint, and in the current model, structured values must be encoded in JSON. A hint may also contain application specific information or documentation, in an model of application information and documentation that has been inspired by XML Schema Part 1 <a class='info' href='#XSD-1'>[XSD&#8209;1]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>.
+</p>
+<p>A link may have any number of link hints, but only one link with a given name.
+</p>
+<a name="describing-variables"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
+Describing Variables</h3>
+
+<p>When a link uses a URI Template, then this template will very likely contain variables. Variables can be described in a variety of ways when using Link Descriptions. For each variable contained in the URI Template, it is possible to use the following description methods:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be identified by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferenceable and yield some representation.
+</p>
+<p>Datatype: Variables can be described in terms of using certain datatypes. The datatype vocabulary is that of XML Schema Part 2 <a class='info' href='#XSD-2'>[XSD&#8209;2]<span> (</span><span class='info'>Malhotra, A. and P. Biron, &ldquo;XML Schema Part 2: Datatypes Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>, plus all of the applicable facets of those datatypes. This allows Link Descriptions to constrain the set of allowed values. (This model does not cover any "co-constraints", i.e. dependencies across variables, or between variables and an external context.)
+</p>
+<p>Documentation: Documentation constructs can be associated with variables, which allows Link Descriptions to attach human-readable information to individual variables. The documentation constructs use the documentation design of XML Schema Part 1 <a class='info' href='#XSD-1'>[XSD&#8209;1]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. XML Schema's documentation model has the ability to support multi-lingual human-oriented documentation.
+</p>
+<p>Application Information: Application information constructs can be associated with variables, which allows Link Descriptions to attach machine-readable information to individual variables. The application information constructs use the application information design of XML Schema Part 1 <a class='info' href='#XSD-1'>[XSD&#8209;1]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>.
+</p>
+</blockquote><p>
+            
+</p>
+<p>For the purpose of this specification, the term "description" should be interpreted loosely. Some aspects of descriptions can be formal, such as the datatypes of variables. Thus, such a description can be used to drive general-purpose logic that knows no additional framework other than this specification. However, for most other description aspects (concepts, documentation, and application information), this specification does not prescribe a description framework; it simply provides a structure how to deliver these descriptions.
+</p>
+<p>The descriptions of "concepts" and "datatypes" are not mutually exclusive. On the contrary, a concept often will have associated constraints that essentially define a datatype. The difference is that while concepts are only described by identifier (allowing a consumer to identify a concept that they know about), datatypes are described with a built-in vocabulary (XSD datatypes and their facets), allowing clients to interpret the datatype description. As a consequence, when a consumer encounters an unknown concept, it adds little to the knowledge of the consumer, whereas a datatype description can always be interpreted and thus allows the consumer to learn about constraints of the associated variable in a declarative way. It may therefore make sense to combine concepts and datatypes, if the goal is to be as self-describing as possible.
+</p>
+<a name="link-desc"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4"></a><h3>4.&nbsp;
+Link Descriptions</h3>
+
+<p>Link Descriptions are based on a URI Template, and add descriptive elements that allow publishers of URI Templates to describe the URI Template as a whole, and to add individual descriptions of all variables in the template. The idea of Link Descriptions is that they are made available at design time and/or at runtime, so that clients encountering URI Templates as part of HTTP services can find more information about the template itself.
+</p>
+<p>Ideally, every URI template exposed in an HTTP service should be accompanied by a link to a Link Description. In those XML-based HTTP services where URI Templates are exposed in XML attributes named "hreft", the suggestion is to add a link to the corresponding Link Description in an "hrefd" XML attribute.
+</p>
+<a name="concepts"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
+General Concepts</h3>
+
+<p>As mentioned in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, most of the descriptions in this spec do not prescribe a specific description framework. While variables (<a class='info' href='#variable-struct'>Section&nbsp;4.3<span> (</span><span class='info'>Variable Description Structure</span><span>)</span></a>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 <a class='info' href='#XSD-1'>[XSD&#8209;1]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>. These elements carry a "source" attribute, which is used (quoting from <a class='info' href='#XSD-1'>[XSD&#8209;1]<span> (</span><span class='info'>Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;XML Schema Part 1: Structures Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>) "to supplement the local information." For example, when a description of a variable is done formally using a specific description framework, this would best translate to use appinfo elements, and to add an identifier to them which would identify the description framework in question. As a result, any client knowing this particular description framework would be able to interpret the variable description in the Link Description.
+</p>
+<a name="link-desc-struct"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+Link Description Structure</h3>
+
+<p>An interaction is described by including the URI Template itself, and optionally adding documentation and/or appinfo elements to add human- or machine-readable descriptions.
+</p>
+<a name="variable-struct"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.3"></a><h3>4.3.&nbsp;
+Variable Description Structure</h3>
+
+<p>A variable is described by specifying the variable name. Variables can refer to a "concept" associated with a variable, which can by identified by URI. This specification makes no provision how such a concept is defined and/or described/documented, but it allows consumers of a Link Description to match their understanding of certain concepts to those identifiers, which then establishes a binding between the concept, and the variable it has been bound to.
+</p>
+<p>A variable can have a default value, in which case the assumption is that excluding this variable from a request has the same effect as including it with the default value. Since Link Descriptions are runtime concepts, however, there is no guarantee that a service might not use a different value between the time when the Link Description was retrieved, and the time when a request based on it is being sent.
+</p>
+<p>Variable descriptions can optionally add documentation and/or appinfo elements to add human- or machine-readable descriptions.
+</p>
+<a name="examples"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5"></a><h3>5.&nbsp;
+Examples</h3>
+
+<p>...
+</p>
+<a name="example-edit"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+Editable Entry</h3>
+
+<p>...
+</p>
+<p>All the example use "documentation" elements which are entirely optional, but can help to improve the usefulness of link descriptions for developers.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;link xmlns="urn:ietf:rfc:XXXX" href="http://example.org/item42"&gt;
+   &lt;hint name="allow" value=' [ "PUT" ] '&gt;
+      &lt;documentation xml:lang="en"&gt;For this particular resource, only PUT is supported. Specifically, this resource does not accept DELETE requests.&lt;/documentation&gt;
+   &lt;/hint&gt;
+   &lt;hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '&gt;
+      &lt;documentation xml:lang="en"&gt;Updates are accepted as PNG or JPEG representations.&lt;/documentation&gt;
+   &lt;/hint&gt;
+   &lt;documentation xml:lang="en"&gt;Template for accessing an AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link by default allowing PUT/DELETE as per RFC 5023.&lt;/documentation&gt;
+&lt;/link&gt;</pre></div>
+<a name="example-paging"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Pageable Collection</h3>
+
+<p>...
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;link xmlns="urn:ietf:rfc:XXXX" hreft="http://example.org/{?pagesize,page}"&gt;
+   &lt;var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10"&gt;
+      &lt;restriction base="positiveInteger"&gt;
+         &lt;minInclusive value="1"/&gt;
+         &lt;maxInclusive value="100"/&gt;
+      &lt;/restriction&gt;
+      &lt;documentation xml:lang="en"&gt;Number of returned items per page.&lt;/documentation&gt;
+   &lt;/var&gt;
+   &lt;var name="page" concept="http://example.com/feedpaging/page" default="1"&gt;
+      &lt;restriction base="positiveInteger"/&gt;
+      &lt;documentation xml:lang="en"&gt;Page number of the returned page (based on the requested pagesize or a service-defined default).&lt;/documentation&gt;
+   &lt;/var&gt;
+   &lt;documentation xml:lang="en"&gt;Template for accessing a paged feed of entries at http://www.example.com/feed, with client controls for the page size, and the returned page.&lt;/documentation&gt;
+&lt;/link&gt;</pre></div>
+<a name="iana"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6"></a><h3>6.&nbsp;
+IANA Considerations</h3>
+
+<a name="iana-media-type"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+Media Type</h3>
+
+<p>The Internet media type <a class='info' href='#RFC6838'>[RFC6838]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for a Link Description document is application/ldesc+xml (using the "+xml" suffix as defined and registered by RFC 6839 <a class='info' href='#RFC6839'>[RFC6839]<span> (</span><span class='info'>Hansen, T. and A. Melnikov, &ldquo;Additional Media Type Structured Syntax Suffixes,&rdquo; January&nbsp;2013.</span><span>)</span></a>).
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>Type name: application
+</p>
+<p>Subtype name: ldesc+xml
+</p>
+<p>Required parameters: none
+</p>
+<p>Optional parameters: profile
+                     </p>
+<blockquote class="text">
+<p>The "profile" link relation <a class='info' href='#RFC6906'>[RFC6906]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a> allows "resource representations to indicate that they are following one or more profiles. A profile is defined not to alter the semantics of the resource representation itself, but to allow clients to learn about additional semantics (constraints, conventions, extensions) that are associated with the resource representation, in addition to those defined by the media type and possibly other mechanisms." If the application/ldesc+xml media type is use with a profile parameter, this refers to a profile as defined by <a class='info' href='#RFC6906'>[RFC6906]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>, making it easier for extensions of the link description media type to identify themselves.
+</p>
+</blockquote>
+                  
+
+<p>Encoding considerations: Same as encoding considerations of application/xml as specified in <a class='info' href='#RFC3023'>[RFC3023]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>.
+</p>
+<p>Security considerations: This media type has all of the security considerations described in <a class='info' href='#RFC3023'>[RFC3023]<span> (</span><span class='info'>Murata, M., St. Laurent, S., and D. Kohn, &ldquo;XML Media Types,&rdquo; January&nbsp;2001.</span><span>)</span></a>, plus those listed in <a class='info' href='#security-considerations'>Section&nbsp;8<span> (</span><span class='info'>Security Considerations</span><span>)</span></a>.
+</p>
+<p>Interoperability considerations: N/A
+</p>
+<p>Published specification: RFC XXXX
+</p>
+<p>Applications that use this media type: Applications that publish descriptions of URI Interactions.
+</p>
+<p>Additional information:
+                     </p>
+<blockquote class="text">
+<p>Magic number(s): none
+</p>
+<p>File extension(s): No specific file extension proposed, but as a general rule, XML data often uses ".xml" as the file extension.
+</p>
+<p>Macintosh file type code(s): TEXT
+</p>
+</blockquote>
+                  
+
+<p>Person &amp; email address to contact for further information: Erik Wilde &lt;dret@berkeley.edu>
+</p>
+<p>Intended usage: COMMON
+</p>
+<p>Restrictions on usage: none
+</p>
+<p>Author: Erik Wilde &lt;dret@berkeley.edu>
+</p>
+<p>Change controller: IETF
+</p>
+</blockquote><p>
+            
+</p>
+<a name="iana-link-relation"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
+Link Relation</h3>
+
+<p>The link relation type below will be registered by IANA per Section 6.2.1 of RFC 5988 <a class='info' href='#RFC5988'>[RFC5988]<span> (</span><span class='info'>Nottingham, M., &ldquo;Web Linking,&rdquo; October&nbsp;2010.</span><span>)</span></a>:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>Relation Name: ldesc
+</p>
+<p>Description: Linking to a resource that can be used as a link description for requesting runtime information about a particular context's interaction affordances.
+</p>
+<p>Reference: RFC XXXX
+</p>
+<p>Notes: Link Descriptions can be used in all scenarios where clients want to create requests that represent a query into the context resource. The media type of the context resource and the media type of the link description resource are not constrained by this specification.
+</p>
+</blockquote><p>
+            
+</p>
+<a name="implementation-status"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.7"></a><h3>7.&nbsp;
+Implementation Status</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<p>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <a class='info' href='#RFC6982'>[RFC6982]<span> (</span><span class='info'>Sheffer, Y. and A. Farrel, &ldquo;Improving Awareness of Running Code: The Implementation Status Section,&rdquo; July&nbsp;2013.</span><span>)</span></a>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.
+</p>
+<p>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".
+</p>
+<p>
+            
+         
+</p>
+<a name="security-considerations"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8"></a><h3>8.&nbsp;
+Security Considerations</h3>
+
+<p>...
+</p>
+<a name="open-issues"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9"></a><h3>9.&nbsp;
+Open Issues</h3>
+
+<p>
+            </p>
+<blockquote class="text">
+<p>If and how to use profiles (example in <a class='info' href='#examples'>Section&nbsp;5<span> (</span><span class='info'>Examples</span><span>)</span></a>); if profile use is recommended, define a suggested profile URI for other specs to use?
+</p>
+<p>How to handle variables in Level 4 templates that are supposed to have composite values?
+</p>
+<p>If a template is refined in an incremental process (such as for example faceted search services), does it make sense to be able to add a "back" link and/or "home" link, so that clients can find the "most general" version easily?
+</p>
+<p>How does this interact with "faceted search" scenarios? Does incremental refinement of URI Template Descriptions somehow nicely and naturally map into faceted search scenarios?
+</p>
+<p>Is there a concept of how Template Descriptions (and thus URI Templates) can be reused? Should there be an inclusion facility or something along those lines? If so, what's the model for that? Initial thoughts on possibilities can be found on <a href='http://dret.typepad.com/dretblog/2012/12/structuring-uri-templates.html'>this page</a>
+</p>
+<p>Should there be some recommended link relation to use when linking to a Template Description from within the context of a URI Template?
+</p>
+<p>While currently everything is defined in XML, providing alternative serializations (JSON and RDF) might be an interesting thing to consider.
+</p>
+</blockquote><p>
+         
+</p>
+<a name="anchor1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.10"></a><h3>10.&nbsp;
+Change Log</h3>
+
+<p>Note to RFC Editor: Please remove this section before publication.
+</p>
+<a name="anchor2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.10.1"></a><h3>10.1.&nbsp;
+Prior to -00</h3>
+
+<p>An earlier variation of a similar idea was published as "Template Descriptions" <a class='info' href='#I-D.wilde-template-desc'>[I&#8209;D.wilde&#8209;template&#8209;desc]<span> (</span><span class='info'>Wilde, E., Davis, C., and Y. Liu, &ldquo;URI Template Descriptions,&rdquo; December&nbsp;2012.</span><span>)</span></a>. However, since this earlier draft was exclusively focusing on interactions with links driven by URI Templates <a class='info' href='#RFC6570'>[RFC6570]<span> (</span><span class='info'>Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;URI Template,&rdquo; March&nbsp;2012.</span><span>)</span></a>, instead of looking at links in general, it was sufficiently distinct to start a new draft, instead of evolving the existing one.
+</p>
+<a name="rfc.references"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.11"></a><h3>11.&nbsp;
+References</h3>
+
+<a name="rfc.references1"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>11.1.&nbsp;Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="I-D.nottingham-link-hint">[I-D.nottingham-link-hint]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/draft-nottingham-link-hint-00">HTTP Link Hints</a>,&rdquo; draft-nottingham-link-hint-00 (work in progress), June&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-nottingham-link-hint-00.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC2119">[RFC2119]</a></td>
+<td class="author-text">Bradner, S., &ldquo;<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>,&rdquo; RFC&nbsp;2119, March&nbsp;1997.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3023">[RFC3023]</a></td>
+<td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC4287">[RFC4287]</a></td>
+<td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5988">[RFC5988]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>,&rdquo; RFC&nbsp;5988, October&nbsp;2010.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6570">[RFC6570]</a></td>
+<td class="author-text">Gregorio, J., Fielding, R., Hadley, M., Nottingham, M., and D. Orchard, &ldquo;<a href="http://tools.ietf.org/html/rfc6570">URI Template</a>,&rdquo; RFC&nbsp;6570, March&nbsp;2012 (<a href="http://www.rfc-editor.org/rfc/rfc6570.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="XSD-1">[XSD-1]</a></td>
+<td class="author-text">Thompson, H., Beech, D., Mendelsohn, N., and M. Maloney, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">XML Schema Part 1: Structures Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-1-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-1-20041028">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="XSD-2">[XSD-2]</a></td>
+<td class="author-text">Malhotra, A. and P. Biron, &ldquo;<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">XML Schema Part 2: Datatypes Second Edition</a>,&rdquo; World Wide Web Consortium Recommendation&nbsp;REC-xmlschema-2-20041028, October&nbsp;2004 (<a href="http://www.w3.org/TR/2004/REC-xmlschema-2-20041028">HTML</a>).</td></tr>
+</table>
+
+<a name="rfc.references2"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>11.2.&nbsp;Non-Normative References</h3>
+<table width="99%" border="0">
+<tr><td class="author-text" valign="top"><a name="I-D.wilde-template-desc">[I-D.wilde-template-desc]</a></td>
+<td class="author-text">Wilde, E., Davis, C., and Y. Liu, &ldquo;<a href="http://tools.ietf.org/html/draft-wilde-template-desc-00">URI Template Descriptions</a>,&rdquo; draft-wilde-template-desc-00 (work in progress), December&nbsp;2012 (<a href="http://www.ietf.org/internet-drafts/draft-wilde-template-desc-00.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC3986">[RFC3986]</a></td>
+<td class="author-text"><a href="mailto:timbl@w3.org">Berners-Lee, T.</a>, <a href="mailto:fielding@gbiv.com">Fielding, R.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>,&rdquo; STD&nbsp;66, RFC&nbsp;3986, January&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc3986.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3986.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3986.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5005">[RFC5005]</a></td>
+<td class="author-text">Nottingham, M., &ldquo;<a href="http://tools.ietf.org/html/rfc5005">Feed Paging and Archiving</a>,&rdquo; RFC&nbsp;5005, September&nbsp;2007 (<a href="http://www.rfc-editor.org/rfc/rfc5005.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5023">[RFC5023]</a></td>
+<td class="author-text">Gregorio, J. and B. de hOra, &ldquo;<a href="http://tools.ietf.org/html/rfc5023">The Atom Publishing Protocol</a>,&rdquo; RFC&nbsp;5023, October&nbsp;2007 (<a href="ftp://ftp.isi.edu/in-notes/rfc5023.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6838">[RFC6838]</a></td>
+<td class="author-text">Freed, N., Klensin, J., and T. Hansen, &ldquo;<a href="http://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>,&rdquo; BCP&nbsp;13, RFC&nbsp;6838, January&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6838.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6839">[RFC6839]</a></td>
+<td class="author-text">Hansen, T. and A. Melnikov, &ldquo;<a href="http://tools.ietf.org/html/rfc6839">Additional Media Type Structured Syntax Suffixes</a>,&rdquo; RFC&nbsp;6839, January&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6839.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6906">[RFC6906]</a></td>
+<td class="author-text">Wilde, E., &ldquo;<a href="http://tools.ietf.org/html/rfc6906">The 'profile' Link Relation Type</a>,&rdquo; RFC&nbsp;6906, March&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6906.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC6982">[RFC6982]</a></td>
+<td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
+</table>
+
+<a name="anchor5"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
+Acknowledgements</h3>
+
+<p>Thanks for comments and suggestions provided by Dmitry Limonov.
+</p>
+<a name="anchor6"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.B"></a><h3>Appendix B.&nbsp;
+Link Description Schema</h3>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX"&gt;
+    &lt;xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"&gt;
+        &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.&lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+    &lt;/xs:import&gt;
+    &lt;xs:element name="link" type="ld:link-type"&gt; &lt;/xs:element&gt;
+    &lt;xs:simpleType name="uriTemplate"&gt;
+        &lt;xs:annotation&gt;
+            &lt;xs:documentation&gt;Representing the type for URI template values according to RFC 6570. This is probably too complicated to cover with a regular expression in any reasonable way, so type enforcement is not done by the schema.&lt;/xs:documentation&gt;
+        &lt;/xs:annotation&gt;
+        &lt;xs:restriction base="xs:string"/&gt;
+    &lt;/xs:simpleType&gt;
+    &lt;xs:group name="descriptions"&gt;
+        &lt;xs:choice&gt;
+            &lt;xs:element name="appinfo" id="appinfo"&gt;
+                &lt;xs:complexType mixed="true"&gt;
+                    &lt;xs:sequence minOccurs="0" maxOccurs="unbounded"&gt;
+                        &lt;xs:any processContents="lax"/&gt;
+                    &lt;/xs:sequence&gt;
+                    &lt;xs:attribute name="source" type="xs:anyURI"/&gt;
+                    &lt;xs:anyAttribute namespace="##other" processContents="lax"/&gt;
+                &lt;/xs:complexType&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:element name="documentation" id="documentation"&gt;
+                &lt;xs:complexType mixed="true"&gt;
+                    &lt;xs:sequence minOccurs="0" maxOccurs="unbounded"&gt;
+                        &lt;xs:any processContents="lax"/&gt;
+                    &lt;/xs:sequence&gt;
+                    &lt;xs:attribute name="source" type="xs:anyURI"/&gt;
+                    &lt;xs:attribute ref="xml:lang"/&gt;
+                    &lt;xs:anyAttribute namespace="##other" processContents="lax"/&gt;
+                &lt;/xs:complexType&gt;
+            &lt;/xs:element&gt;
+        &lt;/xs:choice&gt;
+    &lt;/xs:group&gt;
+    &lt;!-- these are simplified versions of the types for facet elements as defined in the schema for schemas at http://www.w3.org/2001/XMLSchema.xsd --&gt;
+    &lt;xs:complexType name="facet"&gt;
+        &lt;xs:complexContent&gt;
+            &lt;xs:restriction base="xs:anyType"&gt;
+                &lt;xs:attribute name="value" use="required"/&gt;
+            &lt;/xs:restriction&gt;
+        &lt;/xs:complexContent&gt;
+    &lt;/xs:complexType&gt;
+    &lt;xs:complexType name="numFacet"&gt;
+        &lt;xs:complexContent&gt;
+            &lt;xs:restriction base="ld:facet"&gt;
+                &lt;xs:attribute name="value" type="xs:nonNegativeInteger" use="required"/&gt;
+            &lt;/xs:restriction&gt;
+        &lt;/xs:complexContent&gt;
+    &lt;/xs:complexType&gt;
+    &lt;xs:complexType name="link-type"&gt;
+        &lt;xs:choice maxOccurs="unbounded"&gt;
+            &lt;xs:element name="var"&gt;
+                &lt;xs:complexType&gt;
+                    &lt;xs:sequence maxOccurs="unbounded" minOccurs="1"&gt;
+                        &lt;xs:element name="restriction" minOccurs="0"&gt;
+                            &lt;xs:complexType&gt;
+                                &lt;xs:choice maxOccurs="unbounded" minOccurs="0"&gt;
+                                    &lt;xs:element name="minExclusive" type="ld:facet"/&gt;
+                                    &lt;xs:element name="minInclusive" type="ld:facet"/&gt;
+                                    &lt;xs:element name="maxExclusive" type="ld:facet"/&gt;
+                                    &lt;xs:element name="maxInclusive" type="ld:facet"/&gt;
+                                    &lt;xs:element name="totalDigits"&gt;
+                                        &lt;xs:complexType&gt;
+                                            &lt;xs:complexContent&gt;
+                                                &lt;xs:restriction base="ld:numFacet"&gt;
+                                                    &lt;xs:attribute name="value" type="xs:positiveInteger" use="required"/&gt;
+                                                &lt;/xs:restriction&gt;
+                                            &lt;/xs:complexContent&gt;
+                                        &lt;/xs:complexType&gt;
+                                    &lt;/xs:element&gt;
+                                    &lt;xs:element name="fractionDigits" type="ld:numFacet"/&gt;
+                                    &lt;xs:element name="length" type="ld:numFacet"/&gt;
+                                    &lt;xs:element name="minLength" type="ld:numFacet"/&gt;
+                                    &lt;xs:element name="maxLength" type="ld:numFacet"/&gt;
+                                    &lt;xs:element name="enumeration" type="ld:facet"/&gt;
+                                    &lt;xs:element name="whiteSpace"&gt;
+                                        &lt;xs:complexType&gt;
+                                            &lt;xs:complexContent&gt;
+                                                &lt;xs:restriction base="ld:facet"&gt;
+                                                    &lt;xs:attribute name="value" use="required"&gt;
+                                                        &lt;xs:simpleType&gt;
+                                                            &lt;xs:restriction base="xs:NMTOKEN"&gt;
+                                                                &lt;xs:enumeration value="preserve"/&gt;
+                                                                &lt;xs:enumeration value="replace"/&gt;
+                                                                &lt;xs:enumeration value="collapse"/&gt;
+                                                            &lt;/xs:restriction&gt;
+                                                        &lt;/xs:simpleType&gt;
+                                                    &lt;/xs:attribute&gt;
+                                                &lt;/xs:restriction&gt;
+                                            &lt;/xs:complexContent&gt;
+                                        &lt;/xs:complexType&gt;
+                                    &lt;/xs:element&gt;
+                                    &lt;xs:element name="pattern" type="ld:facet"/&gt;
+                                &lt;/xs:choice&gt;
+                                &lt;xs:attribute name="base" use="required" type="xs:QName"&gt; &lt;/xs:attribute&gt;
+                            &lt;/xs:complexType&gt;
+                        &lt;/xs:element&gt;
+                        &lt;xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/&gt;
+                        &lt;xs:any namespace="##other" minOccurs="0"&gt;
+                            &lt;xs:annotation&gt;
+                                &lt;xs:documentation&gt;If variables are restricted in ways other than the simple type restrictions that are built into link descriptions, then these restrictions can be embedded in a variable description as well, as long as they are represented using a different namespace.&lt;/xs:documentation&gt;
+                            &lt;/xs:annotation&gt;
+                        &lt;/xs:any&gt;
+                    &lt;/xs:sequence&gt;
+                    &lt;xs:attribute name="name" use="required"/&gt;
+                    &lt;xs:attribute name="concept" type="xs:anyURI" use="optional"&gt;
+                        &lt;xs:annotation&gt;
+                            &lt;xs:documentation&gt;Identifies the variable by referring to a concept URI.&lt;/xs:documentation&gt;
+                        &lt;/xs:annotation&gt;
+                    &lt;/xs:attribute&gt;
+                    &lt;xs:attribute name="default" type="xs:anySimpleType" use="optional"&gt;
+                        &lt;xs:annotation&gt;
+                            &lt;xs:documentation&gt;Defines the default value for the variable (used by the service if no value is provided). The value must match the type defined for the variable.&lt;/xs:documentation&gt;
+                        &lt;/xs:annotation&gt;
+                    &lt;/xs:attribute&gt;
+                &lt;/xs:complexType&gt;
+            &lt;/xs:element&gt;
+            &lt;xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/&gt;
+            &lt;xs:element name="hint"&gt;
+                &lt;xs:complexType&gt;
+                    &lt;xs:sequence&gt;
+                        &lt;xs:group maxOccurs="unbounded" minOccurs="0" ref="ld:descriptions"/&gt;
+                    &lt;/xs:sequence&gt;
+                    &lt;xs:attribute name="name" use="required"&gt;
+                        &lt;xs:annotation&gt;
+                            &lt;xs:documentation&gt;A hint is either a registered hint with a simple name (defined by a regular expression), or an unregistered hint which is identified by URI.&lt;/xs:documentation&gt;
+                        &lt;/xs:annotation&gt;
+                        &lt;xs:simpleType&gt;
+                            &lt;xs:union memberTypes="xs:anyURI"&gt;
+                                &lt;xs:simpleType&gt;
+                                    &lt;xs:restriction base="xs:token"&gt;
+                                        &lt;xs:annotation&gt;
+                                            &lt;xs:documentation&gt;The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.&lt;/xs:documentation&gt;
+                                        &lt;/xs:annotation&gt;
+                                        &lt;xs:enumeration value="allow"/&gt;
+                                        &lt;xs:enumeration value="formats"/&gt;
+                                        &lt;xs:enumeration value="links"/&gt;
+                                        &lt;xs:enumeration value="accept-post"/&gt;
+                                        &lt;xs:enumeration value="accept-patch"/&gt;
+                                        &lt;xs:enumeration value="accept-ranges"/&gt;
+                                        &lt;xs:enumeration value="accept-prefer"/&gt;
+                                        &lt;xs:enumeration value="precondition-req"/&gt;
+                                        &lt;xs:enumeration value="auth-scheme"/&gt;
+                                        &lt;xs:enumeration value="status"/&gt;
+                                    &lt;/xs:restriction&gt;
+                                &lt;/xs:simpleType&gt;
+                            &lt;/xs:union&gt;
+                        &lt;/xs:simpleType&gt;
+                    &lt;/xs:attribute&gt;
+                    &lt;xs:attribute name="value"/&gt;
+                    &lt;xs:assert test="count(../ld:hint[@name = current()/@name]) &amp;lt;= 1"&gt;
+                        &lt;xs:annotation&gt;
+                            &lt;xs:documentation&gt;It is not allowed to have more than one hint with the same @name on the same link.&lt;/xs:documentation&gt;
+                        &lt;/xs:annotation&gt;
+                    &lt;/xs:assert&gt;
+                &lt;/xs:complexType&gt;
+            &lt;/xs:element&gt;
+        &lt;/xs:choice&gt;
+        &lt;xs:attribute name="hreft" type="ld:uriTemplate" use="optional"/&gt;
+        &lt;xs:attribute name="href" type="xs:anyURI" use="optional"/&gt;
+        &lt;xs:assert test="count(@href | @hreft) = 1"&gt;
+            &lt;xs:annotation&gt;
+                &lt;xs:documentation&gt;A link must either specify a URI (@href) or a URI Template (@hreft), but it cannot specify both at the same time.&lt;/xs:documentation&gt;
+            &lt;/xs:annotation&gt;
+        &lt;/xs:assert&gt;
+    &lt;/xs:complexType&gt;
+&lt;/xs:schema&gt;</pre></div>
+<a name="anchor7"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.C"></a><h3>Appendix C.&nbsp;
+XSLT for Generating Link Description HTML</h3>
+<div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ld="urn:ietf:rfc:XXXX" exclude-result-prefixes="ld"&gt;
+    &lt;xsl:output method="html"/&gt;
+    &lt;xsl:template match="/"&gt;
+        &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;Link Descriptions&lt;/title&gt;
+                &lt;style type="text/css"&gt;
+                    ul { margin : 0 }
+                    .msg { color : #C0C0C0 }
+                &lt;/style&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;h1&gt;Link Descriptions&lt;/h1&gt;
+                &lt;xsl:for-each select="//*[ ld:var | ld:hint ]"&gt;
+                    &lt;hr/&gt;
+                    &lt;xsl:for-each select=" @href | @hreft | @ld:href | @ld:hreft "&gt;
+                        &lt;h2&gt;
+                            &lt;code&gt;
+                                &lt;xsl:value-of select="name()"/&gt;
+                                &lt;xsl:text&gt;="&lt;/xsl:text&gt;
+                                &lt;a href="{.}"&gt;
+                                    &lt;xsl:value-of select="."/&gt;
+                                &lt;/a&gt;
+                                &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+                            &lt;/code&gt;
+                        &lt;/h2&gt;
+                    &lt;/xsl:for-each&gt;
+                    &lt;xsl:if test="@rel"&gt;
+                        &lt;h3&gt;
+                            &lt;code&gt;
+                                &lt;xsl:text&gt;rel="&lt;/xsl:text&gt;
+                                &lt;xsl:value-of select="@rel"/&gt;
+                                &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+                            &lt;/code&gt;
+                        &lt;/h3&gt;
+                    &lt;/xsl:if&gt;
+                    &lt;table rules="none" style="margin : 15px"&gt;
+                        &lt;tr&gt;
+                            &lt;th align="right"&gt;Documentation:&lt;/th&gt;
+                            &lt;td&gt;
+                                &lt;xsl:call-template name="documentation"/&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                        &lt;tr&gt;
+                            &lt;th align="right"&gt;Appinfo:&lt;/th&gt;
+                            &lt;td&gt;
+                                &lt;xsl:call-template name="appinfo"/&gt;
+                            &lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/table&gt;
+                    &lt;xsl:if test="ld:var"&gt;
+                        &lt;h4&gt;Variables:&lt;/h4&gt;
+                        &lt;table rules="all" border="1" cellpadding="5"&gt;
+                            &lt;thead&gt;
+                                &lt;tr&gt;
+                                    &lt;th&gt;Variable&lt;/th&gt;
+                                    &lt;th&gt;Concept&lt;/th&gt;
+                                    &lt;th&gt;Default&lt;/th&gt;
+                                    &lt;th&gt;Value Range&lt;/th&gt;
+                                    &lt;th&gt;Documentation&lt;/th&gt;
+                                    &lt;th&gt;Appinfo&lt;/th&gt;
+                                &lt;/tr&gt;
+                            &lt;/thead&gt;
+                            &lt;xsl:for-each select="ld:var"&gt;
+                                &lt;xsl:sort select="@name"/&gt;
+                                &lt;tr&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:value-of select="@name"/&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:choose&gt;
+                                            &lt;xsl:when test="@concept"&gt;
+                                                &lt;q&gt;
+                                                    &lt;xsl:value-of select="@concept"/&gt;
+                                                &lt;/q&gt;
+                                            &lt;/xsl:when&gt;
+                                            &lt;xsl:otherwise&gt;
+                                                &lt;span class="msg"&gt;n/a&lt;/span&gt;
+                                            &lt;/xsl:otherwise&gt;
+                                        &lt;/xsl:choose&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:choose&gt;
+                                            &lt;xsl:when test="@default"&gt;
+                                                &lt;q&gt;
+                                                    &lt;code&gt;
+                                                        &lt;xsl:value-of select="@default"/&gt;
+                                                    &lt;/code&gt;
+                                                &lt;/q&gt;
+                                            &lt;/xsl:when&gt;
+                                            &lt;xsl:otherwise&gt;
+                                                &lt;span class="msg"&gt;n/a&lt;/span&gt;
+                                            &lt;/xsl:otherwise&gt;
+                                        &lt;/xsl:choose&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:choose&gt;
+                                            &lt;xsl:when test="ld:restriction"&gt;
+                                                &lt;div&gt;
+                                                    &lt;xsl:text&gt;Base: &lt;/xsl:text&gt;
+                                                    &lt;code&gt;
+                                                        &lt;xsl:choose&gt;
+                                                            &lt;xsl:when test="contains(ld:restriction/@base, ':')"&gt;
+                                                                &lt;xsl:value-of select="ld:restriction/@base"/&gt;
+                                                            &lt;/xsl:when&gt;
+                                                            &lt;xsl:otherwise&gt;
+                                                                &lt;a href="http://www.w3.org/TR/xmlschema-2/#{ld:restriction/@base}"&gt;
+                                                                    &lt;xsl:value-of select="concat('xs:', ld:restriction/@base)"/&gt;
+                                                                &lt;/a&gt;
+                                                            &lt;/xsl:otherwise&gt;
+                                                        &lt;/xsl:choose&gt;
+                                                    &lt;/code&gt;
+                                                &lt;/div&gt;
+                                                &lt;xsl:if test="ld:restriction/ld:*"&gt;
+                                                    &lt;ul&gt;
+                                                        &lt;xsl:for-each select="ld:restriction/ld:*"&gt;
+                                                            &lt;xsl:sort select="local-name()"/&gt;
+                                                            &lt;li&gt;
+                                                                &lt;code&gt;
+                                                                    &lt;a href="http://www.w3.org/TR/xmlschema-2/#rf-{local-name()}"&gt;
+                                                                        &lt;xsl:value-of select="concat('xs:',local-name())"/&gt;
+                                                                    &lt;/a&gt;
+                                                                    &lt;xsl:text&gt;="&lt;/xsl:text&gt;
+                                                                    &lt;xsl:value-of select="@value"/&gt;
+                                                                    &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+                                                                &lt;/code&gt;
+                                                            &lt;/li&gt;
+                                                        &lt;/xsl:for-each&gt;
+                                                    &lt;/ul&gt;
+                                                &lt;/xsl:if&gt;
+                                            &lt;/xsl:when&gt;
+                                            &lt;xsl:otherwise&gt;
+                                                &lt;span class="msg"&gt;n/a&lt;/span&gt;
+                                            &lt;/xsl:otherwise&gt;
+                                        &lt;/xsl:choose&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:call-template name="documentation"/&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:call-template name="appinfo"/&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/xsl:for-each&gt;
+                        &lt;/table&gt;
+                    &lt;/xsl:if&gt;
+                    &lt;xsl:if test="ld:hint"&gt;
+                        &lt;h4&gt;Hints:&lt;/h4&gt;
+                        &lt;table rules="all" border="1" cellpadding="5"&gt;
+                            &lt;thead&gt;
+                                &lt;tr&gt;
+                                    &lt;th&gt;Name&lt;/th&gt;
+                                    &lt;th&gt;Value&lt;/th&gt;
+                                    &lt;th&gt;Documentation&lt;/th&gt;
+                                    &lt;th&gt;Appinfo&lt;/th&gt;
+                                &lt;/tr&gt;
+                            &lt;/thead&gt;
+                            &lt;xsl:for-each select="ld:hint"&gt;
+                                &lt;xsl:sort select="@name"/&gt;
+                                &lt;tr&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:value-of select="@name"/&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;code&gt;
+                                            &lt;xsl:value-of select="@value"/&gt;
+                                        &lt;/code&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:call-template name="documentation"/&gt;
+                                    &lt;/td&gt;
+                                    &lt;td&gt;
+                                        &lt;xsl:call-template name="appinfo"/&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/xsl:for-each&gt;
+                        &lt;/table&gt;
+                    &lt;/xsl:if&gt;
+                &lt;/xsl:for-each&gt;
+            &lt;/body&gt;
+        &lt;/html&gt;
+    &lt;/xsl:template&gt;
+    &lt;xsl:template name="documentation"&gt;
+        &lt;xsl:choose&gt;
+            &lt;xsl:when test="ld:documentation"&gt;
+                &lt;ul&gt;
+                    &lt;xsl:for-each select="ld:documentation"&gt;
+                        &lt;li&gt;
+                            &lt;xsl:value-of select="node()"/&gt;
+                            &lt;xsl:if test="@xml:lang"&gt;
+                                &lt;xsl:text&gt; &lt;/xsl:text&gt;
+                                &lt;span class="msg"&gt;
+                                    &lt;xsl:text&gt;(&lt;/xsl:text&gt;
+                                        &lt;code&gt;
+                                            &lt;xsl:text&gt;xml:lang="&lt;/xsl:text&gt;
+                                            &lt;xsl:value-of select="@xml:lang"/&gt;
+                                            &lt;xsl:text&gt;"&lt;/xsl:text&gt;
+                                        &lt;/code&gt;
+                                    &lt;xsl:text&gt;)&lt;/xsl:text&gt;
+                                &lt;/span&gt;
+                            &lt;/xsl:if&gt;
+                        &lt;/li&gt;
+                    &lt;/xsl:for-each&gt;
+                &lt;/ul&gt;
+            &lt;/xsl:when&gt;
+            &lt;xsl:otherwise&gt;
+                &lt;span class="msg"&gt;n/a&lt;/span&gt;
+            &lt;/xsl:otherwise&gt;
+        &lt;/xsl:choose&gt;
+    &lt;/xsl:template&gt;
+    &lt;xsl:template name="appinfo"&gt;
+        &lt;xsl:choose&gt;
+            &lt;xsl:when test="ld:appinfo"&gt;
+                &lt;ul&gt;
+                    &lt;xsl:for-each select="ld:appinfo"&gt;
+                        &lt;li&gt;
+                            &lt;xsl:text&gt;Source: &lt;/xsl:text&gt;
+                            &lt;xsl:value-of select="@source"/&gt;
+                        &lt;/li&gt;
+                    &lt;/xsl:for-each&gt;
+                &lt;/ul&gt;
+            &lt;/xsl:when&gt;
+            &lt;xsl:otherwise&gt;
+                &lt;span class="msg"&gt;n/a&lt;/span&gt;
+            &lt;/xsl:otherwise&gt;
+        &lt;/xsl:choose&gt;
+    &lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;</pre></div>
+<a name="rfc.authors"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<h3>Author's Address</h3>
+<table width="99%" border="0" cellpadding="0" cellspacing="0">
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Erik Wilde</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">EMC Corporation</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">6801 Koll Center Parkway</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">Pleasanton, CA 94566</td></tr>
+<tr><td class="author-text">&nbsp;</td>
+<td class="author-text">U.S.A.</td></tr>
+<tr><td class="author" align="right">Phone:&nbsp;</td>
+<td class="author-text">+1-925-6006244</td></tr>
+<tr><td class="author" align="right">Email:&nbsp;</td>
+<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<tr><td class="author" align="right">URI:&nbsp;</td>
+<td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
+</table>
+</body></html>
