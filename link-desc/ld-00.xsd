@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-    targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace"
-        schemaLocation="http://www.w3.org/2001/xml.xsd">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd">
         <xs:annotation>
             <xs:documentation>Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.</xs:documentation>
         </xs:annotation>
@@ -68,8 +66,7 @@
                                         <xs:complexType>
                                             <xs:complexContent>
                                                 <xs:restriction base="ld:numFacet">
-                                                  <xs:attribute name="value"
-                                                  type="xs:positiveInteger" use="required"/>
+                                                    <xs:attribute name="value" type="xs:positiveInteger" use="required"/>
                                                 </xs:restriction>
                                             </xs:complexContent>
                                         </xs:complexType>
@@ -83,23 +80,22 @@
                                         <xs:complexType>
                                             <xs:complexContent>
                                                 <xs:restriction base="ld:facet">
-                                                  <xs:attribute name="value" use="required">
-                                                  <xs:simpleType>
-                                                  <xs:restriction base="xs:NMTOKEN">
-                                                  <xs:enumeration value="preserve"/>
-                                                  <xs:enumeration value="replace"/>
-                                                  <xs:enumeration value="collapse"/>
-                                                  </xs:restriction>
-                                                  </xs:simpleType>
-                                                  </xs:attribute>
+                                                    <xs:attribute name="value" use="required">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:NMTOKEN">
+                                                                <xs:enumeration value="preserve"/>
+                                                                <xs:enumeration value="replace"/>
+                                                                <xs:enumeration value="collapse"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:attribute>
                                                 </xs:restriction>
                                             </xs:complexContent>
                                         </xs:complexType>
                                     </xs:element>
                                     <xs:element name="pattern" type="ld:facet"/>
                                 </xs:choice>
-                                <xs:attribute name="base" use="required" type="xs:QName">
-                                </xs:attribute>
+                                <xs:attribute name="base" use="required" type="xs:QName"> </xs:attribute>
                             </xs:complexType>
                         </xs:element>
                         <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
@@ -136,17 +132,39 @@
                             <xs:union memberTypes="xs:anyURI">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:token">
-                                        <xs:pattern value="[a-z][a-z0-9_-]*"/>
+                                        <xs:annotation>
+                                            <xs:documentation>The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.</xs:documentation>
+                                        </xs:annotation>
+                                        <xs:enumeration value="allow"/>
+                                        <xs:enumeration value="formats"/>
+                                        <xs:enumeration value="links"/>
+                                        <xs:enumeration value="accept-post"/>
+                                        <xs:enumeration value="accept-patch"/>
+                                        <xs:enumeration value="accept-ranges"/>
+                                        <xs:enumeration value="accept-prefer"/>
+                                        <xs:enumeration value="precondition-req"/>
+                                        <xs:enumeration value="auth-scheme"/>
+                                        <xs:enumeration value="status"/>
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:union>
                         </xs:simpleType>
                     </xs:attribute>
                     <xs:attribute name="value"/>
+                    <xs:assert test="count(../ld:hint[@name = current()/@name]) &lt;= 1">
+                        <xs:annotation>
+                            <xs:documentation>It is not allowed to have more than one hint with the same @name on the same link.</xs:documentation>
+                        </xs:annotation>
+                    </xs:assert>
                 </xs:complexType>
             </xs:element>
         </xs:choice>
-        <xs:attribute name="hreft" type="ld:uriTemplate"/>
-        <xs:attribute name="href" type="xs:anyURI"/>
+        <xs:attribute name="hreft" type="ld:uriTemplate" use="optional"/>
+        <xs:attribute name="href" type="xs:anyURI" use="optional"/>
+        <xs:assert test="count(@href | @hreft) = 1">
+            <xs:annotation>
+                <xs:documentation>A link must either specify a URI (@href) or a URI Template (@hreft), but it cannot specify both at the same time.</xs:documentation>
+            </xs:annotation>
+        </xs:assert>
     </xs:complexType>
 </xs:schema>
