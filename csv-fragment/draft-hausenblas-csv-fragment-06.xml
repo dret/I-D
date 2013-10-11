@@ -47,7 +47,7 @@
 				<uri>http://www.jenitennison.com/blog/</uri>
 			</address>
 		</author>
-		<date day="16" month="October" year="2013"/>
+		<date day="9" month="October" year="2013"/>
 		<abstract>
 			<t>This memo defines URI fragment identifiers for text/csv MIME entities. These fragment identifiers make it possible to refer to parts of a text/csv MIME entity, identified by row, column, or cell. Fragment identification can use single items, or ranges.</t>
 		</abstract>
@@ -211,6 +211,46 @@ number       =  1*( DIGIT )</artwork>
 		<section title="IANA Considerations">
 			<t>Note to RFC Editor: Please change this section to read as follows after the IANA action has been completed: "IANA has added a reference to this specification in the text/csv Media Type registration."</t>
 			<t>IANA is requested to update the registration of the MIME Media type text/csv at http://www.iana.org/assignments/media-types/text/ with the fragment identifier defined in this memo by adding a reference to this memo (with the appropriate RFC number once it is known).</t>
+			<section title="The text/csv media type" anchor="text-csv-registration">
+				<t>The Internet media type <xref target="RFC6838"/> for a CSV document is text/csv. The following registration has been copied from the original registration of text/csv <xref target="RFC4180"/>, with the exception of the added fragment identification considerations, and added security considerations for fragment identifiers.</t>
+				<t>
+					<list style="hanging">
+						<t hangText="Type name:">text</t>
+						<t hangText="Subtype name:">csv</t>
+						<t hangText="Required parameters:">none</t>
+						<t hangText="Optional parameters:">charset, header
+							<list>
+								<t>Common usage of CSV is US-ASCII, but other character sets defined by IANA for the "text" tree may be used in conjunction with the "charset" parameter.</t>
+								<t>The "header" parameter indicates the presence or absence of the header line. Valid values are "present" or "absent". Implementors choosing not to use this parameter must make their own decisions as to whether the header line is present or absent.</t>
+							</list>
+						</t>
+						<t hangText="Encoding considerations:">As per section 4.1.1. of RFC 2046 <xref target="RFC2046"/>, this media type uses CRLF to denote line breaks. However, implementors should be aware that some implementations may use other values.</t>
+						<t hangText="Security considerations:">
+							<list>
+								<t>CSV files contain passive text data that should not pose any risks. However, it is possible in theory that malicious binary data may be included in order to exploit potential buffer overruns in the program processing CSV data. Additionally, private data may be shared via this format (which of course applies to any text data).</t>
+								<t>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.</t>
+								<t>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <xref target="RFC3986"/> and RFC 3987 <xref target="RFC3987"/>.</t>
+							</list>
+						</t>
+						<t hangText="Interoperability considerations:">Due to lack of a single specification, there are considerable differences among implementations. Implementors should "be conservative in what you do, be liberal in what you accept from others" (RFC 793 <xref target="RFC0793"/>) when processing CSV files. An attempt at a common definition can be found in Section 2. Implementations deciding not to use the optional "header" parameter must make their own decision as to whether the header is absent or present.</t>
+						<t hangText="Published specification:">While numerous private specifications exist for various programs and systems, there is no single "master" specification for this format.  An attempt at a common definition can be found in Section 2 of RFC 4180 <xref target="RFC4180"/>.</t>
+						<t hangText="Applications that use this media type:">Spreadsheet programs and various data conversion utilities.</t>
+						<t hangText="Fragment identifier considerations:">Fragment identification for text/csv is supported by using fragment identifiers as specified by RFC XXXX (Note to RFC Editor: Please update with RFC number once it is known).</t>
+						<t hangText="Additional information:">
+							<list style="hanging">
+								<t hangText="Magic number(s):">none</t>
+								<t hangText="File extension(s):">CSV</t>
+								<t hangText="Macintosh file type code(s):">TEXT</t>
+							</list>
+						</t>
+						<t hangText="Person &amp; email address to contact for further information:">Yakov Shafranovich &lt;ietf@shaftek.org> and Erik Wilde &lt;dret@berkeley.edu></t>
+						<t hangText="Intended usage:">COMMON</t>
+						<t hangText="Restrictions on usage:">none</t>
+						<t hangText="Author:">Yakov Shafranovich &lt;ietf@shaftek.org> and Erik Wilde &lt;dret@berkeley.edu></t>
+						<t hangText="Change controller:">IESG</t>
+					</list>
+				</t>
+			</section>
 		</section>
 		<section title="Implementation Status" anchor="implementation-status">
 			<t>Note to RFC Editor: Please remove this section before publication.</t>
@@ -231,15 +271,15 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
 			</t>
 		</section>
 		<section title="Security Considerations" anchor="security">
-			<t>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.</t>
-			<t>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <xref target="RFC3986"/> and RFC 3987 <xref target="RFC3987"/>.</t>
+			<t>The security considerations for text/csv fragment identifiers are listed in the respective section of the media type registration <xref target="text-csv-registration"/>.</t>
 		</section>
 		<section title="Change Log">
 			<t>Note to RFC Editor: Please remove this section before publication.</t>
 			<section title="From -05 to -06">
 				<t>
 					<list style="symbols">
-						<t>...</t>
+						<t>Adding complete media type registration by copying and editing the registration from RFC 4180.</t>
+						<t>Moving "Security Considerations" text to media type registration.</t>
 					</list>
 				</t>
 			</section>
@@ -482,6 +522,26 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
 				<seriesInfo name="STD" value="63"/>
 				<seriesInfo name="RFC" value="3629"/>
 			</reference>
+			<reference anchor='RFC0793'>
+				<front>
+					<title abbrev='Transmission Control Protocol'>Transmission Control Protocol</title>
+					<author initials='J.' surname='Postel' fullname='Jon Postel'>
+						<organization>University of Southern California (USC)/Information Sciences Institute</organization>
+						<address>
+							<postal>
+								<street>4676 Admiralty Way</street>
+								<city>Marina del Rey</city>
+								<region>CA</region>
+								<code>90291</code>
+								<country>US</country>
+							</postal>
+						</address>
+					</author>
+					<date year='1981' day='1' month='September' /></front>
+				<seriesInfo name='STD' value='7' />
+				<seriesInfo name='RFC' value='793' />
+				<format type='TXT' octets='172710' target='http://www.rfc-editor.org/rfc/rfc793.txt' />
+			</reference>
 			<reference anchor="RFC5147">
 				<front>
 					<title abbrev="text/plain Fragment Identifiers">URI Fragment Identifiers for the text/plain Media Type</title>
@@ -532,7 +592,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
 					</author>
 					<date year='2013' month='January' />
 					<abstract>
-						<t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols.  This memo documents an Internet Best Current Practice.</t>
+						<t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols. This memo documents an Internet Best Current Practice.</t>
 					</abstract>
 				</front>
 				<seriesInfo name='BCP' value='13' />

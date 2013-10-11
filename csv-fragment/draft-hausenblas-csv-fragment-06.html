@@ -145,11 +145,11 @@
 <tr><td class="header">Internet-Draft</td><td class="header">DERI, NUI Galway</td></tr>
 <tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4180'>4180</a> (if&nbsp;approved)</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">Expires: March 20, 2014</td><td class="header">J. Tennison</td></tr>
+<tr><td class="header">Expires: April 12, 2014</td><td class="header">J. Tennison</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">Open Data Institute</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">September 16, 2013</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">October 9, 2013</td></tr>
 </table></td></tr></table>
-<h1><br />URI Fragment Identifiers for the text/csv Media Type<br />draft-hausenblas-csv-fragment-05</h1>
+<h1><br />URI Fragment Identifiers for the text/csv Media Type<br />draft-hausenblas-csv-fragment-06</h1>
 
 <h3>Abstract</h3>
 
@@ -176,7 +176,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on March 20, 2014.</p>
+This Internet-Draft will expire on April 12, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -229,6 +229,8 @@ Syntax Errors in Fragment Identifiers<br />
 Semantics of Fragment Identifiers<br />
 <a href="#anchor6">5.</a>&nbsp;
 IANA Considerations<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#text-csv-registration">5.1.</a>&nbsp;
+The text/csv media type<br />
 <a href="#implementation-status">6.</a>&nbsp;
 Implementation Status<br />
 <a href="#security">7.</a>&nbsp;
@@ -236,14 +238,16 @@ Security Considerations<br />
 <a href="#anchor7">8.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">8.1.</a>&nbsp;
-From -04 to -05<br />
+From -05 to -06<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">8.2.</a>&nbsp;
-From -03 to -04<br />
+From -04 to -05<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">8.3.</a>&nbsp;
-From -02 to -03<br />
+From -03 to -04<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor11">8.4.</a>&nbsp;
-From -01 to -02<br />
+From -02 to -03<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor12">8.5.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor13">8.6.</a>&nbsp;
 From -00 to -01<br />
 <a href="#rfc.references1">9.</a>&nbsp;
 References<br />
@@ -251,7 +255,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
 Non-Normative References<br />
-<a href="#anchor15">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor16">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Authors' Addresses<br />
@@ -465,6 +469,103 @@ IANA Considerations</h3>
 </p>
 <p>IANA is requested to update the registration of the MIME Media type text/csv at http://www.iana.org/assignments/media-types/text/ with the fragment identifier defined in this memo by adding a reference to this memo (with the appropriate RFC number once it is known).
 </p>
+<a name="text-csv-registration"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+The text/csv media type</h3>
+
+<p>The Internet media type <a class='info' href='#RFC6838'>[RFC6838]<span> (</span><span class='info'>Freed, N., Klensin, J., and T. Hansen, &ldquo;Media Type Specifications and Registration Procedures,&rdquo; January&nbsp;2013.</span><span>)</span></a> for a CSV document is text/csv. The following registration has been copied from the original registration of text/csv <a class='info' href='#RFC4180'>[RFC4180]<span> (</span><span class='info'>Shafranovich, Y., &ldquo;Common Format and MIME Type for Comma-Separated Values (CSV) Files,&rdquo; October&nbsp;2005.</span><span>)</span></a>, with the exception of the added fragment identification considerations, and added security considerations for fragment identifiers.
+</p>
+<p>
+					</p>
+<blockquote class="text"><dl>
+<dt>Type name:</dt>
+<dd>text
+</dd>
+<dt>Subtype name:</dt>
+<dd>csv
+</dd>
+<dt>Required parameters:</dt>
+<dd>none
+</dd>
+<dt>Optional parameters:</dt>
+<dd>charset, header
+							
+<blockquote class="text"><dl>
+<dt></dt>
+<dd>Common usage of CSV is US-ASCII, but other character sets defined by IANA for the "text" tree may be used in conjunction with the "charset" parameter.
+</dd>
+<dt></dt>
+<dd>The "header" parameter indicates the presence or absence of the header line. Valid values are "present" or "absent". Implementors choosing not to use this parameter must make their own decisions as to whether the header line is present or absent.
+</dd>
+</dl></blockquote>
+						
+</dd>
+<dt>Encoding considerations:</dt>
+<dd>As per section 4.1.1. of RFC 2046 <a class='info' href='#RFC2046'>[RFC2046]<span> (</span><span class='info'>Freed, N. and N. Borenstein, &ldquo;Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types,&rdquo; November&nbsp;1996.</span><span>)</span></a>, this media type uses CRLF to denote line breaks. However, implementors should be aware that some implementations may use other values.
+</dd>
+<dt>Security considerations:</dt>
+<dd>
+							
+<blockquote class="text"><dl>
+<dt></dt>
+<dd>CSV files contain passive text data that should not pose any risks. However, it is possible in theory that malicious binary data may be included in order to exploit potential buffer overruns in the program processing CSV data. Additionally, private data may be shared via this format (which of course applies to any text data).
+</dd>
+<dt></dt>
+<dd>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.
+</dd>
+<dt></dt>
+<dd>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> and RFC 3987 <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRI),&rdquo; January&nbsp;2005.</span><span>)</span></a>.
+</dd>
+</dl></blockquote>
+						
+</dd>
+<dt>Interoperability considerations:</dt>
+<dd>Due to lack of a single specification, there are considerable differences among implementations. Implementors should "be conservative in what you do, be liberal in what you accept from others" (RFC 793 <a class='info' href='#RFC0793'>[RFC0793]<span> (</span><span class='info'>Postel, J., &ldquo;Transmission Control Protocol,&rdquo; September&nbsp;1981.</span><span>)</span></a>) when processing CSV files. An attempt at a common definition can be found in Section 2. Implementations deciding not to use the optional "header" parameter must make their own decision as to whether the header is absent or present.
+</dd>
+<dt>Published specification:</dt>
+<dd>While numerous private specifications exist for various programs and systems, there is no single "master" specification for this format.  An attempt at a common definition can be found in Section 2 of RFC 4180 <a class='info' href='#RFC4180'>[RFC4180]<span> (</span><span class='info'>Shafranovich, Y., &ldquo;Common Format and MIME Type for Comma-Separated Values (CSV) Files,&rdquo; October&nbsp;2005.</span><span>)</span></a>.
+</dd>
+<dt>Applications that use this media type:</dt>
+<dd>Spreadsheet programs and various data conversion utilities.
+</dd>
+<dt>Fragment identifier considerations:</dt>
+<dd>Fragment identification for text/csv is supported by using fragment identifiers as specified by RFC XXXX (Note to RFC Editor: Please update with RFC number once it is known).
+</dd>
+<dt>Additional information:</dt>
+<dd>
+							
+<blockquote class="text"><dl>
+<dt>Magic number(s):</dt>
+<dd>none
+</dd>
+<dt>File extension(s):</dt>
+<dd>CSV
+</dd>
+<dt>Macintosh file type code(s):</dt>
+<dd>TEXT
+</dd>
+</dl></blockquote>
+						
+</dd>
+<dt>Person &amp; email address to contact for further information:</dt>
+<dd>Yakov Shafranovich &lt;ietf@shaftek.org> and Erik Wilde &lt;dret@berkeley.edu>
+</dd>
+<dt>Intended usage:</dt>
+<dd>COMMON
+</dd>
+<dt>Restrictions on usage:</dt>
+<dd>none
+</dd>
+<dt>Author:</dt>
+<dd>Yakov Shafranovich &lt;ietf@shaftek.org> and Erik Wilde &lt;dret@berkeley.edu>
+</dd>
+<dt>Change controller:</dt>
+<dd>IESG
+</dd>
+</dl></blockquote><p>
+				
+</p>
 <a name="implementation-status"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.6"></a><h3>6.&nbsp;
@@ -485,9 +586,7 @@ Implementation Status</h3>
 <a name="rfc.section.7"></a><h3>7.&nbsp;
 Security Considerations</h3>
 
-<p>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.
-</p>
-<p>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <a class='info' href='#RFC3986'>[RFC3986]<span> (</span><span class='info'>Berners-Lee, T., Fielding, R., and L. Masinter, &ldquo;Uniform Resource Identifier (URI): Generic Syntax,&rdquo; January&nbsp;2005.</span><span>)</span></a> and RFC 3987 <a class='info' href='#RFC3987'>[RFC3987]<span> (</span><span class='info'>Duerst, M. and M. Suignard, &ldquo;Internationalized Resource Identifiers (IRI),&rdquo; January&nbsp;2005.</span><span>)</span></a>.
+<p>The security considerations for text/csv fragment identifiers are listed in the respective section of the media type registration <a class='info' href='#text-csv-registration'>Section&nbsp;5.1<span> (</span><span class='info'>The text/csv media type</span><span>)</span></a>.
 </p>
 <a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -499,6 +598,21 @@ Change Log</h3>
 <a name="anchor8"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
+From -05 to -06</h3>
+
+<p>
+					</p>
+<ul class="text">
+<li>Adding complete media type registration by copying and editing the registration from RFC 4180.
+</li>
+<li>Moving "Security Considerations" text to media type registration.
+</li>
+</ul><p>
+				
+</p>
+<a name="anchor9"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
 From -04 to -05</h3>
 
 <p>
@@ -511,9 +625,9 @@ From -04 to -05</h3>
 </ul><p>
 				
 </p>
-<a name="anchor9"></a><br /><hr />
+<a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
+<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
 From -03 to -04</h3>
 
 <p>
@@ -526,9 +640,9 @@ From -03 to -04</h3>
 </ul><p>
 				
 </p>
-<a name="anchor10"></a><br /><hr />
+<a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
+<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
 From -02 to -03</h3>
 
 <p>
@@ -543,9 +657,9 @@ From -02 to -03</h3>
 </ul><p>
 				
 </p>
-<a name="anchor11"></a><br /><hr />
+<a name="anchor12"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
+<a name="rfc.section.8.5"></a><h3>8.5.&nbsp;
 From -01 to -02</h3>
 
 <p>
@@ -560,9 +674,9 @@ From -01 to -02</h3>
 </ul><p>
 				
 </p>
-<a name="anchor12"></a><br /><hr />
+<a name="anchor13"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.5"></a><h3>8.5.&nbsp;
+<a name="rfc.section.8.6"></a><h3>8.6.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -606,6 +720,8 @@ References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="ASCII">[ASCII]</a></td>
 <td class="author-text">ANSI X3.4-1986, &ldquo;<a href="http://tools.ietf.org/html/rfc3629">Coded Character Set - 7-Bit American National Standard Code for Information Interchange</a>,&rdquo; STD&nbsp;63, RFC&nbsp;3629, 1992.</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC0793">[RFC0793]</a></td>
+<td class="author-text">Postel, J., &ldquo;<a href="http://tools.ietf.org/html/rfc793">Transmission Control Protocol</a>,&rdquo; STD&nbsp;7, RFC&nbsp;793, September&nbsp;1981 (<a href="http://www.rfc-editor.org/rfc/rfc793.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5147">[RFC5147]</a></td>
 <td class="author-text"><a href="mailto:dret@berkeley.edu">Wilde, E.</a> and <a href="mailto:mailto:duerst@it.aoyama.ac.jp">M. Duerst</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc5147">URI Fragment Identifiers for the text/plain Media Type</a>,&rdquo; RFC&nbsp;5147, April&nbsp;2008.</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC6838">[RFC6838]</a></td>
@@ -614,7 +730,7 @@ References</h3>
 <td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
 </table>
 
-<a name="anchor15"></a><br /><hr />
+<a name="anchor16"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>
