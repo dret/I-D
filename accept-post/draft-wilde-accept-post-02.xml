@@ -51,7 +51,7 @@
       </section>
       <section title="The Accept-Post Response Header Field" anchor="accept-post">
          <t>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.</t>
-         <t>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <xref target="I-D.ietf-httpbis-p2-semantics"/>, is given by the following definition.</t>
+         <t>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <xref target="I-D.ietf-httpbis-p2-semantics"/>, is given by the following definition:</t>
          <figure>
             <artwork type="abnf">Accept-Post = #( media-range [ accept-params ] )</artwork>
          </figure>
@@ -61,22 +61,31 @@
       </section>
       <section title="IANA Considerations" anchor="iana">
          <section title="The Accept-Post Response Header" anchor="iana-accept-post">
-            <t>The Accept-Post response header should be added to the permanent registry of message header fields (see <xref target="RFC3864"/>).</t>
+            <t>The Accept-Post response header should be added to the permanent registry of message header fields (see <xref target="RFC3864"/>). Based on the first example of AtomPub <xref target="example-atompub"/>, when sending a GET request to the URI of a collection, the following response could be sent, if the server decided to support Accept-Post headers:</t>
+            <figure>
+               <artwork type="HTTP">HTTP/1.1 201 OK
+Date: Fri, 23 Feb 2007 21:17:11 GMT
+Content-Length: nnn
+Content-Type: application/atom+xml;type=feed
+Accept-Post: image/gif, image/jpeg, image/png</artwork>
+            </figure>
+            <t>In this response to the GET request of a collection URI, the server indicates that this particular collection accepts new entries in the form of GIF, JPEG, or PNG images. No parameters are used, which means that there is no server-specified preference among those media types.</t>
          </section>
       </section>
       <section title="Examples" anchor="examples">
          <t>Accept-Post extends the way in which interaction information can be exposed in HTTP itself. The following sections contain some examples how this can be used in concrete HTTP-based services.</t>
-         <section title="Linked Data Platform" anchor="example-ldp">
-            <t>The Linked Data Platform (LDP) <xref target="W3C.WD-ldp-20130730"/> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.</t>
-            <t>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <xref target="acknowledgements"/> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.</t>
-         </section>
          <section title="Atom Publishing Protocol" anchor="example-atompub">
             <t>The Atom Publishing Protocol (AtomPub) <xref target="RFC5023"/> defines a model of interacting with collections and members, based on representations using the Atom <xref target="RFC4287"/> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".</t>
             <t>The Accept-Post header field does allow an AtomPub server to advertise its support for specific media types in interactions with the collection resource, without the need for a client to locate the service document and interact with it. This increases the visibility of the "POST to Create" model of AtomPub, and makes it easier for clients to find out about the capabilities of a specific collection.</t>
             <t>While the AtomPub protocol cannot be changed retroactively, this additional way of exposing interaction guidance could make it easier for clients to interact with AtomPub services that do support the Accept-Post header field. For those that do not support Accept-Post, clients would still have to rely on using the information contained in the service document (including the sometimes tricky issue of how to locate the service document for a given collection).</t>
          </section>
+         <section title="Linked Data Platform" anchor="example-ldp">
+            <t>The Linked Data Platform (LDP) <xref target="W3C.WD-ldp-20130730"/> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.</t>
+            <t>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <xref target="acknowledgements"/> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.</t>
+         </section>
          <section title="Additional Information in Error Responses" anchor="example-415">
             <t>If a client POSTs an unsupported POST document, it is possible for the server to use Accept-Post to indicate the supported media types. These can be specified using a 415 (Unsupported Media Type) response when the client sends a POST document format that the server does not support for the resource identified by the Request-URI. Such a response then MAY include an Accept-Post response header notify the client what POST document media types are supported.</t>
+            <t>This example applies to all resources supporting a limited set of media types for POST requests, such as the ones listed in the previous to sections. In both AtomPub and LDP, it would be possible for a server to include an Accept-Post header in a 415 response to a failed POST request, and indicate the media types that are accepted for POST requests.</t>
          </section>
       </section>
       <section title="Implementation Status" anchor="implementation-status">
@@ -155,7 +164,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
          <section title="From -01 to -02">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Added header field example.</t>
                </list>
             </t>
          </section>

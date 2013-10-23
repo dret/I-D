@@ -10,7 +10,7 @@ Expires: March 10, 2014                                         E. Wilde
 
 
                       The Accept-Post HTTP Header
-                       draft-wilde-accept-post-01
+                       draft-wilde-accept-post-02
 
 Abstract
 
@@ -73,22 +73,22 @@ Table of Contents
    4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  4
      4.1.  The Accept-Post Response Header  . . . . . . . . . . . . .  4
    5.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-     5.1.  Linked Data Platform . . . . . . . . . . . . . . . . . . .  4
-     5.2.  Atom Publishing Protocol . . . . . . . . . . . . . . . . .  4
+     5.1.  Atom Publishing Protocol . . . . . . . . . . . . . . . . .  4
+     5.2.  Linked Data Platform . . . . . . . . . . . . . . . . . . .  5
      5.3.  Additional Information in Error Responses  . . . . . . . .  5
    6.  Implementation Status  . . . . . . . . . . . . . . . . . . . .  5
      6.1.  Eclipse Lyo  . . . . . . . . . . . . . . . . . . . . . . .  6
-     6.2.  RWW.I/O  . . . . . . . . . . . . . . . . . . . . . . . . .  6
+     6.2.  RWW.I/O  . . . . . . . . . . . . . . . . . . . . . . . . .  7
    7.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
-   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  7
+   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  8
    9.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     9.1.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  8
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     10.1. Normative References . . . . . . . . . . . . . . . . . . .  8
-     10.2. Non-Normative References . . . . . . . . . . . . . . . . .  8
-   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . .  9
+     9.1.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  8
+     9.2.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  8
+   10. References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     10.1. Normative References . . . . . . . . . . . . . . . . . . .  9
+     10.2. Non-Normative References . . . . . . . . . . . . . . . . .  9
+   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 10
    Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 10
-
 
 
 
@@ -147,7 +147,7 @@ Internet-Draft                 Accept-Post                September 2013
    The syntax for Accept-Post headers, using the ABNF syntax defined in
    Section 5.3.2 of the revised version of HTTP/1.1
    [I-D.ietf-httpbis-p2-semantics], is given by the following
-   definition.
+   definition:
    Accept-Post = #( media-range [ accept-params ] )
 
    (Please note that this ABNF differs from the one given in Section
@@ -177,7 +177,21 @@ Internet-Draft                 Accept-Post                September 2013
 4.1.  The Accept-Post Response Header
 
    The Accept-Post response header should be added to the permanent
-   registry of message header fields (see [RFC3864]).
+   registry of message header fields (see [RFC3864]).  Based on the
+   first example of AtomPub Section 5.1, when sending a GET request to
+   the URI of a collection, the following response could be sent, if the
+   server decided to support Accept-Post headers:
+   HTTP/1.1 201 OK
+   Date: Fri, 23 Feb 2007 21:17:11 GMT
+   Content-Length: nnn
+   Content-Type: application/atom+xml;type=feed
+   Accept-Post: image/gif, image/jpeg, image/png
+
+   In this response to the GET request of a collection URI, the server
+   indicates that this particular collection accept new entries in the
+   form of GIF, JPEG, or PNG images.  No parameters are used, which
+   means that there is no server-specified preference among those media
+   types.
 
 
 5.  Examples
@@ -186,9 +200,42 @@ Internet-Draft                 Accept-Post                September 2013
    exposed in HTTP itself.  The following sections contain some examples
    how this can be used in concrete HTTP-based services.
 
-5.1.  Linked Data Platform
+5.1.  Atom Publishing Protocol
 
-   The Linked Data Platform (LDP) [W3C.WD-ldp-20130307] describes a set
+   The Atom Publishing Protocol (AtomPub) [RFC5023] defines a model of
+   interacting with collections and members, based on representations
+   using the Atom [RFC4287] syntax.  AtomPub allows clients to create
+   new collection members by using HTTP POST, with the request being
+   sent to the collection URI.  AtomPub servers can limit the media
+   types they accept in these POST requests, and the accepted media
+   types are listed in an "AtomPub service document".
+
+   The Accept-Post header field does allow an AtomPub server to
+   advertise its support for specific media types in interactions with
+   the collection resource, without the need for a client to locate the
+   service document and interact with it.  This increases the visibility
+   of the "POST to Create" model of AtomPub, and makes it easier for
+   clients to find out about the capabilities of a specific collection.
+
+
+
+
+Arwe, et al.             Expires March 10, 2014                 [Page 4]
+
+Internet-Draft                 Accept-Post                September 2013
+
+
+   While the AtomPub protocol cannot be changed retroactively, this
+   additional way of exposing interaction guidance could make it easier
+   for clients to interact with AtomPub services that do support the
+   Accept-Post header field.  For those that do not support Accept-Post,
+   clients would still have to rely on using the information contained
+   in the service document (including the sometimes tricky issue of how
+   to locate the service document for a given collection).
+
+5.2.  Linked Data Platform
+
+   The Linked Data Platform (LDP) [W3C.WD-ldp-20130730] describes a set
    of best practices and simple approach for a read-write Linked Data
    architecture, based on HTTP access to Web resources that describe
    their state using the RDF data model.  LDP defines LDP Containers
@@ -203,39 +250,6 @@ Internet-Draft                 Accept-Post                September 2013
    contexts as well, and thus should be specified in a standalone
    document.
 
-5.2.  Atom Publishing Protocol
-
-   The Atom Publishing Protocol (AtomPub) [RFC5023] defines a model of
-   interacting with collections and members, based on representations
-   using the Atom [RFC4287] syntax.  AtomPub allows clients to create
-   new collection members by using HTTP POST, with the request being
-   sent to the collection URI.  AtomPub servers can limit the media
-   types they accept in these POST requests, and the accepted media
-   types are listed in an "AtomPub service document".
-
-   The Accept-Post header field does allow an AtomPub server to
-   advertise its support for specific media types in interactions with
-   the collection resource, without the need for a client to locate the
-   service document and interact with it.  This increases the visibility
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 4]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
-   of the "POST to Create" model of AtomPub, and makes it easier for
-   clients to find out about the capabilities of a specific collection.
-
-   While the AtomPub protocol cannot be changed retroactively, this
-   additional way of exposing interaction guidance could make it easier
-   for clients to interact with AtomPub services that do support the
-   Accept-Post header field.  For those that do not support Accept-Post,
-   clients would still have to rely on using the information contained
-   in the service document (including the sometimes tricky issue of how
-   to locate the service document for a given collection).
-
 5.3.  Additional Information in Error Responses
 
    If a client POSTs an unsupported POST document, it is possible for
@@ -246,12 +260,27 @@ Internet-Draft                 Accept-Post                September 2013
    response then MAY include an Accept-Post response header notify the
    client what POST document media types are supported.
 
+   This example applies to all resources supporting a limited set of
+   media types for POST requests, such as the ones listed in the
+   previous to sections.  In both AtomPub and LDP, it would be possible
+   for a server to include an Accept-Post header in a 415 response to a
+   failed POST request, and indicate the media types that are accepted
+   for POST requests.
+
 
 6.  Implementation Status
 
    Note to RFC Editor: Please remove this section before publication.
 
    This section records the status of known implementations of the
+
+
+
+Arwe, et al.             Expires March 10, 2014                 [Page 5]
+
+Internet-Draft                 Accept-Post                September 2013
+
+
    protocol defined by this specification at the time of posting of this
    Internet-Draft, and is based on a proposal described in RFC 6982
    [RFC6982].  The description of implementations in this section is
@@ -270,16 +299,6 @@ Internet-Draft                 Accept-Post                September 2013
    and feedback that have made the implemented protocols more mature.
    It is up to the individual working groups to use this information as
    they see fit".
-
-
-
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 5]
-
-Internet-Draft                 Accept-Post                September 2013
-
 
 6.1.  Eclipse Lyo
 
@@ -311,6 +330,13 @@ Internet-Draft                 Accept-Post                September 2013
       on all responses.  More details about this approach are described
       in this blog post [8].
 
+
+
+Arwe, et al.             Expires March 10, 2014                 [Page 6]
+
+Internet-Draft                 Accept-Post                September 2013
+
+
       Contact: Steve Speicher <sspeiche@gmail.com>
 
 6.2.  RWW.I/O
@@ -329,14 +355,6 @@ Internet-Draft                 Accept-Post                September 2013
       (e.g. images, html, js, css, etc.), and the use of .acl files for
       access control rules using the WAC vocabulary.  Both .meta and
       .acl should be used per file (i.e. photo.jpg will have a
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 6]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
       .meta.photo.jpg and a .acl.photo.jpg).
 
       Maturity: Beta until more features from LDP spec are included (if
@@ -368,6 +386,13 @@ Internet-Draft                 Accept-Post                September 2013
    media types a resource accepts in POST requests).
 
 
+
+
+Arwe, et al.             Expires March 10, 2014                 [Page 7]
+
+Internet-Draft                 Accept-Post                September 2013
+
+
 8.  Open Issues
 
    Note to RFC Editor: Please remove this section before publication.
@@ -385,14 +410,6 @@ Internet-Draft                 Accept-Post                September 2013
       address some uses cases, such as AtomPub's way of exposing
       collection support for POST requests.
 
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 7]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
    o  While "accept-post" is currently defined in the "HTTP Link Hints"
       draft [I-D.nottingham-link-hint], it would be good to align the
       way in which they work.  Currently, the "accept-post" of link
@@ -404,7 +421,11 @@ Internet-Draft                 Accept-Post                September 2013
 
    Note to RFC Editor: Please remove this section before publication.
 
-9.1.  From -00 to -01
+9.1.  From -01 to -02
+
+   o  Added header field examples.
+
+9.2.  From -00 to -01
 
    o  Changed ABNF for header field from RFC 2616 to HTTPbis convention
       (only specify the header field value grammar).
@@ -416,6 +437,17 @@ Internet-Draft                 Accept-Post                September 2013
 
 
 10.  References
+
+
+
+
+
+
+
+Arwe, et al.             Expires March 10, 2014                 [Page 8]
+
+Internet-Draft                 Accept-Post                September 2013
+
 
 10.1.  Normative References
 
@@ -441,14 +473,6 @@ Internet-Draft                 Accept-Post                September 2013
    [I-D.nottingham-link-hint]
               Nottingham, M., "HTTP Link Hints",
               draft-nottingham-link-hint-00 (work in progress),
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 8]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
               June 2013.
 
    [RFC4287]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom
@@ -464,14 +488,22 @@ Internet-Draft                 Accept-Post                September 2013
               Code: The Implementation Status Section", RFC 6982,
               July 2013.
 
-   [W3C.WD-ldp-20130307]
-              Speicher, S. and J. Arwe, "Linked Data Platform 1.0",
-              World Wide Web Consortium WD WD-ldp-20130307, March 2013,
-              <http://www.w3.org/TR/2013/WD-ldp-20130307>.
+   [W3C.WD-ldp-20130730]
+              Speicher, S., Arwe, J., and A. Malhotra, "Linked Data
+              Platform 1.0", World Wide Web Consortium LastCall WD-ldp-
+              20130730, July 2013,
+              <http://www.w3.org/TR/2013/WD-ldp-20130730>.
 
 URIs
 
    [1]   <https://www.ietf.org/mailman/listinfo/apps-discuss>
+
+
+
+Arwe, et al.             Expires March 10, 2014                 [Page 9]
+
+Internet-Draft                 Accept-Post                September 2013
+
 
    [2]   <https://github.com/dret/I-D/tree/master/accept-post>
 
@@ -497,16 +529,8 @@ Appendix A.  Acknowledgements
 
    Thanks for comments and suggestions provided by Julian Reschke.
 
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 9]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
    This work has been done in the context of the W3C Linked Data
-   Platform Working Group (LDPWG) [W3C.WD-ldp-20130307]; thanks for
+   Platform Working Group (LDPWG) [W3C.WD-ldp-20130730]; thanks for
    comments and suggestions provided by the working group as a whole.
 
 
@@ -522,6 +546,19 @@ Authors' Addresses
    IBM
 
    Email: sspeiche@us.ibm.com
+
+
+
+
+
+
+
+
+
+
+Arwe, et al.             Expires March 10, 2014                [Page 10]
+
+Internet-Draft                 Accept-Post                September 2013
 
 
    Erik Wilde
@@ -556,5 +593,24 @@ Authors' Addresses
 
 
 
-Arwe, et al.             Expires March 10, 2014                [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Arwe, et al.             Expires March 10, 2014                [Page 11]
 

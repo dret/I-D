@@ -148,7 +148,7 @@
 <tr><td class="header">&nbsp;</td><td class="header">EMC Corporation</td></tr>
 <tr><td class="header">&nbsp;</td><td class="header">September 6, 2013</td></tr>
 </table></td></tr></table>
-<h1><br />The Accept-Post HTTP Header<br />draft-wilde-accept-post-01</h1>
+<h1><br />The Accept-Post HTTP Header<br />draft-wilde-accept-post-02</h1>
 
 <h3>Abstract</h3>
 
@@ -206,10 +206,10 @@ IANA Considerations<br />
 The Accept-Post Response Header<br />
 <a href="#examples">5.</a>&nbsp;
 Examples<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-ldp">5.1.</a>&nbsp;
-Linked Data Platform<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-atompub">5.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-atompub">5.1.</a>&nbsp;
 Atom Publishing Protocol<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-ldp">5.2.</a>&nbsp;
+Linked Data Platform<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#example-415">5.3.</a>&nbsp;
 Additional Information in Error Responses<br />
 <a href="#implementation-status">6.</a>&nbsp;
@@ -225,6 +225,8 @@ Open Issues<br />
 <a href="#anchor2">9.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">9.1.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">9.2.</a>&nbsp;
 From -00 to -01<br />
 <a href="#rfc.references1">10.</a>&nbsp;
 References<br />
@@ -260,7 +262,7 @@ The Accept-Post Response Header Field</h3>
 
 <p>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.
 </p>
-<p>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <a class='info' href='#I-D.ietf-httpbis-p2-semantics'>[I&#8209;D.ietf&#8209;httpbis&#8209;p2&#8209;semantics]<span> (</span><span class='info'>Fielding, R. and J. Reschke, &ldquo;Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content,&rdquo; July&nbsp;2013.</span><span>)</span></a>, is given by the following definition.
+<p>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <a class='info' href='#I-D.ietf-httpbis-p2-semantics'>[I&#8209;D.ietf&#8209;httpbis&#8209;p2&#8209;semantics]<span> (</span><span class='info'>Fielding, R. and J. Reschke, &ldquo;Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content,&rdquo; July&nbsp;2013.</span><span>)</span></a>, is given by the following definition:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><span class='err'>Accept-Post = #( media-range [ accept-params ] )</span></pre></div>
 <p>(Please note that this ABNF differs from the one given in Section 14.1 of RFC 2616 <a class='info' href='#RFC2616'>[RFC2616]<span> (</span><span class='info'>Fielding, R., Gettys, J., Mogul, J., Frystyk, H., Masinter, L., Leach, P., and T. Berners-Lee, &ldquo;Hypertext Transfer Protocol -- HTTP/1.1,&rdquo; June&nbsp;1999.</span><span>)</span></a>, which includes the header field name.)
 </p>
@@ -278,7 +280,13 @@ IANA Considerations</h3>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 The Accept-Post Response Header</h3>
 
-<p>The Accept-Post response header should be added to the permanent registry of message header fields (see <a class='info' href='#RFC3864'>[RFC3864]<span> (</span><span class='info'>Klyne, G., Nottingham, M., and J. Mogul, &ldquo;Registration Procedures for Message Header Fields,&rdquo; September&nbsp;2004.</span><span>)</span></a>).
+<p>The Accept-Post response header should be added to the permanent registry of message header fields (see <a class='info' href='#RFC3864'>[RFC3864]<span> (</span><span class='info'>Klyne, G., Nottingham, M., and J. Mogul, &ldquo;Registration Procedures for Message Header Fields,&rdquo; September&nbsp;2004.</span><span>)</span></a>). Based on the first example of AtomPub <a class='info' href='#example-atompub'>Section&nbsp;5.1<span> (</span><span class='info'>Atom Publishing Protocol</span><span>)</span></a>, when sending a GET request to the URI of a collection, the following response could be sent, if the server decided to support Accept-Post headers:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>HTTP/1.1 201 OK
+Date: Fri, 23 Feb 2007 21:17:11 GMT
+Content-Length: nnn
+Content-Type: application/atom+xml;type=feed
+Accept-Post: image/gif, image/jpeg, image/png</pre></div>
+<p>In this response to the GET request of a collection URI, the server indicates that this particular collection accept new entries in the form of GIF, JPEG, or PNG images. No parameters are used, which means that there is no server-specified preference among those media types.
 </p>
 <a name="examples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -287,18 +295,9 @@ Examples</h3>
 
 <p>Accept-Post extends the way in which interaction information can be exposed in HTTP itself. The following sections contain some examples how this can be used in concrete HTTP-based services.
 </p>
-<a name="example-ldp"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
-Linked Data Platform</h3>
-
-<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130307'>[W3C.WD&#8209;ldp&#8209;20130307]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
-</p>
-<p>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
-</p>
 <a name="example-atompub"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
 Atom Publishing Protocol</h3>
 
 <p>The Atom Publishing Protocol (AtomPub) <a class='info' href='#RFC5023'>[RFC5023]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a> defines a model of interacting with collections and members, based on representations using the Atom <a class='info' href='#RFC4287'>[RFC4287]<span> (</span><span class='info'>Nottingham, M., Ed. and R. Sayre, Ed., &ldquo;The Atom Syndication Format,&rdquo; December&nbsp;2005.</span><span>)</span></a> syntax. AtomPub allows clients to create new collection members by using HTTP POST, with the request being sent to the collection URI. AtomPub servers can limit the media types they accept in these POST requests, and the accepted media types are listed in an "AtomPub service document".
@@ -307,12 +306,23 @@ Atom Publishing Protocol</h3>
 </p>
 <p>While the AtomPub protocol cannot be changed retroactively, this additional way of exposing interaction guidance could make it easier for clients to interact with AtomPub services that do support the Accept-Post header field. For those that do not support Accept-Post, clients would still have to rely on using the information contained in the service document (including the sometimes tricky issue of how to locate the service document for a given collection).
 </p>
+<a name="example-ldp"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+Linked Data Platform</h3>
+
+<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130730'>[W3C.WD&#8209;ldp&#8209;20130730]<span> (</span><span class='info'>Speicher, S., Arwe, J., and A. Malhotra, &ldquo;Linked Data Platform 1.0,&rdquo; July&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
+</p>
+<p>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
+</p>
 <a name="example-415"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 Additional Information in Error Responses</h3>
 
 <p>If a client POSTs an unsupported POST document, it is possible for the server to use Accept-Post to indicate the supported media types. These can be specified using a 415 (Unsupported Media Type) response when the client sends a POST document format that the server does not support for the resource identified by the Request-URI. Such a response then MAY include an Accept-Post response header notify the client what POST document media types are supported.
+</p>
+<p>This example applies to all resources supporting a limited set of media types for POST requests, such as the ones listed in the previous to sections. In both AtomPub and LDP, it would be possible for a server to include an Accept-Post header in a 415 response to a failed POST request, and indicate the media types that are accepted for POST requests.
 </p>
 <a name="implementation-status"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -415,6 +425,19 @@ Change Log</h3>
 <a name="anchor3"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.9.1"></a><h3>9.1.&nbsp;
+From -01 to -02</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Added header field examples.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.9.2"></a><h3>9.2.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -462,8 +485,8 @@ References</h3>
 <td class="author-text">Dusseault, L. and J. Snell, &ldquo;<a href="http://tools.ietf.org/html/rfc5789">PATCH Method for HTTP</a>,&rdquo; RFC&nbsp;5789, March&nbsp;2010 (<a href="http://www.rfc-editor.org/rfc/rfc5789.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC6982">[RFC6982]</a></td>
 <td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
-<tr><td class="author-text" valign="top"><a name="W3C.WD-ldp-20130307">[W3C.WD-ldp-20130307]</a></td>
-<td class="author-text">Speicher, S. and J. Arwe, &ldquo;<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">Linked Data Platform 1.0</a>,&rdquo; World Wide Web Consortium WD&nbsp;WD-ldp-20130307, March&nbsp;2013 (<a href="http://www.w3.org/TR/2013/WD-ldp-20130307">HTML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="W3C.WD-ldp-20130730">[W3C.WD-ldp-20130730]</a></td>
+<td class="author-text">Speicher, S., Arwe, J., and A. Malhotra, &ldquo;<a href="http://www.w3.org/TR/2013/WD-ldp-20130730">Linked Data Platform 1.0</a>,&rdquo; World Wide Web Consortium LastCall&nbsp;WD-ldp-20130730, July&nbsp;2013 (<a href="http://www.w3.org/TR/2013/WD-ldp-20130730">HTML</a>).</td></tr>
 </table>
 
 <a name="acknowledgements"></a><br /><hr />
@@ -473,7 +496,7 @@ Acknowledgements</h3>
 
 <p>Thanks for comments and suggestions provided by Julian Reschke.
 </p>
-<p>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <a class='info' href='#W3C.WD-ldp-20130307'>[W3C.WD&#8209;ldp&#8209;20130307]<span> (</span><span class='info'>Speicher, S. and J. Arwe, &ldquo;Linked Data Platform 1.0,&rdquo; March&nbsp;2013.</span><span>)</span></a>; thanks for comments and suggestions provided by the working group as a whole.
+<p>This work has been done in the context of the W3C Linked Data Platform Working Group (LDPWG) <a class='info' href='#W3C.WD-ldp-20130730'>[W3C.WD&#8209;ldp&#8209;20130730]<span> (</span><span class='info'>Speicher, S., Arwe, J., and A. Malhotra, &ldquo;Linked Data Platform 1.0,&rdquo; July&nbsp;2013.</span><span>)</span></a>; thanks for comments and suggestions provided by the working group as a whole.
 </p>
 <a name="rfc.authors"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
