@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="ld-01.xslt"?>
 <link xmlns="urn:ietf:rfc:XXXX" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:rfc:XXXX ld-00.xsd" href="http://example.org/item42">
-   <hint name="allow" value=' [ "PUT" ] '>
-      <documentation xml:lang="en">For this particular resource, only PUT is supported. Specifically, this resource does not accept DELETE requests.</documentation>
-   </hint>
-   <hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '>
-      <documentation xml:lang="en">Updates are accepted as PNG or JPEG representations.</documentation>
-   </hint>
-   <documentation xml:lang="en">Template for accessing an AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link by default allowing PUT/DELETE as per RFC 5023.</documentation>
+   <allow method="PUT">
+      <documentation xml:lang="en">For this particular resource, PUT is supported.</documentation>
+      <hint name="formats" value="image/png, image/jpeg">
+         <documentation xml:lang="en">Updates are accepted as PNG or JPEG representations.</documentation>
+      </hint>
+   </allow>
+   <allow method="PATCH">
+      <documentation xml:lang="en">Extending AtomPub's capabilities, images can also be PATCHed, with two patch media types being supported.</documentation>
+      <hint name="formats" value="application/png-patch, application/jpeg-patch">
+         <documentation xml:lang="en">Patches are accepted as (hypothetical) PNG or JPEG patch document representations.</documentation>
+      </hint>
+   </allow>
+   <documentation xml:lang="en">Link Description for accessing the AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link allowing PUT/DELETE as per RFC 5023.</documentation>
 </link>
