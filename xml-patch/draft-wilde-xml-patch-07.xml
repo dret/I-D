@@ -641,31 +641,31 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
       <section title="ABNF for RFC 5261" anchor="rfc5261-abnf">
          <t>RFC 5261 <xref target="RFC5261"/> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions in RFC 5261. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.</t>
          <figure>
-            <artwork>   anychar    =  %x00-ffffffff
-               ncname     =  1*%x00-ffffffff
-               qname      =  [ ncname ":" ] ncname
-               aname      =  "@" qname
-               pos        =  "[" 1*DIGIT "]"
-               attr       =  ( "[" aname "='" 0*anychar "']" ) /
-               ( "[" aname "=" DQUOTE 0*anychar DQUOTE "]" )
-               valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
-               value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
-               cond       =  attr / value / pos
-               step       =  ( qname / "*" ) 0*cond
-               piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
-               pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
-               id         =  ( "id(" [ "'" ncname "'" ] ")" ) /
-               ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
-               com        =  "comment()"
-               text       =  "text()"
-               nspa       =  "namespace::" ncname
-               cnodes     =  ( text / com / pi ) [ pos ]
-               child      =  cnodes / step
-               last       =  child / aname / nspa
-               xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
-               ( 0*( step "/" ) last ) )
-               xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
-               ( 0*( step "/" ) child ) )</artwork>
+            <artwork>anychar    =  %x00-ffffffff
+ncname     =  1*%x00-ffffffff
+qname      =  [ ncname ":" ] ncname
+aname      =  "@" qname
+pos        =  "[" 1*DIGIT "]"
+attr       =  ( "[" aname "='" 0*anychar "']" ) /
+              ( "[" aname "=" DQUOTE 0*anychar DQUOTE "]" )
+valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
+value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
+cond       =  attr / value / pos
+step       =  ( qname / "*" ) 0*cond
+piq        =  "processing-instruction(" [ DQUOTE ncname DQUOTE ] ")"
+pi         =  ( "processing-instruction(" [ "'" ncname "'" ] ")" ) / piq
+id         =  ( "id(" [ "'" ncname "'" ] ")" ) /
+              ( "id(" [ DQUOTE ncname DQUOTE ] ")" )
+com        =  "comment()"
+text       =  "text()"
+nspa       =  "namespace::" ncname
+cnodes     =  ( text / com / pi ) [ pos ]
+child      =  cnodes / step
+last       =  child / aname / nspa
+xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
+              ( 0*( step "/" ) last ) )
+xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
+              ( 0*( step "/" ) child ) )</artwork>
          </figure>
       </section>
       <section title="Acknowledgements">
