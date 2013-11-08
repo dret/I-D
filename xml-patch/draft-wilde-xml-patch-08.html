@@ -147,13 +147,11 @@
 <tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
 <tr><td class="header">Expires: May 11, 2014</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-07</h1>
+<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-08</h1>
 
 <h3>Abstract</h3>
 
 <p>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.
-</p>
-<p>In addition to the media type registration, this specification also updates RFC 5261 in some aspects, limiting these updates to cases where RFC 5261 needed to be fixed, or was hard to understand.
 </p>
 <h3>Note to Readers</h3>
 
@@ -273,9 +271,9 @@ Patch Document Format</h3>
 
 <p>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.
 </p>
-<p>The following example patch document uses the example from RFC 5261 section A.18; it uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example of each operation.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns="urn:ietf:params:xml:ns:xxx"
-         xmlns:y="urn:ietf:params:xml:ns:yyy"
+<p>The following example patch document uses the example from RFC 5261 section A.18 (but changing the example namespaces to example.com URIs); it uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example of each operation.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns="http://example.com/ns1"
+         xmlns:y="http://example.com/ns2"
          xmlns:p="urn:ietf:rfc:XXXX"&gt;
     &lt;p:add sel="doc/elem[@a='foo']"&gt;
         &lt;!-- This is a new child --&gt;
@@ -355,13 +353,13 @@ IANA Considerations</h3>
 </blockquote>
                
 
-<p>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com>
+<p>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com&gt;
 </p>
 <p>Intended usage: COMMON
 </p>
 <p>Restrictions on usage: none
 </p>
-<p>Author: Erik Wilde &lt;erik.wilde@emc.com>
+<p>Author: Erik Wilde &lt;erik.wilde@emc.com&gt;
 </p>
 <p>Change controller: IETF
 </p>
@@ -632,40 +630,42 @@ Implementation Status</h3>
 ABNF for RFC 5261</h3>
 
 <p>RFC 5261 <a class='info' href='#RFC5261'>[RFC5261]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> does not contain an ABNF grammar for the allowed subset of XPath expressions, but includes an XSD-based grammar in its type definition for operation types). In order to make implementation easier, this appendix contains an ABNF grammar that has been derived from the XSD expressions in RFC 5261. In the following grammar, "xpath" is the definition for the allowed XPath expressions for remove and replace operations, and "xpath-add" is the definition for the allowed XPath expressions for add operations. The names of all grammar productions are the ones used in the XSD-based grammar of RFC 5261.
-</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>anychar    =  %x00-ffffffff
-ncname     =  1*%x00-ffffffff
-qname      =  [ ncname ":" ] ncname
-aname      =  "@" qname
-pos        =  "[" 1*DIGIT "]"
-attr       =  ( "[" aname "='" 0*anychar "']" ) /
-              ( "[" aname "=" DQUOTE 0*anychar DQUOTE "]" )
-valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
-value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
-cond       =  attr / value / pos
-step       =  ( qname / "*" ) 0*cond
-piq        =  %x70.72.6f.63.65.73.73.69.6e.67.2d.69.6e.73.74.72.75.63.74.69.6f.6e
-              ; "processing-instruction", case-sensitive
-              "(" [ DQUOTE ncname DQUOTE ] ")"
-pi         =  ( %x70.72.6f.63.65.73.73.69.6e.67.2d.69.6e.73.74.72.75.63.74.69.6f.6e
-              ; "processing-instruction", case-sensitive
-              "(" [ "'" ncname "'" ] ")" ) / piq
-id         =  ( %x69.64 ; "id", case-sensitive
-              "(" [ "'" ncname "'" ] ")" ) /
-              ( %x69.64 ; "id", case-sensitive
-              "(" [ DQUOTE ncname DQUOTE ] ")" )
-com        =  %x63.6f.6d.6d.65.6e.74 ; "comment", case-sensitive
-              "()"
-text       =  %x74.65.78.74 ; "text", case-sensitive
-              "()"
-nspa       =  %x6e.61.6d.65.73.70.61.63.65; "namespace", case-sensitive
-              "::" ncname
-cnodes     =  ( text / com / pi ) [ pos ]
-child      =  cnodes / step
-last       =  child / aname / nspa
-xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
-              ( 0*( step "/" ) last ) )
-xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
-              ( 0*( step "/" ) child ) )</pre></div>
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><dfn>anychar</dfn>    =  <span class='val'>%x00-ffffffff</span>
+<dfn>ncname</dfn>     =  <span class='rep'>1*</span><span class='val'>%x00-ffffffff</span>
+<dfn>qname</dfn>      =  [ <cite class='id'>ncname</cite> "<span class='str'>:</span>" ] <cite class='id'>ncname</cite>
+<dfn>aname</dfn>      =  "<span class='str'>@</span>" <cite class='id'>qname</cite>
+<dfn>pos</dfn>        =  "<span class='str'>[</span>" <span class='rep'>1*</span><cite class='key'>DIGIT</cite> "<span class='str'>]</span>"
+<dfn>attr</dfn>       =  ( "<span class='str'>[</span>" <cite class='id'>aname</cite> "<span class='str'>='</span>" <span class='rep'>0*</span><cite class='id'>anychar</cite> "<span class='str'>']</span>" ) /
+              ( "<span class='str'>[</span>" <cite class='id'>aname</cite> "<span class='str'>=</span>" <cite class='key'>DQUOTE</cite> <span class='rep'>0*</span><cite class='id'>anychar</cite> <cite class='key'>DQUOTE</cite> "<span class='str'>]</span>" )
+<dfn>valueq</dfn>     =  "<span class='str'>[</span>" ( <cite class='id'>qname</cite> / "<span class='str'>.</span>" ) "<span class='str'>=</span>" <cite class='key'>DQUOTE</cite> <span class='rep'>0*</span><cite class='id'>anychar</cite> <cite class='key'>DQUOTE</cite> "<span class='str'>]</span>"
+<dfn>value</dfn>      =  ( "<span class='str'>[</span>" ( <cite class='id'>qname</cite> / "<span class='str'>.</span>" ) "<span class='str'>='</span>" <span class='rep'>0*</span><cite class='id'>anychar</cite> "<span class='str'>']</span>" ) / <cite class='id'>valueq</cite>
+<dfn>cond</dfn>       =  <cite class='id'>attr</cite> / <cite class='id'>value</cite> / <cite class='id'>pos</cite>
+<dfn>step</dfn>       =  ( <cite class='id'>qname</cite> / "<span class='str'>*</span>" ) <span class='rep'>0*</span><cite class='id'>cond</cite>
+<dfn>piq</dfn>        =  <span class='val'>%x70.72.6f.63.65.73.73.69.6e.67.2d</span>
+              <span class='val'>%x69.6e.73.74.72.75.63.74.69.6f.6e</span>
+              <em>; "processing-instruction", case-sensitive</em>
+              "<span class='str'>(</span>" [ <cite class='key'>DQUOTE</cite> <cite class='id'>ncname</cite> <cite class='key'>DQUOTE</cite> ] "<span class='str'>)</span>"
+<dfn>pi</dfn>         =  ( <span class='val'>%x70.72.6f.63.65.73.73.69.6e.67.2d</span>
+                <span class='val'>%x69.6e.73.74.72.75.63.74.69.6f.6e</span>
+                <em>; "processing-instruction", case-sensitive</em>
+              "<span class='str'>(</span>" [ "<span class='str'>'</span>" <cite class='id'>ncname</cite> "<span class='str'>'</span>" ] "<span class='str'>)</span>" ) / <cite class='id'>piq</cite>
+<dfn>id</dfn>         =  ( <span class='val'>%x69.64</span> <em>; "id", case-sensitive</em>
+              "<span class='str'>(</span>" [ "<span class='str'>'</span>" <cite class='id'>ncname</cite> "<span class='str'>'</span>" ] "<span class='str'>)</span>" ) /
+              ( <span class='val'>%x69.64</span> <em>; "id", case-sensitive</em>
+              "<span class='str'>(</span>" [ <cite class='key'>DQUOTE</cite> <cite class='id'>ncname</cite> <cite class='key'>DQUOTE</cite> ] "<span class='str'>)</span>" )
+<dfn>com</dfn>        =  <span class='val'>%x63.6f.6d.6d.65.6e.74</span> <em>; "comment", case-sensitive</em>
+              "<span class='str'>()</span>"
+<dfn>text</dfn>       =  <span class='val'>%x74.65.78.74</span> <em>; "text", case-sensitive</em>
+              "<span class='str'>()</span>"
+<dfn>nspa</dfn>       =  <span class='val'>%x6e.61.6d.65.73.70.61.63.65</span><em>; "namespace", case-sensitive</em>
+              "<span class='str'>::</span>" <cite class='id'>ncname</cite>
+<dfn>cnodes</dfn>     =  ( <cite class='id'>text</cite> / <cite class='id'>com</cite> / <cite class='id'>pi</cite> ) [ <cite class='id'>pos</cite> ]
+<dfn>child</dfn>      =  <cite class='id'>cnodes</cite> / <cite class='id'>step</cite>
+<dfn>last</dfn>       =  <cite class='id'>child</cite> / <cite class='id'>aname</cite> / <cite class='id'>nspa</cite>
+<dfn>xpath</dfn>      =  [ "<span class='str'>/</span>" ] ( ( <cite class='id'>id</cite> [ <span class='rep'>0*</span>( "<span class='str'>/</span>" <cite class='id'>step</cite> ) "<span class='str'>/</span>" <cite class='id'>last</cite> ] ) /
+              ( <span class='rep'>0*</span>( <cite class='id'>step</cite> "<span class='str'>/</span>" ) <cite class='id'>last</cite> ) )
+<dfn>xpath-add</dfn>  =  [ "<span class='str'>/</span>" ] ( ( <cite class='id'>id</cite> [ <span class='rep'>0*</span>( "<span class='str'>/</span>" <cite class='id'>step</cite> ) "<span class='str'>/</span>" <cite class='id'>child</cite> ] ) /
+              ( <span class='rep'>0*</span>( <cite class='id'>step</cite> "<span class='str'>/</span>" ) <cite class='id'>child</cite> ) )</pre></div>
 <a name="anchor11"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.D"></a><h3>Appendix D.&nbsp;

@@ -9,11 +9,13 @@ valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
 value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
 cond       =  attr / value / pos
 step       =  ( qname / "*" ) 0*cond
-piq        =  %x70.72.6f.63.65.73.73.69.6e.67.2d.69.6e.73.74.72.75.63.74.69.6f.6e
+piq        =  %x70.72.6f.63.65.73.73.69.6e.67.2d
+              %x69.6e.73.74.72.75.63.74.69.6f.6e
               ; "processing-instruction", case-sensitive
               "(" [ DQUOTE ncname DQUOTE ] ")"
-pi         =  ( %x70.72.6f.63.65.73.73.69.6e.67.2d.69.6e.73.74.72.75.63.74.69.6f.6e
-              ; "processing-instruction", case-sensitive
+pi         =  ( %x70.72.6f.63.65.73.73.69.6e.67.2d
+                %x69.6e.73.74.72.75.63.74.69.6f.6e
+                ; "processing-instruction", case-sensitive
               "(" [ "'" ncname "'" ] ")" ) / piq
 id         =  ( %x69.64 ; "id", case-sensitive
               "(" [ "'" ncname "'" ] ")" ) /

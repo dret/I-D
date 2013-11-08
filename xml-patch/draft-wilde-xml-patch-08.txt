@@ -9,7 +9,7 @@ Expires: May 11, 2014
 
 
                  A Media Type for XML Patch Operations
-                        draft-wilde-xml-patch-07
+                        draft-wilde-xml-patch-08
 
 Abstract
 
@@ -20,10 +20,6 @@ Abstract
    document format and a media type registration, so that XML Patch
    documents can be labeled with a media type, for example in HTTP
    conversations.
-
-   In addition to the media type registration, this specification also
-   updates RFC 5261 in some aspects, limiting these updates to cases
-   where RFC 5261 needed to be fixed, or was hard to understand.
 
 Note to Readers
 
@@ -50,15 +46,16 @@ Status of this Memo
 
 Copyright Notice
 
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+
 
 
 Wilde                     Expires May 11, 2014                  [Page 1]
 
 Internet-Draft                  XML Patch                  November 2013
 
-
-   Copyright (c) 2013 IETF Trust and the persons identified as the
-   document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
@@ -97,7 +94,10 @@ Table of Contents
    Appendix B.  Implementation Status . . . . . . . . . . . . . . . . 13
    Appendix C.  ABNF for RFC 5261 . . . . . . . . . . . . . . . . . . 13
    Appendix D.  Acknowledgements  . . . . . . . . . . . . . . . . . . 14
-   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 15
+
+
+
 
 
 
@@ -175,11 +175,12 @@ Internet-Draft                  XML Patch                  November 2013
    patch operation.
 
    The following example patch document uses the example from RFC 5261
-   section A.18; it uses a "patch" element and a new XML namespace.  It
-   shows the general structure of an XML patch document, as well as an
-   example of each operation.
-   <p:patch xmlns="urn:ietf:params:xml:ns:xxx"
-            xmlns:y="urn:ietf:params:xml:ns:yyy"
+   section A.18 (but changing the example namespaces to example.com
+   URIs); it uses a "patch" element and a new XML namespace.  It shows
+   the general structure of an XML patch document, as well as an example
+   of each operation.
+   <p:patch xmlns="http://example.com/ns1"
+            xmlns:y="http://example.com/ns2"
             xmlns:p="urn:ietf:rfc:XXXX">
        <p:add sel="doc/elem[@a='foo']">
            <!-- This is a new child -->
@@ -206,7 +207,6 @@ Internet-Draft                  XML Patch                  November 2013
    possibly empty) sequence of the "add", "remove", and "replace"
    operation elements, which are directly based on the respective types
    from the schema defined in RFC 5261.
-
 
 
 
@@ -733,48 +733,48 @@ Internet-Draft                  XML Patch                  November 2013
    definition for the allowed XPath expressions for add operations.  The
    names of all grammar productions are the ones used in the XSD-based
    grammar of RFC 5261.
-anychar    =  %x00-ffffffff
-ncname     =  1*%x00-ffffffff
-qname      =  [ ncname ":" ] ncname
-aname      =  "@" qname
-pos        =  "[" 1*DIGIT "]"
-attr       =  ( "[" aname "='" 0*anychar "']" ) /
-              ( "[" aname "=" DQUOTE 0*anychar DQUOTE "]" )
-valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
-value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
-cond       =  attr / value / pos
-step       =  ( qname / "*" ) 0*cond
-piq        =  %x70.72.6f.63.65.73.73.69.6e.67.2d.69.6e.73.74.72.75.63.74.69.6f.6e
-              ; "processing-instruction", case-sensitive
-              "(" [ DQUOTE ncname DQUOTE ] ")"
-pi         =  ( %x70.72.6f.63.65.73.73.69.6e.67.2d.69.6e.73.74.72.75.63.74.69.6f.6e
-              ; "processing-instruction", case-sensitive
-              "(" [ "'" ncname "'" ] ")" ) / piq
-id         =  ( %x69.64 ; "id", case-sensitive
-              "(" [ "'" ncname "'" ] ")" ) /
-              ( %x69.64 ; "id", case-sensitive
-              "(" [ DQUOTE ncname DQUOTE ] ")" )
-com        =  %x63.6f.6d.6d.65.6e.74 ; "comment", case-sensitive
-              "()"
-text       =  %x74.65.78.74 ; "text", case-sensitive
-              "()"
-nspa       =  %x6e.61.6d.65.73.70.61.63.65; "namespace", case-sensitive
-              "::" ncname
-cnodes     =  ( text / com / pi ) [ pos ]
-child      =  cnodes / step
-last       =  child / aname / nspa
-xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
-              ( 0*( step "/" ) last ) )
-xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
-              ( 0*( step "/" ) child ) )
+ anychar    =  %x00-ffffffff
+ ncname     =  1*%x00-ffffffff
+ qname      =  [ ncname ":" ] ncname
+ aname      =  "@" qname
+ pos        =  "[" 1*DIGIT "]"
+ attr       =  ( "[" aname "='" 0*anychar "']" ) /
+               ( "[" aname "=" DQUOTE 0*anychar DQUOTE "]" )
+ valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
+ value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
+ cond       =  attr / value / pos
+ step       =  ( qname / "*" ) 0*cond
+ piq        =  %x70.72.6f.63.65.73.73.69.6e.67.2d
+               %x69.6e.73.74.72.75.63.74.69.6f.6e
+               ; "processing-instruction", case-sensitive
+               "(" [ DQUOTE ncname DQUOTE ] ")"
+ pi         =  ( %x70.72.6f.63.65.73.73.69.6e.67.2d
+                 %x69.6e.73.74.72.75.63.74.69.6f.6e
+                 ; "processing-instruction", case-sensitive
+               "(" [ "'" ncname "'" ] ")" ) / piq
+ id         =  ( %x69.64 ; "id", case-sensitive
+               "(" [ "'" ncname "'" ] ")" ) /
+               ( %x69.64 ; "id", case-sensitive
+               "(" [ DQUOTE ncname DQUOTE ] ")" )
+ com        =  %x63.6f.6d.6d.65.6e.74 ; "comment", case-sensitive
+               "()"
+ text       =  %x74.65.78.74 ; "text", case-sensitive
+               "()"
+ nspa       =  %x6e.61.6d.65.73.70.61.63.65; "namespace", case-sensitive
+               "::" ncname
+ cnodes     =  ( text / com / pi ) [ pos ]
+ child      =  cnodes / step
+ last       =  child / aname / nspa
+ xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
+               ( 0*( step "/" ) last ) )
+ xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
+               ( 0*( step "/" ) child ) )
 
 
 Appendix D.  Acknowledgements
 
    Thanks for comments and suggestions provided by Bas de Bakker, Tony
    Hansen, Bjoern Hoehrmann, and Julian Reschke.
-
-
 
 
 
