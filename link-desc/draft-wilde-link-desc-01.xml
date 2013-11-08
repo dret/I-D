@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+   <!ENTITY files 'draft-wilde-link-desc-01-files'>
+]>
+<?xml-stylesheet type="text/xsl" href="../../XIPr/xipr-1-0.xsl"?>
+<!-- XIPr is used for XInclude processing; you can use any XInclude processor to include the files referenced from within this document. -->
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="yes" ?>
-<rfc category="info" ipr="trust200902" docName="draft-wilde-link-desc-01">
+<rfc category="info" ipr="trust200902" docName="draft-wilde-link-desc-01" xmlns:xi="http://www.w3.org/2001/XInclude">
    <front>
       <title>HTTP Link Descriptions</title>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
@@ -43,36 +47,7 @@
          <t>As described in both cases, it is possible for the link description to become outdated, leading to cases where the assumptions made by the client (based on the link description) and the link target itself do not match anymore. For this reason, ideally a resource should provide a (link) description for itself, allowing a client to update its expectations. However, since the service generating the link and the service providing the link target are loosely coupled, link descriptions can be used in links, in descriptions where services expose more runtime information about resources by providing link descriptions for themselves, or in both places.</t>
          <t>The following example shows hows both of these mechanisms can be used in one representation, which is based on Atom <xref target="RFC4287"/> and AtomPub <xref target="RFC5023"/>. It also shows the two cases just described, with the first link description being one to "self", while the second link description is about a different resource.</t>
          <figure>
-            <artwork type="XML"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX" >
-    <title>Example Feed</title>
-    <link rel="self" href="http://example.org/?page=3" ld:hreft="http://example.org/{?page}">
-        <ld:var name="page" concept="http://example.com/feedpaging/page" default="1">
-            <ld:restriction base="positiveInteger">
-                <ld:minInclusive value="1"/>
-                <ld:maxInclusive value="42"/>
-            </ld:restriction>
-        </ld:var>
-    </link>
-    <link rel="next" href="http://example.org/?page=4"/>
-    <link rel="previous" href="http://example.org/?page=2"/>
-    <updated>2003-12-13T18:30:02Z</updated>
-    <author>
-        <name>John Doe</name>
-    </author>
-    <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
-    <entry>
-        <title>Atom-Powered Robots Run Amok</title>
-        <link href="http://example.org/2003/12/13/atom03"/>
-        <link rel="edit" href="http://example.org/item42">
-            <ld:hint name="allow" value=' [ "PUT" ] '/>
-            <ld:hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '/>
-        </link>
-        <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
-        <updated>2003-12-13T18:30:02Z</updated>
-        <summary>Some text.</summary>
-    </entry>
-</feed>]]></artwork>
+             <artwork type="xml"><xi:include parse="text" href="&files;/ld-atompub.xml"/></artwork>
          </figure>
          <t>The link to the feed itself is augmented with a URI Template described in <xref target="intro-templates"/>, which allows a client to understand that individual feed pages can be requested (assuming the consumer understands the "concept" identifiers for the described variables). The link to the entry is an augmented typed Web Link described in <xref target="intro-links"/>, which allows a consumer to understand that even though "edit" links typically can be followed via GET, PUT, and DELETE, this particular link should only be followed using a PUT request.</t>
          <t>It is worth noting that link descriptions of course can become outdated between the time such a link decription has been received by a client, and the time a client actually sends a request when following such a link (this is the case both for "self" links and links to other resources). This means that clients should never depend on link description being correct, because for example the "edit" link description shown above might start allowing DELETE requests again at any point in time.</t>
@@ -147,34 +122,13 @@
             <t>...</t>
             <t>All the example use "documentation" elements which are entirely optional, but can help to improve the usefulness of link descriptions for developers.</t>
             <figure>
-               <artwork type="xml"><![CDATA[<link xmlns="urn:ietf:rfc:XXXX" href="http://example.org/item42">
-   <hint name="allow" value=' [ "PUT" ] '>
-      <documentation xml:lang="en">For this particular resource, only PUT is supported. Specifically, this resource does not accept DELETE requests.</documentation>
-   </hint>
-   <hint name="formats" value=' { "image/png" : {} , "image/jpeg" : {} } '>
-      <documentation xml:lang="en">Updates are accepted as PNG or JPEG representations.</documentation>
-   </hint>
-   <documentation xml:lang="en">Template for accessing an AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link by default allowing PUT/DELETE as per RFC 5023.</documentation>
-</link>]]></artwork>
+                <artwork type="xml"><xi:include parse="text" href="&files;/ld-edit.xml"/></artwork>
             </figure>
          </section>
          <section title="Pageable Collection" anchor="example-paging">
             <t>...</t>
             <figure>
-               <artwork type="xml"><![CDATA[<link xmlns="urn:ietf:rfc:XXXX" hreft="http://example.org/{?pagesize,page}">
-   <var name="pagesize" concept="http://example.com/feedpaging/pagesize" default="10">
-      <restriction base="positiveInteger">
-         <minInclusive value="1"/>
-         <maxInclusive value="100"/>
-      </restriction>
-      <documentation xml:lang="en">Number of returned items per page.</documentation>
-   </var>
-   <var name="page" concept="http://example.com/feedpaging/page" default="1">
-      <restriction base="positiveInteger"/>
-      <documentation xml:lang="en">Page number of the returned page (based on the requested pagesize or a service-defined default).</documentation>
-   </var>
-   <documentation xml:lang="en">Template for accessing a paged feed of entries at http://www.example.com/feed, with client controls for the page size, and the returned page.</documentation>
-</link>]]></artwork>
+                <artwork type="xml"><xi:include parse="text" href="&files;/ld-paging.xml"/></artwork>
             </figure>
          </section>
       </section>
@@ -616,407 +570,12 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
       </section>
       <section title="Link Description Schema">
          <figure>
-            <artwork type="xsd"><![CDATA[<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
-    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd">
-        <xs:annotation>
-            <xs:documentation>Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.</xs:documentation>
-        </xs:annotation>
-    </xs:import>
-    <xs:element name="link" type="ld:link-type"> </xs:element>
-    <xs:simpleType name="uriTemplate">
-        <xs:annotation>
-            <xs:documentation>Representing the type for URI template values according to RFC 6570. This is probably too complicated to cover with a regular expression in any reasonable way, so type enforcement is not done by the schema.</xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string"/>
-    </xs:simpleType>
-    <xs:group name="descriptions">
-        <xs:choice>
-            <xs:element name="appinfo" id="appinfo">
-                <xs:complexType mixed="true">
-                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                        <xs:any processContents="lax"/>
-                    </xs:sequence>
-                    <xs:attribute name="source" type="xs:anyURI"/>
-                    <xs:anyAttribute namespace="##other" processContents="lax"/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="documentation" id="documentation">
-                <xs:complexType mixed="true">
-                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                        <xs:any processContents="lax"/>
-                    </xs:sequence>
-                    <xs:attribute name="source" type="xs:anyURI"/>
-                    <xs:attribute ref="xml:lang"/>
-                    <xs:anyAttribute namespace="##other" processContents="lax"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:choice>
-    </xs:group>
-    <!-- these are simplified versions of the types for facet elements as defined in the schema for schemas at http://www.w3.org/2001/XMLSchema.xsd -->
-    <xs:complexType name="facet">
-        <xs:complexContent>
-            <xs:restriction base="xs:anyType">
-                <xs:attribute name="value" use="required"/>
-            </xs:restriction>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:complexType name="numFacet">
-        <xs:complexContent>
-            <xs:restriction base="ld:facet">
-                <xs:attribute name="value" type="xs:nonNegativeInteger" use="required"/>
-            </xs:restriction>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:complexType name="link-type">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="var">
-                <xs:complexType>
-                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
-                        <xs:element name="restriction" minOccurs="0">
-                            <xs:complexType>
-                                <xs:choice maxOccurs="unbounded" minOccurs="0">
-                                    <xs:element name="minExclusive" type="ld:facet"/>
-                                    <xs:element name="minInclusive" type="ld:facet"/>
-                                    <xs:element name="maxExclusive" type="ld:facet"/>
-                                    <xs:element name="maxInclusive" type="ld:facet"/>
-                                    <xs:element name="totalDigits">
-                                        <xs:complexType>
-                                            <xs:complexContent>
-                                                <xs:restriction base="ld:numFacet">
-                                                    <xs:attribute name="value" type="xs:positiveInteger" use="required"/>
-                                                </xs:restriction>
-                                            </xs:complexContent>
-                                        </xs:complexType>
-                                    </xs:element>
-                                    <xs:element name="fractionDigits" type="ld:numFacet"/>
-                                    <xs:element name="length" type="ld:numFacet"/>
-                                    <xs:element name="minLength" type="ld:numFacet"/>
-                                    <xs:element name="maxLength" type="ld:numFacet"/>
-                                    <xs:element name="enumeration" type="ld:facet"/>
-                                    <xs:element name="whiteSpace">
-                                        <xs:complexType>
-                                            <xs:complexContent>
-                                                <xs:restriction base="ld:facet">
-                                                    <xs:attribute name="value" use="required">
-                                                        <xs:simpleType>
-                                                            <xs:restriction base="xs:NMTOKEN">
-                                                                <xs:enumeration value="preserve"/>
-                                                                <xs:enumeration value="replace"/>
-                                                                <xs:enumeration value="collapse"/>
-                                                            </xs:restriction>
-                                                        </xs:simpleType>
-                                                    </xs:attribute>
-                                                </xs:restriction>
-                                            </xs:complexContent>
-                                        </xs:complexType>
-                                    </xs:element>
-                                    <xs:element name="pattern" type="ld:facet"/>
-                                </xs:choice>
-                                <xs:attribute name="base" use="required" type="xs:QName"> </xs:attribute>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
-                        <xs:any namespace="##other" minOccurs="0">
-                            <xs:annotation>
-                                <xs:documentation>If variables are restricted in ways other than the simple type restrictions that are built into link descriptions, then these restrictions can be embedded in a variable description as well, as long as they are represented using a different namespace.</xs:documentation>
-                            </xs:annotation>
-                        </xs:any>
-                    </xs:sequence>
-                    <xs:attribute name="name" use="required"/>
-                    <xs:attribute name="concept" type="xs:anyURI" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Identifies the variable by referring to a concept URI.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="default" type="xs:anySimpleType" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Defines the default value for the variable (used by the service if no value is provided). The value must match the type defined for the variable.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
-            <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="hint">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:group maxOccurs="unbounded" minOccurs="0" ref="ld:descriptions"/>
-                    </xs:sequence>
-                    <xs:attribute name="name" use="required">
-                        <xs:annotation>
-                            <xs:documentation>A hint is either a registered hint with a simple name (defined by a regular expression), or an unregistered hint which is identified by URI.</xs:documentation>
-                        </xs:annotation>
-                        <xs:simpleType>
-                            <xs:union memberTypes="xs:anyURI">
-                                <xs:simpleType>
-                                    <xs:restriction base="xs:token">
-                                        <xs:annotation>
-                                            <xs:documentation>The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.</xs:documentation>
-                                        </xs:annotation>
-                                        <xs:enumeration value="allow"/>
-                                        <xs:enumeration value="formats"/>
-                                        <xs:enumeration value="links"/>
-                                        <xs:enumeration value="accept-post"/>
-                                        <xs:enumeration value="accept-patch"/>
-                                        <xs:enumeration value="accept-ranges"/>
-                                        <xs:enumeration value="accept-prefer"/>
-                                        <xs:enumeration value="precondition-req"/>
-                                        <xs:enumeration value="auth-scheme"/>
-                                        <xs:enumeration value="status"/>
-                                    </xs:restriction>
-                                </xs:simpleType>
-                            </xs:union>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attribute name="value"/>
-                    <xs:assert test="count(../ld:hint[@name = current()/@name]) &lt;= 1">
-                        <xs:annotation>
-                            <xs:documentation>It is not allowed to have more than one hint with the same @name on the same link.</xs:documentation>
-                        </xs:annotation>
-                    </xs:assert>
-                </xs:complexType>
-            </xs:element>
-        </xs:choice>
-        <xs:attribute name="hreft" type="ld:uriTemplate" use="optional"/>
-        <xs:attribute name="href" type="xs:anyURI" use="optional"/>
-        <xs:assert test="count(@href | @hreft) = 1">
-            <xs:annotation>
-                <xs:documentation>A link must either specify a URI (@href) or a URI Template (@hreft), but it cannot specify both at the same time.</xs:documentation>
-            </xs:annotation>
-        </xs:assert>
-    </xs:complexType>
-</xs:schema>]]></artwork>
+             <artwork type="xml"><xi:include parse="text" href="&files;/ld.xsd"/></artwork>
          </figure>
       </section>
       <section title="XSLT for Generating Link Description HTML">
          <figure>
-            <artwork type="xslt"><![CDATA[<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ld="urn:ietf:rfc:XXXX" exclude-result-prefixes="ld">
-    <xsl:output method="html"/>
-    <xsl:template match="/">
-        <html>
-            <head>
-                <title>Link Descriptions</title>
-                <style type="text/css">
-                    ul { margin : 0 }
-                    .msg { color : #C0C0C0 }
-                </style>
-            </head>
-            <body>
-                <h1>Link Descriptions</h1>
-                <xsl:for-each select="//*[ ld:var | ld:hint ]">
-                    <hr/>
-                    <xsl:for-each select=" @href | @hreft | @ld:href | @ld:hreft ">
-                        <h2>
-                            <code>
-                                <xsl:value-of select="name()"/>
-                                <xsl:text>="</xsl:text>
-                                <a href="{.}">
-                                    <xsl:value-of select="."/>
-                                </a>
-                                <xsl:text>"</xsl:text>
-                            </code>
-                        </h2>
-                    </xsl:for-each>
-                    <xsl:if test="@rel">
-                        <h3>
-                            <code>
-                                <xsl:text>rel="</xsl:text>
-                                <xsl:value-of select="@rel"/>
-                                <xsl:text>"</xsl:text>
-                            </code>
-                        </h3>
-                    </xsl:if>
-                    <table rules="none" style="margin : 15px">
-                        <tr>
-                            <th align="right">Documentation:</th>
-                            <td>
-                                <xsl:call-template name="documentation"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th align="right">Appinfo:</th>
-                            <td>
-                                <xsl:call-template name="appinfo"/>
-                            </td>
-                        </tr>
-                    </table>
-                    <xsl:if test="ld:var">
-                        <h4>Variables:</h4>
-                        <table rules="all" border="1" cellpadding="5">
-                            <thead>
-                                <tr>
-                                    <th>Variable</th>
-                                    <th>Concept</th>
-                                    <th>Default</th>
-                                    <th>Value Range</th>
-                                    <th>Documentation</th>
-                                    <th>Appinfo</th>
-                                </tr>
-                            </thead>
-                            <xsl:for-each select="ld:var">
-                                <xsl:sort select="@name"/>
-                                <tr>
-                                    <td>
-                                        <xsl:value-of select="@name"/>
-                                    </td>
-                                    <td>
-                                        <xsl:choose>
-                                            <xsl:when test="@concept">
-                                                <q>
-                                                    <xsl:value-of select="@concept"/>
-                                                </q>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <span class="msg">n/a</span>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </td>
-                                    <td>
-                                        <xsl:choose>
-                                            <xsl:when test="@default">
-                                                <q>
-                                                    <code>
-                                                        <xsl:value-of select="@default"/>
-                                                    </code>
-                                                </q>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <span class="msg">n/a</span>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </td>
-                                    <td>
-                                        <xsl:choose>
-                                            <xsl:when test="ld:restriction">
-                                                <div>
-                                                    <xsl:text>Base: </xsl:text>
-                                                    <code>
-                                                        <xsl:choose>
-                                                            <xsl:when test="contains(ld:restriction/@base, ':')">
-                                                                <xsl:value-of select="ld:restriction/@base"/>
-                                                            </xsl:when>
-                                                            <xsl:otherwise>
-                                                                <a href="http://www.w3.org/TR/xmlschema-2/#{ld:restriction/@base}">
-                                                                    <xsl:value-of select="concat('xs:', ld:restriction/@base)"/>
-                                                                </a>
-                                                            </xsl:otherwise>
-                                                        </xsl:choose>
-                                                    </code>
-                                                </div>
-                                                <xsl:if test="ld:restriction/ld:*">
-                                                    <ul>
-                                                        <xsl:for-each select="ld:restriction/ld:*">
-                                                            <xsl:sort select="local-name()"/>
-                                                            <li>
-                                                                <code>
-                                                                    <a href="http://www.w3.org/TR/xmlschema-2/#rf-{local-name()}">
-                                                                        <xsl:value-of select="concat('xs:',local-name())"/>
-                                                                    </a>
-                                                                    <xsl:text>="</xsl:text>
-                                                                    <xsl:value-of select="@value"/>
-                                                                    <xsl:text>"</xsl:text>
-                                                                </code>
-                                                            </li>
-                                                        </xsl:for-each>
-                                                    </ul>
-                                                </xsl:if>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <span class="msg">n/a</span>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </td>
-                                    <td>
-                                        <xsl:call-template name="documentation"/>
-                                    </td>
-                                    <td>
-                                        <xsl:call-template name="appinfo"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                        </table>
-                    </xsl:if>
-                    <xsl:if test="ld:hint">
-                        <h4>Hints:</h4>
-                        <table rules="all" border="1" cellpadding="5">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Value</th>
-                                    <th>Documentation</th>
-                                    <th>Appinfo</th>
-                                </tr>
-                            </thead>
-                            <xsl:for-each select="ld:hint">
-                                <xsl:sort select="@name"/>
-                                <tr>
-                                    <td>
-                                        <xsl:value-of select="@name"/>
-                                    </td>
-                                    <td>
-                                        <code>
-                                            <xsl:value-of select="@value"/>
-                                        </code>
-                                    </td>
-                                    <td>
-                                        <xsl:call-template name="documentation"/>
-                                    </td>
-                                    <td>
-                                        <xsl:call-template name="appinfo"/>
-                                    </td>
-                                </tr>
-                            </xsl:for-each>
-                        </table>
-                    </xsl:if>
-                </xsl:for-each>
-            </body>
-        </html>
-    </xsl:template>
-    <xsl:template name="documentation">
-        <xsl:choose>
-            <xsl:when test="ld:documentation">
-                <ul>
-                    <xsl:for-each select="ld:documentation">
-                        <li>
-                            <xsl:value-of select="node()"/>
-                            <xsl:if test="@xml:lang">
-                                <xsl:text> </xsl:text>
-                                <span class="msg">
-                                    <xsl:text>(</xsl:text>
-                                        <code>
-                                            <xsl:text>xml:lang="</xsl:text>
-                                            <xsl:value-of select="@xml:lang"/>
-                                            <xsl:text>"</xsl:text>
-                                        </code>
-                                    <xsl:text>)</xsl:text>
-                                </span>
-                            </xsl:if>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-            </xsl:when>
-            <xsl:otherwise>
-                <span class="msg">n/a</span>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    <xsl:template name="appinfo">
-        <xsl:choose>
-            <xsl:when test="ld:appinfo">
-                <ul>
-                    <xsl:for-each select="ld:appinfo">
-                        <li>
-                            <xsl:text>Source: </xsl:text>
-                            <xsl:value-of select="@source"/>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-            </xsl:when>
-            <xsl:otherwise>
-                <span class="msg">n/a</span>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-</xsl:stylesheet>]]></artwork>
+             <artwork type="xml"><xi:include parse="text" href="&files;/ld-xslt"/></artwork>
          </figure>
       </section>
    </back>
