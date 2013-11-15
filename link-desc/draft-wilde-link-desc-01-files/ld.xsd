@@ -12,159 +12,98 @@
         </xs:annotation>
         <xs:restriction base="xs:string"/>
     </xs:simpleType>
-    <xs:group name="descriptions">
-        <xs:choice>
-            <xs:element name="appinfo" id="appinfo">
-                <xs:complexType mixed="true">
-                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                        <xs:any processContents="lax"/>
-                    </xs:sequence>
-                    <xs:attribute name="source" type="xs:anyURI"/>
-                    <xs:anyAttribute namespace="##other" processContents="lax"/>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="documentation" id="documentation">
-                <xs:complexType mixed="true">
-                    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-                        <xs:any processContents="lax"/>
-                    </xs:sequence>
-                    <xs:attribute name="source" type="xs:anyURI"/>
-                    <xs:attribute ref="xml:lang"/>
-                    <xs:anyAttribute namespace="##other" processContents="lax"/>
-                </xs:complexType>
-            </xs:element>
-        </xs:choice>
-    </xs:group>
-    <!-- these are simplified versions of the types for facet elements as defined in the schema for schemas at http://www.w3.org/2001/XMLSchema.xsd -->
-    <xs:complexType name="facet">
-        <xs:complexContent>
-            <xs:restriction base="xs:anyType">
-                <xs:attribute name="value" use="required"/>
-            </xs:restriction>
-        </xs:complexContent>
-    </xs:complexType>
-    <xs:complexType name="numFacet">
-        <xs:complexContent>
-            <xs:restriction base="ld:facet">
-                <xs:attribute name="value" type="xs:nonNegativeInteger" use="required"/>
-            </xs:restriction>
-        </xs:complexContent>
-    </xs:complexType>
+    <xs:element name="documentation" id="documentation">
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:any processContents="lax"/>
+            </xs:sequence>
+            <xs:attribute name="source" type="xs:anyURI"/>
+            <xs:attribute ref="xml:lang"/>
+            <xs:anyAttribute namespace="##other" processContents="lax"/>
+        </xs:complexType>
+    </xs:element>
     <xs:complexType name="link-type">
-        <xs:choice maxOccurs="unbounded">
-            <xs:element name="var">
-                <xs:complexType>
-                    <xs:sequence maxOccurs="unbounded" minOccurs="1">
-                        <xs:element name="restriction" minOccurs="0">
-                            <xs:complexType>
-                                <xs:choice maxOccurs="unbounded" minOccurs="0">
-                                    <xs:element name="minExclusive" type="ld:facet"/>
-                                    <xs:element name="minInclusive" type="ld:facet"/>
-                                    <xs:element name="maxExclusive" type="ld:facet"/>
-                                    <xs:element name="maxInclusive" type="ld:facet"/>
-                                    <xs:element name="totalDigits">
-                                        <xs:complexType>
-                                            <xs:complexContent>
-                                                <xs:restriction base="ld:numFacet">
-                                                    <xs:attribute name="value" type="xs:positiveInteger" use="required"/>
-                                                </xs:restriction>
-                                            </xs:complexContent>
-                                        </xs:complexType>
-                                    </xs:element>
-                                    <xs:element name="fractionDigits" type="ld:numFacet"/>
-                                    <xs:element name="length" type="ld:numFacet"/>
-                                    <xs:element name="minLength" type="ld:numFacet"/>
-                                    <xs:element name="maxLength" type="ld:numFacet"/>
-                                    <xs:element name="enumeration" type="ld:facet"/>
-                                    <xs:element name="whiteSpace">
-                                        <xs:complexType>
-                                            <xs:complexContent>
-                                                <xs:restriction base="ld:facet">
-                                                    <xs:attribute name="value" use="required">
-                                                        <xs:simpleType>
-                                                            <xs:restriction base="xs:NMTOKEN">
-                                                                <xs:enumeration value="preserve"/>
-                                                                <xs:enumeration value="replace"/>
-                                                                <xs:enumeration value="collapse"/>
-                                                            </xs:restriction>
-                                                        </xs:simpleType>
-                                                    </xs:attribute>
-                                                </xs:restriction>
-                                            </xs:complexContent>
-                                        </xs:complexType>
-                                    </xs:element>
-                                    <xs:element name="pattern" type="ld:facet"/>
-                                </xs:choice>
-                                <xs:attribute name="base" use="required" type="xs:QName"> </xs:attribute>
-                            </xs:complexType>
-                        </xs:element>
-                        <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
-                        <xs:any namespace="##other" minOccurs="0">
-                            <xs:annotation>
-                                <xs:documentation>If variables are restricted in ways other than the simple type restrictions that are built into link descriptions, then these restrictions can be embedded in a variable description as well, as long as they are represented using a different namespace.</xs:documentation>
-                            </xs:annotation>
-                        </xs:any>
-                    </xs:sequence>
-                    <xs:attribute name="name" use="required"/>
-                    <xs:attribute name="concept" type="xs:anyURI" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Identifies the variable by referring to a concept URI.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                    <xs:attribute name="default" type="xs:anySimpleType" use="optional">
-                        <xs:annotation>
-                            <xs:documentation>Defines the default value for the variable (used by the service if no value is provided). The value must match the type defined for the variable.</xs:documentation>
-                        </xs:annotation>
-                    </xs:attribute>
-                </xs:complexType>
-            </xs:element>
-            <xs:group ref="ld:descriptions" maxOccurs="unbounded" minOccurs="0"/>
-            <xs:element name="hint">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:group maxOccurs="unbounded" minOccurs="0" ref="ld:descriptions"/>
-                    </xs:sequence>
-                    <xs:attribute name="name" use="required">
-                        <xs:annotation>
-                            <xs:documentation>A hint is either a registered hint with a simple name (defined by a regular expression), or an unregistered hint which is identified by URI.</xs:documentation>
-                        </xs:annotation>
-                        <xs:simpleType>
-                            <xs:union memberTypes="xs:anyURI">
-                                <xs:simpleType>
-                                    <xs:restriction base="xs:token">
-                                        <xs:annotation>
-                                            <xs:documentation>The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.</xs:documentation>
-                                        </xs:annotation>
-                                        <xs:enumeration value="allow"/>
-                                        <xs:enumeration value="formats"/>
-                                        <xs:enumeration value="links"/>
-                                        <xs:enumeration value="accept-post"/>
-                                        <xs:enumeration value="accept-patch"/>
-                                        <xs:enumeration value="accept-ranges"/>
-                                        <xs:enumeration value="accept-prefer"/>
-                                        <xs:enumeration value="precondition-req"/>
-                                        <xs:enumeration value="auth-scheme"/>
-                                        <xs:enumeration value="status"/>
-                                    </xs:restriction>
-                                </xs:simpleType>
-                            </xs:union>
-                        </xs:simpleType>
-                    </xs:attribute>
-                    <xs:attribute name="value"/>
-                    <xs:assert test="count(../ld:hint[@name = current()/@name]) &lt;= 1">
-                        <xs:annotation>
-                            <xs:documentation>It is not allowed to have more than one hint with the same @name on the same link.</xs:documentation>
-                        </xs:annotation>
-                    </xs:assert>
-                </xs:complexType>
-            </xs:element>
-        </xs:choice>
+        <xs:sequence>
+            <xs:element ref="ld:documentation" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="ld:var"/>
+                <xs:element ref="ld:hint"/>
+                <xs:element name="allow">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="ld:documentation"/>
+                            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                <xs:element ref="ld:var"/>
+                                <xs:element ref="ld:hint"/>
+                            </xs:choice>
+                        </xs:sequence>
+                        <xs:attribute name="method">
+                            <xs:simpleType>
+                                <xs:list itemType="xs:token"/>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
         <xs:attribute name="hreft" type="ld:uriTemplate" use="optional"/>
         <xs:attribute name="href" type="xs:anyURI" use="optional"/>
-        <xs:assert test="count(@href | @hreft) = 1">
-            <xs:annotation>
-                <xs:documentation>A link must either specify a URI (@href) or a URI Template (@hreft), but it cannot specify both at the same time.</xs:documentation>
-            </xs:annotation>
-        </xs:assert>
     </xs:complexType>
+    <xs:element name="var">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                <xs:element ref="ld:documentation" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:any namespace="##other" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>If variables are restricted in ways other than the simple type restrictions that are built into link descriptions, then these restrictions can be embedded in a variable description as well, as long as they are represented using a different namespace.</xs:documentation>
+                    </xs:annotation>
+                </xs:any>
+            </xs:sequence>
+            <xs:attribute name="name" use="required"/>
+            <xs:attribute name="concept" type="xs:anyURI" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Identifies the variable by referring to a concept URI.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="default" type="xs:anySimpleType" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Defines the default value for the variable (used by the service if no value is provided). The value must match the type defined for the variable.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="hint">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="ld:documentation"/>
+            </xs:sequence>
+            <xs:attribute name="name" use="required">
+                <xs:annotation>
+                    <xs:documentation>A hint is either a registered hint with a simple name (defined by a regular expression), or an unregistered hint which is identified by URI.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:union memberTypes="xs:anyURI">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:token">
+                                <xs:annotation>
+                                    <xs:documentation>The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.</xs:documentation>
+                                </xs:annotation>
+                                <xs:enumeration value="allow"/>
+                                <xs:enumeration value="formats"/>
+                                <xs:enumeration value="links"/>
+                                <xs:enumeration value="accept-post"/>
+                                <xs:enumeration value="accept-patch"/>
+                                <xs:enumeration value="accept-ranges"/>
+                                <xs:enumeration value="accept-prefer"/>
+                                <xs:enumeration value="precondition-req"/>
+                                <xs:enumeration value="auth-scheme"/>
+                                <xs:enumeration value="status"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:union>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="value"/>
+        </xs:complexType>
+    </xs:element>
 </xs:schema>
