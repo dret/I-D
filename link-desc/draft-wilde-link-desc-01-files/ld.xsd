@@ -39,7 +39,17 @@
                         </xs:sequence>
                         <xs:attribute name="method">
                             <xs:simpleType>
-                                <xs:list itemType="xs:token"/>
+                                <xs:restriction base="xs:token">
+                                    <xs:enumeration value="GET"/>
+                                    <xs:enumeration value="PUT"/>
+                                    <xs:enumeration value="POST"/>
+                                    <xs:enumeration value="DELETE"/>
+                                    <xs:pattern value="[!#$%&amp;&apos;\*\+\-\.\^_`\|~0-9A-Za-z]+">
+                                        <xs:annotation>
+                                            <xs:documentation>As defined by http://tools.ietf.org/html/draft-ietf-httpbis-p1-messaging-24#section-3.2.6, and only allowing one method token to be specified.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:pattern>
+                                </xs:restriction>
                             </xs:simpleType>
                         </xs:attribute>
                     </xs:complexType>
