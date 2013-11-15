@@ -42,12 +42,6 @@
                                 <xsl:call-template name="documentation"/>
                             </td>
                         </tr>
-                        <tr>
-                            <th align="right">Appinfo:</th>
-                            <td>
-                                <xsl:call-template name="appinfo"/>
-                            </td>
-                        </tr>
                     </table>
                     <xsl:if test="ld:var">
                         <h4>Variables:</h4>
@@ -59,7 +53,6 @@
                                     <th>Default</th>
                                     <th>Value Range</th>
                                     <th>Documentation</th>
-                                    <th>Appinfo</th>
                                 </tr>
                             </thead>
                             <xsl:for-each select="ld:var">
@@ -138,9 +131,6 @@
                                     <td>
                                         <xsl:call-template name="documentation"/>
                                     </td>
-                                    <td>
-                                        <xsl:call-template name="appinfo"/>
-                                    </td>
                                 </tr>
                             </xsl:for-each>
                         </table>
@@ -153,7 +143,6 @@
                                     <th>Name</th>
                                     <th>Value</th>
                                     <th>Documentation</th>
-                                    <th>Appinfo</th>
                                 </tr>
                             </thead>
                             <xsl:for-each select="ld:hint">
@@ -169,9 +158,6 @@
                                     </td>
                                     <td>
                                         <xsl:call-template name="documentation"/>
-                                    </td>
-                                    <td>
-                                        <xsl:call-template name="appinfo"/>
                                     </td>
                                 </tr>
                             </xsl:for-each>
@@ -200,23 +186,6 @@
                                     <xsl:text>)</xsl:text>
                                 </span>
                             </xsl:if>
-                        </li>
-                    </xsl:for-each>
-                </ul>
-            </xsl:when>
-            <xsl:otherwise>
-                <span class="msg">n/a</span>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-    <xsl:template name="appinfo">
-        <xsl:choose>
-            <xsl:when test="ld:appinfo">
-                <ul>
-                    <xsl:for-each select="ld:appinfo">
-                        <li>
-                            <xsl:text>Source: </xsl:text>
-                            <xsl:value-of select="@source"/>
                         </li>
                     </xsl:for-each>
                 </ul>
