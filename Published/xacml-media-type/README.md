@@ -1,0 +1,1 @@
+Published as [RFC 7061: "eXtensible Access Control Markup Language (XACML) XML Media Type"](http://tools.ietf.org/html/rfc7061) (November 2013)
