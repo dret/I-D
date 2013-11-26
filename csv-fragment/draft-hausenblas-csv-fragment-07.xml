@@ -220,19 +220,20 @@ number       =  1*( DIGIT )</artwork>
 						<t hangText="Required parameters:">none</t>
 						<t hangText="Optional parameters:">charset, header
 							<list>
-								<t>Common usage of CSV is US-ASCII, but other character sets defined by IANA for the "text" tree may be used in conjunction with the "charset" parameter.</t>
+								<t>The "charset" parameter specifies the charset employed by the CSV content. In accordance with RFC 6657 <xref target="RFC6657"/>, the charset parameter SHOULD be used, and if it is not present, UTF-8 SHOULD be assumed as the default (this implies that US-ASCII CSV will work, even when not specifying the "charset" parameter). Any charset defined by IANA for the "text" tree may be used in conjunction with the "charset" parameter.</t>
 								<t>The "header" parameter indicates the presence or absence of the header line. Valid values are "present" or "absent". Implementors choosing not to use this parameter must make their own decisions as to whether the header line is present or absent.</t>
 							</list>
 						</t>
-						<t hangText="Encoding considerations:">As per section 4.1.1. of RFC 2046 <xref target="RFC2046"/>, this media type uses CRLF to denote line breaks. However, implementors should be aware that some implementations may use other values.</t>
+						<t hangText="Encoding considerations:">CSV MIME entities consist of binary data <xref target="RFC6838"/>. As per section 4.1.1. of RFC 2046 <xref target="RFC2046"/>, this media type uses CRLF to denote line breaks. However, implementers should be aware that some implementations may use other values.</t>
 						<t hangText="Security considerations:">
 							<list>
-								<t>CSV files contain passive text data that should not pose any risks. However, it is possible in theory that malicious binary data may be included in order to exploit potential buffer overruns in the program processing CSV data. Additionally, private data may be shared via this format (which of course applies to any text data).</t>
+								<t>Text/csv consists of nothing but passive text data that should not pose any direct risks. However, it is possible that malicious data may be included in order to exploit buffer overruns or other bugs in the program processing the text/csv data.</t>
+								<t>The text/csv format provides no confidentiality or integrity protection, so if such protections are needed they must be supplied externally.</t>
 								<t>The fact that software implementing fragment identifiers for CSV and software not implementing them differs in behavior, and the fact that different software may show documents or fragments to users in different ways, can lead to misunderstandings on the part of users. Such misunderstandings might be exploited in a way similar to spoofing or phishing.</t>
 								<t>Implementers and users of fragment identifiers for CSV text should also be aware of the security considerations in RFC 3986 <xref target="RFC3986"/> and RFC 3987 <xref target="RFC3987"/>.</t>
 							</list>
 						</t>
-						<t hangText="Interoperability considerations:">Due to lack of a single specification, there are considerable differences among implementations. Implementors should "be conservative in what you do, be liberal in what you accept from others" (RFC 793 <xref target="RFC0793"/>) when processing CSV files. An attempt at a common definition can be found in Section 2. Implementations deciding not to use the optional "header" parameter must make their own decision as to whether the header is absent or present.</t>
+						<t hangText="Interoperability considerations:">Due to lack of a single specification, there are considerable differences among implementations. Implementers should "be conservative in what you do, be liberal in what you accept from others" (RFC 793 <xref target="RFC0793"/>) when processing CSV files. An attempt at a common definition can be found in Section 2. Implementations deciding not to use the optional "header" parameter must make their own decision as to whether the header is absent or present.</t>
 						<t hangText="Published specification:">While numerous private specifications exist for various programs and systems, there is no single "master" specification for this format.  An attempt at a common definition can be found in Section 2 of RFC 4180 <xref target="RFC4180"/>.</t>
 						<t hangText="Applications that use this media type:">Spreadsheet programs and various data conversion utilities.</t>
 						<t hangText="Fragment identifier considerations:">Fragment identification for text/csv is supported by using fragment identifiers as specified by RFC XXXX (Note to RFC Editor: Please update with RFC number once it is known).</t>
@@ -278,7 +279,8 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
 			<section title="From -06 to -07">
 				<t>
 					<list style="symbols">
-						<t>...</t>
+						<t>Changing "charset" parameter to "SHOULD be used" and UTF-8 as default value.</t>
+						<t>Changing encoding to be binary.</t>
 					</list>
 				</t>
 			</section>
@@ -516,6 +518,23 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
 				</front>
 				<seriesInfo name="RFC" value="4234"/>
 			</reference>
+			<reference anchor='RFC6657'>
+				<front>
+					<title>Update to MIME regarding "charset" Parameter Handling in Textual Media Types</title>
+					<author initials='A.' surname='Melnikov' fullname='A. Melnikov'>
+						<organization />
+					</author>
+					<author initials='J.' surname='Reschke' fullname='J. Reschke'>
+						<organization />
+					</author>
+					<date year='2012' month='July' />
+					<abstract>
+						<t>This document changes RFC 2046 rules regarding default "charset" parameter values for "text/*" media types to better align with common usage by existing clients and servers. [STANDARDS-TRACK]</t>
+					</abstract>
+				</front>
+				<seriesInfo name='RFC' value='6657' />
+				<format type='TXT' octets='10111' target='http://www.rfc-editor.org/rfc/rfc6657.txt' />
+			</reference>
 		</references>
 		<references title="Non-Normative References">
 			<reference anchor="ASCII">
@@ -623,7 +642,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
 			</reference>
 		</references>
 		<section title="Acknowledgements">
-			<t>Thanks for comments and suggestions provided by Richard Cyganiak, Ian Davis, Leigh Dodds, and Gannon Dick.</t>
+			<t>Thanks for comments and suggestions provided by Nevil Brownlee, Richard Cyganiak, Ian Davis, Gannon Dick, Leigh Dodds, and Barry Leiba.</t>
 		</section>
 	</back>
 </rfc>
