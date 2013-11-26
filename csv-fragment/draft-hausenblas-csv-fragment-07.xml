@@ -57,26 +57,26 @@
 		</note>
 	</front>
 	<middle>
-		<section title="Introduction">
+		<section title="Introduction" anchor="intro">
 			<t>This memo updates the text/csv media type defined in RFC 4180 <xref target="RFC4180"/> by defining URI fragment identifiers for text/csv MIME entities.</t>
 			<t>This section gives an introduction to the general concepts of text/csv MIME entities and URI fragment identifiers, and discusses the need for fragment identifiers for text/csv and deployment issues. <xref target="methods"/> discusses the principles and methods on which this memo is based. <xref target="syntax"/> defines the syntax, and <xref target="processing"/> discusses processing of text/csv fragment identifiers.</t>
-			<section title="What is text/csv?">
+			<section title="What is text/csv?" anchor="what">
 				<t>Internet Media Types (often referred to as "MIME types") as defined in RFC 2045 <xref target="RFC2045"/> and RFC 2046 <xref target="RFC2046"/> are used to identify different types and sub-types of media. The text/csv media type is defined in RFC 4180 <xref target="RFC4180"/>, using US-ASCII <xref target="ASCII"/> as the default character encoding (other character encodings can be used as well). Apart from a media type parameter for specifying the character encoding ("charset"), there is a second media type parameter ("header") that indicates whether there is a header row in the CSV document or not.</t>
 			</section>
 			<section title="Why text/csv Fragment Identifiers?" anchor="why">
 				<t>URIs are the identification mechanism for resources on the Web. The URI syntax specified in RFC 3986 <xref target="RFC3986"/> optionally includes a so-called "fragment identifier", separated by a number sign ("#"). The fragment identifier consists of additional reference information to be interpreted by the client after the retrieval action has been successfully completed. The semantics of a fragment identifier is a property of the media type resulting from a retrieval action, regardless of the URI scheme used in the URI reference. Therefore, the format and interpretation of fragment identifiers is dependent on the media type of the retrieval result.</t>
-				<section title="Motivation">
+				<section title="Motivation" anchor="motivation">
 					<t>Similar to the motivation in RFC 5147 <xref target="RFC5147"/>, which defines fragment identifiers for plain text files, referring to specific parts of a resource can be very useful, because it enables users and applications to create more specific references. Users can create references to the part they really are interested in or want to talk about, rather than always pointing to a complete resource. Even though it is suggested that fragment identification methods are specified in a media type's registration (see <xref target="RFC6838"/>), many media types do not have fragment identification methods associated with them.</t>
 					<t>Fragment identifiers are only useful if supported by the client, because they are only interpreted by the client. Therefore, a new fragment identification method will require some time to be adopted by clients, and older clients will not support it. However, because the URI still works even if the fragment identifier is not supported (the resource is retrieved, but the fragment identifier is not interpreted), rapid adoption is not highly critical to ensure the success of a new fragment identification method.</t>
 				</section>
-				<section title="Use Cases">
+				<section title="Use Cases" anchor="usecases">
 					<t>Fragment identifiers for text/csv as defined in this memo make it possible to refer to specific parts of a text/csv MIME entity. Use cases include, but are not limited to, selecting a part for visual rendering, stream processing, making assertions about a certain value (provenance, confidence, comments, etc.), or data integration.</t>
 				</section>
 			</section>
 			<section title="Incremental Deployment" anchor="incremental">
 				<t>As long as text/csv fragment identifiers are not supported universally, it is important to consider the implications of incremental deployment. Clients (for example, Web browsers) not supporting the text/csv fragment identifier described in this memo will work with URI references to text/csv MIME entities, but they will fail to understand the identification of the sub-resource specified by the fragment identifier, and thus will behave as if the complete resource was referenced. This is a reasonable fallback behavior, and in general users should take into account the possibility that a program interpreting a given URI will fail to interpret the fragment identifier part. Since fragment identifier evaluation is local to the client (and happens after retrieving the MIME entity), there is no reliable way for a server to determine whether a requesting client is using a URI containing a fragment identifier.</t>
 			</section>
-			<section title="Notation Used in this Memo">
+			<section title="Notation Used in this Memo" anchor="notation">
 				<t>The capitalized key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
 			</section>
 		</section>
@@ -208,7 +208,7 @@ number       =  1*( DIGIT )</artwork>
 				<t>The complete fragment identifier identifies all the successfully evaluated identified parts as a single identified fragment. This fragment can be disjoint because of multiple selections. Multiple selections also can result in overlapping individual parts, and it is up to the user agent how to process such a fragment, and whether the individual parts are still made accessible (i.e., visualized in visual user agents), or are presented as one unit. For example, the fragment identifier "#row=3-6;4-5" contains a second identified part that is completely contained in the first identified part. Whether a user agent maintains this selection as two parts, or simply signals that the identified fragment spans from the third to the sixth row, is up for the user agent to decide.</t>
 			</section>
 		</section>
-		<section title="IANA Considerations">
+		<section title="IANA Considerations" anchor="IANA">
 			<t>Note to RFC Editor: Please change this section to read as follows after the IANA action has been completed: "IANA has added a reference to this specification in the text/csv Media Type registration."</t>
 			<t>IANA is requested to update the registration of the MIME Media type text/csv at http://www.iana.org/assignments/media-types/text/ with the fragment identifier defined in this memo by adding a reference to this memo (with the appropriate RFC number once it is known).</t>
 			<section title="The text/csv media type" anchor="text-csv-registration">
