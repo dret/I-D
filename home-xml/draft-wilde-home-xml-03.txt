@@ -1,0 +1,672 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                                       EMC
+Intended status: Informational                           August 29, 2013
+Expires: March 2, 2014
+
+
+              Home Documents for HTTP Services: XML Syntax
+                        draft-wilde-home-xml-02
+
+Abstract
+
+   The current draft for HTTP Home Documents provides a JSON syntax
+   only.  This draft provides an XML syntax for the same underlying data
+   model, so that the concept of HTTP Home Documents can be consistently
+   exposed in both JSON- and XML-based HTTP services.
+
+Note to Readers
+
+   Please discuss this draft on the apps-discuss mailing list [1].
+
+   Online access to all versions and files is available on github [2].
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on March 2, 2014.
+
+Copyright Notice
+
+   Copyright (c) 2013 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 1]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   2.  XML Example  . . . . . . . . . . . . . . . . . . . . . . . . .  3
+   3.  XML Schema . . . . . . . . . . . . . . . . . . . . . . . . . .  4
+   4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
+     4.1.  Media Type application/home+xml  . . . . . . . . . . . . .  6
+   5.  Implementation Status  . . . . . . . . . . . . . . . . . . . .  7
+   6.  Security Considerations  . . . . . . . . . . . . . . . . . . .  8
+   7.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   8.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  8
+     8.1.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  9
+     8.2.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  9
+   9.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     9.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
+     9.2.  Informative References . . . . . . . . . . . . . . . . . . 10
+   Appendix A.  XML-to-HTML for Home Documents  . . . . . . . . . . . 10
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 12
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 2]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+1.  Introduction
+
+   An Internet Draft currently under development
+   [I-D.nottingham-json-home] proposes the concept of "Home Documents
+   for HTTP APIs" and described them as follows:
+
+   "This document proposes a 'home document' format for non-browser HTTP
+   clients. [...]  The goal of home documents is to serve as a starting
+   point for hypermedia APIs, where clients need to have an entry point,
+   and then can use the API by following links.  Home documents thus
+   serve the same purpose as home pages on web sites: They are stable
+   entry points that provide starting points for clients with some
+   knowledge of the services linked from them."
+
+   While this general concept of a home document is independent of the
+   representation format, the current draft only defines a JSON syntax.
+   In order to make this concept available across representations, this
+   draft defines an XML syntax for the concepts defined in
+   [I-D.nottingham-json-home].
+
+   At this point it is undecided whether both drafts will be merged
+   eventually, or whether they will both be published as separate
+   documents.  Regardless of the final publication setup, it should be
+   noted that this draft is only defining the XML syntax, whereas all
+   the concepts represented in this syntax are defined by
+   [I-D.nottingham-json-home].
+
+   One notable difference is the handling of links found in "href" or
+   "href-template" attributes on "resource" elements: In the JSON
+   syntax, these are (if they are relative URIs) resolved against the
+   URI of the home document itself.  The XML syntax adds support for an
+   optional "xml:base" attribute [W3C.REC-xmlbase-20090128] on the
+   "resources" document element.  If this attribute is present, it has
+   to be used according to its specification, and thus becomes part of a
+   possible resolution chain of relative URIs.
+
+
+2.  XML Example
+
+   The following Home Document in XML syntax uses the same data as the
+   Home Document shown in Section 2 of [I-D.nottingham-json-home] (but
+   adding xml:base="http://example.com" to demonstrate the mechanism):
+
+
+
+
+
+
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 3]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+   <resources xmlns="urn:ietf:rfc:XXXX" xml:base="http://example.com">
+    <resource rel="http://example.org/rel/widgets">
+     <link href="/"/>
+    </resource>
+    <resource rel="http://example.org/rel/widget">
+     <template href-template="/widgets/{widget_id}">
+      <var name="widget_id" URI="http://example.org/param/widget"/>
+     </template>
+     <hints>
+      <allow>
+       <i>GET</i>
+       <i>PUT</i>
+       <i>DELETE</i>
+       <i>PATCH</i>
+      </allow>
+      <representations>
+       <i>application/json</i>
+      </representations>
+      <accept-patch>
+       <i>application/patch+json</i>
+      </accept-patch>
+      <accept-post>
+       <i>application/xml</i>
+      </accept-post>
+      <accept-ranges>
+       <i>bytes</i>
+      </accept-ranges>
+     </hints>
+    </resource>
+   </resources>
+
+   The mapping between JSON arrays and XML uses "item" elements <i/>,
+   where each of those elements represents one array item.  For
+   properties that have a single values (i.e., they are not defined as
+   an array of values), this value is directly contained as content in
+   the corresponding element.
+
+   Currently, the draft does not specify an extension model (how to
+   represents hints that are not specified in the draft itself), and
+   therefore the extension model for XML is currently undefined as well.
+   The XML syntax will be updated to reflect the extension model once it
+   has been specified for the JSON syntax.
+
+
+3.  XML Schema
+
+   The following XML Schema is describing the XML shown in Section 2.
+   Since there currently is no extension model, the XML Schema does
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 4]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+   currently not contain any extension points.
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" targetNamespace="urn:ietf:rfc:XXXX" elementFormDefault="qualified" xmlns:home="urn:ietf:rfc:XXXX">
+ <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+ <xs:element name="resources">
+  <xs:complexType>
+   <xs:sequence maxOccurs="unbounded" minOccurs="0">
+    <xs:element name="resource">
+     <xs:complexType>
+      <xs:sequence>
+       <xs:choice>
+        <xs:element name="link">
+         <xs:complexType>
+          <xs:attribute name="href" type="xs:anyURI" use="required"/>
+         </xs:complexType>
+        </xs:element>
+        <xs:element name="template">
+         <xs:complexType>
+          <xs:sequence maxOccurs="unbounded" minOccurs="0">
+           <xs:element name="var">
+            <xs:complexType>
+             <xs:attribute name="name" use="required"/>
+             <xs:attribute name="URI" type="xs:anyURI" use="required"/>
+            </xs:complexType>
+           </xs:element>
+          </xs:sequence>
+          <xs:attribute name="href-template" use="required"/>
+         </xs:complexType>
+        </xs:element>
+       </xs:choice>
+       <xs:element minOccurs="0" name="hints">
+        <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element name="allow" type="home:arrayType"/>
+          <xs:element name="representations" type="home:arrayType"/>
+          <xs:element name="accept-patch" type="home:arrayType"/>
+          <xs:element name="accept-post" type="home:arrayType"/>
+          <xs:element name="accept-put" type="home:arrayType"/>
+          <xs:element name="accept-ranges" type="home:arrayType"/>
+          <xs:element name="prefer" type="home:arrayType"/>
+          <xs:element name="docs" type="xs:anyURI"/>
+          <xs:element name="precondition-req" type="home:arrayType"/>
+          <xs:element name="auth-req">
+           <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+             <xs:element name="scheme">
+              <xs:complexType>
+               <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="realm"/>
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 5]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+               </xs:sequence>
+               <xs:attribute name="name" type="xs:token"/>
+              </xs:complexType>
+             </xs:element>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
+          <xs:element name="status">
+           <xs:simpleType>
+            <xs:restriction base="xs:token">
+             <xs:enumeration value="deprecated"/>
+             <xs:enumeration value="gone"/>
+            </xs:restriction>
+           </xs:simpleType>
+          </xs:element>
+         </xs:choice>
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence>
+      <xs:attribute name="rel" type="xs:anyURI" use="required"/>
+     </xs:complexType>
+    </xs:element>
+   </xs:sequence>
+   <xs:attribute ref="xml:base" use="optional"/>
+  </xs:complexType>
+ </xs:element>
+ <xs:complexType name="arrayType">
+  <xs:sequence maxOccurs="unbounded" minOccurs="0">
+   <xs:element name="i"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:schema>
+
+
+4.  IANA Considerations
+
+   This specification registers a media type for the XML syntax of Home
+   Documents (as defined in [I-D.nottingham-json-home]).
+
+4.1.  Media Type application/home+xml
+
+   The Internet media type [RFC6838] for a Home Document in XML syntax
+   is application/home+xml.
+
+   Type name: application
+
+   Subtype name: home+xml
+
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 6]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+   Required parameters: none
+
+   Optional parameters: Same as charset parameter for the media type
+   "application/xml" as specified in RFC 3023 [RFC3023].
+
+   Encoding considerations: Same as encoding considerations of media
+   type "application/xml" as specified in RFC 3023 [RFC3023].
+
+   Security considerations: This media type has all of the security
+   considerations described in RFC 3023 [RFC3023] and
+   [I-D.nottingham-json-home].
+
+   Interoperability considerations: N/A
+
+   Published specification: RFC XXXX
+
+   Applications that use this media type: Applications that publish Home
+   Documents for HTTP services using XML syntax.
+
+   Additional information:
+
+      Magic number(s): N/A
+
+      File extension(s): XML documents should use ".xml" as the file
+      extension.
+
+      Macintosh file type code(s): TEXT
+
+   Person & email address to contact for further information: Erik Wilde
+   <erik.wilde@emc.com>
+
+   Intended usage: COMMON
+
+   Restrictions on usage: none
+
+   Author: Erik Wilde <erik.wilde@emc.com>
+
+   Change controller: IETF
+
+
+5.  Implementation Status
+
+   Note to RFC Editor: Please remove this section before publication.
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in RFC 6982
+   [RFC6982].  The description of implementations in this section is
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 7]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+   intended to assist the IETF in its decision processes in progressing
+   drafts to RFCs.  Please note that the listing of any individual
+   implementation here does not imply endorsement by the IETF.
+   Furthermore, no effort has been spent to verify the information
+   presented here that was supplied by IETF contributors.  This is not
+   intended as, and must not be construed to be, a catalog of available
+   implementations or their features.  Readers are advised to note that
+   other implementations may exist.
+
+   According to RFC 6982, "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+      ...
+
+
+6.  Security Considerations
+
+   The general security considerations for XML home documents are the
+   same as those for JSON home documents, as described in the "Security
+   Considerations" of [I-D.nottingham-json-home].  The specific security
+   considerations introduced by XML as a representation format are
+   described in the "Security Considerations" of Section 4.1.
+
+
+7.  Open Issues
+
+   o  The move from a predefined list of hints to a hint registry is not
+      yet reflected in the XML; in particular because the latest draft
+      defines the hint data model to be JSON-specific.
+
+   o  What is the extension model for the XML syntax?  Should processing
+      of other namespaces be defined as "should ignore", so that same-
+      namespace extensions are encouraged?
+
+   o  Should the XML syntax provide support for embedded human-readable
+      documentation?  This would probably not be supported in the JSON
+      syntax, but could be marked as strictly optional and XML-specific.
+
+
+8.  Change Log
+
+   Note to RFC Editor: Please remove this section before publication.
+
+
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 8]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+8.1.  From -01 to -02
+
+   o  Adding "Implementation Status" section according to RFC 6982
+      [RFC6982].
+
+   o  Adding support for @xml:base on the "resources" document element.
+
+8.2.  From -00 to -01
+
+   o  Updated references from draft-nottingham-json-home-02 to
+      draft-nottingham-json-home-03
+
+   o  Added "Security Considerations" section.
+
+   o  Added XSLT for transforming an XML Home Document to a simple HTML
+      representation.
+
+
+9.  References
+
+9.1.  Normative References
+
+   [I-D.nottingham-json-home]
+              Nottingham, M., "Home Documents for HTTP APIs",
+              draft-nottingham-json-home-03 (work in progress),
+              May 2013.
+
+   [RFC3023]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media
+              Types", RFC 3023, January 2001.
+
+   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13,
+              RFC 6838, January 2013.
+
+   [W3C.REC-xml-20081126]
+              Sperberg-McQueen, C., Yergeau, F., Paoli, J., Maler, E.,
+              and T. Bray, "Extensible Markup Language (XML) 1.0 (Fifth
+              Edition)", World Wide Web Consortium Recommendation REC-
+              xml-20081126, November 2008,
+              <http://www.w3.org/TR/2008/REC-xml-20081126>.
+
+   [W3C.REC-xmlbase-20090128]
+              Marsh, J. and R. Tobin, "XML Base (Second Edition)", World
+              Wide Web Consortium Recommendation REC-xmlbase-20090128,
+              January 2009,
+              <http://www.w3.org/TR/2009/REC-xmlbase-20090128>.
+
+
+
+
+
+Wilde                     Expires March 2, 2014                 [Page 9]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+9.2.  Informative References
+
+   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", RFC 6982,
+              July 2013.
+
+   [W3C.REC-xml-stylesheet-20101028]
+              Pieters, S., Clark, J., and H. Thompson, "Associating
+              Style Sheets with XML documents 1.0 (Second Edition)",
+              World Wide Web Consortium Recommendation REC-xml-
+              stylesheet-20101028, October 2010,
+              <http://www.w3.org/TR/2010/REC-xml-stylesheet-20101028>.
+
+   [W3C.REC-xslt-19991116]
+              Clark, J., "XSL Transformations (XSLT) Version 1.0", World
+              Wide Web Consortium Recommendation REC-xslt-19991116,
+              November 1999,
+              <http://www.w3.org/TR/1999/REC-xslt-19991116>.
+
+URIs
+
+   [1]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
+
+   [2]  <https://github.com/dret/I-D/tree/master/template-desc>
+
+
+Appendix A.  XML-to-HTML for Home Documents
+
+   The following XSLT 1.0 stylesheet [W3C.REC-xslt-19991116] transforms
+   XML Home Documents to very simple HTML renditions.  By associating
+   this stylesheet [W3C.REC-xml-stylesheet-20101028] with an XML Home
+   Document, it is possible to serve XML Home Documents that will be
+   rendered in a human-friendly way when viewed in a browser.
+
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xml="http://www.w3.org/XML/1998/namespace" version="1.0" xmlns:home="urn:ietf:rfc:XXXX" exclude-result-prefixes="home">
+ <xsl:output method="html"/>
+ <xsl:template match="home:resources">
+  <html>
+   <head>
+    <title>Home Document</title>
+   </head>
+   <body>
+    <h1>Home Document</h1>
+    <ul>
+     <xsl:for-each select="home:resource">
+      <li>
+       <xsl:text>Link Relation </xsl:text>
+       <code><xsl:value-of select="@rel"/></code>
+
+
+
+Wilde                     Expires March 2, 2014                [Page 10]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+       <xsl:text>: Link </xsl:text>
+       <code>
+        <xsl:choose>
+         <xsl:when test="home:link">
+          <xsl:variable name="link-URI">
+           <xsl:call-template name="resolve-URI">
+            <xsl:with-param name="URI" select="home:link/@href"/>
+           </xsl:call-template>
+          </xsl:variable>
+          <a href="{$link-URI}" title="URI"><xsl:value-of select="$link-URI"/></a>
+         </xsl:when>
+         <xsl:otherwise>
+          <xsl:variable name="template-URI">
+           <xsl:call-template name="resolve-URI">
+            <xsl:with-param name="URI" select="home:template/@href-template"/>
+           </xsl:call-template>
+          </xsl:variable>
+          <a href="{$template-URI}" title="URI template"><xsl:value-of select="$template-URI"/></a>
+         </xsl:otherwise>
+        </xsl:choose>
+       </code>
+       <dl>
+        <xsl:if test="home:template/home:var">
+         <dt>Variables: </dt>
+         <dd>
+          <ul>
+           <xsl:for-each select="home:template/home:var">
+            <xsl:sort select="@name"/>
+            <li>
+             <span title="Variable Name"><xsl:value-of select="@name"/></span>
+             <xsl:text>: </xsl:text>
+             <span title="Associated URI"><xsl:value-of select="@URI"/></span>
+            </li>
+           </xsl:for-each>
+          </ul>
+         </dd>
+        </xsl:if>
+        <xsl:if test="home:hints">
+         <dt>Hints: </dt>
+         <dd>
+          <ul>
+           <xsl:for-each select="home:hints/home:*">
+            <xsl:sort select="local-name()"/>
+            <li>
+             <span title="Hint Name"><xsl:value-of select="local-name()"/></span>
+             <xsl:text>: </xsl:text>
+             <xsl:choose>
+              <xsl:when test="home:i">
+
+
+
+Wilde                     Expires March 2, 2014                [Page 11]
+
+Internet-Draft             Home Documents XML                August 2013
+
+
+               <xsl:for-each select="home:i">
+                <xsl:value-of select="."/>
+                <xsl:if test="position() != last()">
+                 <xsl:text>, </xsl:text>
+                </xsl:if>
+               </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+               <xsl:value-of select="."/>
+              </xsl:otherwise>
+             </xsl:choose>
+            </li>
+           </xsl:for-each>
+          </ul>
+         </dd>
+        </xsl:if>
+       </dl>
+      </li>
+     </xsl:for-each>
+    </ul>
+   </body>
+  </html>
+ </xsl:template>
+ <xsl:template name="resolve-URI">
+  <xsl:param name="URI"/>
+  <!-- This is not how URI resolution should be done; http://tools.ietf.org/html/rfc3986#section-5 describes the correct process. -->
+  <xsl:value-of select="concat(/home:resources/@xml:base, $URI)"/>
+ </xsl:template>
+</xsl:stylesheet>
+
+
+Author's Address
+
+   Erik Wilde
+   EMC
+   6801 Koll Center Parkway
+   Pleasanton, CA 94566
+   U.S.A.
+
+   Phone: +1-925-6006244
+   Email: erik.wilde@emc.com
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+Wilde                     Expires March 2, 2014                [Page 12]
+
