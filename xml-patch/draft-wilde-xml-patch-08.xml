@@ -36,11 +36,16 @@
          <t>This specification relies on RFC 5261, but also requires that the known errata are taken into account. The main reason for the errata are the problematic ways in which RFC 5261 relies on XPath as the expression language for selecting the location of a patch, while at the same time XPath's data model does not contain sufficient information to determine whether such a selector indeed can be used for a patch operation, or should result in an error. Specifically, the problem occurs with namespaces, where XPath does not expose namespace declaration attributes, while the patch model needs them to determine whether a namespace patch is allowed or not. <xref target="implementation-hints"/> contains more information about the general problem, and the errata themselves are available through the regular IETF errata system.</t>
       </section>
       <section title="Patch Documents" anchor="patch-documents">
+         <t>The following section describe and illustrate the XML patch document format.</t>
          <section title="Patch Document Format" anchor="schema">
             <t>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.</t>
-            <t>The following example patch document uses the example from RFC 5261 section A.18 (but changing the example namespaces to example.com URIs); it uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example of each operation.</t>
+            <t>The following simple example patch document contains a single patch operation. This operation adds a new attribute called "new-attribute" to the document element of the target XML document. An XML patch document always uses a "patch" element in the "urn:ietf:rfc:XXXX" namespace as the document element, which then contains zero or more patch operation elements, which are also in the "urn:ietf:rfc:XXXX" namespace.</t>
             <figure>
-               <artwork type="xml"><xi:include parse="text" href="&files;/patch-document.xml"/></artwork>
+               <artwork type="xml"><xi:include parse="text" href="&files;/patch-document-simple.xml"/></artwork>
+            </figure>
+            <t>The following more complex example patch document uses the example from RFC 5261 section A.18 (but changing the example namespaces to example.com URIs); it uses the same "patch" element and XML namespace as shown in the simpler example. It shows the general structure of an XML patch document with multiple operations, as well as an example of each operation.</t>
+            <figure>
+               <artwork type="xml"><xi:include parse="text" href="&files;/patch-document-complex.xml"/></artwork>
             </figure>
             <t>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.</t>
             <t>RFC 5261 defines an XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028"/> for the patch operation types. The following schema for the XML Patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
@@ -49,7 +54,8 @@
             </figure>
          </section>
          <section title="Patch Examples" anchor="examples">
-            <t>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for concrete XML patch document examples. Most importantly, the examples in RFC 5261 can be taken literally as examples for the XML Patch media type, as long as it is assumed that the XML namespace for the operation elements in these examples is the URI "urn:ietf:rfc:XXXX".</t>
+            <t>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for more XML patch document examples. All the examples in RFC 5261 can be taken as examples for the XML Patch media type, when looking at them with two minor changes in mind:</t>
+            <t>The two differences are that XML patch documents always use the "patch" element as the document element, and that both the "patch" element as well as the individual operation elements in XML patch documents have to be in the XML namespace with the URI "urn:ietf:rfc:XXXX".</t>
          </section>
       </section>
       <section title="IANA Considerations" anchor="iana">
@@ -75,10 +81,10 @@
                      <t>Macintosh file type code(s): TEXT</t>
                   </list>
                </t>
-               <t>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com></t>
+               <t>Person &amp; email address to contact for further information: Erik Wilde &lt;dret@berkeley.edu></t>
                <t>Intended usage: COMMON</t>
                <t>Restrictions on usage: none</t>
-               <t>Author: Erik Wilde &lt;erik.wilde@emc.com></t>
+               <t>Author: Erik Wilde &lt;dret@berkeley.edu></t>
                <t>Change controller: IETF</t>
             </list>
          </t>
@@ -100,7 +106,8 @@
                <t>
                   <list style="symbols">
                      <t>Updated author address.</t>
-                     <t>Removed rfc/updates (this draft no longer updates RFC 5261).</t>
+                     <t>Removed rfc/@updates (this draft no longer updates RFC 5261).</t>
+                     <t>Added simple example of an XML patch document.</t>
                   </list>
                </t>
             </section>
