@@ -142,10 +142,9 @@
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
-<tr><td class="header">Internet-Draft</td><td class="header">EMC</td></tr>
-<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc5261'>5261</a> (if&nbsp;approved)</td><td class="header">November 7, 2013</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: May 11, 2014</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">UC Berkeley</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">January 30, 2014</td></tr>
+<tr><td class="header">Expires: August 3, 2014</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-08</h1>
 
@@ -174,11 +173,11 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on May 11, 2014.</p>
+This Internet-Draft will expire on August 3, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
-Copyright (c) 2013 IETF Trust and the persons identified as the
+Copyright (c) 2014 IETF Trust and the persons identified as the
 document authors.  All rights reserved.</p>
 <p>
 This document is subject to BCP 78 and the IETF Trust's Legal
@@ -205,30 +204,30 @@ Patch Examples<br />
 IANA Considerations<br />
 <a href="#security-considerations">4.</a>&nbsp;
 Security Considerations<br />
-<a href="#open-issues">5.</a>&nbsp;
-Open Issues<br />
-<a href="#change-log">6.</a>&nbsp;
+<a href="#change-log">5.</a>&nbsp;
 Change Log<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">6.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">5.1.</a>&nbsp;
+From -07 to -08<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">5.2.</a>&nbsp;
 From -06 to -07<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">6.2.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">5.3.</a>&nbsp;
 From -05 to -06<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">6.3.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">5.4.</a>&nbsp;
 From -04 to -05<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">6.4.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">5.5.</a>&nbsp;
 From -03 to -04<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">6.5.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">5.6.</a>&nbsp;
 From -02 to -03<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">6.6.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">5.7.</a>&nbsp;
 From -01 to -02<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">6.7.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">5.8.</a>&nbsp;
 From -00 to -01<br />
-<a href="#rfc.references1">7.</a>&nbsp;
+<a href="#rfc.references1">6.</a>&nbsp;
 References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">7.1.</a>&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">6.1.</a>&nbsp;
 Normative References<br />
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">7.2.</a>&nbsp;
-Non-Normative References<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">6.2.</a>&nbsp;
+Informative References<br />
 <a href="#implementation-hints">Appendix&nbsp;A.</a>&nbsp;
 Implementation Hints<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#namespace-matching">A.1.</a>&nbsp;
@@ -239,7 +238,7 @@ Patching Namespaces<br />
 Implementation Status<br />
 <a href="#rfc5261-abnf">Appendix&nbsp;C.</a>&nbsp;
 ABNF for RFC 5261<br />
-<a href="#anchor11">Appendix&nbsp;D.</a>&nbsp;
+<a href="#anchor12">Appendix&nbsp;D.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
@@ -264,6 +263,8 @@ Introduction</h3>
 <a name="rfc.section.2"></a><h3>2.&nbsp;
 Patch Documents</h3>
 
+<p>The following section describe and illustrate the XML patch document format.
+</p>
 <a name="schema"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.2.1"></a><h3>2.1.&nbsp;
@@ -271,7 +272,11 @@ Patch Document Format</h3>
 
 <p>The XML patch document format is based on a simple schema that uses a "patch" element as the document element, and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.
 </p>
-<p>The following example patch document uses the example from RFC 5261 section A.18 (but changing the example namespaces to example.com URIs); it uses a "patch" element and a new XML namespace. It shows the general structure of an XML patch document, as well as an example of each operation.
+<p>The following simple example patch document contains a single patch operation. This operation adds a new attribute called "new-attribute" to the document element of the target XML document. An XML patch document always uses a "patch" element in the "urn:ietf:rfc:XXXX" namespace as the document element, which then contains zero or more patch operation elements, which are also in the "urn:ietf:rfc:XXXX" namespace.
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns:p="urn:ietf:rfc:XXXX"&gt;
+    &lt;p:add sel="*" type="@new-attribute"&gt;value&lt;/p:add&gt;
+&lt;/p:patch&gt;</pre></div>
+<p>The following more complex example patch document uses the example from RFC 5261 section A.18 (but changing the example namespaces to example.com URIs); it uses the same "patch" element and XML namespace as shown in the simpler example. It shows the general structure of an XML patch document with multiple operations, as well as an example of each operation.
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;p:patch xmlns="http://example.com/ns1"
          xmlns:y="http://example.com/ns2"
          xmlns:p="urn:ietf:rfc:XXXX"&gt;
@@ -306,7 +311,9 @@ Patch Document Format</h3>
 <a name="rfc.section.2.2"></a><h3>2.2.&nbsp;
 Patch Examples</h3>
 
-<p>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for concrete XML patch document examples. Most importantly, the examples in RFC 5261 can be taken literally as examples for the XML Patch media type, as long as it is assumed that the XML namespace for the operation elements in these examples is the URI "urn:ietf:rfc:XXXX".
+<p>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for more XML patch document examples. All the examples in RFC 5261 can be taken as examples for the XML Patch media type, when looking at them with two minor changes in mind:
+</p>
+<p>The two differences are that XML patch documents always use the "patch" element as the document element, and that both the "patch" element as well as the individual operation elements in XML patch documents have to be in the XML namespace with the URI "urn:ietf:rfc:XXXX".
 </p>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -353,13 +360,13 @@ IANA Considerations</h3>
 </blockquote>
                
 
-<p>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com&gt;
+<p>Person &amp; email address to contact for further information: Erik Wilde &lt;dret@berkeley.edu&gt;
 </p>
 <p>Intended usage: COMMON
 </p>
 <p>Restrictions on usage: none
 </p>
-<p>Author: Erik Wilde &lt;erik.wilde@emc.com&gt;
+<p>Author: Erik Wilde &lt;dret@berkeley.edu&gt;
 </p>
 <p>Change controller: IETF
 </p>
@@ -371,37 +378,43 @@ IANA Considerations</h3>
 <a name="rfc.section.4"></a><h3>4.&nbsp;
 Security Considerations</h3>
 
-<p>Parsing XML may entail including information from external sources through XML's mechanism of external entities. Implementations therefore should be aware of the fact that standard parsers may resolve external entities, and thus include external information as a result of applying patch operations to an XML document.
+<p>The Security Considerations from RFC 5261 <a class='info' href='#RFC5261'>[RFC5261]<span> (</span><span class='info'>Urpalainen, J., &ldquo;An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors,&rdquo; September&nbsp;2008.</span><span>)</span></a> apply to the application/xml-patch+xml media type.
 </p>
-<a name="open-issues"></a><br /><hr />
-<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5"></a><h3>5.&nbsp;
-Open Issues</h3>
-
-<p>Note to RFC Editor: Please remove this section before publication.
-</p>
-<p>
-            </p>
-<ul class="text">
-<li>"ncname" in the XSD grammar is defined as "\i\c*", but so far has been translated into "1*%x00-ffffffff" in the ABNF grammar. Ideally, the grammar should reflect how XSD defines these multi-character escapes, but they map into rather complicated character ranges in XML itself (such as http://www.w3.org/TR/xml/#NT-Letter).
-</li>
-</ul><p>
-         
+<p>In addition, parsing XML may entail including information from external sources through XML's mechanism of external entities. Implementations therefore should be aware of the fact that standard parsers may resolve external entities, and thus include external information as a result of applying patch operations to an XML document.
 </p>
 <a name="change-log"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6"></a><h3>6.&nbsp;
+<a name="rfc.section.5"></a><h3>5.&nbsp;
 Change Log</h3>
 
 <p>Note to RFC Editor: Please remove this section before publication.
 </p>
 <a name="anchor2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.1"></a><h3>6.1.&nbsp;
+<a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+From -07 to -08</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Updated author address.
+</li>
+<li>Removed rfc/@updates (this draft no longer updates RFC 5261).
+</li>
+<li>Added simple example of an XML patch document.
+</li>
+<li>No more open issues, thus removed the "open issues" section.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 From -06 to -07</h3>
 
 <p>
-                  </p>
+               </p>
 <ul class="text">
 <li>Moving category back to "info" (from "std"), because the errata to RFC 5261 are now approved separately.
 </li>
@@ -412,15 +425,15 @@ From -06 to -07</h3>
 <li>Updating the ABNF to correctly only allow lowercase characters in the string parts.
 </li>
 </ul><p>
-               
+            
 </p>
-<a name="anchor3"></a><br /><hr />
+<a name="anchor4"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.2"></a><h3>6.2.&nbsp;
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 From -05 to -06</h3>
 
 <p>
-                  </p>
+               </p>
 <ul class="text">
 <li>Updating "Implementation Status" section to refer to RFC 6982 <a class='info' href='#RFC6982'>[RFC6982]<span> (</span><span class='info'>Sheffer, Y. and A. Farrel, &ldquo;Improving Awareness of Running Code: The Implementation Status Section,&rdquo; July&nbsp;2013.</span><span>)</span></a>.
 </li>
@@ -431,11 +444,11 @@ From -05 to -06</h3>
 <li>Moving category back to "std" (from "info"), because that's was needed for an RFC that is updating an RFC that has been published on the standards track.
 </li>
 </ul><p>
-               
+            
 </p>
-<a name="anchor4"></a><br /><hr />
+<a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.3"></a><h3>6.3.&nbsp;
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 From -04 to -05</h3>
 
 <p>
@@ -448,9 +461,9 @@ From -04 to -05</h3>
 </ul><p>
             
 </p>
-<a name="anchor5"></a><br /><hr />
+<a name="anchor6"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.4"></a><h3>6.4.&nbsp;
+<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
 From -03 to -04</h3>
 
 <p>
@@ -461,9 +474,9 @@ From -03 to -04</h3>
 </ul><p>
             
 </p>
-<a name="anchor6"></a><br /><hr />
+<a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.5"></a><h3>6.5.&nbsp;
+<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
 From -02 to -03</h3>
 
 <p>
@@ -476,9 +489,9 @@ From -02 to -03</h3>
 </ul><p>
             
 </p>
-<a name="anchor7"></a><br /><hr />
+<a name="anchor8"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.6"></a><h3>6.6.&nbsp;
+<a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
 From -01 to -02</h3>
 
 <p>
@@ -491,9 +504,9 @@ From -01 to -02</h3>
 </ul><p>
             
 </p>
-<a name="anchor8"></a><br /><hr />
+<a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.6.7"></a><h3>6.7.&nbsp;
+<a name="rfc.section.5.8"></a><h3>5.8.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -510,12 +523,12 @@ From -00 to -01</h3>
 </p>
 <a name="rfc.references"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.7"></a><h3>7.&nbsp;
+<a name="rfc.section.6"></a><h3>6.&nbsp;
 References</h3>
 
 <a name="rfc.references1"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>7.1.&nbsp;Normative References</h3>
+<h3>6.1.&nbsp;Normative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2045">[RFC2045]</a></td>
 <td class="author-text"><a href="mailto:ned@innosoft.com">Freed, N.</a> and <a href="mailto:nsb@nsb.fv.com">N. Borenstein</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2045">Multipurpose Internet Mail Extensions (MIME) Part One: Format of Internet Message Bodies</a>,&rdquo; RFC&nbsp;2045, November&nbsp;1996.</td></tr>
@@ -533,7 +546,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>7.2.&nbsp;Non-Normative References</h3>
+<h3>6.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
@@ -562,6 +575,8 @@ Implementation Hints</h3>
 
 <p>This section is informative. It described some issues that might be interesting for implementers, but it might also be interesting for users of XML Patch that want to understand some of the differences between standard XPath 1.0 processing, and the processing model of selectors in RFC 5261.
 </p>
+<p>Specifically, the issues described in the following two sections have been identified as technical issues with RFC 5261, and have been filed as errata. Implementers interested in implementing XML Patch are encouraged to take those errata into account when implementing XML patch documents. The issue about "Matching Namespaces" described in <a class='info' href='#namespace-matching'>Appendix&nbsp;A.1<span> (</span><span class='info'>Matching Namespaces</span><span>)</span></a> has been filed as RFC erratum 3477. The issue about "Patching Namespaces" described in <a class='info' href='#namespace-patching'>Appendix&nbsp;A.2<span> (</span><span class='info'>Patching Namespaces</span><span>)</span></a> has been filed as RFC erratum 3478.
+</p>
 <a name="namespace-matching"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A.1"></a><h3>A.1.&nbsp;
@@ -575,7 +590,7 @@ Matching Namespaces</h3>
 </p>
 <p>Please keep in mind, however, that evaluating selectors is only one part of applying patches. When it comes to applying the actual patch operation, neither XPath 1.0 nor XPath 2.0 are sufficient because they do not preserve some of the information from the XML syntax (specifically: namespace declarations) that is required to correctly apply patch operations. The following section describes this issue in more detail.
 </p>
-<p>Please note that RFC 5261's Section 4.2.2 on namespace matching explains XPath 2.0's rules incorrectly <a href='http://tools.ietf.org/html/rfc5261#section-4.2.2'>http://tools.ietf.org/html/rfc5261#section-4.2.2</a>. For this reason, an erratum is available for Section 4.2.2 of RFC 5261.
+<p>Please note that RFC 5261's Section 4.2.2 on namespace matching explains XPath 2.0's rules incorrectly <a href='http://tools.ietf.org/html/rfc5261#section-4.2.2'>http://tools.ietf.org/html/rfc5261#section-4.2.2</a>. For this reason, RFC erratum 3477 is available for Section 4.2.2 of RFC 5261.
 </p>
 <a name="namespace-patching"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -602,7 +617,7 @@ Patching Namespaces</h3>
 </p>
 <p>Note that XPath's specific limitations do not mean that it is impossible to use XML technologies other than XPath. The Document Object Model (DOM) <a class='info' href='#W3C.REC-DOM-Level-3-Core-20040407'>[W3C.REC&#8209;DOM&#8209;Level&#8209;3&#8209;Core&#8209;20040407]<span> (</span><span class='info'>Robie, J., Wood, L., Champion, M., Hegaret, P., Nicol, G., Le Hors, A., and S. Byrne, &ldquo;Document Object Model (DOM) Level 3 Core Specification,&rdquo; April&nbsp;2004.</span><span>)</span></a>, for example, does expose namespace declaration attributes as regular attributes in the document tree, and thus could be used to differentiate between the two variants shown above.
 </p>
-<p>Please note that RFC 5261's Section 4.4.3 on replacing namespaces mixes the terms "namespace declaration" and "namespace". For this reason, an erratum is available for Section 4.4.3 of RFC 5261.
+<p>Please note that RFC 5261's Section 4.4.3 on replacing namespaces mixes the terms "namespace declaration" and "namespace". For this reason, RFC erratum 3478 is available for Section 4.4.3 of RFC 5261.
 </p>
 <a name="implementation-status"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -646,8 +661,8 @@ ABNF for RFC 5261</h3>
               <em>; "processing-instruction", case-sensitive</em>
               "<span class='str'>(</span>" [ <cite class='key'>DQUOTE</cite> <cite class='id'>ncname</cite> <cite class='key'>DQUOTE</cite> ] "<span class='str'>)</span>"
 <dfn>pi</dfn>         =  ( <span class='val'>%x70.72.6f.63.65.73.73.69.6e.67.2d</span>
-                <span class='val'>%x69.6e.73.74.72.75.63.74.69.6f.6e</span>
-                <em>; "processing-instruction", case-sensitive</em>
+              <span class='val'>%x69.6e.73.74.72.75.63.74.69.6f.6e</span>
+              <em>; "processing-instruction", case-sensitive</em>
               "<span class='str'>(</span>" [ "<span class='str'>'</span>" <cite class='id'>ncname</cite> "<span class='str'>'</span>" ] "<span class='str'>)</span>" ) / <cite class='id'>piq</cite>
 <dfn>id</dfn>         =  ( <span class='val'>%x69.64</span> <em>; "id", case-sensitive</em>
               "<span class='str'>(</span>" [ "<span class='str'>'</span>" <cite class='id'>ncname</cite> "<span class='str'>'</span>" ] "<span class='str'>)</span>" ) /
@@ -657,7 +672,7 @@ ABNF for RFC 5261</h3>
               "<span class='str'>()</span>"
 <dfn>text</dfn>       =  <span class='val'>%x74.65.78.74</span> <em>; "text", case-sensitive</em>
               "<span class='str'>()</span>"
-<dfn>nspa</dfn>       =  <span class='val'>%x6e.61.6d.65.73.70.61.63.65</span><em>; "namespace", case-sensitive</em>
+<dfn>nspa</dfn>       =  <span class='val'>%x6e.61.6d.65.73.70.61.63.65</span> <em>; "namespace", case-sensitive</em>
               "<span class='str'>::</span>" <cite class='id'>ncname</cite>
 <dfn>cnodes</dfn>     =  ( <cite class='id'>text</cite> / <cite class='id'>com</cite> / <cite class='id'>pi</cite> ) [ <cite class='id'>pos</cite> ]
 <dfn>child</dfn>      =  <cite class='id'>cnodes</cite> / <cite class='id'>step</cite>
@@ -666,7 +681,9 @@ ABNF for RFC 5261</h3>
               ( <span class='rep'>0*</span>( <cite class='id'>step</cite> "<span class='str'>/</span>" ) <cite class='id'>last</cite> ) )
 <dfn>xpath-add</dfn>  =  [ "<span class='str'>/</span>" ] ( ( <cite class='id'>id</cite> [ <span class='rep'>0*</span>( "<span class='str'>/</span>" <cite class='id'>step</cite> ) "<span class='str'>/</span>" <cite class='id'>child</cite> ] ) /
               ( <span class='rep'>0*</span>( <cite class='id'>step</cite> "<span class='str'>/</span>" ) <cite class='id'>child</cite> ) )</pre></div>
-<a name="anchor11"></a><br /><hr />
+<p>Please note that the "ncname" production listed above does not fully capture the constraints of the original XSD-based definition, where it is defined as "\i\c*".
+</p>
+<a name="anchor12"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.D"></a><h3>Appendix D.&nbsp;
 Acknowledgements</h3>
@@ -680,17 +697,9 @@ Acknowledgements</h3>
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Erik Wilde</td></tr>
 <tr><td class="author-text">&nbsp;</td>
-<td class="author-text">EMC</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">6801 Koll Center Parkway</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Pleasanton, CA 94566</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">U.S.A.</td></tr>
-<tr><td class="author" align="right">Phone:&nbsp;</td>
-<td class="author-text">+1-925-6006244</td></tr>
+<td class="author-text">UC Berkeley</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
-<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<td class="author-text"><a href="mailto:dret@berkeley.edu">dret@berkeley.edu</a></td></tr>
 <tr><td class="author" align="right">URI:&nbsp;</td>
 <td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
 </table>

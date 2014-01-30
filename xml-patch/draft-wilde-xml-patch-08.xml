@@ -93,46 +93,39 @@
          <t>The Security Considerations from RFC 5261 <xref target="RFC5261"/> apply to the application/xml-patch+xml media type.</t>
          <t>In addition, parsing XML may entail including information from external sources through XML's mechanism of external entities. Implementations therefore should be aware of the fact that standard parsers may resolve external entities, and thus include external information as a result of applying patch operations to an XML document.</t>
       </section>
-      <section title="Open Issues" anchor="open-issues">
-         <t>Note to RFC Editor: Please remove this section before publication.</t>
-         <t>
-            <list style="symbols">
-               <t>"ncname" in the XSD grammar is defined as "\i\c*", but so far has been translated into "1*%x00-ffffffff" in the ABNF grammar. Ideally, the grammar should reflect how XSD defines these multi-character escapes, but they map into rather complicated character ranges in XML itself (such as http://www.w3.org/TR/xml/#NT-Letter).</t>
-            </list>
-         </t>
-      </section>
-         <section title="Change Log" anchor="change-log">
-         <t>Note to RFC Editor: Please remove this section before publication.</t>
-            <section title="From -07 to -08">
-               <t>
-                  <list style="symbols">
-                     <t>Updated author address.</t>
-                     <t>Removed rfc/@updates (this draft no longer updates RFC 5261).</t>
-                     <t>Added simple example of an XML patch document.</t>
-                  </list>
-               </t>
-            </section>
-            <section title="From -06 to -07">
-               <t>
-                  <list style="symbols">
-                     <t>Moving category back to "info" (from "std"), because the errata to RFC 5261 are now approved separately.</t>
-                     <t>Removing the section with "Updates to RFC 5261" because that's done via errata now.</t>
-                     <t>Adding reference to RFC 3470 to "Security Considerations".</t>
-                     <t>Updating the ABNF to correctly only allow lowercase characters in the string parts.</t>
-                  </list>
-               </t>
-            </section>
-            <section title="From -05 to -06">
-               <t>
-                  <list style="symbols">
-                     <t>Updating "Implementation Status" section to refer to RFC 6982 <xref target="RFC6982"/>.</t>
-                     <t>Properly listing "charset" as an optional media type parameter (was ill-formatted before).</t>
-                     <t>Adding corrections from Tony Hansen's review, including document structure (section/appendix order), and improvements of the ABNF grammar.</t>
-                     <t>Moving category back to "std" (from "info"), because that's was needed for an RFC that is updating an RFC that has been published on the standards track.</t>
-                  </list>
-               </t>
-            </section>
-            <section title="From -04 to -05">
+      <section title="Change Log" anchor="change-log">
+      <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <section title="From -07 to -08">
+            <t>
+               <list style="symbols">
+                  <t>Updated author address.</t>
+                  <t>Removed rfc/@updates (this draft no longer updates RFC 5261).</t>
+                  <t>Added simple example of an XML patch document.</t>
+                  <t>No more open issues, thus removed the "open issues" section.</t>
+               </list>
+            </t>
+         </section>
+         <section title="From -06 to -07">
+            <t>
+               <list style="symbols">
+                  <t>Moving category back to "info" (from "std"), because the errata to RFC 5261 are now approved separately.</t>
+                  <t>Removing the section with "Updates to RFC 5261" because that's done via errata now.</t>
+                  <t>Adding reference to RFC 3470 to "Security Considerations".</t>
+                  <t>Updating the ABNF to correctly only allow lowercase characters in the string parts.</t>
+               </list>
+            </t>
+         </section>
+         <section title="From -05 to -06">
+            <t>
+               <list style="symbols">
+                  <t>Updating "Implementation Status" section to refer to RFC 6982 <xref target="RFC6982"/>.</t>
+                  <t>Properly listing "charset" as an optional media type parameter (was ill-formatted before).</t>
+                  <t>Adding corrections from Tony Hansen's review, including document structure (section/appendix order), and improvements of the ABNF grammar.</t>
+                  <t>Moving category back to "std" (from "info"), because that's was needed for an RFC that is updating an RFC that has been published on the standards track.</t>
+               </list>
+            </t>
+         </section>
+         <section title="From -04 to -05">
             <t>
                <list style="symbols">
                   <t>Improved formatting of XML/XSD and ABNF code.</t>
@@ -695,6 +688,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
          <figure>
             <artwork type="abnf"><xi:include parse="text" href="&files;/patch-xpath-abnf.txt"/></artwork>
          </figure>
+         <t>Please note that the "ncname" production listed above does not fully capture the constraints of the original XSD-based definition, where it is defined as "\i\c*".</t>
       </section>
       <section title="Acknowledgements">
          <t>Thanks for comments and suggestions provided by Bas de Bakker, Tony Hansen, Bjoern Hoehrmann, and Julian Reschke.</t>
