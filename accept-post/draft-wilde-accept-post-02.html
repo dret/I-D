@@ -144,9 +144,9 @@
 <tr><td class="header">Network Working Group</td><td class="header">J. Arwe</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">S. Speicher</td></tr>
 <tr><td class="header">Intended status: Standards Track</td><td class="header">IBM</td></tr>
-<tr><td class="header">Expires: March 10, 2014</td><td class="header">E. Wilde</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">&nbsp;</td><td class="header">September 6, 2013</td></tr>
+<tr><td class="header">Expires: August 1, 2014</td><td class="header">E. Wilde</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">UC Berkeley</td></tr>
+<tr><td class="header">&nbsp;</td><td class="header">January 28, 2014</td></tr>
 </table></td></tr></table>
 <h1><br />The Accept-Post HTTP Header<br />draft-wilde-accept-post-02</h1>
 
@@ -175,11 +175,11 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on March 10, 2014.</p>
+This Internet-Draft will expire on August 1, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
-Copyright (c) 2013 IETF Trust and the persons identified as the
+Copyright (c) 2014 IETF Trust and the persons identified as the
 document authors.  All rights reserved.</p>
 <p>
 This document is subject to BCP 78 and the IETF Trust's Legal
@@ -218,6 +218,10 @@ Implementation Status<br />
 Eclipse Lyo<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#implementation-rwwio">6.2.</a>&nbsp;
 RWW.I/O<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#implementation-tivoli">6.3.</a>&nbsp;
+Tivoli Workload Automation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#implementation-jazz">6.4.</a>&nbsp;
+Jazz for Service Management <br />
 <a href="#security-considerations">7.</a>&nbsp;
 Security Considerations<br />
 <a href="#open-issues">8.</a>&nbsp;
@@ -233,7 +237,7 @@ References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">10.1.</a>&nbsp;
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">10.2.</a>&nbsp;
-Non-Normative References<br />
+Informative References<br />
 <a href="#acknowledgements">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
@@ -260,7 +264,7 @@ Terminology</h3>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 The Accept-Post Response Header Field</h3>
 
-<p>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that that specific format is allowed on the resource identified by the Request-URI.
+<p>This specification introduces a new response header field Accept-Post used to specify the document formats accepted by the server in HTTP POST requests. Accept-Post SHOULD appear in the OPTIONS response for any resource that supports the use of the POST method. The presence of the Accept-Post header in response to any method is an implicit indication that POST is allowed on the resource identified by the Request-URI. The presence of a specific document format in this header indicates that this specific format is allowed on the resource identified by the Request-URI.
 </p>
 <p>The syntax for Accept-Post headers, using the ABNF syntax defined in Section 5.3.2 of the revised version of HTTP/1.1 <a class='info' href='#I-D.ietf-httpbis-p2-semantics'>[I&#8209;D.ietf&#8209;httpbis&#8209;p2&#8209;semantics]<span> (</span><span class='info'>Fielding, R. and J. Reschke, &ldquo;Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content,&rdquo; July&nbsp;2013.</span><span>)</span></a>, is given by the following definition:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre><span class='err'>Accept-Post = #( media-range [ accept-params ] )</span></pre></div>
@@ -286,7 +290,7 @@ Date: Fri, 23 Feb 2007 21:17:11 GMT
 Content-Length: nnn
 Content-Type: application/atom+xml;type=feed
 Accept-Post: image/gif, image/jpeg, image/png</pre></div>
-<p>In this response to the GET request of a collection URI, the server indicates that this particular collection accept new entries in the form of GIF, JPEG, or PNG images. No parameters are used, which means that there is no server-specified preference among those media types.
+<p>In this response to the GET request of a collection URI, the server indicates that this particular collection accepts new entries in the form of GIF, JPEG, or PNG images. No parameters are used, which means that there is no server-specified preference among those media types.
 </p>
 <a name="examples"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -311,7 +315,7 @@ Atom Publishing Protocol</h3>
 <a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 Linked Data Platform</h3>
 
-<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130730'>[W3C.WD&#8209;ldp&#8209;20130730]<span> (</span><span class='info'>Speicher, S., Arwe, J., and A. Malhotra, &ldquo;Linked Data Platform 1.0,&rdquo; July&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and MUST expose its support for accepted media types via Accept-Post.
+<p>The Linked Data Platform (LDP) <a class='info' href='#W3C.WD-ldp-20130730'>[W3C.WD&#8209;ldp&#8209;20130730]<span> (</span><span class='info'>Speicher, S., Arwe, J., and A. Malhotra, &ldquo;Linked Data Platform 1.0,&rdquo; July&nbsp;2013.</span><span>)</span></a> describes a set of best practices and simple approach for a read-write Linked Data architecture, based on HTTP access to Web resources that describe their state using the RDF data model. LDP defines LDP Containers (LDPC) and LDP Resources (LDPR). Adding new LDPRs to an LDPC is done by sending an HTTP POST request to the LDPC. An LDPC can constrain the media types it is accepting for these POST requests, and should expose its support for accepted media types via Accept-Post.
 </p>
 <p>In fact, the Accept-Post header was initially developed within the W3C's LDP Working Group (LDPWG), see <a class='info' href='#acknowledgements'>Appendix&nbsp;A<span> (</span><span class='info'>Acknowledgements</span><span>)</span></a> for acknowledgements. It was then decided that the header itself might be useful in other contexts as well, and thus should be specified in a standalone document.
 </p>
@@ -355,7 +359,7 @@ Eclipse Lyo</h3>
 </p>
 <p>Licensing: Freely distributable (<a href='http://www.eclipse.org/legal/epl-v10.html'>Eclipse Public License (EPL)</a> and <a href='http://www.eclipse.org/org/documents/edl-v10.php'>Eclipse Distribution License (EDL)</a>).
 </p>
-<p>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described in <a href='http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html'>this blog post</a>.
+<p>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header. It was trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described in <a href='http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html'>this blog post</a>.
 </p>
 <p>Contact: Steve Speicher &lt;sspeiche@gmail.com>
 </p>
@@ -374,7 +378,7 @@ RWW.I/O</h3>
 </p>
 <p>Name: RWW.I/O - personal linked data storage.
 </p>
-<p>Description: A minimal support for LDP is now included in RWW.I/O, which is a personal linked data storage space, following the structure of a unix file system. Currently, only LDPCs are supported, since the LDPRs are always files or directories that are being managed through RESTful operations. RWW.I/O encourages the use of .meta files to semantically describe non-LD resources (e.g. images, html, js, css, etc.), and the use of .acl files for access control rules using the WAC vocabulary. Both .meta and .acl should be used per file (i.e. photo.jpg will have a .meta.photo.jpg and a .acl.photo.jpg).
+<p>Description: A minimal support for LDP is now included in RWW.I/O, which is a personal linked data storage space, following the structure of a Unix file system. Currently, only LDPCs are supported, since the LDPRs are always files or directories that are being managed through RESTful operations. RWW.I/O encourages the use of .meta files to semantically describe non-LD resources (e.g. images, html, js, css, etc.), and the use of .acl files for access control rules using the WAC vocabulary. Both .meta and .acl should be used per file (i.e. photo.jpg will have a .meta.photo.jpg and a .acl.photo.jpg).
 </p>
 <p>Maturity: Beta until more features from LDP spec are included (if necessary).
 </p>
@@ -385,6 +389,60 @@ RWW.I/O</h3>
 <p>Implementation Experience: Implementing current LDP features in RWW.I/O was trivial. I've also decided to add the Accept-Post header to HEAD replies, as it helps to reduce the number of requests for a client trying to discover more information about the server.
 </p>
 <p>Contact: Andrei Sambra &lt;andrei.sambra@gmail.com>
+</p>
+</blockquote><p>
+            
+</p>
+<a name="implementation-tivoli"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.3"></a><h3>6.3.&nbsp;
+Tivoli Workload Automation</h3>
+
+<p>
+               </p>
+<blockquote class="text">
+<p>Organization: IBM
+</p>
+<p>Name: Tivoli Workload Automation
+</p>
+<p>Description: An existing scheduling product that already implements the OSLC Automation specification (both client and server roles), including creation factories for Automation Requests that accept HTTP POST requests. Since OSLC Automation offers no programmatic way for clients to know which media types are supported by the server, clients are limited in practice to those required by OSLC Automation (RDF/XML), or to making optimistic requests using other RDF media types.
+</p>
+<p>Maturity: Early prototype/alpha
+</p>
+<p>Coverage: All parts of the specification were covered for server and client requirements.
+</p>
+<p>Licensing: proprietary
+</p>
+<p>Implementation Experience: Experience from the server perspective of generating the HTTP response header is that it was trivial using JAX-RS annotations to add another response header. Client parsing of the header presented no new problems, since the syntax is almost identical to the server-side processing of an Accept header.
+</p>
+<p>Contact: John Arwe &lt;johnarwe@us.ibm.com>
+</p>
+</blockquote><p>
+            
+</p>
+<a name="implementation-jazz"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.6.4"></a><h3>6.4.&nbsp;
+Jazz for Service Management </h3>
+
+<p>
+               </p>
+<blockquote class="text">
+<p>Organization: IBM
+</p>
+<p>Name: Jazz for Service Management Registry Services
+</p>
+<p>Description: An existing component bundled with multiple existing Cloud and Smarter Infrastructure (formerly branded as Tivoli)  products. It already supports multiple resource collections that use HTTP POST requests to create new member resources, e.g. "registration records". Given that clients have no existing means by which they can know which media types the server supports, and given that Registry Services has been adding new media types over the past few months as part of its continuous delivery process, Accept-Post is a natural fit to enable looser client coupling.
+</p>
+<p>Maturity: Early prototype/alpha
+</p>
+<p>Coverage: All parts of the specification were covered for server requirements.
+</p>
+<p>Licensing: proprietary
+</p>
+<p>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header. It was easy to add a new header using JAX-RS annotations.
+</p>
+<p>Contact: John Arwe &lt;johnarwe@us.ibm.com>
 </p>
 </blockquote><p>
             
@@ -430,7 +488,11 @@ From -01 to -02</h3>
 <p>
                </p>
 <ul class="text">
-<li>Added header field examples.
+<li>Added header field example.
+</li>
+<li>Updated author address.
+</li>
+<li>Adding more entries to the "Implementation Status" section.
 </li>
 </ul><p>
             
@@ -471,7 +533,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>10.2.&nbsp;Non-Normative References</h3>
+<h3>10.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="I-D.ietf-httpbis-p2-semantics">[I-D.ietf-httpbis-p2-semantics]</a></td>
 <td class="author-text">Fielding, R. and J. Reschke, &ldquo;<a href="http://tools.ietf.org/html/draft-ietf-httpbis-p2-semantics-23">Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a>,&rdquo; draft-ietf-httpbis-p2-semantics-23 (work in progress), July&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-ietf-httpbis-p2-semantics-23.txt">TXT</a>).</td></tr>
@@ -519,17 +581,9 @@ Acknowledgements</h3>
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Erik Wilde</td></tr>
 <tr><td class="author-text">&nbsp;</td>
-<td class="author-text">EMC Corporation</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">6801 Koll Center Parkway</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Pleasanton, CA 94566</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">U.S.A.</td></tr>
-<tr><td class="author" align="right">Phone:&nbsp;</td>
-<td class="author-text">+1-925-6006244</td></tr>
+<td class="author-text">UC Berkeley</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
-<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<td class="author-text"><a href="mailto:dret@berkeley.edu">dret@berkeley.edu</a></td></tr>
 <tr><td class="author" align="right">URI:&nbsp;</td>
 <td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
 </table>

@@ -4,9 +4,9 @@
 Network Working Group                                            J. Arwe
 Internet-Draft                                               S. Speicher
 Intended status: Standards Track                                     IBM
-Expires: March 10, 2014                                         E. Wilde
-                                                         EMC Corporation
-                                                       September 6, 2013
+Expires: August 1, 2014                                         E. Wilde
+                                                             UC Berkeley
+                                                        January 28, 2014
 
 
                       The Accept-Post HTTP Header
@@ -39,11 +39,11 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 10, 2014.
+   This Internet-Draft will expire on August 1, 2014.
 
 Copyright Notice
 
-   Copyright (c) 2013 IETF Trust and the persons identified as the
+   Copyright (c) 2014 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -52,9 +52,9 @@ Copyright Notice
 
 
 
-Arwe, et al.             Expires March 10, 2014                 [Page 1]
+Arwe, et al.             Expires August 1, 2014                 [Page 1]
 
-Internet-Draft                 Accept-Post                September 2013
+Internet-Draft                 Accept-Post                  January 2014
 
 
    publication of this document.  Please review these documents
@@ -79,16 +79,18 @@ Table of Contents
    6.  Implementation Status  . . . . . . . . . . . . . . . . . . . .  5
      6.1.  Eclipse Lyo  . . . . . . . . . . . . . . . . . . . . . . .  6
      6.2.  RWW.I/O  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-   7.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
-   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  8
-   9.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     9.1.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  8
-     9.2.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  8
-   10. References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-     10.1. Normative References . . . . . . . . . . . . . . . . . . .  9
-     10.2. Non-Normative References . . . . . . . . . . . . . . . . .  9
-   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 10
-   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 10
+     6.3.  Tivoli Workload Automation . . . . . . . . . . . . . . . .  7
+     6.4.  Jazz for Service Management  . . . . . . . . . . . . . . .  8
+   7.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
+   8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  9
+   9.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     9.1.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  9
+     9.2.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . . 10
+   10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     10.1. Normative References . . . . . . . . . . . . . . . . . . . 10
+     10.2. Informative References . . . . . . . . . . . . . . . . . . 10
+   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 11
+   Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 11
 
 
 
@@ -106,11 +108,9 @@ Table of Contents
 
 
 
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 2]
+Arwe, et al.             Expires August 1, 2014                 [Page 2]
 
-Internet-Draft                 Accept-Post                September 2013
+Internet-Draft                 Accept-Post                  January 2014
 
 
 1.  Introduction
@@ -141,7 +141,7 @@ Internet-Draft                 Accept-Post                September 2013
    of the Accept-Post header in response to any method is an implicit
    indication that POST is allowed on the resource identified by the
    Request-URI.  The presence of a specific document format in this
-   header indicates that that specific format is allowed on the resource
+   header indicates that this specific format is allowed on the resource
    identified by the Request-URI.
 
    The syntax for Accept-Post headers, using the ABNF syntax defined in
@@ -164,9 +164,9 @@ Internet-Draft                 Accept-Post                September 2013
 
 
 
-Arwe, et al.             Expires March 10, 2014                 [Page 3]
+Arwe, et al.             Expires August 1, 2014                 [Page 3]
 
-Internet-Draft                 Accept-Post                September 2013
+Internet-Draft                 Accept-Post                  January 2014
 
 
    significant.
@@ -188,7 +188,7 @@ Internet-Draft                 Accept-Post                September 2013
    Accept-Post: image/gif, image/jpeg, image/png
 
    In this response to the GET request of a collection URI, the server
-   indicates that this particular collection accept new entries in the
+   indicates that this particular collection accepts new entries in the
    form of GIF, JPEG, or PNG images.  No parameters are used, which
    means that there is no server-specified preference among those media
    types.
@@ -220,9 +220,9 @@ Internet-Draft                 Accept-Post                September 2013
 
 
 
-Arwe, et al.             Expires March 10, 2014                 [Page 4]
+Arwe, et al.             Expires August 1, 2014                 [Page 4]
 
-Internet-Draft                 Accept-Post                September 2013
+Internet-Draft                 Accept-Post                  January 2014
 
 
    While the AtomPub protocol cannot be changed retroactively, this
@@ -241,7 +241,7 @@ Internet-Draft                 Accept-Post                September 2013
    their state using the RDF data model.  LDP defines LDP Containers
    (LDPC) and LDP Resources (LDPR).  Adding new LDPRs to an LDPC is done
    by sending an HTTP POST request to the LDPC.  An LDPC can constrain
-   the media types it is accepting for these POST requests, and MUST
+   the media types it is accepting for these POST requests, and should
    expose its support for accepted media types via Accept-Post.
 
    In fact, the Accept-Post header was initially developed within the
@@ -276,9 +276,9 @@ Internet-Draft                 Accept-Post                September 2013
 
 
 
-Arwe, et al.             Expires March 10, 2014                 [Page 5]
+Arwe, et al.             Expires August 1, 2014                 [Page 5]
 
-Internet-Draft                 Accept-Post                September 2013
+Internet-Draft                 Accept-Post                  January 2014
 
 
    protocol defined by this specification at the time of posting of this
@@ -325,16 +325,16 @@ Internet-Draft                 Accept-Post                September 2013
       and Eclipse Distribution License (EDL) [7]).
 
       Implementation Experience: Experience is only from the server
-      perspective of generating the HTTP response header.  It was very
+      perspective of generating the HTTP response header.  It was
       trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter
       on all responses.  More details about this approach are described
       in this blog post [8].
 
 
 
-Arwe, et al.             Expires March 10, 2014                 [Page 6]
+Arwe, et al.             Expires August 1, 2014                 [Page 6]
 
-Internet-Draft                 Accept-Post                September 2013
+Internet-Draft                 Accept-Post                  January 2014
 
 
       Contact: Steve Speicher <sspeiche@gmail.com>
@@ -348,7 +348,7 @@ Internet-Draft                 Accept-Post                September 2013
 
       Description: A minimal support for LDP is now included in RWW.I/O,
       which is a personal linked data storage space, following the
-      structure of a unix file system.  Currently, only LDPCs are
+      structure of a Unix file system.  Currently, only LDPCs are
       supported, since the LDPRs are always files or directories that
       are being managed through RESTful operations.  RWW.I/O encourages
       the use of .meta files to semantically describe non-LD resources
@@ -376,6 +376,81 @@ Internet-Draft                 Accept-Post                September 2013
 
       Contact: Andrei Sambra <andrei.sambra@gmail.com>
 
+6.3.  Tivoli Workload Automation
+
+      Organization: IBM
+
+      Name: Tivoli Workload Automation
+
+      Description: An existing scheduling product that already
+      implements the OSLC Automation specification (both client and
+      server roles), including creation factories for Automation
+
+
+
+Arwe, et al.             Expires August 1, 2014                 [Page 7]
+
+Internet-Draft                 Accept-Post                  January 2014
+
+
+      Requests that accept HTTP POST requests.  Since OSLC Automation
+      offers no programmatic way for clients to know which media types
+      are supported by the server, clients are limited in practice to
+      those required by OSLC Automation (RDF/XML), or to making
+      optimistic requests using other RDF media types.
+
+      Maturity: Early prototype/alpha
+
+      Coverage: All parts of the specification were covered for server
+      and client requirements.
+
+      Licensing: proprietary
+
+      Implementation Experience: Experience from the server perspective
+      of generating the HTTP response header is that it was trivial
+      using JAX-RS annotations to add another response header.  Client
+      parsing of the header presented no new problems, since the syntax
+      is almost identical to the server-side processing of an Accept
+      header.
+
+      Contact: John Arwe <johnarwe@us.ibm.com>
+
+6.4.  Jazz for Service Management
+
+      Organization: IBM
+
+      Name: Jazz for Service Management Registry Services
+
+      Description: An existing component bundled with multiple existing
+      Cloud and Smarter Infrastructure (formerly branded as Tivoli)
+      products.  It already supports multiple resource collections that
+      use HTTP POST requests to create new member resources, e.g.
+      "registration records".  Given that clients have no existing means
+      by which they can know which media types the server supports, and
+      given that Registry Services has been adding new media types over
+      the past few months as part of its continuous delivery process,
+      Accept-Post is a natural fit to enable looser client coupling.
+
+      Maturity: Early prototype/alpha
+
+      Coverage: All parts of the specification were covered for server
+      requirements.
+
+      Licensing: proprietary
+
+      Implementation Experience: Experience is only from the server
+      perspective of generating the HTTP response header.  It was easy
+      to add a new header using JAX-RS annotations.
+
+
+
+Arwe, et al.             Expires August 1, 2014                 [Page 8]
+
+Internet-Draft                 Accept-Post                  January 2014
+
+
+      Contact: John Arwe <johnarwe@us.ibm.com>
+
 
 7.  Security Considerations
 
@@ -384,13 +459,6 @@ Internet-Draft                 Accept-Post                September 2013
    exposing the header, in which case HTTP interactions would be back to
    the level of standard HTTP (i.e., with no indication what kind of
    media types a resource accepts in POST requests).
-
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 7]
-
-Internet-Draft                 Accept-Post                September 2013
 
 
 8.  Open Issues
@@ -423,7 +491,19 @@ Internet-Draft                 Accept-Post                September 2013
 
 9.1.  From -01 to -02
 
-   o  Added header field examples.
+   o  Added header field example.
+
+   o  Updated author address.
+
+   o  Adding more entries to the "Implementation Status" section.
+
+
+
+
+Arwe, et al.             Expires August 1, 2014                 [Page 9]
+
+Internet-Draft                 Accept-Post                  January 2014
+
 
 9.2.  From -00 to -01
 
@@ -438,17 +518,6 @@ Internet-Draft                 Accept-Post                September 2013
 
 10.  References
 
-
-
-
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 8]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
 10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -462,7 +531,7 @@ Internet-Draft                 Accept-Post                September 2013
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               September 2004.
 
-10.2.  Non-Normative References
+10.2.  Informative References
 
    [I-D.ietf-httpbis-p2-semantics]
               Fielding, R. and J. Reschke, "Hypertext Transfer Protocol
@@ -484,6 +553,14 @@ Internet-Draft                 Accept-Post                September 2013
    [RFC5789]  Dusseault, L. and J. Snell, "PATCH Method for HTTP",
               RFC 5789, March 2010.
 
+
+
+
+Arwe, et al.             Expires August 1, 2014                [Page 10]
+
+Internet-Draft                 Accept-Post                  January 2014
+
+
    [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", RFC 6982,
               July 2013.
@@ -497,13 +574,6 @@ Internet-Draft                 Accept-Post                September 2013
 URIs
 
    [1]   <https://www.ietf.org/mailman/listinfo/apps-discuss>
-
-
-
-Arwe, et al.             Expires March 10, 2014                 [Page 9]
-
-Internet-Draft                 Accept-Post                September 2013
-
 
    [2]   <https://github.com/dret/I-D/tree/master/accept-post>
 
@@ -534,6 +604,19 @@ Appendix A.  Acknowledgements
    comments and suggestions provided by the working group as a whole.
 
 
+
+
+
+
+
+
+
+
+Arwe, et al.             Expires August 1, 2014                [Page 11]
+
+Internet-Draft                 Accept-Post                  January 2014
+
+
 Authors' Addresses
 
    John Arwe
@@ -548,27 +631,10 @@ Authors' Addresses
    Email: sspeiche@us.ibm.com
 
 
-
-
-
-
-
-
-
-
-Arwe, et al.             Expires March 10, 2014                [Page 10]
-
-Internet-Draft                 Accept-Post                September 2013
-
-
    Erik Wilde
-   EMC Corporation
-   6801 Koll Center Parkway
-   Pleasanton, CA 94566
-   U.S.A.
+   UC Berkeley
 
-   Phone: +1-925-6006244
-   Email: erik.wilde@emc.com
+   Email: dret@berkeley.edu
    URI:   http://dret.net/netdret/
 
 
@@ -602,15 +668,5 @@ Internet-Draft                 Accept-Post                September 2013
 
 
 
-
-
-
-
-
-
-
-
-
-
-Arwe, et al.             Expires March 10, 2014                [Page 11]
+Arwe, et al.             Expires August 1, 2014                [Page 12]
 
