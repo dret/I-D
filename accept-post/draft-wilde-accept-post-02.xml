@@ -120,7 +120,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                   <t>Maturity: Early prototype/alpha.</t>
                   <t>Coverage: All parts of the specification were covered for server requirements.</t>
                   <t>Licensing: Freely distributable (<eref target="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License (EPL)</eref> and <eref target="http://www.eclipse.org/org/documents/edl-v10.php">Eclipse Distribution License (EDL)</eref>).</t>
-                  <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header.  It was very trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described in <eref target="http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html">this blog post</eref>.</t>
+                  <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header. It was trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter on all responses. More details about this approach are described in <eref target="http://stevespeicher.blogspot.com/2013/08/supporting-accept-post-in-jax-rs.html">this blog post</eref>.</t>
                   <t>Contact: Steve Speicher &lt;sspeiche@gmail.com></t>
                </list>
             </t>
@@ -136,6 +136,20 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                   <t>Licensing: MIT license. Source code is available <eref target="https://github.com/deiu/rww.io">on GitHub</eref>.</t>
                   <t>Implementation Experience: Implementing current LDP features in RWW.I/O was trivial. I've also decided to add the Accept-Post header to HEAD replies, as it helps to reduce the number of requests for a client trying to discover more information about the server.</t>
                   <t>Contact: Andrei Sambra &lt;andrei.sambra@gmail.com></t>
+               </list>
+            </t>
+         </section>
+         <section title="Tivoli Workload Automation" anchor="implementation-tivoli">
+            <t>
+               <list>
+                  <t>Organization: IBM</t>
+                  <t>Name: Tivoli Workload Automation</t>
+                  <t>Description: An existing scheduling product that already implements the OSLC Automation specification (both client and server roles), including creation factories for Automation Requests that accept HTTP POST requests. Since OSLC Automation offers no programmatic way for clients to know which media types are supported by the server, clients are limited in practice to those required by OSLC Automation (RDF/XML), or to making optimistic requests using other RDF media types.</t>
+                  <t>Maturity: Early prototype/alpha</t>
+                  <t>Coverage: All parts of the specification were covered for server and client requirements.</t>
+                  <t>Licensing: proprietary</t>
+                  <t>Implementation Experience: Experience from the server perspective of generating the HTTP response header is that it was trivial using JAX-RS annotations to add another response header. Client parsing of the header presented no new problems, since the syntax is almost identical to the server-side processing of an Accept header.</t>
+                  <t>Contact: John Arwe &lt;johnarwe@us.ibm.com></t>
                </list>
             </t>
          </section>
@@ -427,7 +441,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                   <organization />
                </author>
                <date month='June' day='9' year='2013' />
-               <abstract><t>This memo specifies "HTTP Link Hints", a mechanism for annotating Web links to HTTP(S) resources with information that otherwise might be discovered by interacting with them.  Note to Readers  This draft should be discussed on the apps-discuss mailing list; see [apps-discuss].</t></abstract>
+               <abstract><t>This memo specifies "HTTP Link Hints", a mechanism for annotating Web links to HTTP(S) resources with information that otherwise might be discovered by interacting with them. Note to Readers  This draft should be discussed on the apps-discuss mailing list; see [apps-discuss].</t></abstract>
             </front>
             <seriesInfo name='Internet-Draft' value='draft-nottingham-link-hint-00' />
             <format type='TXT' target='http://www.ietf.org/internet-drafts/draft-nottingham-link-hint-00.txt' />
