@@ -153,6 +153,20 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
                </list>
             </t>
          </section>
+         <section title="Jazz for Service Management " anchor="implementation-jazz">
+            <t>
+               <list>
+                  <t>Organization: IBM</t>
+                  <t>Name: Jazz for Service Management Registry Services</t>
+                  <t>Description: An existing component bundled with multiple existing Cloud and Smarter Infrastructure (formerly branded as Tivoli)  products. It already supports multiple resource collections that use HTTP POST requests to create new member resources, e.g. "registration records". Given that clients have no existing means by which they can know which media types the server supports, and given that Registry Services has been adding new media types over the past few months as part of its continuous delivery process, Accept-Post is a natural fit to enable looser client coupling.</t>
+                  <t>Maturity: Early prototype/alpha</t>
+                  <t>Coverage: All parts of the specification were covered for server requirements.</t>
+                  <t>Licensing: proprietary</t>
+                  <t>Implementation Experience: Experience is only from the server perspective of generating the HTTP response header. It was easy to add a new header using JAX-RS annotations.</t>
+                  <t>Contact: John Arwe &lt;johnarwe@us.ibm.com></t>
+               </list>
+            </t>
+         </section>
       </section>
       <section title="Security Considerations" anchor="security-considerations">
          <t>The Accept-Post header may expose information that a server would prefer to not publish. In such a case, a server can simply stop exposing the header, in which case HTTP interactions would be back to the level of standard HTTP (i.e., with no indication what kind of media types a resource accepts in POST requests).</t>
