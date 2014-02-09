@@ -1,0 +1,36 @@
+anychar    =  %x00-ffffffff
+ncname     =  1*%x00-ffffffff
+qname      =  [ ncname ":" ] ncname
+aname      =  "@" qname
+pos        =  "[" 1*DIGIT "]"
+attr       =  ( "[" aname "='" 0*anychar "']" ) /
+              ( "[" aname "=" DQUOTE 0*anychar DQUOTE "]" )
+valueq     =  "[" ( qname / "." ) "=" DQUOTE 0*anychar DQUOTE "]"
+value      =  ( "[" ( qname / "." ) "='" 0*anychar "']" ) / valueq
+cond       =  attr / value / pos
+step       =  ( qname / "*" ) 0*cond
+piq        =  %x70.72.6f.63.65.73.73.69.6e.67.2d
+              %x69.6e.73.74.72.75.63.74.69.6f.6e
+              ; "processing-instruction", case-sensitive
+              "(" [ DQUOTE ncname DQUOTE ] ")"
+pi         =  ( %x70.72.6f.63.65.73.73.69.6e.67.2d
+              %x69.6e.73.74.72.75.63.74.69.6f.6e
+              ; "processing-instruction", case-sensitive
+              "(" [ "'" ncname "'" ] ")" ) / piq
+id         =  ( %x69.64 ; "id", case-sensitive
+              "(" [ "'" ncname "'" ] ")" ) /
+              ( %x69.64 ; "id", case-sensitive
+              "(" [ DQUOTE ncname DQUOTE ] ")" )
+com        =  %x63.6f.6d.6d.65.6e.74 ; "comment", case-sensitive
+              "()"
+text       =  %x74.65.78.74 ; "text", case-sensitive
+              "()"
+nspa       =  %x6e.61.6d.65.73.70.61.63.65 ; "namespace", case-sensitive
+              "::" ncname
+cnodes     =  ( text / com / pi ) [ pos ]
+child      =  cnodes / step
+last       =  child / aname / nspa
+xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
+              ( 0*( step "/" ) last ) )
+xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
+              ( 0*( step "/" ) child ) )
