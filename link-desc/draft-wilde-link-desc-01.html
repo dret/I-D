@@ -142,9 +142,9 @@
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
-<tr><td class="header">Internet-Draft</td><td class="header">EMC Corporation</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">November 15, 2013</td></tr>
-<tr><td class="header">Expires: May 19, 2014</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Internet-Draft</td><td class="header">UC Berkeley</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">February 12, 2014</td></tr>
+<tr><td class="header">Expires: August 16, 2014</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
 <h1><br />HTTP Link Descriptions<br />draft-wilde-link-desc-01</h1>
 
@@ -173,11 +173,11 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on May 19, 2014.</p>
+This Internet-Draft will expire on August 16, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
-Copyright (c) 2013 IETF Trust and the persons identified as the
+Copyright (c) 2014 IETF Trust and the persons identified as the
 document authors.  All rights reserved.</p>
 <p>
 This document is subject to BCP 78 and the IETF Trust's Legal
@@ -243,7 +243,7 @@ References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references1">11.1.</a>&nbsp;
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">11.2.</a>&nbsp;
-Non-Normative References<br />
+Informative References<br />
 <a href="#anchor6">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#anchor7">Appendix&nbsp;B.</a>&nbsp;
@@ -341,7 +341,9 @@ URI Templates</h3>
   &lt;var name="pagesize" concept="http://example.com/feedpaging/pagesize"/&gt;
   &lt;var name="page" concept="http://example.com/feedpaging/page"/&gt;
 &lt;/link&gt;</pre></div>
-<p>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, and bind them to URI Template variable names. The concept URIs are pure identifiers for the purpose of link descriptions; i.e. they should not be considered dereferenceable, and the assumption is that consumers of link descriptions will only use them to match discovered concepts against known concepts. This design does not prohibit to make concept URIs dereferenceable, but this is outside of the scope of link descriptions.
+<p>This link description allows a URI Template's variables to be described in terms of URI-identified concepts. By using such a model, it is possible to use global names for URI Template parameters, and bind them to URI Template variable names. The template and the variables int the example above are not specific for any HTTP method, i.e. this link description does not define any constraints in terms of how to use URI Templates differently for different HTTP methods. But this is possible, and is covered in the detailed description below.
+</p>
+<p>The concept URIs are pure identifiers for the purpose of link descriptions; i.e. they should not be considered dereferenceable, and the assumption is that consumers of link descriptions will only use them to match discovered concepts against known concepts. This design does not prohibit to make concept URIs dereferenceable, but this is outside of the scope of link descriptions.
 </p>
 <a name="terminology"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -355,39 +357,33 @@ Terminology</h3>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
 Description Concepts</h3>
 
-<p>The general idea of link descriptions is that they allow to annotate links (URIs or URI Templates) with context that clients can use when they choose to follow those links. In the XML syntax, descriptions are deliberately designed to echo the design of Atom's popular &lt;link&gt; element, which serves as a blueprint for links in many media types. The main idea of link descriptions is to provide a framework which provides services that want to serve this kind of description with a starting point. If these services want, they can reuse the representations for this framework, in whole or in part.
+<p>The general idea of link descriptions is that they allow to annotate links (URIs or URI Templates) with context that clients can use when they choose to follow those links. In the XML syntax, descriptions are deliberately designed to follow the design of Atom's popular &lt;link&gt; element, which serves as a blueprint for links in many media types. The main idea of link descriptions is to provide a framework which provides services that want to serve this kind of description with a starting point. If these services want, they can reuse the representations for this framework, in whole or in part.
 </p>
 <a name="describing-link-hints"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.1"></a><h3>3.1.&nbsp;
 Link Hints</h3>
 
-<p>As mentioned already, "Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[I&#8209;D.nottingham&#8209;link&#8209;hint]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> as currently defined overlap with the concepts proposed in this memo. However, this memo goes further than link hints by not just providing hints for URIs, but for URI Templates as well. Based on the current link hint model, a link hint is a name/value pair, where the name is either a registered link hint, or a URI. The allowed value space depends on the link hint, and in the current model, structured values must be encoded in JSON. A hint may also contain documentation, .
-</p>
-<p>A link may have any number of link hints, but only one link hint with a given name.
+<p>As mentioned already, "Link Hints" <a class='info' href='#I-D.nottingham-link-hint'>[I&#8209;D.nottingham&#8209;link&#8209;hint]<span> (</span><span class='info'>Nottingham, M., &ldquo;HTTP Link Hints,&rdquo; June&nbsp;2013.</span><span>)</span></a> as currently defined overlap with the concepts proposed in this memo. However, this memo goes further than link hints by not just providing hints for URIs, but for URI Templates as well. Based on the current link hint model defined in that draft, a link hint is a name/value pair, where the name is either a registered link hint, or a URI. The allowed value space depends on the link hint, and in the current model, structured values must be encoded in JSON. A link may have any number of link hints, but only one link hint with a given name.
 </p>
 <a name="describing-variables"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3.2"></a><h3>3.2.&nbsp;
 Describing Variables</h3>
 
-<p>When a link uses a URI Template, then this template will very likely contain variables. Variables can be described in a variety of ways when using Link Descriptions. For each variable contained in the URI Template, it is possible to use the following description methods:
+<p>When a link description uses a URI Template, then this template will very likely contain variables. Variables can be described when using Link Descriptions. For each variable contained in the URI Template, it is possible to use the following description methods:
 </p>
 <p>
                </p>
 <blockquote class="text">
 <p>Concept: It is possible to associate a variable with a concept, so that media types and applications can make an association between the concepts they are defining/exposing, and how they are exposed in URI Templates. Concepts can be identified by using a URI as an identifier. This specification defines no interactions with this URI identifier and makes no assumption about possible representations, should this URI be dereferenceable and yield some representation.
 </p>
-<p>Datatype: Variables can be described in terms of using certain datatypes. The datatype vocabulary is that of XML Schema Part 2 <a class='info' href='#XSD-2'>[XSD&#8209;2]<span> (</span><span class='info'>Malhotra, A. and P. Biron, &ldquo;XML Schema Part 2: Datatypes Second Edition,&rdquo; October&nbsp;2004.</span><span>)</span></a>, plus all of the applicable facets of those datatypes. This allows Link Descriptions to constrain the set of allowed values. (This model does not cover any "co-constraints", i.e. dependencies across variables, or between variables and an external context.)
-</p>
 <p>Documentation: Documentation constructs can be associated with variables, which allows Link Descriptions to attach human-readable information to individual variables. The documentation model has the ability to support multi-lingual human-oriented documentation.
 </p>
 </blockquote><p>
             
 </p>
-<p>For the purpose of this specification, the term "description" should be interpreted loosely. Some aspects of descriptions can be formal, such as the datatypes of variables. Thus, such a description can be used to drive general-purpose logic that knows no additional framework other than this specification. However, for most other description aspects (concepts, documentation, and application information), this specification does not prescribe a description framework; it simply provides a structure how to deliver these descriptions.
-</p>
-<p>The descriptions of "concepts" and "datatypes" are not mutually exclusive. On the contrary, a concept often will have associated constraints that essentially define a datatype. The difference is that while concepts are only described by identifier (allowing a consumer to identify a concept that they know about), datatypes are described with a built-in vocabulary (XSD datatypes and their facets), allowing clients to interpret the datatype description. As a consequence, when a consumer encounters an unknown concept, it adds little to the knowledge of the consumer, whereas a datatype description can always be interpreted and thus allows the consumer to learn about constraints of the associated variable in a declarative way. It may therefore make sense to combine concepts and datatypes, if the goal is to be as self-describing as possible.
+<p>For the purpose of this specification, the term "description" should be interpreted loosely. Description aspects such as concepts and documentation do not prescribe a description framework; they simply provides a structure how to deliver these descriptions, so that clients can use them when making decisions about which links to follow, and how to follow them.
 </p>
 <a name="link-desc"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -403,7 +399,7 @@ Link Descriptions</h3>
 <a name="rfc.section.4.1"></a><h3>4.1.&nbsp;
 General Concepts</h3>
 
-<p>As mentioned in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, most of the descriptions in this spec do not prescribe a specific description framework. While variables (<a class='info' href='#variable-struct'>Section&nbsp;4.3<span> (</span><span class='info'>Variable Description Structure</span><span>)</span></a>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1 . These elements carry a "source" attribute, which is used "to supplement the local information." For example, when a description of a variable is done formally using a specific description framework, this would best translate to use appinfo elements, and to add an identifier to them which would identify the description framework in question. As a result, any client knowing this particular description framework would be able to interpret the variable description in the Link Description.
+<p>As mentioned in <a class='info' href='#intro-templates'>Section&nbsp;1.2<span> (</span><span class='info'>URI Templates</span><span>)</span></a>, most of the descriptions in this spec do not prescribe a specific description framework. While variables (<a class='info' href='#variable-struct'>Section&nbsp;4.3<span> (</span><span class='info'>Variable Description Structure</span><span>)</span></a>) can be described with a built-in vocabulary of datatypes, most other descriptions are either for human consumption, or do rely on some external description framework. To attach these descriptions to both the template as a whole, and individual variables, this specification reuses the "appinfo" and "documentation" elements from XML Schema Part 1. These elements carry a "source" attribute, which is used "to supplement the local information." For example, when a description of a variable is done formally using a specific description framework, this would best translate to use appinfo elements, and to add an identifier to them which would identify the description framework in question. As a result, any client knowing this particular description framework would be able to interpret the variable description in the Link Description.
 </p>
 <a name="link-desc-struct"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
@@ -650,6 +646,8 @@ From -00 to -01</h3>
 </li>
 <li>Adding "HTTP Prefer" <a class='info' href='#I-D.snell-http-prefer'>[I&#8209;D.snell&#8209;http&#8209;prefer]<span> (</span><span class='info'>Snell, J., &ldquo;Prefer Header for HTTP,&rdquo; January&nbsp;2013.</span><span>)</span></a> as an open issue.
 </li>
+<li>Updated author address.
+</li>
 </ul><p>
               
 </p>
@@ -687,7 +685,7 @@ References</h3>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<h3>11.2.&nbsp;Non-Normative References</h3>
+<h3>11.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
 <tr><td class="author-text" valign="top"><a name="I-D.snell-http-prefer">[I-D.snell-http-prefer]</a></td>
 <td class="author-text">Snell, J., &ldquo;<a href="http://tools.ietf.org/html/draft-snell-http-prefer-18">Prefer Header for HTTP</a>,&rdquo; draft-snell-http-prefer-18 (work in progress), January&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-snell-http-prefer-18.txt">TXT</a>).</td></tr>
@@ -761,7 +759,17 @@ Link Description Schema</h3>
                         &lt;/xs:sequence&gt;
                         &lt;xs:attribute name="method"&gt;
                             &lt;xs:simpleType&gt;
-                                &lt;xs:list itemType="xs:token"/&gt;
+                                &lt;xs:restriction base="xs:token"&gt;
+                                    &lt;xs:enumeration value="GET"/&gt;
+                                    &lt;xs:enumeration value="PUT"/&gt;
+                                    &lt;xs:enumeration value="POST"/&gt;
+                                    &lt;xs:enumeration value="DELETE"/&gt;
+                                    &lt;xs:pattern value="[!#$%&amp;amp;&amp;apos;\*\+\-\.\^_`\|~0-9A-Za-z]+"&gt;
+                                        &lt;xs:annotation&gt;
+                                            &lt;xs:documentation&gt;As defined by http://tools.ietf.org/html/draft-ietf-httpbis-p1-messaging-24#section-3.2.6, and only allowing one method token to be specified.&lt;/xs:documentation&gt;
+                                        &lt;/xs:annotation&gt;
+                                    &lt;/xs:pattern&gt;
+                                &lt;/xs:restriction&gt;
                             &lt;/xs:simpleType&gt;
                         &lt;/xs:attribute&gt;
                     &lt;/xs:complexType&gt;
@@ -1034,17 +1042,9 @@ XSLT for Generating Link Description HTML</h3>
 <tr><td class="author-text">&nbsp;</td>
 <td class="author-text">Erik Wilde</td></tr>
 <tr><td class="author-text">&nbsp;</td>
-<td class="author-text">EMC Corporation</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">6801 Koll Center Parkway</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">Pleasanton, CA 94566</td></tr>
-<tr><td class="author-text">&nbsp;</td>
-<td class="author-text">U.S.A.</td></tr>
-<tr><td class="author" align="right">Phone:&nbsp;</td>
-<td class="author-text">+1-925-6006244</td></tr>
+<td class="author-text">UC Berkeley</td></tr>
 <tr><td class="author" align="right">Email:&nbsp;</td>
-<td class="author-text"><a href="mailto:erik.wilde@emc.com">erik.wilde@emc.com</a></td></tr>
+<td class="author-text"><a href="mailto:dret@berkeley.edu">dret@berkeley.edu</a></td></tr>
 <tr><td class="author" align="right">URI:&nbsp;</td>
 <td class="author-text"><a href="http://dret.net/netdret/">http://dret.net/netdret/</a></td></tr>
 </table>
