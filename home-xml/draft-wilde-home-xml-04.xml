@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc ipr="trust200902" docName="draft-wilde-home-xml-04" category="info">
+	<front>
+	  <title abbrev="Home Documents XML">Home Documents for HTTP Services: XML Syntax</title>
+	  <author initials="E." surname="Wilde" fullname="Erik Wilde">
+	    <organization>UC Berkeley</organization>
+	    <address>
+            <email>dret@berkeley.edu</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+	  </author>
+	  <date day="12" month="February" year="2014"/>
+  	<abstract>
+      <t>The current draft for HTTP Home Documents provides a JSON syntax only. This draft provides an XML syntax for the same underlying data model, so that the concept of HTTP Home Documents can be consistently exposed in both JSON- and XML-based HTTP services.</t>
+    </abstract>
+    <note title="Note to Readers">
+        <t>Please discuss this draft on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
+        <t>Online access to all versions and files is available on <eref target="https://github.com/dret/I-D/tree/master/template-desc">github</eref>.</t>
+     </note>
+  </front>
+  <middle>
+    <section title="Introduction">
+      <t>An Internet Draft currently under development <xref target="I-D.nottingham-json-home"/> proposes the concept of "Home Documents for HTTP APIs" and described them as follows:</t>
+      <t>"This document proposes a 'home document' format for non-browser HTTP clients. [...] The goal of home documents is to serve as a starting point for hypermedia APIs, where clients need to have an entry point, and then can use the API by following links. Home documents thus serve the same purpose as home pages on web sites: They are stable entry points that provide starting points for clients with some knowledge of the services linked from them."</t>
+      <t>While this general concept of a home document is independent of the representation format, the current draft only defines a JSON syntax. In order to make this concept available across representations, this draft defines an XML syntax for the concepts defined in <xref target="I-D.nottingham-json-home"/>.</t>
+      <t>At this point it is undecided whether both drafts will be merged eventually, or whether they will both be published as separate documents. Regardless of the final publication setup, it should be noted that this draft is only defining the XML syntax, whereas all the concepts represented in this syntax are defined by <xref target="I-D.nottingham-json-home"/>.</t>
+      <t>One notable difference is the handling of links found in "href" or "href-template" attributes on "resource" elements: In the JSON syntax, these are (if they are relative URIs) resolved against the URI of the home document itself. The XML syntax adds support for an optional "xml:base" attribute <xref target="W3C.REC-xmlbase-20090128"/> on the "resources" document element. If this attribute is present, it has to be used according to its specification, and thus becomes part of a possible resolution chain of relative URIs.</t>
+    </section>
+    <section title="XML Example" anchor="xml-example">
+      <t>The following Home Document in XML syntax uses the same data as the Home Document shown in <eref target="http://tools.ietf.org/html/draft-nottingham-json-home-03#section-2">Section 2</eref> of <xref target="I-D.nottingham-json-home"/> (but adding xml:base="http://example.com" to demonstrate the mechanism):</t>
+      <figure>
+        <artwork type="xml"><![CDATA[<resources xmlns="urn:ietf:rfc:XXXX" xml:base="http://example.com">
+ <resource rel="http://example.org/rel/widgets">
+  <link href="/"/>
+ </resource>
+ <resource rel="http://example.org/rel/widget">
+  <template href-template="/widgets/{widget_id}">
+   <var name="widget_id" URI="http://example.org/param/widget"/>
+  </template>
+  <hints>
+   <allow>
+    <i>GET</i>
+    <i>PUT</i>
+    <i>DELETE</i>
+    <i>PATCH</i>
+   </allow>
+   <representations>
+    <i>application/json</i>
+   </representations>
+   <accept-patch>
+    <i>application/patch+json</i>
+   </accept-patch>
+   <accept-post>
+    <i>application/xml</i>
+   </accept-post>
+   <accept-ranges>
+    <i>bytes</i>
+   </accept-ranges>
+  </hints>
+ </resource>
+</resources>]]></artwork>
+      </figure>
+      <t>The mapping between JSON arrays and XML uses "item" elements &lt;i/>, where each of those elements represents one array item. For properties that have a single values (i.e., they are not defined as an array of values), this value is directly contained as content in the corresponding element.</t>
+      <t>Currently, the draft does not specify an extension model (how to represents hints that are not specified in the draft itself), and therefore the extension model for XML is currently undefined as well. The XML syntax will be updated to reflect the extension model once it has been specified for the JSON syntax.</t>
+    </section>
+    <section title="XML Schema" anchor="xml-schema">
+      <t>The following XML Schema is describing the XML shown in <xref target="xml-example"/>. Since there currently is no extension model, the XML Schema does currently not contain any extension points.</t>
+      <figure>
+        <artwork type="xml"><![CDATA[<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" targetNamespace="urn:ietf:rfc:XXXX" elementFormDefault="qualified" xmlns:home="urn:ietf:rfc:XXXX">
+ <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+ <xs:element name="resources">
+  <xs:complexType>
+   <xs:sequence maxOccurs="unbounded" minOccurs="0">
+    <xs:element name="resource">
+     <xs:complexType>
+      <xs:sequence>
+       <xs:choice>
+        <xs:element name="link">
+         <xs:complexType>
+          <xs:attribute name="href" type="xs:anyURI" use="required"/>
+         </xs:complexType>
+        </xs:element>
+        <xs:element name="template">
+         <xs:complexType>
+          <xs:sequence maxOccurs="unbounded" minOccurs="0">
+           <xs:element name="var">
+            <xs:complexType>
+             <xs:attribute name="name" use="required"/>
+             <xs:attribute name="URI" type="xs:anyURI" use="required"/>
+            </xs:complexType>
+           </xs:element>
+          </xs:sequence>
+          <xs:attribute name="href-template" use="required"/>
+         </xs:complexType>
+        </xs:element>
+       </xs:choice>
+       <xs:element minOccurs="0" name="hints">
+        <xs:complexType>
+         <xs:choice maxOccurs="unbounded" minOccurs="0">
+          <xs:element name="allow" type="home:arrayType"/>
+          <xs:element name="representations" type="home:arrayType"/>
+          <xs:element name="accept-patch" type="home:arrayType"/>
+          <xs:element name="accept-post" type="home:arrayType"/>
+          <xs:element name="accept-put" type="home:arrayType"/>
+          <xs:element name="accept-ranges" type="home:arrayType"/>
+          <xs:element name="prefer" type="home:arrayType"/>
+          <xs:element name="docs" type="xs:anyURI"/>
+          <xs:element name="precondition-req" type="home:arrayType"/>
+          <xs:element name="auth-req">
+           <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="0">
+             <xs:element name="scheme">
+              <xs:complexType>
+               <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                <xs:element name="realm"/>
+               </xs:sequence>
+               <xs:attribute name="name" type="xs:token"/>
+              </xs:complexType>
+             </xs:element>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
+          <xs:element name="status">
+           <xs:simpleType>
+            <xs:restriction base="xs:token">
+             <xs:enumeration value="deprecated"/>
+             <xs:enumeration value="gone"/>
+            </xs:restriction>
+           </xs:simpleType>
+          </xs:element>
+         </xs:choice>
+        </xs:complexType>
+       </xs:element>
+      </xs:sequence>
+      <xs:attribute name="rel" type="xs:anyURI" use="required"/>
+     </xs:complexType>
+    </xs:element>
+   </xs:sequence>
+   <xs:attribute ref="xml:base" use="optional"/>
+  </xs:complexType>
+ </xs:element>
+ <xs:complexType name="arrayType">
+  <xs:sequence maxOccurs="unbounded" minOccurs="0">
+   <xs:element name="i"/>
+  </xs:sequence>
+ </xs:complexType>
+</xs:schema>]]></artwork>
+      </figure>
+    </section>
+    <section title="IANA Considerations" anchor="iana">
+      <t>This specification registers a media type for the XML syntax of Home Documents (as defined in <xref target="I-D.nottingham-json-home"/>).</t>
+      <section title="Media Type application/home+xml" anchor="media-type">
+        <t>The Internet media type <xref target="RFC6838"/> for a Home Document in XML syntax is application/home+xml.</t>
+        <t>Type name: application</t>
+        <t>Subtype name: home+xml</t>
+        <t>Required parameters: none</t>
+        <t>Optional parameters: Same as charset parameter for the media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+        <t>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 3023 <xref target="RFC3023"/>.</t>
+        <t>Security considerations: This media type has all of the security considerations described in RFC 3023 <xref target="RFC3023"/> and <xref target="I-D.nottingham-json-home"/>.</t>
+        <t>Interoperability considerations: N/A</t>
+        <t>Published specification: RFC XXXX</t>
+        <t>Applications that use this media type: Applications that publish Home Documents for HTTP services using XML syntax.</t>
+        <t>Additional information:
+          <list>
+            <t>Magic number(s): N/A</t>
+            <t>File extension(s): XML documents should use ".xml" as the file extension.</t>
+            <t>Macintosh file type code(s): TEXT</t>
+          </list>
+        </t>
+        <t>Person &amp; email address to contact for further information: Erik Wilde &lt;erik.wilde@emc.com></t>
+        <t>Intended usage: COMMON</t>
+        <t>Restrictions on usage: none</t>
+        <t>Author: Erik Wilde &lt;erik.wilde@emc.com></t>
+        <t>Change controller: IETF</t>
+      </section>
+    </section>
+    <section title="Implementation Status" anchor="implementation-status">
+      <t>Note to RFC Editor: Please remove this section before publication.</t>
+      <t>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <xref target="RFC6982"/>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.</t>
+      <t>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".</t>
+      <t>
+        <!-- 
+RFC 6982: This section, if it appears, should be located just before the "Security Considerations" section and contain, for each existing implementation, some or all of the following:
+ -  The organization responsible for the implementation, if any.
+ -  The implementation's name and/or a link to a web page describing the implementation.
+ -  A brief general description.
+ -  The implementation's level of maturity: research, prototype, alpha, beta, production, widely used, etc.
+ -  Coverage: which parts of the protocol specification are implemented and which versions of the Internet-Draft were implemented.
+ -  Licensing: the terms under which the implementation can be used. For example: proprietary, royalty licensing, freely distributable with acknowledgement (BSD style), freely distributable with requirement to redistribute source (General Public License (GPL) style), and other (specify).
+ -  Implementation experience: any useful information the implementers want to share with the community.
+ -  Contact information: ideally a person's name and email address, but possibly just a URL or mailing list.
+-->
+        <list>
+          <t>...</t>
+        </list>
+      </t>
+    </section>
+    <section title="Security Considerations" anchor="security-considerations">
+      <t>The general security considerations for XML home documents are the same as those for JSON home documents, as described in the "Security Considerations" of <xref target="I-D.nottingham-json-home"/>. The specific security considerations introduced by XML as a representation format are described in the "Security Considerations" of <xref target="media-type"/>.</t>
+    </section>
+    <section title="Open Issues" anchor="open-issues">
+      <t><list style="symbols">
+        <t>The move from a predefined list of hints to a hint registry is not yet reflected in the XML; in particular because the latest draft defines the hint data model to be JSON-specific.</t>
+        <t>What is the extension model for the XML syntax? Should processing of other namespaces be defined as "should ignore", so that same-namespace extensions are encouraged?</t>
+        <t>Should the XML syntax provide support for embedded human-readable documentation? This would probably not be supported in the JSON syntax, but could be marked as strictly optional and XML-specific.</t>
+      </list></t>
+    </section>
+    <section title="Change Log">
+      <t>Note to RFC Editor: Please remove this section before publication.</t>
+      <section title="From -03 to -04">
+        <t>
+          <list style="symbols">
+            <t>...</t>
+          </list>
+        </t>
+      </section>
+      <section title="From -02 to -03">
+        <t>
+          <list style="symbols">
+            <t>Updated author address.</t>
+          </list>
+        </t>
+      </section>
+      <section title="From -01 to -02">
+        <t>
+          <list style="symbols">
+            <t>Adding "Implementation Status" section according to RFC 6982 <xref target="RFC6982"/>.</t>
+            <t>Adding support for @xml:base on the "resources" document element.</t>
+          </list>
+        </t>
+      </section>
+      <section title="From -00 to -01">
+        <t>
+          <list style="symbols">
+            <t>Updated references from draft-nottingham-json-home-02 to draft-nottingham-json-home-03</t>
+            <t>Added "Security Considerations" section.</t>
+            <t>Added XSLT for transforming an XML Home Document to a simple HTML representation.</t>
+          </list>
+        </t>
+      </section>
+    </section>
+  </middle>
+  <back>
+    <references title="Normative References">
+      <reference anchor='I-D.nottingham-json-home'>
+        <front>
+          <title>Home Documents for HTTP APIs</title>
+          <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+            <organization />
+          </author>
+          <date month='May' day='8' year='2013' />
+          <abstract>
+            <t>This document proposes a "home document" format for non-browser HTTP clients.  Note to Readers  This draft should be discussed on the apps-discuss mailing list [1].</t>
+          </abstract>
+        </front>
+        <seriesInfo name='Internet-Draft' value='draft-nottingham-json-home-03' />
+        <format type='TXT' target='http://www.ietf.org/internet-drafts/draft-nottingham-json-home-03.txt' />
+      </reference>
+      <reference anchor='RFC3023'>
+        <front>
+          <title>XML Media Types</title>
+          <author initials='M.' surname='Murata' fullname='M. Murata'>
+            <organization /></author>
+          <author initials='S.' surname='St. Laurent' fullname='S. St. Laurent'>
+            <organization /></author>
+          <author initials='D.' surname='Kohn' fullname='D. Kohn'>
+            <organization /></author>
+          <date year='2001' month='January' />
+          <abstract>
+            <t>This document standardizes five new media types - text/xml, application/xml, text/xml-external-parsed-entity, application/xml-external-parsed-entity, and application/xml-dtd - for use in exchanging network entities that are related to the Extensible Markup Language (XML). This document also standardizes a convention (using the suffix '+xml') for naming media types outside of these five types when those media types represent XML MIME (Multipurpose Internet Mail Extensions) entities. [STANDARDS-TRACK]</t></abstract>
+        </front>
+        <seriesInfo name='RFC' value='3023' />
+        <format type='TXT' octets='86011' target='http://www.rfc-editor.org/rfc/rfc3023.txt' />
+      </reference>
+      <reference anchor='RFC6838'>
+        <front>
+          <title>Media Type Specifications and Registration Procedures</title>
+          <author initials='N.' surname='Freed' fullname='N. Freed'>
+            <organization />
+          </author>
+          <author initials='J.' surname='Klensin' fullname='J. Klensin'>
+            <organization />
+          </author>
+          <author initials='T.' surname='Hansen' fullname='T. Hansen'>
+            <organization />
+          </author>
+          <date year='2013' month='January' />
+          <abstract>
+            <t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols.  This memo documents an Internet Best Current Practice.</t>
+          </abstract>
+        </front>
+        <seriesInfo name='BCP' value='13' />
+        <seriesInfo name='RFC' value='6838' />
+        <format type='TXT' octets='72942' target='http://www.rfc-editor.org/rfc/rfc6838.txt' />
+      </reference>
+      <reference anchor='W3C.REC-xml-20081126' target='http://www.w3.org/TR/2008/REC-xml-20081126'>
+        <front>
+          <title>Extensible Markup Language (XML) 1.0 (Fifth Edition)</title>
+          <author initials='C.' surname='Sperberg-McQueen' fullname='C. M. Sperberg-McQueen'>
+            <organization />
+          </author>
+          <author initials='F.' surname='Yergeau' fullname='Francois Yergeau'>
+            <organization />
+          </author>
+          <author initials='J.' surname='Paoli' fullname='Jean Paoli'>
+            <organization />
+          </author>
+          <author initials='E.' surname='Maler' fullname='Eve Maler'>
+            <organization />
+          </author>
+          <author initials='T.' surname='Bray' fullname='Tim Bray'>
+            <organization />
+          </author>
+          <date month='November' day='26' year='2008' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xml-20081126' />
+        <format type='HTML' target='http://www.w3.org/TR/2008/REC-xml-20081126' />
+      </reference>
+      <reference anchor='W3C.REC-xmlbase-20090128' target='http://www.w3.org/TR/2009/REC-xmlbase-20090128'>
+        <front>
+          <title>XML Base (Second Edition)</title>
+          <author initials='J.' surname='Marsh' fullname='Jonathan Marsh'>
+            <organization />
+          </author>
+          <author initials='R.' surname='Tobin' fullname='Richard Tobin'>
+            <organization />
+          </author>
+          <date month='January' day='28' year='2009' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xmlbase-20090128' />
+        <format type='HTML' target='http://www.w3.org/TR/2009/REC-xmlbase-20090128' />
+      </reference>
+    </references>
+    <references title="Informative References">
+      <reference anchor='W3C.REC-xslt-19991116' target='http://www.w3.org/TR/1999/REC-xslt-19991116'>
+        <front>
+          <title>XSL Transformations (XSLT) Version 1.0</title>
+          <author initials='J.' surname='Clark' fullname='James Clark'>
+            <organization />
+          </author>
+          <date month='November' day='16' year='1999' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xslt-19991116' />
+        <format type='HTML' target='http://www.w3.org/TR/1999/REC-xslt-19991116' />
+      </reference>
+      <reference anchor='W3C.REC-xml-stylesheet-20101028' target='http://www.w3.org/TR/2010/REC-xml-stylesheet-20101028'>
+        <front>
+          <title>Associating Style Sheets with XML documents 1.0 (Second Edition)</title>
+          <author initials='S.' surname='Pieters' fullname='Simon Pieters'>
+            <organization />
+          </author>
+          <author initials='J.' surname='Clark' fullname='James Clark'>
+            <organization />
+          </author>
+          <author initials='H.' surname='Thompson' fullname='Henry S. Thompson'>
+            <organization />
+          </author>
+          <date month='October' day='28' year='2010' />
+        </front>
+        <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-xml-stylesheet-20101028' />
+        <format type='HTML' target='http://www.w3.org/TR/2010/REC-xml-stylesheet-20101028' />
+      </reference>
+      <reference anchor='RFC6982'>
+        <front>
+          <title>Improving Awareness of Running Code: The Implementation Status Section</title>
+          <author initials='Y.' surname='Sheffer' fullname='Y. Sheffer'>
+            <organization /></author>
+          <author initials='A.' surname='Farrel' fullname='A. Farrel'>
+            <organization /></author>
+          <date year='2013' month='July' />
+          <abstract>
+            <t>This document describes a simple process that allows authors of Internet-Drafts to record the status of known implementations by including an Implementation Status section. This will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature.&lt;/t>&lt;t> The process in this document is offered as an experiment. Authors of Internet-Drafts are encouraged to consider using the process for their documents, and working groups are invited to think about applying the process to all of their protocol specifications. The authors of this document intend to collate experiences with this experiment and to report them to the community.</t>
+          </abstract>
+        </front>
+        <seriesInfo name='RFC' value='6982' />
+        <format type='TXT' octets='19358' target='http://www.rfc-editor.org/rfc/rfc6982.txt' />
+      </reference>
+    </references>
+    <section title="XML-to-HTML for Home Documents">
+      <t>The following XSLT 1.0 stylesheet <xref target="W3C.REC-xslt-19991116"/> transforms XML Home Documents to very simple HTML renditions. By associating this stylesheet <xref target="W3C.REC-xml-stylesheet-20101028"/> with an XML Home Document, it is possible to serve XML Home Documents that will be rendered in a human-friendly way when viewed in a browser.</t>
+      <t><figure>
+        <artwork type="xml"><![CDATA[<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xml="http://www.w3.org/XML/1998/namespace" version="1.0" xmlns:home="urn:ietf:rfc:XXXX" exclude-result-prefixes="home">
+ <xsl:output method="html"/>
+ <xsl:template match="home:resources">
+  <html>
+   <head>
+    <title>Home Document</title>
+   </head>
+   <body>
+    <h1>Home Document</h1>
+    <ul>
+     <xsl:for-each select="home:resource">
+      <li>
+       <xsl:text>Link Relation </xsl:text>
+       <code><xsl:value-of select="@rel"/></code>
+       <xsl:text>: Link </xsl:text>
+       <code>
+        <xsl:choose>
+         <xsl:when test="home:link">
+          <xsl:variable name="link-URI">
+           <xsl:call-template name="resolve-URI">
+            <xsl:with-param name="URI" select="home:link/@href"/>
+           </xsl:call-template>
+          </xsl:variable>
+          <a href="{$link-URI}" title="URI"><xsl:value-of select="$link-URI"/></a>
+         </xsl:when>
+         <xsl:otherwise>
+          <xsl:variable name="template-URI">
+           <xsl:call-template name="resolve-URI">
+            <xsl:with-param name="URI" select="home:template/@href-template"/>
+           </xsl:call-template>
+          </xsl:variable>
+          <a href="{$template-URI}" title="URI template"><xsl:value-of select="$template-URI"/></a>
+         </xsl:otherwise>
+        </xsl:choose>
+       </code>
+       <dl>
+        <xsl:if test="home:template/home:var">
+         <dt>Variables: </dt>
+         <dd>
+          <ul>
+           <xsl:for-each select="home:template/home:var">
+            <xsl:sort select="@name"/>
+            <li>
+             <span title="Variable Name"><xsl:value-of select="@name"/></span>
+             <xsl:text>: </xsl:text>
+             <span title="Associated URI"><xsl:value-of select="@URI"/></span>
+            </li>
+           </xsl:for-each>
+          </ul>
+         </dd>
+        </xsl:if>
+        <xsl:if test="home:hints">
+         <dt>Hints: </dt>
+         <dd>
+          <ul>
+           <xsl:for-each select="home:hints/home:*">
+            <xsl:sort select="local-name()"/>
+            <li>
+             <span title="Hint Name"><xsl:value-of select="local-name()"/></span>
+             <xsl:text>: </xsl:text>
+             <xsl:choose>
+              <xsl:when test="home:i">
+               <xsl:for-each select="home:i">
+                <xsl:value-of select="."/>
+                <xsl:if test="position() != last()">
+                 <xsl:text>, </xsl:text>
+                </xsl:if>
+               </xsl:for-each>
+              </xsl:when>
+              <xsl:otherwise>
+               <xsl:value-of select="."/>
+              </xsl:otherwise>
+             </xsl:choose>
+            </li>
+           </xsl:for-each>
+          </ul>
+         </dd>
+        </xsl:if>
+       </dl>
+      </li>
+     </xsl:for-each>
+    </ul>
+   </body>
+  </html>
+ </xsl:template>
+ <xsl:template name="resolve-URI">
+  <xsl:param name="URI"/>
+  <!-- This is not how URI resolution should be done; http://tools.ietf.org/html/rfc3986#section-5 describes the correct process. -->
+  <xsl:value-of select="concat(/home:resources/@xml:base, $URI)"/>
+ </xsl:template>
+</xsl:stylesheet>]]></artwork>
+      </figure></t>
+    </section>
+  </back>
+</rfc>
