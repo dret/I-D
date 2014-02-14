@@ -1,0 +1,1344 @@
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                               UC Berkeley
+Intended status: Informational                         February 12, 2014
+Expires: August 16, 2014
+
+
+                         HTTP Link Descriptions
+                        draft-wilde-link-desc-01
+
+Abstract
+
+   Interactions with many resources on the Web are driven by links, and
+   these links often define certain expectations about the interactions
+   (such as HTTP methods being allowed, media types being accepted in
+   the request, or URI templates being supported).  While these
+   expectations are essential to define the possible interactions, it
+   may be useful to further narrow them down by providing link
+   descriptions, which can help clients to gain more runtime knowledge
+   about the resource they are about to interact with.  This memo
+   defines Link Descriptions, a model and associated media type that can
+   be used to describe links by supporting descriptive markup for
+   representing interaction information with links.  Link Descriptions
+   can be used by media types (by inclusion or by reference) that seek
+   to make Link Descriptions runtime-capable, without having to create
+   their own representation for them.
+
+Note to Readers
+
+   Please discuss this draft on the apps-discuss mailing list [1].
+
+   Online access to all versions and files is available on github [2].
+
+Status of this Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on August 16, 2014.
+
+
+
+Wilde                    Expires August 16, 2014                [Page 1]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+Copyright Notice
+
+   Copyright (c) 2014 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+
+Table of Contents
+
+   1.  Introduction . . . . . . . . . . . . . . . . . . . . . . . . .  3
+     1.1.  Web Links  . . . . . . . . . . . . . . . . . . . . . . . .  5
+     1.2.  URI Templates  . . . . . . . . . . . . . . . . . . . . . .  6
+   2.  Terminology  . . . . . . . . . . . . . . . . . . . . . . . . .  8
+   3.  Description Concepts . . . . . . . . . . . . . . . . . . . . .  8
+     3.1.  Link Hints . . . . . . . . . . . . . . . . . . . . . . . .  8
+     3.2.  Describing Variables . . . . . . . . . . . . . . . . . . .  8
+   4.  Link Descriptions  . . . . . . . . . . . . . . . . . . . . . .  9
+     4.1.  General Concepts . . . . . . . . . . . . . . . . . . . . .  9
+     4.2.  Link Description Structure . . . . . . . . . . . . . . . . 10
+     4.3.  Variable Description Structure . . . . . . . . . . . . . . 10
+   5.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     5.1.  Editable Entry . . . . . . . . . . . . . . . . . . . . . . 10
+     5.2.  Pageable Collection  . . . . . . . . . . . . . . . . . . . 11
+   6.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . . 11
+     6.1.  Media Type . . . . . . . . . . . . . . . . . . . . . . . . 11
+     6.2.  Link Relation  . . . . . . . . . . . . . . . . . . . . . . 13
+   7.  Implementation Status  . . . . . . . . . . . . . . . . . . . . 13
+   8.  Security Considerations  . . . . . . . . . . . . . . . . . . . 14
+   9.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   10. Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+     10.1. From -00 to -01  . . . . . . . . . . . . . . . . . . . . . 15
+     10.2. Prior to -00 . . . . . . . . . . . . . . . . . . . . . . . 15
+   11. References . . . . . . . . . . . . . . . . . . . . . . . . . . 15
+     11.1. Normative References . . . . . . . . . . . . . . . . . . . 15
+     11.2. Informative References . . . . . . . . . . . . . . . . . . 16
+   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 17
+   Appendix B.  Link Description Schema . . . . . . . . . . . . . . . 17
+   Appendix C.  XSLT for Generating Link Description HTML . . . . . . 19
+   Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 23
+
+
+
+Wilde                    Expires August 16, 2014                [Page 2]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+1.  Introduction
+
+   Interactions with resources found on the Web often are driven by
+   following links (targeted at URIs [RFC3986]), which can be either
+   fixed links (described in Section 1.1), or can be templated links
+   (using URI Templates [RFC6570]) containing variables (described in
+   Section 1.2).  In both cases, the context of the link in most cases
+   provides information that can be essential or helpful when it comes
+   to following a link, which means interacting with the link target:
+   For fixed links, the context may provide (in most cases implicitly,
+   through the use of typed links) allowed interaction methods (such as
+   HTTP verbs) or expectations around the expected media type(s) in
+   requests; for templated links, the context additionally may provide
+   information about how to instantiate the variables provided in the
+   URI Template.  This memo defines a schema and a media type that can
+   be used to (partially) represent this information, so that it becomes
+   possible to represent a change in interaction affordances at runtime.
+
+   Possible use cases for both scenarios (fixed and templated links) are
+   as follows:
+
+      Fixed Links: AtomPub [RFC5023] defines an "edit" link relation,
+      that informs clients that such a link can be followed to read,
+      update, or delete a resource.  This means that a client
+      encountering such a link would conclude that it can try to read,
+      update, or delete the target resource.  However, if the resource
+      is not deletable, then an "edit" link could be annotated to
+      indicate that the linked resource cannot be deleted.  A client
+      could ignore the annotation and still attempt to delete the
+      resource, but the request would be likely to fail (unless the
+      state of the resource changed in the meantime).  This kind of
+      information can be useful for UIs, where it can be used to drive
+      usability features such as disabling certain UI elements.
+
+      Templated Links: URI Templates [RFC6570] define a framework for
+      how to represent and instantiate (with concrete variable
+      assignments) templated URIs, but they don't describe how variables
+      themselves are described, or can be constrained.  If a collection
+      resource for example supports paged access to the set of
+      collection members, then it might be useful for a client to know
+      the number of available pages.  With this additional knowledge, it
+      is possible to build applications and UIs that specifically take
+      this knowledge into account to drive further interactions with the
+      resource.  For a paged collection, it may be a UI that provides
+      direct links to all available pages (if that number is reasonably
+      small).  Again, if the collection changes in size between the link
+      being generated, and the link interaction taking place, the
+      information in the link description has become outdated.  But this
+
+
+
+Wilde                    Expires August 16, 2014                [Page 3]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+      just means that either a client may request a page that doesn't
+      exist anymore, or will not expect a page to exist that now exists.
+      Both of these conditions can be handled well at the time when the
+      client starts interacting with the linked resource.
+
+   As described in both cases, it is possible for the link description
+   to become outdated, leading to cases where the assumptions made by
+   the client (based on the link description) and the link target itself
+   do not match anymore.  For this reason, ideally a resource should
+   provide a link description for itself, allowing a client to update
+   its expectations.  However, since the service generating the link and
+   the service providing the link target often are loosely coupled, link
+   descriptions can be used in links, in descriptions where services
+   expose more runtime information about resources by providing link
+   descriptions for themselves, or in both places.
+
+   The following example shows hows both of these mechanisms can be used
+   in one representation, which is based on Atom [RFC4287] and AtomPub
+   [RFC5023].  It also shows the two cases just described, with the
+   first link description being one to "self", while the second link
+   description is describing a different resource.
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="ld.xslt"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:ld="urn:ietf:rfc:XXXX">
+    <title>Example Feed</title>
+    <link rel="self" href="http://example.org/?page=3" ld:hreft="http://example.org/{?page}">
+        <ld:var name="page" concept="http://example.com/feedpaging/page"/>
+    </link>
+    <link rel="next" href="http://example.org/?page=4"/>
+    <link rel="previous" href="http://example.org/?page=2"/>
+    <updated>2003-12-13T18:30:02Z</updated>
+    <author>
+        <name>John Doe</name>
+    </author>
+    <id>urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</id>
+    <entry>
+        <title>Atom-Powered Robots Run Amok</title>
+        <link href="http://example.org/2003/12/13/atom03"/>
+        <link rel="edit" href="http://example.org/item42">
+            <ld:allow method="PUT">
+                <ld:hint name="formats" value="image/png, image/jpeg"/>
+            </ld:allow>
+        </link>
+        <id>urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</id>
+        <updated>2003-12-13T18:30:02Z</updated>
+        <summary>Some text.</summary>
+    </entry>
+</feed>
+
+
+
+Wilde                    Expires August 16, 2014                [Page 4]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   The link to the feed itself is augmented with a URI Template
+   described in Section 1.2, which allows a client to understand that
+   individual feed pages can be requested (assuming the consumer
+   understands the "concept" identifiers for the described variables).
+   The link to the entry is an augmented typed Web Link described in
+   Section 1.1, which allows a consumer to understand that even though
+   "edit" links typically can be followed via GET, PUT, and DELETE, this
+   particular link should only be followed using a PUT request.
+
+   It is worth noting that link descriptions of course can become
+   outdated between the time such a link description has been received
+   by a client, and the time a client actually sends a request when
+   following such a link (this is the case both for "self" links and
+   links to other resources).  This means that clients should never
+   depend on a link description being correct, because for example the
+   "edit" link description shown above might start allowing DELETE
+   requests again at any point in time.
+
+1.1.  Web Links
+
+   One of the defining principles of many services provided on the Web
+   is that they expose linked resources, so that clients can follow the
+   links in order to accomplish application goals.  "Web Linking"
+   [RFC5988] establishes a framework of typed links, allowing resources
+   to expose typed links, which then can be followed by clients.  While
+   this framework allows clients to select links based on their "types",
+   it does not provide any support for additional runtime information
+   about possible interactions with such a link.  As outlined in the
+   AtomPub example above, a link typed as "edit" (as defined and
+   registered by AtomPub) can be followed by using HTTP GET, PUT, or
+   DELETE, and the typed link by itself cannot provide the additional
+   information that some resource may allow updates, but disallows
+   deletion.
+
+   "Link Hints" [I-D.nottingham-link-hint] (a draft currently under
+   development) provide a framework for runtime hints that can be used
+   to indicate information that might be made available by the link
+   target resource itself, but ahead of time.  For example, a link hint
+   would be able to indicate on an "edit" link that the resource only
+   allows PUT requests, which is something that could also be discovered
+   by sending an HTTP request and getting an HTTP Allow header in the
+   response.  However, link hints can save overhead by avoiding round
+   trips, and they also allow to minimize the chances of sending
+   requests that will not succeed.
+
+   While link hints can help to avoid overhead and drive client
+   behavior, they are strictly optional.  There should be no functional
+   difference of what a client can achieve by using or ignoring link
+
+
+
+Wilde                    Expires August 16, 2014                [Page 5]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   hints; they simply expose information that otherwise would be more
+   costly to acquire.
+
+   Since it is potentially expensive to provide link hints in
+   representations (because they may involve interpreting access control
+   data), it is perfectly possible that services provide link hints only
+   on some requests.  For example, it would be possible for a service to
+   serve http://example.com/collection as a collection of items with
+   embedded "edit" links, whereas
+   http://example.com/collection?hints=true would result in a
+   representation that would contain additional link hints for each
+   individual "edit" link.  This kind of design is outside of the scope
+   of this memo, but it is helpful to illustrate the fact that link
+   hints are nothing but optimizations.
+
+   Currently, there is an overlap in what "Link Hints"
+   [I-D.nottingham-link-hint] define, and what is proposed in this memo.
+   While both drafts propose a way how to represent link hints/
+   descriptions, the "Link Hints" draft does not address URI Templates.
+   Removing this overlap is captured in the "Open Issues" Section 9 and
+   should be addressed during the further development and/or alignment
+   of both drafts.
+
+1.2.  URI Templates
+
+   Following links is the basic principle of interacting with resources
+   on the web, but in many cases, interactions with resources require
+   clients to provide information in addition to just using a fixed URI
+   in a request.  In these cases, information can be provided in any way
+   supported by the interaction protocol, and in case of HTTP, this
+   often means that information is either embedded in the URI, in HTTP
+   headers, and/or in the body of the request.  For the first case, "URI
+   Template" [RFC6570] provides a standard that allows servers and
+   clients to exchange information about the URIs that a service
+   accepts.  The standard specifies "a compact sequence of characters
+   for describing a range of Uniform Resource Identifiers through
+   variable expansion."  It allows servers to publish their expectation
+   how a URI should be created by substituting variables with values.
+   Consider the following URI Template:
+   http://www.example.com/collection{?pagesize,page}
+
+   This URI Template allows clients to expand it with two variables
+   assignments, to end up with a concrete URI such as the following:
+   http://www.example.com/collection?pagesize=10&page=42
+
+   URI Templates cover the aspect of starting with a template with
+   variables in it, assigning values to these variables, and then
+   expanding the template into a URI that can be used for sending a
+
+
+
+Wilde                    Expires August 16, 2014                [Page 6]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   request.  URI Templates make no assumptions or statements about the
+   meaning or value range of the variables, except for those aspects
+   which are required to cover the process of expanding the template.
+   In particular, for the example given above, there is no indication
+   that the values are supposed to be positive integers (the data type),
+   nor is there any indication that the service may apply certain limits
+   such as a maximum page size (which may change depending on which
+   paged resource is being accessed).  As a side note, even if this
+   basic type information was known, URI template expansion could still
+   result in URIs that would not yield successful requests, such as when
+   asking for a page that is beyond the number of pages that a
+   collection has (in a given page size).
+
+   The goal of Link Descriptions as defined in this memo is to allow
+   servers to expose a description that provides support both at
+   development time (when a developer uses a media type that uses URI
+   Templates) and at runtime (when a client wants to use a URI template
+   as part of its application flow).  Link Descriptions are intended to
+   provide additional information that is not communicated by publishing
+   URI Templates alone.  The additional information is both targeted at
+   machines, and at humans.  On the human-oriented Web, a Template
+   Description can be seen as the equivalent of a help or documentation
+   page that is linked to from a form, where users can learn more about
+   the values they are supposed to submit within the form.
+
+   As a concrete example, a link to a collection like the one above may
+   be exposed in a link description as follows:
+<link rel="items" href="http://www.example.com/collection" hreft="http://www.example.com/collection{?pagesize,page}">
+  <var name="pagesize" concept="http://example.com/feedpaging/pagesize"/>
+  <var name="page" concept="http://example.com/feedpaging/page"/>
+</link>
+
+   This link description allows a URI Template's variables to be
+   described in terms of URI-identified concepts.  By using such a
+   model, it is possible to use global names for URI Template
+   parameters, and bind them to URI Template variable names.  The
+   template and the variables int the example above are not specific for
+   any HTTP method, i.e. this link description does not define any
+   constraints in terms of how to use URI Templates differently for
+   different HTTP methods.  But this is possible, and is covered in the
+   detailed description below.
+
+   The concept URIs are pure identifiers for the purpose of link
+   descriptions; i.e. they should not be considered dereferenceable, and
+   the assumption is that consumers of link descriptions will only use
+   them to match discovered concepts against known concepts.  This
+   design does not prohibit to make concept URIs dereferenceable, but
+   this is outside of the scope of link descriptions.
+
+
+
+Wilde                    Expires August 16, 2014                [Page 7]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+
+3.  Description Concepts
+
+   The general idea of link descriptions is that they allow to annotate
+   links (URIs or URI Templates) with context that clients can use when
+   they choose to follow those links.  In the XML syntax, descriptions
+   are deliberately designed to follow the design of Atom's popular
+   <link> element, which serves as a blueprint for links in many media
+   types.  The main idea of link descriptions is to provide a framework
+   which provides services that want to serve this kind of description
+   with a starting point.  If these services want, they can reuse the
+   representations for this framework, in whole or in part.
+
+3.1.  Link Hints
+
+   As mentioned already, "Link Hints" [I-D.nottingham-link-hint] as
+   currently defined overlap with the concepts proposed in this memo.
+   However, this memo goes further than link hints by not just providing
+   hints for URIs, but for URI Templates as well.  Based on the current
+   link hint model defined in that draft, a link hint is a name/value
+   pair, where the name is either a registered link hint, or a URI.  The
+   allowed value space depends on the link hint, and in the current
+   model, structured values must be encoded in JSON.  A link may have
+   any number of link hints, but only one link hint with a given name.
+
+3.2.  Describing Variables
+
+   When a link description uses a URI Template, then this template will
+   very likely contain variables.  Variables can be described when using
+   Link Descriptions.  For each variable contained in the URI Template,
+   it is possible to use the following description methods:
+
+      Concept: It is possible to associate a variable with a concept, so
+      that media types and applications can make an association between
+      the concepts they are defining/exposing, and how they are exposed
+      in URI Templates.  Concepts can be identified by using a URI as an
+      identifier.  This specification defines no interactions with this
+      URI identifier and makes no assumption about possible
+      representations, should this URI be dereferenceable and yield some
+      representation.
+
+
+
+
+
+Wilde                    Expires August 16, 2014                [Page 8]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+      Documentation: Documentation constructs can be associated with
+      variables, which allows Link Descriptions to attach human-readable
+      information to individual variables.  The documentation model has
+      the ability to support multi-lingual human-oriented documentation.
+
+   For the purpose of this specification, the term "description" should
+   be interpreted loosely.  Description aspects such as concepts and
+   documentation do not prescribe a description framework; they simply
+   provides a structure how to deliver these descriptions, so that
+   clients can use them when making decisions about which links to
+   follow, and how to follow them.
+
+
+4.  Link Descriptions
+
+   Link Descriptions are based on a URI Template, and add descriptive
+   elements that allow publishers of URI Templates to describe the URI
+   Template as a whole, and to add individual descriptions of all
+   variables in the template.  The idea of Link Descriptions is that
+   they are made available at design time and/or at runtime, so that
+   clients encountering URI Templates as part of HTTP services can find
+   more information about the template itself.
+
+   Ideally, every URI template exposed in an HTTP service should be
+   accompanied by a link to a Link Description.  In those XML-based HTTP
+   services where URI Templates are exposed in XML attributes named
+   "hreft", the suggestion is to add a link to the corresponding Link
+   Description in an "hrefd" XML attribute.
+
+4.1.  General Concepts
+
+   As mentioned in Section 1.2, most of the descriptions in this spec do
+   not prescribe a specific description framework.  While variables
+   (Section 4.3) can be described with a built-in vocabulary of
+   datatypes, most other descriptions are either for human consumption,
+   or do rely on some external description framework.  To attach these
+   descriptions to both the template as a whole, and individual
+   variables, this specification reuses the "appinfo" and
+   "documentation" elements from XML Schema Part 1.  These elements
+   carry a "source" attribute, which is used "to supplement the local
+   information."  For example, when a description of a variable is done
+   formally using a specific description framework, this would best
+   translate to use appinfo elements, and to add an identifier to them
+   which would identify the description framework in question.  As a
+   result, any client knowing this particular description framework
+   would be able to interpret the variable description in the Link
+   Description.
+
+
+
+
+Wilde                    Expires August 16, 2014                [Page 9]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+4.2.  Link Description Structure
+
+   An interaction is described by including the URI Template itself, and
+   optionally adding documentation and/or appinfo elements to add human-
+   or machine-readable descriptions.
+
+4.3.  Variable Description Structure
+
+   A variable is described by specifying the variable name.  Variables
+   can refer to a "concept" associated with a variable, which can by
+   identified by URI.  This specification makes no provision how such a
+   concept is defined and/or described/documented, but it allows
+   consumers of a Link Description to match their understanding of
+   certain concepts to those identifiers, which then establishes a
+   binding between the concept, and the variable it has been bound to.
+
+   A variable can have a default value, in which case the assumption is
+   that excluding this variable from a request has the same effect as
+   including it with the default value.  Since Link Descriptions are
+   runtime concepts, however, there is no guarantee that a service might
+   not use a different value between the time when the Link Description
+   was retrieved, and the time when a request based on it is being sent.
+
+   Variable descriptions can optionally add documentation and/or appinfo
+   elements to add human- or machine-readable descriptions.
+
+
+5.  Examples
+
+   ...
+
+5.1.  Editable Entry
+
+   ...
+
+   All the example use "documentation" elements which are entirely
+   optional, but can help to improve the usefulness of link descriptions
+   for developers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires August 16, 2014               [Page 10]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ld.xslt"?>
+<link xmlns="urn:ietf:rfc:XXXX" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:rfc:XXXX ld.xsd" href="http://example.org/item42">
+   <documentation xml:lang="en">Link Description for accessing the AtomPub media resource http://www.example.com/feed/item42, with the "edit-media" link allowing PUT/DELETE as per RFC 5023, but the specific resource not currently allowing DELETE (constraining AtomPub semantics), but allowing PATCH.</documentation>
+   <allow method="PUT">
+      <documentation xml:lang="en">For this particular resource, PUT is supported.</documentation>
+      <hint name="formats" value="image/png, image/jpeg">
+         <documentation xml:lang="en">Updates are accepted as PNG or JPEG representations.</documentation>
+      </hint>
+   </allow>
+   <allow method="PATCH">
+      <documentation xml:lang="en">Extending AtomPub's capabilities, images can also be PATCHed, with two patch media types being supported.</documentation>
+      <hint name="formats" value="application/png-patch, application/jpeg-patch">
+         <documentation xml:lang="en">Patches are accepted as (hypothetical) PNG or JPEG patch document representations.</documentation>
+      </hint>
+   </allow>
+</link>
+
+5.2.  Pageable Collection
+
+   ...
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ld.xslt"?>
+<link xmlns="urn:ietf:rfc:XXXX" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:ietf:rfc:XXXX ld.xsd" hreft="http://example.org/{?pagesize,page}">
+   <documentation xml:lang="en">Template for accessing a paged feed of entries at http://www.example.com/feed, with client controls for the page size, and the returned page.</documentation>
+   <var name="pagesize" concept="http://example.com/feedpaging/pagesize">
+      <documentation xml:lang="en">Number of returned items per page.</documentation>
+   </var>
+   <var name="page" concept="http://example.com/feedpaging/page">
+      <documentation xml:lang="en">Page number of the returned page (based on the requested pagesize or a service-defined default).</documentation>
+   </var>
+</link>
+
+
+6.  IANA Considerations
+
+6.1.  Media Type
+
+   The Internet media type [RFC6838] for a Link Description document is
+   application/ldesc+xml (using the "+xml" suffix as defined and
+   registered by RFC 6839 [RFC6839]).
+
+   Type name:  application
+
+   Subtype name:  ldesc+xml
+
+
+
+
+
+
+Wilde                    Expires August 16, 2014               [Page 11]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   Required parameters:  none
+
+   Optional parameters:  profile
+
+         The "profile" link relation [RFC6906] allows "resource
+         representations to indicate that they are following one or more
+         profiles.  A profile is defined not to alter the semantics of
+         the resource representation itself, but to allow clients to
+         learn about additional semantics (constraints, conventions,
+         extensions) that are associated with the resource
+         representation, in addition to those defined by the media type
+         and possibly other mechanisms."  If the application/ldesc+xml
+         media type is use with a profile parameter, this refers to a
+         profile as defined by [RFC6906], making it easier for
+         extensions of the link description media type to identify
+         themselves.
+
+   Encoding considerations:  Same as encoding considerations of
+      application/xml as specified in [RFC3023].
+
+   Security considerations:  This media type has all of the security
+      considerations described in [RFC3023], plus those listed in
+      Section 8.
+
+   Interoperability considerations:  N/A
+
+   Published specification:  RFC XXXX
+
+   Applications that use this media type:  Applications that publish
+      descriptions of URI Interactions.
+
+   Additional information:
+
+      Magic number(s):  none
+
+      File extension(s):  No specific file extension proposed, but as a
+         general rule, XML data often uses ".xml" as the file extension.
+
+      Macintosh file type code(s):  TEXT
+
+   Person & email address to contact for further information:  Erik
+      Wilde <dret@berkeley.edu>
+
+   Intended usage:  COMMON
+
+
+
+
+
+
+
+Wilde                    Expires August 16, 2014               [Page 12]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   Restrictions on usage:  none
+
+   Author:  Erik Wilde <dret@berkeley.edu>
+
+   Change controller:  IESG
+
+6.2.  Link Relation
+
+   The link relation type below will be registered by IANA per Section
+   6.2.1 of RFC 5988 [RFC5988]:
+
+      Relation Name: ldesc
+
+      Description: Linking to a resource that can be used as a link
+      description for requesting runtime information about a particular
+      context's interaction affordances.
+
+      Reference: RFC XXXX
+
+      Notes: Link Descriptions can be used in all scenarios where
+      clients want to create requests that represent a query into the
+      context resource.  The media type of the context resource and the
+      media type of the link description resource are not constrained by
+      this specification.
+
+
+7.  Implementation Status
+
+   Note to RFC Editor: Please remove this section before publication.
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in RFC 6982
+   [RFC6982].  The description of implementations in this section is
+   intended to assist the IETF in its decision processes in progressing
+   drafts to RFCs.  Please note that the listing of any individual
+   implementation here does not imply endorsement by the IETF.
+   Furthermore, no effort has been spent to verify the information
+   presented here that was supplied by IETF contributors.  This is not
+   intended as, and must not be construed to be, a catalog of available
+   implementations or their features.  Readers are advised to note that
+   other implementations may exist.
+
+   According to RFC 6982, "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+
+
+
+Wilde                    Expires August 16, 2014               [Page 13]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   they see fit".
+
+
+8.  Security Considerations
+
+   ...
+
+
+9.  Open Issues
+
+      If and how to use profiles (example in Section 5); if profile use
+      is recommended, define a suggested profile URI for other specs to
+      use?
+
+      How to handle variables in Level 4 templates that are supposed to
+      have composite values?
+
+      If a template is refined in an incremental process (such as for
+      example faceted search services), does it make sense to be able to
+      add a "back" link and/or "home" link, so that clients can find the
+      "most general" version easily?
+
+      How does this interact with "faceted search" scenarios?  Does
+      incremental refinement of URI Template Descriptions somehow nicely
+      and naturally map into faceted search scenarios?
+
+      Is there a concept of how Template Descriptions (and thus URI
+      Templates) can be reused?  Should there be an inclusion facility
+      or something along those lines?  If so, what's the model for that?
+      Initial thoughts on possibilities can be found on this page [3]
+
+      Should there be some recommended link relation to use when linking
+      to a Template Description from within the context of a URI
+      Template?
+
+      While currently everything is defined in XML, providing
+      alternative serializations (JSON and RDF) might be an interesting
+      thing to consider.
+
+      Should there be a "Template" HTTP header field, listing a
+      resource's URI Template and, optionally, containing a link to a
+      description resource for it (basically, a rel="ldesc" link)?
+
+      What about using CURIE for the variable names, thus eliminating
+      the need for separate concept URIs?  This would need prefix
+      bindings, which in XML would just up as regular namespace
+      declarations.  It might quite be a bit more problematic in non-XML
+      contexts, such as serving a URI Template in an HTTP header.
+
+
+
+Wilde                    Expires August 16, 2014               [Page 14]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+      Support for "HTTP Prefer" [I-D.snell-http-prefer] might need
+      another link hint, so that clients know which preferences they
+      might use.
+
+
+10.  Change Log
+
+   Note to RFC Editor: Please remove this section before publication.
+
+10.1.  From -00 to -01
+
+   o  Adding "Template" HTTP header field as an open issue.
+
+   o  Adding CURIEs as one possible convention to use for variable
+      names, so that "Concept URIs" are embedded in the template itself,
+      and not external.
+
+   o  Adding "HTTP Prefer" [I-D.snell-http-prefer] as an open issue.
+
+   o  Updated author address.
+
+10.2.  Prior to -00
+
+   An earlier variation of a similar idea was published as "Template
+   Descriptions" [I-D.wilde-template-desc].  However, since this earlier
+   draft was exclusively focusing on interactions with links driven by
+   URI Templates [RFC6570], instead of looking at links in general, it
+   was sufficiently distinct to start a new draft, instead of evolving
+   the existing one.
+
+
+11.  References
+
+11.1.  Normative References
+
+   [I-D.nottingham-link-hint]
+              Nottingham, M., "HTTP Link Hints",
+              draft-nottingham-link-hint-00 (work in progress),
+              June 2013.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+   [RFC3023]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media
+              Types", RFC 3023, January 2001.
+
+   [RFC4287]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom
+              Syndication Format", RFC 4287, December 2005.
+
+
+
+Wilde                    Expires August 16, 2014               [Page 15]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+   [RFC6570]  Gregorio, J., Fielding, R., Hadley, M., Nottingham, M.,
+              and D. Orchard, "URI Template", RFC 6570, March 2012.
+
+   [XSD-2]    Malhotra, A. and P. Biron, "XML Schema Part 2: Datatypes
+              Second Edition", World Wide Web Consortium
+              Recommendation REC-xmlschema-2-20041028, October 2004,
+              <http://www.w3.org/TR/2004/REC-xmlschema-2-20041028>.
+
+11.2.  Informative References
+
+   [I-D.snell-http-prefer]
+              Snell, J., "Prefer Header for HTTP",
+              draft-snell-http-prefer-18 (work in progress),
+              January 2013.
+
+   [I-D.wilde-template-desc]
+              Wilde, E., Davis, C., and Y. Liu, "URI Template
+              Descriptions", draft-wilde-template-desc-00 (work in
+              progress), December 2012.
+
+   [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
+              Resource Identifier (URI): Generic Syntax", STD 66,
+              RFC 3986, January 2005.
+
+   [RFC5005]  Nottingham, M., "Feed Paging and Archiving", RFC 5005,
+              September 2007.
+
+   [RFC5023]  Gregorio, J. and B. de hOra, "The Atom Publishing
+              Protocol", RFC 5023, October 2007.
+
+   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
+              Specifications and Registration Procedures", BCP 13,
+              RFC 6838, January 2013.
+
+   [RFC6839]  Hansen, T. and A. Melnikov, "Additional Media Type
+              Structured Syntax Suffixes", RFC 6839, January 2013.
+
+   [RFC6906]  Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
+              March 2013.
+
+   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", RFC 6982,
+              July 2013.
+
+URIs
+
+
+
+
+Wilde                    Expires August 16, 2014               [Page 16]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+   [1]  <https://www.ietf.org/mailman/listinfo/apps-discuss>
+
+   [2]  <https://github.com/dret/I-D/tree/master/link-desc>
+
+   [3]  <http://dret.typepad.com/dretblog/2012/12/
+        structuring-uri-templates.html>
+
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by Dmitry Limonov.
+
+
+Appendix B.  Link Description Schema
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="urn:ietf:rfc:XXXX" xmlns:ld="urn:ietf:rfc:XXXX">
+    <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd">
+        <xs:annotation>
+            <xs:documentation>Get access to the xml: attribute groups for xml:lang as declared on 'documentation' below.</xs:documentation>
+        </xs:annotation>
+    </xs:import>
+    <xs:element name="link" type="ld:link-type"> </xs:element>
+    <xs:simpleType name="uriTemplate">
+        <xs:annotation>
+            <xs:documentation>Representing the type for URI template values according to RFC 6570. This is probably too complicated to cover with a regular expression in any reasonable way, so type enforcement is not done by the schema.</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string"/>
+    </xs:simpleType>
+    <xs:element name="documentation" id="documentation">
+        <xs:complexType mixed="true">
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+                <xs:any processContents="lax"/>
+            </xs:sequence>
+            <xs:attribute name="source" type="xs:anyURI"/>
+            <xs:attribute ref="xml:lang"/>
+            <xs:anyAttribute namespace="##other" processContents="lax"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="link-type">
+        <xs:sequence>
+            <xs:element ref="ld:documentation" maxOccurs="unbounded" minOccurs="0"/>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:element ref="ld:var"/>
+                <xs:element ref="ld:hint"/>
+                <xs:element name="allow">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" minOccurs="0" ref="ld:documentation"/>
+
+
+
+Wilde                    Expires August 16, 2014               [Page 17]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+                            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                <xs:element ref="ld:var"/>
+                                <xs:element ref="ld:hint"/>
+                            </xs:choice>
+                        </xs:sequence>
+                        <xs:attribute name="method">
+                            <xs:simpleType>
+                                <xs:restriction base="xs:token">
+                                    <xs:enumeration value="GET"/>
+                                    <xs:enumeration value="PUT"/>
+                                    <xs:enumeration value="POST"/>
+                                    <xs:enumeration value="DELETE"/>
+                                    <xs:pattern value="[!#$%&amp;&apos;\*\+\-\.\^_`\|~0-9A-Za-z]+">
+                                        <xs:annotation>
+                                            <xs:documentation>As defined by http://tools.ietf.org/html/draft-ietf-httpbis-p1-messaging-24#section-3.2.6, and only allowing one method token to be specified.</xs:documentation>
+                                        </xs:annotation>
+                                    </xs:pattern>
+                                </xs:restriction>
+                            </xs:simpleType>
+                        </xs:attribute>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="hreft" type="ld:uriTemplate" use="optional"/>
+        <xs:attribute name="href" type="xs:anyURI" use="optional"/>
+    </xs:complexType>
+    <xs:element name="var">
+        <xs:complexType>
+            <xs:sequence maxOccurs="unbounded" minOccurs="1">
+                <xs:element ref="ld:documentation" maxOccurs="unbounded" minOccurs="0"/>
+                <xs:any namespace="##other" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>If variables are restricted in ways other than the simple type restrictions that are built into link descriptions, then these restrictions can be embedded in a variable description as well, as long as they are represented using a different namespace.</xs:documentation>
+                    </xs:annotation>
+                </xs:any>
+            </xs:sequence>
+            <xs:attribute name="name" use="required"/>
+            <xs:attribute name="concept" type="xs:anyURI" use="optional">
+                <xs:annotation>
+                    <xs:documentation>Identifies the variable by referring to a concept URI.</xs:documentation>
+                </xs:annotation>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="hint">
+        <xs:complexType>
+            <xs:sequence>
+
+
+
+Wilde                    Expires August 16, 2014               [Page 18]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="ld:documentation"/>
+            </xs:sequence>
+            <xs:attribute name="name" use="required">
+                <xs:annotation>
+                    <xs:documentation>A hint is either a registered hint with a simple name (defined by a regular expression), or an unregistered hint which is identified by URI.</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:union memberTypes="xs:anyURI">
+                        <xs:simpleType>
+                            <xs:restriction base="xs:token">
+                                <xs:annotation>
+                                    <xs:documentation>The list of "registered link hints" is taken from http://tools.ietf.org/html/draft-nottingham-link-hint-00#section-3 and will probably change.</xs:documentation>
+                                </xs:annotation>
+                                <xs:enumeration value="allow"/>
+                                <xs:enumeration value="formats"/>
+                                <xs:enumeration value="links"/>
+                                <xs:enumeration value="accept-post"/>
+                                <xs:enumeration value="accept-patch"/>
+                                <xs:enumeration value="accept-ranges"/>
+                                <xs:enumeration value="accept-prefer"/>
+                                <xs:enumeration value="precondition-req"/>
+                                <xs:enumeration value="auth-scheme"/>
+                                <xs:enumeration value="status"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:union>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attribute name="value"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+Appendix C.  XSLT for Generating Link Description HTML
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:ld="urn:ietf:rfc:XXXX" exclude-result-prefixes="ld">
+    <xsl:output method="html"/>
+    <xsl:template match="/">
+        <html>
+            <head>
+                <title>Link Descriptions</title>
+                <style type="text/css">
+                    ul { margin : 0 }
+                    .msg { color : #C0C0C0 }
+                </style>
+            </head>
+            <body>
+
+
+
+Wilde                    Expires August 16, 2014               [Page 19]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+                <h1>Link Descriptions</h1>
+                <xsl:for-each select="//*[ ld:var | ld:hint ]">
+                    <hr/>
+                    <xsl:for-each select=" @href | @hreft | @ld:href | @ld:hreft ">
+                        <h2>
+                            <code>
+                                <xsl:value-of select="name()"/>
+                                <xsl:text>="</xsl:text>
+                                <a href="{.}">
+                                    <xsl:value-of select="."/>
+                                </a>
+                                <xsl:text>"</xsl:text>
+                            </code>
+                        </h2>
+                    </xsl:for-each>
+                    <xsl:if test="@rel">
+                        <h3>
+                            <code>
+                                <xsl:text>rel="</xsl:text>
+                                <xsl:value-of select="@rel"/>
+                                <xsl:text>"</xsl:text>
+                            </code>
+                        </h3>
+                    </xsl:if>
+                    <table rules="none" style="margin : 15px">
+                        <tr>
+                            <th align="right">Documentation:</th>
+                            <td>
+                                <xsl:call-template name="documentation"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <xsl:if test="ld:var">
+                        <h4>Variables:</h4>
+                        <table rules="all" border="1" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Concept</th>
+                                    <th>Default</th>
+                                    <th>Value Range</th>
+                                    <th>Documentation</th>
+                                </tr>
+                            </thead>
+                            <xsl:for-each select="ld:var">
+                                <xsl:sort select="@name"/>
+                                <tr>
+                                    <td>
+
+
+
+Wilde                    Expires August 16, 2014               [Page 20]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+                                        <xsl:value-of select="@name"/>
+                                    </td>
+                                    <td>
+                                        <xsl:choose>
+                                            <xsl:when test="@concept">
+                                                <q>
+                                                    <xsl:value-of select="@concept"/>
+                                                </q>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <span class="msg">n/a</span>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </td>
+                                    <td>
+                                        <xsl:choose>
+                                            <xsl:when test="@default">
+                                                <q>
+                                                    <code>
+                                                        <xsl:value-of select="@default"/>
+                                                    </code>
+                                                </q>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <span class="msg">n/a</span>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </td>
+                                    <td>
+                                        <xsl:choose>
+                                            <xsl:when test="ld:restriction">
+                                                <div>
+                                                    <xsl:text>Base: </xsl:text>
+                                                    <code>
+                                                        <xsl:choose>
+                                                            <xsl:when test="contains(ld:restriction/@base, ':')">
+                                                                <xsl:value-of select="ld:restriction/@base"/>
+                                                            </xsl:when>
+                                                            <xsl:otherwise>
+                                                                <a href="http://www.w3.org/TR/xmlschema-2/#{ld:restriction/@base}">
+                                                                    <xsl:value-of select="concat('xs:', ld:restriction/@base)"/>
+                                                                </a>
+                                                            </xsl:otherwise>
+                                                        </xsl:choose>
+                                                    </code>
+                                                </div>
+                                                <xsl:if test="ld:restriction/ld:*">
+                                                    <ul>
+
+
+
+Wilde                    Expires August 16, 2014               [Page 21]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+                                                        <xsl:for-each select="ld:restriction/ld:*">
+                                                            <xsl:sort select="local-name()"/>
+                                                            <li>
+                                                                <code>
+                                                                    <a href="http://www.w3.org/TR/xmlschema-2/#rf-{local-name()}">
+                                                                        <xsl:value-of select="concat('xs:',local-name())"/>
+                                                                    </a>
+                                                                    <xsl:text>="</xsl:text>
+                                                                    <xsl:value-of select="@value"/>
+                                                                    <xsl:text>"</xsl:text>
+                                                                </code>
+                                                            </li>
+                                                        </xsl:for-each>
+                                                    </ul>
+                                                </xsl:if>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <span class="msg">n/a</span>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
+                                    </td>
+                                    <td>
+                                        <xsl:call-template name="documentation"/>
+                                    </td>
+                                </tr>
+                            </xsl:for-each>
+                        </table>
+                    </xsl:if>
+                    <xsl:if test="ld:hint">
+                        <h4>Hints:</h4>
+                        <table rules="all" border="1" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Value</th>
+                                    <th>Documentation</th>
+                                </tr>
+                            </thead>
+                            <xsl:for-each select="ld:hint">
+                                <xsl:sort select="@name"/>
+                                <tr>
+                                    <td>
+                                        <xsl:value-of select="@name"/>
+                                    </td>
+                                    <td>
+                                        <code>
+                                            <xsl:value-of select="@value"/>
+                                        </code>
+
+
+
+Wilde                    Expires August 16, 2014               [Page 22]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+                                    </td>
+                                    <td>
+                                        <xsl:call-template name="documentation"/>
+                                    </td>
+                                </tr>
+                            </xsl:for-each>
+                        </table>
+                    </xsl:if>
+                </xsl:for-each>
+            </body>
+        </html>
+    </xsl:template>
+    <xsl:template name="documentation">
+        <xsl:choose>
+            <xsl:when test="ld:documentation">
+                <ul>
+                    <xsl:for-each select="ld:documentation">
+                        <li>
+                            <xsl:value-of select="node()"/>
+                            <xsl:if test="@xml:lang">
+                                <xsl:text> </xsl:text>
+                                <span class="msg">
+                                    <xsl:text>(</xsl:text>
+                                        <code>
+                                            <xsl:text>xml:lang="</xsl:text>
+                                            <xsl:value-of select="@xml:lang"/>
+                                            <xsl:text>"</xsl:text>
+                                        </code>
+                                    <xsl:text>)</xsl:text>
+                                </span>
+                            </xsl:if>
+                        </li>
+                    </xsl:for-each>
+                </ul>
+            </xsl:when>
+            <xsl:otherwise>
+                <span class="msg">n/a</span>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+</xsl:stylesheet>
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires August 16, 2014               [Page 23]
+
+Internet-Draft           HTTP Link Descriptions            February 2014
+
+
+Author's Address
+
+   Erik Wilde
+   UC Berkeley
+
+   Email: dret@berkeley.edu
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires August 16, 2014               [Page 24]
+
