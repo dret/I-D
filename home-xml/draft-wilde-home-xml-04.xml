@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+   <!ENTITY files 'draft-wilde-home-xml-04-files'>
+]>
+<?xml-stylesheet type="text/xsl" href="../../XIPr/xipr-1-0.xsl"?>
+<!-- XIPr is used for XInclude processing; you can use any XInclude processor to include the files referenced from within this document. -->
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="yes" ?>
-<rfc ipr="trust200902" docName="draft-wilde-home-xml-04" category="info">
+<rfc ipr="trust200902" docName="draft-wilde-home-xml-04" category="info" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<front>
 	  <title abbrev="Home Documents XML">Home Documents for HTTP Services: XML Syntax</title>
 	  <author initials="E." surname="Wilde" fullname="Erik Wilde">
@@ -35,36 +39,7 @@
     <section title="XML Example" anchor="xml-example">
       <t>The following Home Document in XML syntax uses the same data as the Home Document shown in <eref target="http://tools.ietf.org/html/draft-nottingham-json-home-03#section-2">Section 2</eref> of <xref target="I-D.nottingham-json-home"/> (but adding xml:base="http://example.com" to demonstrate the mechanism):</t>
       <figure>
-        <artwork type="xml"><![CDATA[<resources xmlns="urn:ietf:rfc:XXXX" xml:base="http://example.com">
- <resource rel="http://example.org/rel/widgets">
-  <link href="/"/>
- </resource>
- <resource rel="http://example.org/rel/widget">
-  <template href-template="/widgets/{widget_id}">
-   <var name="widget_id" URI="http://example.org/param/widget"/>
-  </template>
-  <hints>
-   <allow>
-    <i>GET</i>
-    <i>PUT</i>
-    <i>DELETE</i>
-    <i>PATCH</i>
-   </allow>
-   <representations>
-    <i>application/json</i>
-   </representations>
-   <accept-patch>
-    <i>application/patch+json</i>
-   </accept-patch>
-   <accept-post>
-    <i>application/xml</i>
-   </accept-post>
-   <accept-ranges>
-    <i>bytes</i>
-   </accept-ranges>
-  </hints>
- </resource>
-</resources>]]></artwork>
+        <artwork type="xml"><xi:include parse="text" href="&files;/home-xml.xml"/></artwork>
       </figure>
       <t>The mapping between JSON arrays and XML uses "item" elements &lt;i/>, where each of those elements represents one array item. For properties that have a single values (i.e., they are not defined as an array of values), this value is directly contained as content in the corresponding element.</t>
       <t>Currently, the draft does not specify an extension model (how to represents hints that are not specified in the draft itself), and therefore the extension model for XML is currently undefined as well. The XML syntax will be updated to reflect the extension model once it has been specified for the JSON syntax.</t>
@@ -72,85 +47,7 @@
     <section title="XML Schema" anchor="xml-schema">
       <t>The following XML Schema is describing the XML shown in <xref target="xml-example"/>. Since there currently is no extension model, the XML Schema does currently not contain any extension points.</t>
       <figure>
-        <artwork type="xml"><![CDATA[<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xml="http://www.w3.org/XML/1998/namespace" targetNamespace="urn:ietf:rfc:XXXX" elementFormDefault="qualified" xmlns:home="urn:ietf:rfc:XXXX">
- <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
- <xs:element name="resources">
-  <xs:complexType>
-   <xs:sequence maxOccurs="unbounded" minOccurs="0">
-    <xs:element name="resource">
-     <xs:complexType>
-      <xs:sequence>
-       <xs:choice>
-        <xs:element name="link">
-         <xs:complexType>
-          <xs:attribute name="href" type="xs:anyURI" use="required"/>
-         </xs:complexType>
-        </xs:element>
-        <xs:element name="template">
-         <xs:complexType>
-          <xs:sequence maxOccurs="unbounded" minOccurs="0">
-           <xs:element name="var">
-            <xs:complexType>
-             <xs:attribute name="name" use="required"/>
-             <xs:attribute name="URI" type="xs:anyURI" use="required"/>
-            </xs:complexType>
-           </xs:element>
-          </xs:sequence>
-          <xs:attribute name="href-template" use="required"/>
-         </xs:complexType>
-        </xs:element>
-       </xs:choice>
-       <xs:element minOccurs="0" name="hints">
-        <xs:complexType>
-         <xs:choice maxOccurs="unbounded" minOccurs="0">
-          <xs:element name="allow" type="home:arrayType"/>
-          <xs:element name="representations" type="home:arrayType"/>
-          <xs:element name="accept-patch" type="home:arrayType"/>
-          <xs:element name="accept-post" type="home:arrayType"/>
-          <xs:element name="accept-put" type="home:arrayType"/>
-          <xs:element name="accept-ranges" type="home:arrayType"/>
-          <xs:element name="prefer" type="home:arrayType"/>
-          <xs:element name="docs" type="xs:anyURI"/>
-          <xs:element name="precondition-req" type="home:arrayType"/>
-          <xs:element name="auth-req">
-           <xs:complexType>
-            <xs:sequence maxOccurs="unbounded" minOccurs="0">
-             <xs:element name="scheme">
-              <xs:complexType>
-               <xs:sequence maxOccurs="unbounded" minOccurs="0">
-                <xs:element name="realm"/>
-               </xs:sequence>
-               <xs:attribute name="name" type="xs:token"/>
-              </xs:complexType>
-             </xs:element>
-            </xs:sequence>
-           </xs:complexType>
-          </xs:element>
-          <xs:element name="status">
-           <xs:simpleType>
-            <xs:restriction base="xs:token">
-             <xs:enumeration value="deprecated"/>
-             <xs:enumeration value="gone"/>
-            </xs:restriction>
-           </xs:simpleType>
-          </xs:element>
-         </xs:choice>
-        </xs:complexType>
-       </xs:element>
-      </xs:sequence>
-      <xs:attribute name="rel" type="xs:anyURI" use="required"/>
-     </xs:complexType>
-    </xs:element>
-   </xs:sequence>
-   <xs:attribute ref="xml:base" use="optional"/>
-  </xs:complexType>
- </xs:element>
- <xs:complexType name="arrayType">
-  <xs:sequence maxOccurs="unbounded" minOccurs="0">
-   <xs:element name="i"/>
-  </xs:sequence>
- </xs:complexType>
-</xs:schema>]]></artwork>
+        <artwork type="xml"><xi:include parse="text" href="&files;/home-xml.xsd"/></artwork>
       </figure>
     </section>
     <section title="IANA Considerations" anchor="iana">
@@ -385,97 +282,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
     <section title="XML-to-HTML for Home Documents">
       <t>The following XSLT 1.0 stylesheet <xref target="W3C.REC-xslt-19991116"/> transforms XML Home Documents to very simple HTML renditions. By associating this stylesheet <xref target="W3C.REC-xml-stylesheet-20101028"/> with an XML Home Document, it is possible to serve XML Home Documents that will be rendered in a human-friendly way when viewed in a browser.</t>
       <t><figure>
-        <artwork type="xml"><![CDATA[<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xml="http://www.w3.org/XML/1998/namespace" version="1.0" xmlns:home="urn:ietf:rfc:XXXX" exclude-result-prefixes="home">
- <xsl:output method="html"/>
- <xsl:template match="home:resources">
-  <html>
-   <head>
-    <title>Home Document</title>
-   </head>
-   <body>
-    <h1>Home Document</h1>
-    <ul>
-     <xsl:for-each select="home:resource">
-      <li>
-       <xsl:text>Link Relation </xsl:text>
-       <code><xsl:value-of select="@rel"/></code>
-       <xsl:text>: Link </xsl:text>
-       <code>
-        <xsl:choose>
-         <xsl:when test="home:link">
-          <xsl:variable name="link-URI">
-           <xsl:call-template name="resolve-URI">
-            <xsl:with-param name="URI" select="home:link/@href"/>
-           </xsl:call-template>
-          </xsl:variable>
-          <a href="{$link-URI}" title="URI"><xsl:value-of select="$link-URI"/></a>
-         </xsl:when>
-         <xsl:otherwise>
-          <xsl:variable name="template-URI">
-           <xsl:call-template name="resolve-URI">
-            <xsl:with-param name="URI" select="home:template/@href-template"/>
-           </xsl:call-template>
-          </xsl:variable>
-          <a href="{$template-URI}" title="URI template"><xsl:value-of select="$template-URI"/></a>
-         </xsl:otherwise>
-        </xsl:choose>
-       </code>
-       <dl>
-        <xsl:if test="home:template/home:var">
-         <dt>Variables: </dt>
-         <dd>
-          <ul>
-           <xsl:for-each select="home:template/home:var">
-            <xsl:sort select="@name"/>
-            <li>
-             <span title="Variable Name"><xsl:value-of select="@name"/></span>
-             <xsl:text>: </xsl:text>
-             <span title="Associated URI"><xsl:value-of select="@URI"/></span>
-            </li>
-           </xsl:for-each>
-          </ul>
-         </dd>
-        </xsl:if>
-        <xsl:if test="home:hints">
-         <dt>Hints: </dt>
-         <dd>
-          <ul>
-           <xsl:for-each select="home:hints/home:*">
-            <xsl:sort select="local-name()"/>
-            <li>
-             <span title="Hint Name"><xsl:value-of select="local-name()"/></span>
-             <xsl:text>: </xsl:text>
-             <xsl:choose>
-              <xsl:when test="home:i">
-               <xsl:for-each select="home:i">
-                <xsl:value-of select="."/>
-                <xsl:if test="position() != last()">
-                 <xsl:text>, </xsl:text>
-                </xsl:if>
-               </xsl:for-each>
-              </xsl:when>
-              <xsl:otherwise>
-               <xsl:value-of select="."/>
-              </xsl:otherwise>
-             </xsl:choose>
-            </li>
-           </xsl:for-each>
-          </ul>
-         </dd>
-        </xsl:if>
-       </dl>
-      </li>
-     </xsl:for-each>
-    </ul>
-   </body>
-  </html>
- </xsl:template>
- <xsl:template name="resolve-URI">
-  <xsl:param name="URI"/>
-  <!-- This is not how URI resolution should be done; http://tools.ietf.org/html/rfc3986#section-5 describes the correct process. -->
-  <xsl:value-of select="concat(/home:resources/@xml:base, $URI)"/>
- </xsl:template>
-</xsl:stylesheet>]]></artwork>
+        <artwork type="xml"><xi:include parse="text" href="&files;/home-xml.xslt"/></artwork>
       </figure></t>
     </section>
   </back>
