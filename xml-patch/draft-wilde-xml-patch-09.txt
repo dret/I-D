@@ -3,22 +3,21 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                               UC Berkeley
-Intended status: Informational                          January 30, 2014
-Expires: August 3, 2014
+Intended status: Informational                            March 25, 2014
+Expires: September 26, 2014
 
 
                  A Media Type for XML Patch Operations
-                        draft-wilde-xml-patch-08
+                        draft-wilde-xml-patch-09
 
 Abstract
 
-   The XML Patch media type "application/xml-patch+xml" defines an XML
-   document structure for expressing a sequence of patch operations that
-   are applied to an XML document.  The XML Patch document format's
-   foundations are defined in RFC 5261, this specification defines a
-   document format and a media type registration, so that XML Patch
-   documents can be labeled with a media type, for example in HTTP
-   conversations.
+   The XML Patch document format defines an XML document structure for
+   expressing a sequence of patch operations to be applied to an XML
+   document.  The XML Patch document format builds on the foundations
+   defined in RFC 5261.  This specification defines the also provides
+   the media type registration "application/xml-patch+xml", to allow the
+   use of XML Patch documents in, for example, HTTP conversations.
 
 Note to Readers
 
@@ -41,7 +40,7 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 3, 2014.
+   This Internet-Draft will expire on September 26, 2014.
 
 Copyright Notice
 
@@ -49,15 +48,15 @@ Copyright Notice
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
-
-
-
-Wilde                    Expires August 3, 2014                 [Page 1]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
    Provisions Relating to IETF Documents
+
+
+
+Wilde                  Expires September 26, 2014               [Page 1]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
@@ -73,26 +72,27 @@ Table of Contents
    2.  Patch Documents  . . . . . . . . . . . . . . . . . . . . . . .  3
      2.1.  Patch Document Format  . . . . . . . . . . . . . . . . . .  4
      2.2.  Patch Examples . . . . . . . . . . . . . . . . . . . . . .  5
-   3.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  5
-   4.  Security Considerations  . . . . . . . . . . . . . . . . . . .  6
+   3.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  6
+   4.  Security Considerations  . . . . . . . . . . . . . . . . . . .  7
    5.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     5.1.  From -07 to -08  . . . . . . . . . . . . . . . . . . . . .  7
-     5.2.  From -06 to -07  . . . . . . . . . . . . . . . . . . . . .  7
-     5.3.  From -05 to -06  . . . . . . . . . . . . . . . . . . . . .  7
-     5.4.  From -04 to -05  . . . . . . . . . . . . . . . . . . . . .  8
-     5.5.  From -03 to -04  . . . . . . . . . . . . . . . . . . . . .  8
-     5.6.  From -02 to -03  . . . . . . . . . . . . . . . . . . . . .  8
-     5.7.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  8
-     5.8.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  8
-   6.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  8
-     6.1.  Normative References . . . . . . . . . . . . . . . . . . .  8
-     6.2.  Informative References . . . . . . . . . . . . . . . . . .  9
-   Appendix A.  Implementation Hints  . . . . . . . . . . . . . . . . 10
-     A.1.  Matching Namespaces  . . . . . . . . . . . . . . . . . . . 10
-     A.2.  Patching Namespaces  . . . . . . . . . . . . . . . . . . . 11
-   Appendix B.  Implementation Status . . . . . . . . . . . . . . . . 13
-   Appendix C.  ABNF for RFC 5261 . . . . . . . . . . . . . . . . . . 14
-   Appendix D.  Acknowledgements  . . . . . . . . . . . . . . . . . . 15
+     5.1.  From -08 to -09  . . . . . . . . . . . . . . . . . . . . .  7
+     5.2.  From -07 to -08  . . . . . . . . . . . . . . . . . . . . .  7
+     5.3.  From -06 to -07  . . . . . . . . . . . . . . . . . . . . .  8
+     5.4.  From -05 to -06  . . . . . . . . . . . . . . . . . . . . .  8
+     5.5.  From -04 to -05  . . . . . . . . . . . . . . . . . . . . .  8
+     5.6.  From -03 to -04  . . . . . . . . . . . . . . . . . . . . .  8
+     5.7.  From -02 to -03  . . . . . . . . . . . . . . . . . . . . .  8
+     5.8.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  9
+     5.9.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . .  9
+   6.  References . . . . . . . . . . . . . . . . . . . . . . . . . .  9
+     6.1.  Normative References . . . . . . . . . . . . . . . . . . .  9
+     6.2.  Informative References . . . . . . . . . . . . . . . . . . 10
+   Appendix A.  Implementation Hints  . . . . . . . . . . . . . . . . 11
+     A.1.  Matching Namespaces  . . . . . . . . . . . . . . . . . . . 11
+     A.2.  Patching Namespaces  . . . . . . . . . . . . . . . . . . . 12
+   Appendix B.  Implementation Status . . . . . . . . . . . . . . . . 14
+   Appendix C.  ABNF for RFC 5261 . . . . . . . . . . . . . . . . . . 15
+   Appendix D.  Acknowledgements  . . . . . . . . . . . . . . . . . . 16
    Author's Address . . . . . . . . . . . . . . . . . . . . . . . . . 16
 
 
@@ -108,9 +108,9 @@ Table of Contents
 
 
 
-Wilde                    Expires August 3, 2014                 [Page 2]
+Wilde                  Expires September 26, 2014               [Page 2]
 
-Internet-Draft                  XML Patch                   January 2014
+Internet-Draft                  XML Patch                     March 2014
 
 
 1.  Introduction
@@ -164,9 +164,9 @@ Internet-Draft                  XML Patch                   January 2014
 
 
 
-Wilde                    Expires August 3, 2014                 [Page 3]
+Wilde                  Expires September 26, 2014               [Page 3]
 
-Internet-Draft                  XML Patch                   January 2014
+Internet-Draft                  XML Patch                     March 2014
 
 
 2.1.  Patch Document Format
@@ -220,9 +220,9 @@ Internet-Draft                  XML Patch                   January 2014
 
 
 
-Wilde                    Expires August 3, 2014                 [Page 4]
+Wilde                  Expires September 26, 2014               [Page 4]
 
-Internet-Draft                  XML Patch                   January 2014
+Internet-Draft                  XML Patch                     March 2014
 
 
    RFC 5261 defines an XML Schema (XSD) [W3C.REC-xmlschema-1-20041028]
@@ -261,6 +261,37 @@ Internet-Draft                  XML Patch                   January 2014
    documents have to be in the XML namespace with the URI
    "urn:ietf:rfc:XXXX".
 
+   For example, consider the patch example in RFC 5621 "Appendix A.1:
+   Adding an Element".  In this example, the patch is applied to the
+   following XML document:
+   <?xml version="1.0" encoding="UTF-8"?>
+   <doc>
+       <note>This is a sample document</note>
+   </doc>
+
+   The patch example is based on the following patch document (with the
+   element and namespace changes described above):
+
+
+
+
+
+Wilde                  Expires September 26, 2014               [Page 5]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<p:patch xmlns:p="urn:ietf:rfc:XXXX">
+    <p:add sel="doc"><foo id="ert4773">This is a new child</foo></p:add>
+</p:patch>
+
+   Applying the patch results in the following XML document:
+   <?xml version="1.0" encoding="UTF-8"?>
+   <doc>
+       <note>This is a sample document</note>
+   <foo id="ert4773">This is a new child</foo></doc>
+
 
 3.  IANA Considerations
 
@@ -272,14 +303,6 @@ Internet-Draft                  XML Patch                   January 2014
       Subtype name: xml-patch+xml
 
       Required parameters: none
-
-
-
-
-Wilde                    Expires August 3, 2014                 [Page 5]
-
-Internet-Draft                  XML Patch                   January 2014
-
 
       Optional parameters:
 
@@ -306,6 +329,14 @@ Internet-Draft                  XML Patch                   January 2014
 
          File extension(s): XML documents often use ".xml" as the file
          extension, and this media type does not propose a specific
+
+
+
+Wilde                  Expires September 26, 2014               [Page 6]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
          extension other than this generic one.
 
          Macintosh file type code(s): TEXT
@@ -329,14 +360,6 @@ Internet-Draft                  XML Patch                   January 2014
 
    In addition, parsing XML may entail including information from
    external sources through XML's mechanism of external entities.
-
-
-
-Wilde                    Expires August 3, 2014                 [Page 6]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
    Implementations therefore should be aware of the fact that standard
    parsers may resolve external entities, and thus include external
    information as a result of applying patch operations to an XML
@@ -347,7 +370,11 @@ Internet-Draft                  XML Patch                   January 2014
 
    Note to RFC Editor: Please remove this section before publication.
 
-5.1.  From -07 to -08
+5.1.  From -08 to -09
+
+   o  Editorial changes suggested by Tony Hansen.
+
+5.2.  From -07 to -08
 
    o  Updated author address.
 
@@ -357,7 +384,16 @@ Internet-Draft                  XML Patch                   January 2014
 
    o  No more open issues, thus removed the "open issues" section.
 
-5.2.  From -06 to -07
+
+
+
+
+Wilde                  Expires September 26, 2014               [Page 7]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
+5.3.  From -06 to -07
 
    o  Moving category back to "info" (from "std"), because the errata to
       RFC 5261 are now approved separately.
@@ -370,7 +406,7 @@ Internet-Draft                  XML Patch                   January 2014
    o  Updating the ABNF to correctly only allow lowercase characters in
       the string parts.
 
-5.3.  From -05 to -06
+5.4.  From -05 to -06
 
    o  Updating "Implementation Status" section to refer to RFC 6982
       [RFC6982].
@@ -386,38 +422,40 @@ Internet-Draft                  XML Patch                   January 2014
       needed for an RFC that is updating an RFC that has been published
       on the standards track.
 
-
-
-Wilde                    Expires August 3, 2014                 [Page 7]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
-5.4.  From -04 to -05
+5.5.  From -04 to -05
 
    o  Improved formatting of XML/XSD and ABNF code.
 
    o  Moving category from "std" to "info" (intended to become an
       informational RFC).
 
-5.5.  From -03 to -04
+5.6.  From -03 to -04
 
    o  Added text and section "Updates to RFC 5261" about updating RFC
       5261 (instead of relying on errata).
 
-5.6.  From -02 to -03
+5.7.  From -02 to -03
 
    o  Added section on "Implementation Status" (Appendix B).
 
    o  Improved "Implementation Hints" (Appendix A).
 
-5.7.  From -01 to -02
+
+
+
+
+Wilde                  Expires September 26, 2014               [Page 8]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
+5.8.  From -01 to -02
 
    o  Textual edits.
 
    o  Added section on "Implementation Hints" (Appendix A).
 
-5.8.  From -00 to -01
+5.9.  From -00 to -01
 
    o  Removed Mark Nottingham from author list.
 
@@ -442,16 +480,12 @@ Internet-Draft                  XML Patch                   January 2014
    [RFC3023]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media
               Types", RFC 3023, January 2001.
 
-
-
-Wilde                    Expires August 3, 2014                 [Page 8]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
    [RFC3470]  Hollenbeck, S., Rose, M., and L. Masinter, "Guidelines for
               the Use of Extensible Markup Language (XML) within IETF
               Protocols", BCP 70, RFC 3470, January 2003.
+
+   [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234, January 2008.
 
    [RFC5261]  Urpalainen, J., "An Extensible Markup Language (XML) Patch
               Operations Framework Utilizing XML Path Language (XPath)
@@ -460,6 +494,16 @@ Internet-Draft                  XML Patch                   January 2014
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
               RFC 6838, January 2013.
+
+
+
+
+
+
+Wilde                  Expires September 26, 2014               [Page 9]
+
+Internet-Draft                  XML Patch                     March 2014
+
 
 6.2.  Informative References
 
@@ -497,14 +541,6 @@ Internet-Draft                  XML Patch                   January 2014
 
    [W3C.REC-xmlschema-1-20041028]
               Thompson, H., Beech, D., Maloney, M., and N. Mendelsohn,
-
-
-
-Wilde                    Expires August 3, 2014                 [Page 9]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
               "XML Schema Part 1: Structures Second Edition", World Wide
               Web Consortium Recommendation REC-xmlschema-1-20041028,
               October 2004,
@@ -517,6 +553,14 @@ Internet-Draft                  XML Patch                   January 2014
               <http://www.w3.org/TR/1999/REC-xpath-19991116>.
 
    [W3C.REC-xpath20-20101214]
+
+
+
+Wilde                  Expires September 26, 2014              [Page 10]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
               Boag, S., Berglund, A., Kay, M., Simeon, J., Robie, J.,
               Chamberlin, D., and M. Fernandez, "XML Path Language
               (XPath) 2.0 (Second Edition)", World Wide Web Consortium
@@ -532,7 +576,7 @@ URIs
 
 Appendix A.  Implementation Hints
 
-   This section is informative.  It described some issues that might be
+   This section is informative.  It describes some issues that might be
    interesting for implementers, but it might also be interesting for
    users of XML Patch that want to understand some of the differences
    between standard XPath 1.0 processing, and the processing model of
@@ -553,14 +597,6 @@ A.1.  Matching Namespaces
    expressions: Any prefixes are interpreted according to the namespace
    bindings of the diff document (the document that the expression is
    applied against).  This means that each prefixed name can be
-
-
-
-Wilde                    Expires August 3, 2014                [Page 10]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
    interpreted in the context of the diff document.
 
    For unprefixed names in expressions, the rules depart from XPath 1.0
@@ -573,7 +609,15 @@ Internet-Draft                  XML Patch                   January 2014
    document and evaluate it in the context of the diff document
    according to the rules of XPath 1.0, because this would interpret
    unprefixed names incorrectly.  As a consequence, it is not possible
-   to simply take an XPath 1.0 processor and evaluate XMPL Patch
+
+
+
+Wilde                  Expires September 26, 2014              [Page 11]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
+   to simply take an XPath 1.0 processor and evaluate XML Patch
    selectors in the context of the diff document.
 
    As an extension of XPath 1.0's simple model, XPath 2.0
@@ -609,14 +653,6 @@ A.2.  Patching Namespaces
    [W3C.REC-xml-20081126] syntax for XML Namespaces
    [W3C.REC-xml-names-20091208].  In the XML syntax, a namespace is
    declared with an attribute using the reserved name or prefix "xmlns",
-
-
-
-Wilde                    Expires August 3, 2014                [Page 11]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
    and this results in this namespace being available recursively
    through the document tree.  In XPath, the namespace declaration is
    not exposed as an attribute (i.e., the attribute, although
@@ -629,6 +665,14 @@ Internet-Draft                  XML Patch                   January 2014
    in XPath, while the namespace itself is a logical construct that is
    not visible in the XML syntax, but a result of a namespace
    declaration.  The intent of RFC 5261 is to patch namespaces as if
+
+
+
+Wilde                  Expires September 26, 2014              [Page 12]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
    namespace declarations were patched, and thus it only allows patching
    namespace nodes on the element nodes where the namespace has been
    declared.
@@ -666,13 +710,6 @@ Internet-Draft                  XML Patch                   January 2014
        <y/>
    </x>
 
-
-
-Wilde                    Expires August 3, 2014                [Page 12]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
    In this second example, patching with a selector of /x/namespace::a
    should indeed change the namespace nodes on elements x and y, because
    they both have been derived from the same namespace declaration.
@@ -683,6 +720,14 @@ Internet-Draft                  XML Patch                   January 2014
    attempting to exclusively use the XPath model for implementing XML
    Patch will fail to correctly address certain edge cases (such as the
    one shown above).
+
+
+
+
+Wilde                  Expires September 26, 2014              [Page 13]
+
+Internet-Draft                  XML Patch                     March 2014
+
 
    Note that XPath's specific limitations do not mean that it is
    impossible to use XML technologies other than XPath.  The Document
@@ -720,15 +765,6 @@ Appendix B.  Implementation Status
    It is up to the individual working groups to use this information as
    they see fit".
 
-
-
-
-
-Wilde                    Expires August 3, 2014                [Page 13]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
       EMC: EMC's IIG unit has implemented the selector part of the
       specification, which is the trickiest part (see Appendix A.1 for
       an explanation).  By reusing an existing XPath 1.0 implementation
@@ -740,6 +776,13 @@ Internet-Draft                  XML Patch                   January 2014
       source and will be made available, if released, as part of EMC's
       XML database product xDB
       <http://www.emc.com/products/detail/software2/documentum-xdb.htm>.
+
+
+
+
+Wilde                  Expires September 26, 2014              [Page 14]
+
+Internet-Draft                  XML Patch                     March 2014
 
 
 Appendix C.  ABNF for RFC 5261
@@ -754,37 +797,6 @@ Appendix C.  ABNF for RFC 5261
    definition for the allowed XPath expressions for add operations.  The
    names of all grammar productions are the ones used in the XSD-based
    grammar of RFC 5261.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wilde                    Expires August 3, 2014                [Page 14]
-
-Internet-Draft                  XML Patch                   January 2014
-
-
 anychar    =  %x00-ffffffff
 ncname     =  1*%x00-ffffffff
 qname      =  [ ncname ":" ] ncname
@@ -822,23 +834,23 @@ xpath      =  [ "/" ] ( ( id [ 0*( "/" step ) "/" last ] ) /
 xpath-add  =  [ "/" ] ( ( id [ 0*( "/" step ) "/" child ] ) /
               ( 0*( step "/" ) child ) )
 
+
+
+Wilde                  Expires September 26, 2014              [Page 15]
+
+Internet-Draft                  XML Patch                     March 2014
+
+
    Please note that the "ncname" production listed above does not fully
    capture the constraints of the original XSD-based definition, where
-   it is defined as "\i\c*".
+   it is defined as "\i\c*".  DIGIT and DQUOTE are defined by the ABNF
+   specification [RFC5234].
 
 
 Appendix D.  Acknowledgements
 
    Thanks for comments and suggestions provided by Bas de Bakker, Tony
    Hansen, Bjoern Hoehrmann, and Julian Reschke.
-
-
-
-
-
-Wilde                    Expires August 3, 2014                [Page 15]
-
-Internet-Draft                  XML Patch                   January 2014
 
 
 Author's Address
@@ -880,17 +892,5 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Wilde                    Expires August 3, 2014                [Page 16]
+Wilde                  Expires September 26, 2014              [Page 16]
 

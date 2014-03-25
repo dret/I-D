@@ -19,9 +19,9 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="30" month="January" year="2014"/>
+      <date day="25" month="March" year="2014"/>
       <abstract>
-         <t>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.</t>
+         <t>The XML Patch document format defines an XML document structure for expressing a sequence of patch operations to be applied to an XML document. The XML Patch document format builds on the foundations defined in RFC 5261. This specification defines the also provides the media type registration "application/xml-patch+xml", to allow the use of XML Patch documents in, for example, HTTP conversations.</t>
       </abstract>
       <note title="Note to Readers">
          <t>This draft should be discussed on the <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</eref>.</t>
@@ -56,6 +56,18 @@
          <section title="Patch Examples" anchor="examples">
             <t>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for more XML patch document examples. All the examples in RFC 5261 can be taken as examples for the XML Patch media type, when looking at them with two minor changes in mind:</t>
             <t>The two differences are that XML patch documents always use the "patch" element as the document element, and that both the "patch" element as well as the individual operation elements in XML patch documents have to be in the XML namespace with the URI "urn:ietf:rfc:XXXX".</t>
+            <t>For example, consider the patch example in RFC 5621 "Appendix A.1: Adding an Element". In this example, the patch is applied to the following XML document:</t>
+            <figure>
+               <artwork type="xml"><xi:include parse="text" href="&files;/rfc5261-a1-target.xml"/></artwork>
+            </figure>
+            <t>The patch example is based on the following patch document (with the element and namespace changes described above):</t>
+            <figure>
+               <artwork type="xml"><xi:include parse="text" href="&files;/rfc5261-a1-patch.xml"/></artwork>
+            </figure>
+            <t>Applying the patch results in the following XML document:</t>
+            <figure>
+               <artwork type="xml"><xi:include parse="text" href="&files;/rfc5261-a1-result.xml"/></artwork>
+            </figure>
          </section>
       </section>
       <section title="IANA Considerations" anchor="iana">
@@ -98,7 +110,7 @@
          <section title="From -08 to -09">
             <t>
                <list style="symbols">
-                  <t>...</t>
+                  <t>Editorial changes suggested by Tony Hansen.</t>
                </list>
             </t>
          </section>
@@ -318,9 +330,9 @@
                <keyword>Extensible Markup Language</keyword>
                <abstract>
                   <t>The Extensible Markup Language (XML) is a framework for structuring data. While it evolved from Standard Generalized Markup Language (SGML) -- a markup language primarily focused on structuring documents -- XML has evolved to be a widely-used mechanism for representing structured data.</t>
-                  <t>There are a wide variety of Internet protocols being developed; many have need for a representation for structured data relevant to their application.  There has been much interest in the use of XML as a representation method.  This document describes basic XML concepts, analyzes various alternatives in the use of XML, and provides guidelines for the use of XML within IETF standards-track protocols.</t></abstract>
+                  <t>There are a wide variety of Internet protocols being developed; many have need for a representation for structured data relevant to their application. There has been much interest in the use of XML as a representation method. This document describes basic XML concepts, analyzes various alternatives in the use of XML, and provides guidelines for the use of XML within IETF standards-track protocols.</t></abstract>
                <note title='Conventions Used In This Document'>
-                  <t>This document recommends, as policy, what specifications for Internet protocols -- and, in particular, IETF standards track protocol documents -- should include as normative language within them.  The capitalized keywords "SHOULD", "MUST", "REQUIRED", etc. are used in the sense of how they would be used within other documents with the meanings as specified in BCP 14, RFC 2119 .</t></note></front>
+                  <t>This document recommends, as policy, what specifications for Internet protocols -- and, in particular, IETF standards track protocol documents -- should include as normative language within them. The capitalized keywords "SHOULD", "MUST", "REQUIRED", etc. are used in the sense of how they would be used within other documents with the meanings as specified in BCP 14, RFC 2119 .</t></note></front>
             <seriesInfo name='BCP' value='70' />
             <seriesInfo name='RFC' value='3470' />
             <format type='TXT' octets='64252' target='http://www.rfc-editor.org/rfc/rfc3470.txt' />
@@ -361,7 +373,25 @@
             </front>            
             <seriesInfo name='RFC' value='5261' />
             <format type='TXT' octets='78036' target='http://www.rfc-editor.org/rfc/rfc5261.txt' />
-         </reference>      
+         </reference>
+         <reference anchor='RFC5234'>
+            <front>
+               <title>Augmented BNF for Syntax Specifications: ABNF</title>
+               <author initials='D.' surname='Crocker' fullname='D. Crocker'>
+                  <organization />
+               </author>
+               <author initials='P.' surname='Overell' fullname='P. Overell'>
+                  <organization />
+               </author>
+               <date year='2008' month='January' />
+               <abstract>
+                  <t>Internet technical specifications often need to define a formal syntax. Over the years, a modified version of Backus-Naur Form (BNF), called Augmented BNF (ABNF), has been popular among many Internet specifications. The current specification documents ABNF. It balances compactness and simplicity with reasonable representational power. The differences between standard BNF and ABNF involve naming rules, repetition, alternatives, order-independence, and value ranges. This specification also supplies additional rule definitions and encoding for a core lexical analyzer of the type common to several Internet specifications. [STANDARDS-TRACK]</t>
+               </abstract>
+            </front>
+            <seriesInfo name='STD' value='68' />
+            <seriesInfo name='RFC' value='5234' />
+            <format type='TXT' octets='26359' target='http://www.rfc-editor.org/rfc/rfc5234.txt' />
+         </reference>
       </references>
       <references title="Informative References">
          <reference anchor='RFC2616'>
@@ -638,11 +668,11 @@
          </reference>
       </references>
       <section title="Implementation Hints" anchor="implementation-hints">
-         <t>This section is informative. It described some issues that might be interesting for implementers, but it might also be interesting for users of XML Patch that want to understand some of the differences between standard XPath 1.0 processing, and the processing model of selectors in RFC 5261.</t>
+         <t>This section is informative. It describes some issues that might be interesting for implementers, but it might also be interesting for users of XML Patch that want to understand some of the differences between standard XPath 1.0 processing, and the processing model of selectors in RFC 5261.</t>
          <t>Specifically, the issues described in the following two sections have been identified as technical issues with RFC 5261, and have been filed as errata. Implementers interested in implementing XML Patch are encouraged to take those errata into account when implementing XML patch documents. The issue about "Matching Namespaces" described in <xref target="namespace-matching"/> has been filed as RFC erratum 3477. The issue about "Patching Namespaces" described in <xref target="namespace-patching"/> has been filed as RFC erratum 3478.</t>
          <section title="Matching Namespaces" anchor="namespace-matching">
             <t>RFC 5261 defines standard rules for matching prefixed names in expressions: Any prefixes are interpreted according to the namespace bindings of the diff document (the document that the expression is applied against). This means that each prefixed name can be interpreted in the context of the diff document.</t>
-            <t>For unprefixed names in expressions, the rules depart from XPath 1.0 <xref target="W3C.REC-xpath-19991116"/>. XPath 1.0 defines that unprefixed names in expressions match namespace-less names (i.e., there is no "default namespace" for names used in XPath 1.0 expressions). RFC 5261 requires, however, that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate XMPL Patch selectors in the context of the diff document.</t>
+            <t>For unprefixed names in expressions, the rules depart from XPath 1.0 <xref target="W3C.REC-xpath-19991116"/>. XPath 1.0 defines that unprefixed names in expressions match namespace-less names (i.e., there is no "default namespace" for names used in XPath 1.0 expressions). RFC 5261 requires, however, that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate XML Patch selectors in the context of the diff document.</t>
             <t>As an extension of XPath 1.0's simple model, XPath 2.0 <xref target="W3C.REC-xpath20-20101214"/> specifies different processing rules for unprefixed names: They are matched against the URI of the "default element/type namespace", which is defined as part of an expression's static context. In some XPath 2.0 applications, this can be set; XSLT 2.0 for example has the ability to define an "xpath-default-namespace", which then will be used to match unprefixed names in expressions. Thus, by using an XPath 2.0 implementation that allows to set this URI, and setting it to the default namespace of the diff document (or leaving it undefined if there is no such default namespace), it is possible to use an out-of-the-box XPath 2.0 implementation for evaluating XML Patch selectors.</t>
             <t>Please keep in mind, however, that evaluating selectors is only one part of applying patches. When it comes to applying the actual patch operation, neither XPath 1.0 nor XPath 2.0 are sufficient because they do not preserve some of the information from the XML syntax (specifically: namespace declarations) that is required to correctly apply patch operations. The following section describes this issue in more detail.</t>
             <t>Please note that RFC 5261's Section 4.2.2 on namespace matching explains XPath 2.0's rules incorrectly <eref target="http://tools.ietf.org/html/rfc5261#section-4.2.2"/>. For this reason, RFC erratum 3477 is available for Section 4.2.2 of RFC 5261.</t>
@@ -695,7 +725,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
          <figure>
             <artwork type="abnf"><xi:include parse="text" href="&files;/patch-xpath-abnf.txt"/></artwork>
          </figure>
-         <t>Please note that the "ncname" production listed above does not fully capture the constraints of the original XSD-based definition, where it is defined as "\i\c*".</t>
+         <t>Please note that the "ncname" production listed above does not fully capture the constraints of the original XSD-based definition, where it is defined as "\i\c*". DIGIT and DQUOTE are defined by the ABNF specification <xref target="RFC5234"/>.</t>
       </section>
       <section title="Acknowledgements">
          <t>Thanks for comments and suggestions provided by Bas de Bakker, Tony Hansen, Bjoern Hoehrmann, and Julian Reschke.</t>

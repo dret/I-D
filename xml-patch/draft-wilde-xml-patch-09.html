@@ -143,14 +143,14 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">UC Berkeley</td></tr>
-<tr><td class="header">Intended status: Informational</td><td class="header">January 30, 2014</td></tr>
-<tr><td class="header">Expires: August 3, 2014</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Intended status: Informational</td><td class="header">March 25, 2014</td></tr>
+<tr><td class="header">Expires: September 26, 2014</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-08</h1>
+<h1><br />A Media Type for XML Patch Operations<br />draft-wilde-xml-patch-09</h1>
 
 <h3>Abstract</h3>
 
-<p>The XML Patch media type "application/xml-patch+xml" defines an XML document structure for expressing a sequence of patch operations that are applied to an XML document. The XML Patch document format's foundations are defined in RFC 5261, this specification defines a document format and a media type registration, so that XML Patch documents can be labeled with a media type, for example in HTTP conversations.
+<p>The XML Patch document format defines an XML document structure for expressing a sequence of patch operations to be applied to an XML document. The XML Patch document format builds on the foundations defined in RFC 5261. This specification defines the also provides the media type registration "application/xml-patch+xml", to allow the use of XML Patch documents in, for example, HTTP conversations.
 </p>
 <h3>Note to Readers</h3>
 
@@ -173,7 +173,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on August 3, 2014.</p>
+This Internet-Draft will expire on September 26, 2014.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -207,20 +207,22 @@ Security Considerations<br />
 <a href="#change-log">5.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor2">5.1.</a>&nbsp;
-From -07 to -08<br />
+From -08 to -09<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">5.2.</a>&nbsp;
-From -06 to -07<br />
+From -07 to -08<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">5.3.</a>&nbsp;
-From -05 to -06<br />
+From -06 to -07<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">5.4.</a>&nbsp;
-From -04 to -05<br />
+From -05 to -06<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">5.5.</a>&nbsp;
-From -03 to -04<br />
+From -04 to -05<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor7">5.6.</a>&nbsp;
-From -02 to -03<br />
+From -03 to -04<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor8">5.7.</a>&nbsp;
-From -01 to -02<br />
+From -02 to -03<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor9">5.8.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor10">5.9.</a>&nbsp;
 From -00 to -01<br />
 <a href="#rfc.references1">6.</a>&nbsp;
 References<br />
@@ -238,7 +240,7 @@ Patching Namespaces<br />
 Implementation Status<br />
 <a href="#rfc5261-abnf">Appendix&nbsp;C.</a>&nbsp;
 ABNF for RFC 5261<br />
-<a href="#anchor12">Appendix&nbsp;D.</a>&nbsp;
+<a href="#anchor13">Appendix&nbsp;D.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
@@ -315,6 +317,21 @@ Patch Examples</h3>
 </p>
 <p>The two differences are that XML patch documents always use the "patch" element as the document element, and that both the "patch" element as well as the individual operation elements in XML patch documents have to be in the XML namespace with the URI "urn:ietf:rfc:XXXX".
 </p>
+<p>For example, consider the patch example in RFC 5621 "Appendix A.1: Adding an Element". In this example, the patch is applied to the following XML document:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;doc&gt;
+    &lt;note&gt;This is a sample document&lt;/note&gt;
+&lt;/doc&gt;</pre></div>
+<p>The patch example is based on the following patch document (with the element and namespace changes described above):
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;p:patch xmlns:p="urn:ietf:rfc:XXXX"&gt;
+    &lt;p:add sel="doc"&gt;&lt;foo id="ert4773"&gt;This is a new child&lt;/foo&gt;&lt;/p:add&gt;
+&lt;/p:patch&gt;</pre></div>
+<p>Applying the patch results in the following XML document:
+</p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;doc&gt;
+    &lt;note&gt;This is a sample document&lt;/note&gt;
+&lt;foo id="ert4773"&gt;This is a new child&lt;/foo&gt;&lt;/doc&gt;</pre></div>
 <a name="iana"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.3"></a><h3>3.&nbsp;
@@ -392,6 +409,19 @@ Change Log</h3>
 <a name="anchor2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5.1"></a><h3>5.1.&nbsp;
+From -08 to -09</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Editorial changes suggested by Tony Hansen.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor3"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
 From -07 to -08</h3>
 
 <p>
@@ -408,9 +438,9 @@ From -07 to -08</h3>
 </ul><p>
             
 </p>
-<a name="anchor3"></a><br /><hr />
+<a name="anchor4"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.2"></a><h3>5.2.&nbsp;
+<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
 From -06 to -07</h3>
 
 <p>
@@ -427,9 +457,9 @@ From -06 to -07</h3>
 </ul><p>
             
 </p>
-<a name="anchor4"></a><br /><hr />
+<a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.3"></a><h3>5.3.&nbsp;
+<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
 From -05 to -06</h3>
 
 <p>
@@ -446,9 +476,9 @@ From -05 to -06</h3>
 </ul><p>
             
 </p>
-<a name="anchor5"></a><br /><hr />
+<a name="anchor6"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.4"></a><h3>5.4.&nbsp;
+<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
 From -04 to -05</h3>
 
 <p>
@@ -461,9 +491,9 @@ From -04 to -05</h3>
 </ul><p>
             
 </p>
-<a name="anchor6"></a><br /><hr />
+<a name="anchor7"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.5"></a><h3>5.5.&nbsp;
+<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
 From -03 to -04</h3>
 
 <p>
@@ -474,9 +504,9 @@ From -03 to -04</h3>
 </ul><p>
             
 </p>
-<a name="anchor7"></a><br /><hr />
+<a name="anchor8"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.6"></a><h3>5.6.&nbsp;
+<a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
 From -02 to -03</h3>
 
 <p>
@@ -489,9 +519,9 @@ From -02 to -03</h3>
 </ul><p>
             
 </p>
-<a name="anchor8"></a><br /><hr />
+<a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.7"></a><h3>5.7.&nbsp;
+<a name="rfc.section.5.8"></a><h3>5.8.&nbsp;
 From -01 to -02</h3>
 
 <p>
@@ -504,9 +534,9 @@ From -01 to -02</h3>
 </ul><p>
             
 </p>
-<a name="anchor9"></a><br /><hr />
+<a name="anchor10"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.5.8"></a><h3>5.8.&nbsp;
+<a name="rfc.section.5.9"></a><h3>5.9.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -538,6 +568,8 @@ References</h3>
 <td class="author-text">Murata, M., St. Laurent, S., and D. Kohn, &ldquo;<a href="http://tools.ietf.org/html/rfc3023">XML Media Types</a>,&rdquo; RFC&nbsp;3023, January&nbsp;2001 (<a href="http://www.rfc-editor.org/rfc/rfc3023.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC3470">[RFC3470]</a></td>
 <td class="author-text"><a href="mailto:shollenbeck@verisign.com">Hollenbeck, S.</a>, <a href="mailto:mrose@dbc.mtview.ca.us">Rose, M.</a>, and <a href="mailto:LMM@acm.org">L. Masinter</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc3470">Guidelines for the Use of Extensible Markup Language (XML) within IETF Protocols</a>,&rdquo; BCP&nbsp;70, RFC&nbsp;3470, January&nbsp;2003 (<a href="http://www.rfc-editor.org/rfc/rfc3470.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc3470.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc3470.xml">XML</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC5234">[RFC5234]</a></td>
+<td class="author-text">Crocker, D. and P. Overell, &ldquo;<a href="http://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>,&rdquo; STD&nbsp;68, RFC&nbsp;5234, January&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5234.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5261">[RFC5261]</a></td>
 <td class="author-text">Urpalainen, J., &ldquo;<a href="http://tools.ietf.org/html/rfc5261">An Extensible Markup Language (XML) Patch Operations Framework Utilizing XML Path Language (XPath) Selectors</a>,&rdquo; RFC&nbsp;5261, September&nbsp;2008 (<a href="http://www.rfc-editor.org/rfc/rfc5261.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC6838">[RFC6838]</a></td>
@@ -573,7 +605,7 @@ References</h3>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Implementation Hints</h3>
 
-<p>This section is informative. It described some issues that might be interesting for implementers, but it might also be interesting for users of XML Patch that want to understand some of the differences between standard XPath 1.0 processing, and the processing model of selectors in RFC 5261.
+<p>This section is informative. It describes some issues that might be interesting for implementers, but it might also be interesting for users of XML Patch that want to understand some of the differences between standard XPath 1.0 processing, and the processing model of selectors in RFC 5261.
 </p>
 <p>Specifically, the issues described in the following two sections have been identified as technical issues with RFC 5261, and have been filed as errata. Implementers interested in implementing XML Patch are encouraged to take those errata into account when implementing XML patch documents. The issue about "Matching Namespaces" described in <a class='info' href='#namespace-matching'>Appendix&nbsp;A.1<span> (</span><span class='info'>Matching Namespaces</span><span>)</span></a> has been filed as RFC erratum 3477. The issue about "Patching Namespaces" described in <a class='info' href='#namespace-patching'>Appendix&nbsp;A.2<span> (</span><span class='info'>Patching Namespaces</span><span>)</span></a> has been filed as RFC erratum 3478.
 </p>
@@ -584,7 +616,7 @@ Matching Namespaces</h3>
 
 <p>RFC 5261 defines standard rules for matching prefixed names in expressions: Any prefixes are interpreted according to the namespace bindings of the diff document (the document that the expression is applied against). This means that each prefixed name can be interpreted in the context of the diff document.
 </p>
-<p>For unprefixed names in expressions, the rules depart from XPath 1.0 <a class='info' href='#W3C.REC-xpath-19991116'>[W3C.REC&#8209;xpath&#8209;19991116]<span> (</span><span class='info'>DeRose, S. and J. Clark, &ldquo;XML Path Language (XPath) Version 1.0,&rdquo; November&nbsp;1999.</span><span>)</span></a>. XPath 1.0 defines that unprefixed names in expressions match namespace-less names (i.e., there is no "default namespace" for names used in XPath 1.0 expressions). RFC 5261 requires, however, that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate XMPL Patch selectors in the context of the diff document.
+<p>For unprefixed names in expressions, the rules depart from XPath 1.0 <a class='info' href='#W3C.REC-xpath-19991116'>[W3C.REC&#8209;xpath&#8209;19991116]<span> (</span><span class='info'>DeRose, S. and J. Clark, &ldquo;XML Path Language (XPath) Version 1.0,&rdquo; November&nbsp;1999.</span><span>)</span></a>. XPath 1.0 defines that unprefixed names in expressions match namespace-less names (i.e., there is no "default namespace" for names used in XPath 1.0 expressions). RFC 5261 requires, however, that unprefixed names in expressions must use the default namespace of the diff document (if there is one). This means that it is not possible to simply take a selector from a patch document and evaluate it in the context of the diff document according to the rules of XPath 1.0, because this would interpret unprefixed names incorrectly. As a consequence, it is not possible to simply take an XPath 1.0 processor and evaluate XML Patch selectors in the context of the diff document.
 </p>
 <p>As an extension of XPath 1.0's simple model, XPath 2.0 <a class='info' href='#W3C.REC-xpath20-20101214'>[W3C.REC&#8209;xpath20&#8209;20101214]<span> (</span><span class='info'>Boag, S., Berglund, A., Kay, M., Simeon, J., Robie, J., Chamberlin, D., and M. Fernandez, &ldquo;XML Path Language (XPath) 2.0 (Second Edition),&rdquo; December&nbsp;2010.</span><span>)</span></a> specifies different processing rules for unprefixed names: They are matched against the URI of the "default element/type namespace", which is defined as part of an expression's static context. In some XPath 2.0 applications, this can be set; XSLT 2.0 for example has the ability to define an "xpath-default-namespace", which then will be used to match unprefixed names in expressions. Thus, by using an XPath 2.0 implementation that allows to set this URI, and setting it to the default namespace of the diff document (or leaving it undefined if there is no such default namespace), it is possible to use an out-of-the-box XPath 2.0 implementation for evaluating XML Patch selectors.
 </p>
@@ -681,9 +713,9 @@ ABNF for RFC 5261</h3>
               ( <span class='rep'>0*</span>( <cite class='id'>step</cite> "<span class='str'>/</span>" ) <cite class='id'>last</cite> ) )
 <dfn>xpath-add</dfn>  =  [ "<span class='str'>/</span>" ] ( ( <cite class='id'>id</cite> [ <span class='rep'>0*</span>( "<span class='str'>/</span>" <cite class='id'>step</cite> ) "<span class='str'>/</span>" <cite class='id'>child</cite> ] ) /
               ( <span class='rep'>0*</span>( <cite class='id'>step</cite> "<span class='str'>/</span>" ) <cite class='id'>child</cite> ) )</pre></div>
-<p>Please note that the "ncname" production listed above does not fully capture the constraints of the original XSD-based definition, where it is defined as "\i\c*".
+<p>Please note that the "ncname" production listed above does not fully capture the constraints of the original XSD-based definition, where it is defined as "\i\c*". DIGIT and DQUOTE are defined by the ABNF specification <a class='info' href='#RFC5234'>[RFC5234]<span> (</span><span class='info'>Crocker, D. and P. Overell, &ldquo;Augmented BNF for Syntax Specifications: ABNF,&rdquo; January&nbsp;2008.</span><span>)</span></a>.
 </p>
-<a name="anchor12"></a><br /><hr />
+<a name="anchor13"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.D"></a><h3>Appendix D.&nbsp;
 Acknowledgements</h3>
