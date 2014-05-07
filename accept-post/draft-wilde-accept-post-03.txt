@@ -10,7 +10,7 @@ Expires: August 11, 2014                                        E. Wilde
 
 
                       The Accept-Post HTTP Header
-                       draft-wilde-accept-post-02
+                       draft-wilde-accept-post-03
 
 Abstract
 
@@ -73,25 +73,25 @@ Table of Contents
    4.  IANA Considerations  . . . . . . . . . . . . . . . . . . . . .  4
      4.1.  The Accept-Post Response Header  . . . . . . . . . . . . .  4
    5.  Examples . . . . . . . . . . . . . . . . . . . . . . . . . . .  4
-     5.1.  Atom Publishing Protocol . . . . . . . . . . . . . . . . .  4
+     5.1.  Atom Publishing Protocol . . . . . . . . . . . . . . . . .  5
      5.2.  Linked Data Platform . . . . . . . . . . . . . . . . . . .  5
      5.3.  Additional Information in Error Responses  . . . . . . . .  5
-   6.  Implementation Status  . . . . . . . . . . . . . . . . . . . .  5
+   6.  Implementation Status  . . . . . . . . . . . . . . . . . . . .  6
      6.1.  Eclipse Lyo  . . . . . . . . . . . . . . . . . . . . . . .  6
      6.2.  RWW.I/O  . . . . . . . . . . . . . . . . . . . . . . . . .  7
-     6.3.  Tivoli Workload Automation . . . . . . . . . . . . . . . .  7
+     6.3.  Tivoli Workload Automation . . . . . . . . . . . . . . . .  8
      6.4.  Jazz for Service Management  . . . . . . . . . . . . . . .  8
    7.  Security Considerations  . . . . . . . . . . . . . . . . . . .  9
    8.  Open Issues  . . . . . . . . . . . . . . . . . . . . . . . . .  9
-   9.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . .  9
-     9.1.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . .  9
-     9.2.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . . 10
+   9.  Change Log . . . . . . . . . . . . . . . . . . . . . . . . . . 10
+     9.1.  From -02 to -03  . . . . . . . . . . . . . . . . . . . . . 10
+     9.2.  From -01 to -02  . . . . . . . . . . . . . . . . . . . . . 10
+     9.3.  From -00 to -01  . . . . . . . . . . . . . . . . . . . . . 10
    10. References . . . . . . . . . . . . . . . . . . . . . . . . . . 10
      10.1. Normative References . . . . . . . . . . . . . . . . . . . 10
-     10.2. Informative References . . . . . . . . . . . . . . . . . . 10
-   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 11
+     10.2. Informative References . . . . . . . . . . . . . . . . . . 11
+   Appendix A.  Acknowledgements  . . . . . . . . . . . . . . . . . . 12
    Authors' Addresses . . . . . . . . . . . . . . . . . . . . . . . . 12
-
 
 
 
@@ -144,8 +144,8 @@ Internet-Draft                 Accept-Post                 February 2014
    header indicates that this specific format is allowed on the resource
    identified by the Request-URI.
 
-   The syntax for Accept-Post headers, using the ABNF syntax defined in
-   Section 5.3.2 of the revised version of HTTP/1.1
+   The syntax for Accept-Post headers, using the ABNF [RFC5234] syntax
+   defined in Section 5.3.2 of the revised version of HTTP/1.1
    [I-D.ietf-httpbis-p2-semantics], is given by the following
    definition:
    Accept-Post = #( media-range [ accept-params ] )
@@ -174,18 +174,42 @@ Internet-Draft                 Accept-Post                 February 2014
 
 4.  IANA Considerations
 
+   This specification defines a response header field for the Hypertext
+   Transfer Protocol (HTTP) that has been registered with the Internet
+   Assigned Numbers Authority (IANA) following the "Registration
+   Procedures for Message Header Fields" [RFC3864].
+
 4.1.  The Accept-Post Response Header
 
    The Accept-Post response header should be added to the permanent
-   registry of message header fields (see [RFC3864]).  Based on the
+   registry of message header fields (see [RFC3864]), taking into
+   account the guidelines given by the revised version of HTTP/1.1
+   [I-D.ietf-httpbis-p2-semantics].
+
+   Header Field Name: Accept-Post
+
+   Applicable Protocol: Hypertext Transfer Protocol (HTTP)
+
+   Status: Standard
+
+   Author/Change controller: IETF
+
+   Specification document(s): RFC XXXX
+
+
+5.  Examples
+
+   Accept-Post extends the way in which interaction information can be
+   exposed in HTTP itself.  The following sections contain some examples
+   how this can be used in concrete HTTP-based services.  Based on the
    first example of AtomPub Section 5.1, when sending a GET request to
    the URI of a collection, the following response could be sent, if the
    server decided to support Accept-Post headers:
    HTTP/1.1 201 OK
-   Date: Fri, 23 Feb 2007 21:17:11 GMT
-   Content-Length: nnn
-   Content-Type: application/atom+xml;type=feed
-   Accept-Post: image/gif, image/jpeg, image/png
+                  Date: Fri, 23 Feb 2007 21:17:11 GMT
+                  Content-Length: nnn
+                  Content-Type: application/atom+xml;type=feed
+                  Accept-Post: image/gif, image/jpeg, image/png
 
    In this response to the GET request of a collection URI, the server
    indicates that this particular collection accepts new entries in the
@@ -194,11 +218,12 @@ Internet-Draft                 Accept-Post                 February 2014
    types.
 
 
-5.  Examples
 
-   Accept-Post extends the way in which interaction information can be
-   exposed in HTTP itself.  The following sections contain some examples
-   how this can be used in concrete HTTP-based services.
+
+Arwe, et al.             Expires August 11, 2014                [Page 4]
+
+Internet-Draft                 Accept-Post                 February 2014
+
 
 5.1.  Atom Publishing Protocol
 
@@ -217,14 +242,6 @@ Internet-Draft                 Accept-Post                 February 2014
    of the "POST to Create" model of AtomPub, and makes it easier for
    clients to find out about the capabilities of a specific collection.
 
-
-
-
-Arwe, et al.             Expires August 11, 2014                [Page 4]
-
-Internet-Draft                 Accept-Post                 February 2014
-
-
    While the AtomPub protocol cannot be changed retroactively, this
    additional way of exposing interaction guidance could make it easier
    for clients to interact with AtomPub services that do support the
@@ -235,7 +252,7 @@ Internet-Draft                 Accept-Post                 February 2014
 
 5.2.  Linked Data Platform
 
-   The Linked Data Platform (LDP) [W3C.WD-ldp-20130730] describes a set
+   The Linked Data Platform (LDP) [W3C.WD-ldp-20140311] describes a set
    of best practices and simple approach for a read-write Linked Data
    architecture, based on HTTP access to Web resources that describe
    their state using the RDF data model.  LDP defines LDP Containers
@@ -256,6 +273,14 @@ Internet-Draft                 Accept-Post                 February 2014
    the server to use Accept-Post to indicate the supported media types.
    These can be specified using a 415 (Unsupported Media Type) response
    when the client sends a POST document format that the server does not
+
+
+
+Arwe, et al.             Expires August 11, 2014                [Page 5]
+
+Internet-Draft                 Accept-Post                 February 2014
+
+
    support for the resource identified by the Request-URI.  Such a
    response then MAY include an Accept-Post response header notify the
    client what POST document media types are supported.
@@ -273,14 +298,6 @@ Internet-Draft                 Accept-Post                 February 2014
    Note to RFC Editor: Please remove this section before publication.
 
    This section records the status of known implementations of the
-
-
-
-Arwe, et al.             Expires August 11, 2014                [Page 5]
-
-Internet-Draft                 Accept-Post                 February 2014
-
-
    protocol defined by this specification at the time of posting of this
    Internet-Draft, and is based on a proposal described in RFC 6982
    [RFC6982].  The description of implementations in this section is
@@ -312,6 +329,14 @@ Internet-Draft                 Accept-Post                 February 2014
       JAX-RS 2.0 and Apache Jena.  The goals of this reference
       implementation is to experiment with validating the concepts in
       the specification and understanding what a SDK might look like to
+
+
+
+Arwe, et al.             Expires August 11, 2014                [Page 6]
+
+Internet-Draft                 Accept-Post                 February 2014
+
+
       build LDP-compliant servers.  Additional goal is to validate the
       approach for usage in OSLC4J SDK for building OSLC [5] clients and
       servers.
@@ -329,13 +354,6 @@ Internet-Draft                 Accept-Post                 February 2014
       trivial using JAX-RS 2.0 mechanism using a ContainerResponseFilter
       on all responses.  More details about this approach are described
       in this blog post [8].
-
-
-
-Arwe, et al.             Expires August 11, 2014                [Page 6]
-
-Internet-Draft                 Accept-Post                 February 2014
-
 
       Contact: Steve Speicher <sspeiche@gmail.com>
 
@@ -366,6 +384,15 @@ Internet-Draft                 Accept-Post                 February 2014
       Accept-Post header like this: curl -v -X OPTIONS -H "Accept: text/
       turtle" https://deiu.rww.io/public/
 
+
+
+
+
+Arwe, et al.             Expires August 11, 2014                [Page 7]
+
+Internet-Draft                 Accept-Post                 February 2014
+
+
       Licensing: MIT license.  Source code is available on GitHub [10].
 
       Implementation Experience: Implementing current LDP features in
@@ -385,14 +412,6 @@ Internet-Draft                 Accept-Post                 February 2014
       Description: An existing scheduling product that already
       implements the OSLC Automation specification [13] (both client and
       server roles), including creation factories for Automation
-
-
-
-Arwe, et al.             Expires August 11, 2014                [Page 7]
-
-Internet-Draft                 Accept-Post                 February 2014
-
-
       Requests that accept HTTP POST requests.  Since OSLC Automation
       offers no programmatic way for clients to know which media types
       are supported by the server, clients are limited in practice to
@@ -421,6 +440,15 @@ Internet-Draft                 Accept-Post                 February 2014
 
       Name: Jazz for Service Management Registry Services
 
+
+
+
+
+Arwe, et al.             Expires August 11, 2014                [Page 8]
+
+Internet-Draft                 Accept-Post                 February 2014
+
+
       Description: An existing component bundled with multiple existing
       Cloud and Smarter Infrastructure (formerly branded as Tivoli)
       products.  It already supports multiple resource collections that
@@ -441,13 +469,6 @@ Internet-Draft                 Accept-Post                 February 2014
       Implementation Experience: Experience is only from the server
       perspective of generating the HTTP response header.  It was easy
       to add a new header using JAX-RS annotations.
-
-
-
-Arwe, et al.             Expires August 11, 2014                [Page 8]
-
-Internet-Draft                 Accept-Post                 February 2014
-
 
       Contact: John Arwe <johnarwe@us.ibm.com>
 
@@ -476,6 +497,14 @@ Internet-Draft                 Accept-Post                 February 2014
       specified media types, which is what the Accept-Patch header field
       is doing.  This latter solution is more constrained, and fails to
       address some uses cases, such as AtomPub's way of exposing
+
+
+
+Arwe, et al.             Expires August 11, 2014                [Page 9]
+
+Internet-Draft                 Accept-Post                 February 2014
+
+
       collection support for POST requests.
 
    o  While "accept-post" is currently defined in the "HTTP Link Hints"
@@ -489,7 +518,11 @@ Internet-Draft                 Accept-Post                 February 2014
 
    Note to RFC Editor: Please remove this section before publication.
 
-9.1.  From -01 to -02
+9.1.  From -02 to -03
+
+   o  Adding reference to RFC 5234 (ABNF).
+
+9.2.  From -01 to -02
 
    o  Added header field example.
 
@@ -497,15 +530,7 @@ Internet-Draft                 Accept-Post                 February 2014
 
    o  Adding more entries to the "Implementation Status" section.
 
-
-
-
-Arwe, et al.             Expires August 11, 2014                [Page 9]
-
-Internet-Draft                 Accept-Post                 February 2014
-
-
-9.2.  From -00 to -01
+9.3.  From -00 to -01
 
    o  Changed ABNF for header field from RFC 2616 to HTTPbis convention
       (only specify the header field value grammar).
@@ -528,6 +553,14 @@ Internet-Draft                 Accept-Post                 February 2014
               Transfer Protocol -- HTTP/1.1", RFC 2616, June 1999.
 
    [RFC3864]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
+
+
+
+Arwe, et al.             Expires August 11, 2014               [Page 10]
+
+Internet-Draft                 Accept-Post                 February 2014
+
+
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               September 2004.
 
@@ -550,26 +583,21 @@ Internet-Draft                 Accept-Post                 February 2014
    [RFC5023]  Gregorio, J. and B. de hOra, "The Atom Publishing
               Protocol", RFC 5023, October 2007.
 
+   [RFC5234]  Crocker, D. and P. Overell, "Augmented BNF for Syntax
+              Specifications: ABNF", STD 68, RFC 5234, January 2008.
+
    [RFC5789]  Dusseault, L. and J. Snell, "PATCH Method for HTTP",
               RFC 5789, March 2010.
-
-
-
-
-Arwe, et al.             Expires August 11, 2014               [Page 10]
-
-Internet-Draft                 Accept-Post                 February 2014
-
 
    [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", RFC 6982,
               July 2013.
 
-   [W3C.WD-ldp-20130730]
+   [W3C.WD-ldp-20140311]
               Speicher, S., Arwe, J., and A. Malhotra, "Linked Data
               Platform 1.0", World Wide Web Consortium LastCall WD-ldp-
-              20130730, July 2013,
-              <http://www.w3.org/TR/2013/WD-ldp-20130730>.
+              20140311, March 2014,
+              <http://www.w3.org/TR/2014/WD-ldp-20140311>.
 
 URIs
 
@@ -580,6 +608,14 @@ URIs
    [3]   <http://eclipse.org/lyo>
 
    [4]   <http://wiki.eclipse.org/Lyo/BuildLDPSample>
+
+
+
+
+Arwe, et al.             Expires August 11, 2014               [Page 11]
+
+Internet-Draft                 Accept-Post                 February 2014
+
 
    [5]   <http://open-services.net>
 
@@ -608,15 +644,7 @@ Appendix A.  Acknowledgements
    Thanks for comments and suggestions provided by Julian Reschke.
 
    This work has been done in the context of the W3C Linked Data
-   Platform Working Group (LDPWG) [W3C.WD-ldp-20130730]; thanks for
-
-
-
-Arwe, et al.             Expires August 11, 2014               [Page 11]
-
-Internet-Draft                 Accept-Post                 February 2014
-
-
+   Platform Working Group (LDPWG) [W3C.WD-ldp-20140311]; thanks for
    comments and suggestions provided by the working group as a whole.
 
 
@@ -632,6 +660,17 @@ Authors' Addresses
    IBM
 
    Email: sspeiche@us.ibm.com
+
+
+
+
+
+
+
+
+Arwe, et al.             Expires August 11, 2014               [Page 12]
+
+Internet-Draft                 Accept-Post                 February 2014
 
 
    Erik Wilde
@@ -668,5 +707,22 @@ Authors' Addresses
 
 
 
-Arwe, et al.             Expires August 11, 2014               [Page 12]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Arwe, et al.             Expires August 11, 2014               [Page 13]
 
