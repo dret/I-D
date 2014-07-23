@@ -2,7 +2,7 @@
 <html lang="en"><head><title>Profile Support for the Atom Syndication Format</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="description" content="Profile Support for the Atom Syndication Format">
-<meta name="generator" content="xml2rfc v1.36 (http://xml.resource.org/)">
+<meta name="generator" content="xml2rfc v1.37pre1 (http://xml.resource.org/)">
 <style type='text/css'><!--
         body {
                 font-family: verdana, charcoal, helvetica, arial, sans-serif;
@@ -143,11 +143,11 @@
 <table summary="layout" width="66%" border="0" cellpadding="0" cellspacing="0"><tr><td><table summary="layout" width="100%" border="0" cellpadding="2" cellspacing="1">
 <tr><td class="header">Network Working Group</td><td class="header">E. Wilde</td></tr>
 <tr><td class="header">Internet-Draft</td><td class="header">UC Berkeley</td></tr>
-<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4287'>4287</a> (if&nbsp;approved)</td><td class="header">January 22, 2014</td></tr>
+<tr><td class="header">Updates: <a href='http://tools.ietf.org/html/rfc4287'>4287</a> (if&nbsp;approved)</td><td class="header">July 23, 2014</td></tr>
 <tr><td class="header">Intended status: Informational</td><td class="header">&nbsp;</td></tr>
-<tr><td class="header">Expires: July 26, 2014</td><td class="header">&nbsp;</td></tr>
+<tr><td class="header">Expires: January 24, 2015</td><td class="header">&nbsp;</td></tr>
 </table></td></tr></table>
-<h1><br />Profile Support for the Atom Syndication Format<br />draft-wilde-atom-profile-03</h1>
+<h1><br />Profile Support for the Atom Syndication Format<br />draft-wilde-atom-profile-04</h1>
 
 <h3>Abstract</h3>
 
@@ -174,7 +174,7 @@ and may be updated, replaced, or obsoleted by other documents at any time.
 It is inappropriate to use Internet-Drafts as reference material or to cite
 them other than as &ldquo;work in progress.&rdquo;</p>
 <p>
-This Internet-Draft will expire on July 26, 2014.</p>
+This Internet-Draft will expire on January 24, 2015.</p>
 
 <h3>Copyright Notice</h3>
 <p>
@@ -209,6 +209,8 @@ Profile Parameter Definition<br />
 IANA Considerations<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#atom-media-type">4.1.</a>&nbsp;
 Atom Media Type application/atom+xml<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#atompub-profile-uri">4.2.</a>&nbsp;
+AtomPub Profile URI<br />
 <a href="#implementation-status">5.</a>&nbsp;
 Implementation Status<br />
 <a href="#security-considerations">6.</a>&nbsp;
@@ -218,10 +220,12 @@ Open Issues<br />
 <a href="#anchor2">8.</a>&nbsp;
 Change Log<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor3">8.1.</a>&nbsp;
-From -02 to -03<br />
+From -03 to -04<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor4">8.2.</a>&nbsp;
-From -01 to -02<br />
+From -02 to -03<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor5">8.3.</a>&nbsp;
+From -01 to -02<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#anchor6">8.4.</a>&nbsp;
 From -00 to -01<br />
 <a href="#rfc.references1">9.</a>&nbsp;
 References<br />
@@ -229,7 +233,7 @@ References<br />
 Normative References<br />
 &nbsp;&nbsp;&nbsp;&nbsp;<a href="#rfc.references2">9.2.</a>&nbsp;
 Informative References<br />
-<a href="#anchor8">Appendix&nbsp;A.</a>&nbsp;
+<a href="#anchor9">Appendix&nbsp;A.</a>&nbsp;
 Acknowledgements<br />
 <a href="#rfc.authors">&#167;</a>&nbsp;
 Author's Address<br />
@@ -287,7 +291,7 @@ Profile URI for AtomPub</h3>
 </p>
 <p>When requesting a collection URI from an AtomPub server, clients will GET a feed document with no indication that the server supports AtomPub. Clients are supposed to have knowledge about AtomPub support, so that they know whether POST requests to the collection URI might succeed. It is possible that clients send an OPTIONS request to the collection URI to find out about the allowed methods, but this requires an additional roundtrip, and since the AtomPub spec does not explicitly mention OPTIONS, it may be the case that implementations do not generally support this discovery mechanism.
 </p>
-<p>To make AtomPub support of a collection explicit in a feed document, the profile URI urn:ietf:rfc:5023 is suggested. When including this profile URI in a feed, a server indicates AtomPub support:
+<p>To make AtomPub support of a collection explicit in a feed document, the profile URI urn:ietf:rfc:5023 is defined. When including this profile URI in a feed, a server indicates AtomPub support:
 </p><div style='display: table; width: 0; margin-left: 3em; margin-right: auto'><pre>&lt;?xml version="1.0" ?&gt;
 &lt;feed xmlns="http://www.w3.org/2005/Atom"&gt;
   &lt;link rel="profile" href="urn:ietf:rfc:5023"&gt;</pre></div>
@@ -327,6 +331,27 @@ Optional Parameters</h3>
 
 <p>profile: This parameter indicates that one or more profiles are used in the feed, according to the definition of profiles in <a class='info' href='#RFC6906'>[RFC6906]<span> (</span><span class='info'>Wilde, E., &ldquo;The 'profile' Link Relation Type,&rdquo; March&nbsp;2013.</span><span>)</span></a>. The parameter syntax is specified in <a class='info' href='#profile-definition'>Section&nbsp;3<span> (</span><span class='info'>Profile Parameter Definition</span><span>)</span></a> of RFC XXXX
 </p>
+<a name="atompub-profile-uri"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.4.2"></a><h3>4.2.&nbsp;
+AtomPub Profile URI</h3>
+
+<p>The AtomPub Profile URI urn:ietf:rfc:5023 should be added to the registry of Profile URIs established by <a class='info' href='#RFC7284'>[RFC7284]<span> (</span><span class='info'>Lanthaler, M., &ldquo;The Profile URI Registry,&rdquo; June&nbsp;2014.</span><span>)</span></a>. The registration should use the following information:
+</p>
+<p>
+               </p>
+<blockquote class="text">
+<p>Profile URI: urn:ietf:rfc:5023
+</p>
+<p>Common Name: Atom Publishing Protocol (AtomPub) Profile
+</p>
+<p>Description: When using this profile URI for a resource using the application/atom+xml media type, a server indicates AtomPub support.
+</p>
+<p>Reference: <a class='info' href='#RFC5023'>[RFC5023]<span> (</span><span class='info'>Gregorio, J. and B. de hOra, &ldquo;The Atom Publishing Protocol,&rdquo; October&nbsp;2007.</span><span>)</span></a> and RFC XXXX
+</p>
+</blockquote><p>
+            
+</p>
 <a name="implementation-status"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.5"></a><h3>5.&nbsp;
@@ -364,7 +389,7 @@ Open Issues</h3>
 <p>
             </p>
 <ul class="text">
-<li>Monitor how the proposal for a "Profile URI Registry" <a class='info' href='#I-D.lanthaler-profile-registry'>[I&#8209;D.lanthaler&#8209;profile&#8209;registry]<span> (</span><span class='info'>Lanthaler, M., &ldquo;The IETF Profile URI Registry,&rdquo; June&nbsp;2013.</span><span>)</span></a> is coming along. If it is successful, then the proposed AtomPub Profile URI <a class='info' href='#example-atompub'>Section&nbsp;2.3<span> (</span><span class='info'>Profile URI for AtomPub</span><span>)</span></a> should be included in the IANA Considerations <a class='info' href='#iana'>Section&nbsp;4<span> (</span><span class='info'>IANA Considerations</span><span>)</span></a>.
+<li>Are there other Atom profile URIs that could be registered as a part of this draft?
 </li>
 </ul><p>
          
@@ -379,6 +404,21 @@ Change Log</h3>
 <a name="anchor3"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.8.1"></a><h3>8.1.&nbsp;
+From -03 to -04</h3>
+
+<p>
+               </p>
+<ul class="text">
+<li>Moved "The Profile URI Registry" from I-D to RFC.
+</li>
+<li>Adding AtomPub Profile registration according to <a class='info' href='#RFC7284'>[RFC7284]<span> (</span><span class='info'>Lanthaler, M., &ldquo;The Profile URI Registry,&rdquo; June&nbsp;2014.</span><span>)</span></a>.
+</li>
+</ul><p>
+            
+</p>
+<a name="anchor4"></a><br /><hr />
+<table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
+<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
 From -02 to -03</h3>
 
 <p>
@@ -389,9 +429,9 @@ From -02 to -03</h3>
 </ul><p>
             
 </p>
-<a name="anchor4"></a><br /><hr />
+<a name="anchor5"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.2"></a><h3>8.2.&nbsp;
+<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
 From -01 to -02</h3>
 
 <p>
@@ -412,9 +452,9 @@ From -01 to -02</h3>
 </ul><p>
             
 </p>
-<a name="anchor5"></a><br /><hr />
+<a name="anchor6"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
-<a name="rfc.section.8.3"></a><h3>8.3.&nbsp;
+<a name="rfc.section.8.4"></a><h3>8.4.&nbsp;
 From -00 to -01</h3>
 
 <p>
@@ -446,14 +486,14 @@ References</h3>
 <td class="author-text"><a href="mailto:mnot@pobox.com">Nottingham, M., Ed.</a> and <a href="mailto:rfsayre@boswijck.com">R. Sayre, Ed.</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc4287">The Atom Syndication Format</a>,&rdquo; RFC&nbsp;4287, December&nbsp;2005 (<a href="http://www.rfc-editor.org/rfc/rfc4287.txt">TXT</a>, <a href="http://xml.resource.org/public/rfc/html/rfc4287.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc4287.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC6906">[RFC6906]</a></td>
 <td class="author-text">Wilde, E., &ldquo;<a href="http://tools.ietf.org/html/rfc6906">The 'profile' Link Relation Type</a>,&rdquo; RFC&nbsp;6906, March&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6906.txt">TXT</a>).</td></tr>
+<tr><td class="author-text" valign="top"><a name="RFC7284">[RFC7284]</a></td>
+<td class="author-text">Lanthaler, M., &ldquo;<a href="http://tools.ietf.org/html/rfc7284">The Profile URI Registry</a>,&rdquo; RFC&nbsp;7284, June&nbsp;2014 (<a href="http://www.rfc-editor.org/rfc/rfc7284.txt">TXT</a>).</td></tr>
 </table>
 
 <a name="rfc.references2"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <h3>9.2.&nbsp;Informative References</h3>
 <table width="99%" border="0">
-<tr><td class="author-text" valign="top"><a name="I-D.lanthaler-profile-registry">[I-D.lanthaler-profile-registry]</a></td>
-<td class="author-text">Lanthaler, M., &ldquo;<a href="http://tools.ietf.org/html/draft-lanthaler-profile-registry-02">The IETF Profile URI Registry</a>,&rdquo; draft-lanthaler-profile-registry-02 (work in progress), June&nbsp;2013 (<a href="http://www.ietf.org/internet-drafts/draft-lanthaler-profile-registry-02.txt">TXT</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC2616">[RFC2616]</a></td>
 <td class="author-text"><a href="mailto:fielding@ics.uci.edu">Fielding, R.</a>, <a href="mailto:jg@w3.org">Gettys, J.</a>, <a href="mailto:mogul@wrl.dec.com">Mogul, J.</a>, <a href="mailto:frystyk@w3.org">Frystyk, H.</a>, <a href="mailto:masinter@parc.xerox.com">Masinter, L.</a>, <a href="mailto:paulle@microsoft.com">Leach, P.</a>, and <a href="mailto:timbl@w3.org">T. Berners-Lee</a>, &ldquo;<a href="http://tools.ietf.org/html/rfc2616">Hypertext Transfer Protocol -- HTTP/1.1</a>,&rdquo; RFC&nbsp;2616, June&nbsp;1999 (<a href="http://www.rfc-editor.org/rfc/rfc2616.txt">TXT</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.ps">PS</a>, <a href="http://www.rfc-editor.org/rfc/rfc2616.pdf">PDF</a>, <a href="http://xml.resource.org/public/rfc/html/rfc2616.html">HTML</a>, <a href="http://xml.resource.org/public/rfc/xml/rfc2616.xml">XML</a>).</td></tr>
 <tr><td class="author-text" valign="top"><a name="RFC5023">[RFC5023]</a></td>
@@ -464,7 +504,7 @@ References</h3>
 <td class="author-text">Sheffer, Y. and A. Farrel, &ldquo;<a href="http://tools.ietf.org/html/rfc6982">Improving Awareness of Running Code: The Implementation Status Section</a>,&rdquo; RFC&nbsp;6982, July&nbsp;2013 (<a href="http://www.rfc-editor.org/rfc/rfc6982.txt">TXT</a>).</td></tr>
 </table>
 
-<a name="anchor8"></a><br /><hr />
+<a name="anchor9"></a><br /><hr />
 <table summary="layout" cellpadding="0" cellspacing="2" class="TOCbug" align="right"><tr><td class="TOCbug"><a href="#toc">&nbsp;TOC&nbsp;</a></td></tr></table>
 <a name="rfc.section.A"></a><h3>Appendix A.&nbsp;
 Acknowledgements</h3>

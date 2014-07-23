@@ -16,7 +16,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="22" month="July" year="2014"/>
+      <date day="23" month="July" year="2014"/>
       <abstract>
          <t>The Atom syndication format is a generic XML format for representing collections. Profiles are one way how Atom feeds can indicate that they support specific extensions. To make this support visible on the media type level, this specification adds an optional "profile" media type parameter to the Atom media type. This allows profiles to become visible at the media type level, so that servers as well as clients can indicate support for specific Atom profiles in conversations, for example when communicating via HTTP. This specification updates RFC 4287 by adding the "profile" media type parameter to the application/atom+xml media type registration.</t>
       </abstract>
@@ -47,7 +47,7 @@
          <section title="Profile URI for AtomPub" anchor="example-atompub">
             <t>The Atom Publishing Protocol (AtomPub) <xref target="RFC5023"/> builds on Atom and defines additional interactions with feeds, such as the ability to POST an entry to a collection URI as a request to create a new entry in that collection. AtomPub uses Atom's media type for representing feeds and entries (and introduces its own media type for representing category and service documents, but these are not relevant for this discussion).</t>
             <t>When requesting a collection URI from an AtomPub server, clients will GET a feed document with no indication that the server supports AtomPub. Clients are supposed to have knowledge about AtomPub support, so that they know whether POST requests to the collection URI might succeed. It is possible that clients send an OPTIONS request to the collection URI to find out about the allowed methods, but this requires an additional roundtrip, and since the AtomPub spec does not explicitly mention OPTIONS, it may be the case that implementations do not generally support this discovery mechanism.</t>
-            <t>To make AtomPub support of a collection explicit in a feed document, the profile URI urn:ietf:rfc:5023 is suggested. When including this profile URI in a feed, a server indicates AtomPub support:</t>
+            <t>To make AtomPub support of a collection explicit in a feed document, the profile URI urn:ietf:rfc:5023 is defined. When including this profile URI in a feed, a server indicates AtomPub support:</t>
             <figure>
                <artwork type="xml"><![CDATA[<?xml version="1.0" ?>
 <feed xmlns="http://www.w3.org/2005/Atom">
@@ -73,6 +73,17 @@ profile-URI   = URI</artwork>
             <section title="Optional Parameters">
                <t>profile: This parameter indicates that one or more profiles are used in the feed, according to the definition of profiles in <xref target="RFC6906"/>. The parameter syntax is specified in <xref target="profile-definition"/> of RFC XXXX</t>
             </section>
+         </section>
+         <section title="AtomPub Profile URI" anchor="atompub-profile-uri">
+            <t>The AtomPub Profile URI urn:ietf:rfc:5023 should be added to the registry of Profile URIs established by <xref target="RFC7284"/>. The registration should use the following information:</t>
+            <t>
+               <list>
+                  <t>Profile URI: urn:ietf:rfc:5023</t>
+                  <t>Common Name: Atom Publishing Protocol (AtomPub) Profile</t>
+                  <t>Description: When using this profile URI for a resource using the application/atom+xml media type, a server indicates AtomPub support.</t>
+                  <t>Reference: <xref target="RFC5023"/> and RFC XXXX</t>
+               </list>
+            </t>
          </section>
       </section>
       <section title="Implementation Status" anchor="implementation-status">
@@ -103,7 +114,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
          <t>Note to RFC Editor: Please remove this section before publication.</t>
          <t>
             <list style="symbols">
-               <t>Monitor how the proposal for a "Profile URI Registry" <xref target="I-D.lanthaler-profile-registry"/> is coming along. If it is successful, then the proposed AtomPub Profile URI <xref target="example-atompub"/> should be included in the IANA Considerations <xref target="iana"/>.</t>
+               <t>Are there other Atom profile URIs that could be registered as a part of this draft?</t>
             </list>
          </t>
       </section>
@@ -113,6 +124,7 @@ RFC 6982: This section, if it appears, should be located just before the "Securi
             <t>
                <list style="symbols">
                   <t>Moved "The Profile URI Registry" from I-D to RFC.</t>
+                  <t>Adding AtomPub Profile registration according to <xref target="RFC7284"/>.</t>
                </list>
             </t>
          </section>

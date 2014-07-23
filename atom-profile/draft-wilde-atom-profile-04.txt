@@ -3,13 +3,13 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                               UC Berkeley
-Updates: 4287 (if approved)                             January 22, 2014
+Updates: 4287 (if approved)                                July 23, 2014
 Intended status: Informational
-Expires: July 26, 2014
+Expires: January 24, 2015
 
 
             Profile Support for the Atom Syndication Format
-                      draft-wilde-atom-profile-03
+                      draft-wilde-atom-profile-04
 
 Abstract
 
@@ -45,16 +45,16 @@ Status of this Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 26, 2014.
+   This Internet-Draft will expire on January 24, 2015.
 
 Copyright Notice
 
 
 
 
-Wilde                     Expires July 26, 2014                 [Page 1]
+Wilde                   Expires January 24, 2015                [Page 1]
 
-Internet-Draft                Atom Profiles                 January 2014
+Internet-Draft                Atom Profiles                    July 2014
 
 
    Copyright (c) 2014 IETF Trust and the persons identified as the
@@ -81,16 +81,18 @@ Table of Contents
    3.  Profile Parameter Definition  . . . . . . . . . . . . . . . . . 5
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . . . 6
      4.1.  Atom Media Type application/atom+xml  . . . . . . . . . . . 6
-   5.  Implementation Status . . . . . . . . . . . . . . . . . . . . . 6
+     4.2.  AtomPub Profile URI . . . . . . . . . . . . . . . . . . . . 6
+   5.  Implementation Status . . . . . . . . . . . . . . . . . . . . . 7
    6.  Security Considerations . . . . . . . . . . . . . . . . . . . . 7
    7.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . . . 7
    8.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . 7
-     8.1.  From -02 to -03 . . . . . . . . . . . . . . . . . . . . . . 7
-     8.2.  From -01 to -02 . . . . . . . . . . . . . . . . . . . . . . 7
-     8.3.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 8
+     8.1.  From -03 to -04 . . . . . . . . . . . . . . . . . . . . . . 8
+     8.2.  From -02 to -03 . . . . . . . . . . . . . . . . . . . . . . 8
+     8.3.  From -01 to -02 . . . . . . . . . . . . . . . . . . . . . . 8
+     8.4.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . . . 8
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . . . 8
      9.1.  Normative References  . . . . . . . . . . . . . . . . . . . 8
-     9.2.  Informative References  . . . . . . . . . . . . . . . . . . 8
+     9.2.  Informative References  . . . . . . . . . . . . . . . . . . 9
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . . . 9
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . . . 9
 
@@ -106,11 +108,9 @@ Table of Contents
 
 
 
-
-
-Wilde                     Expires July 26, 2014                 [Page 2]
+Wilde                   Expires January 24, 2015                [Page 2]
 
-Internet-Draft                Atom Profiles                 January 2014
+Internet-Draft                Atom Profiles                    July 2014
 
 
 1.  Introduction
@@ -164,9 +164,9 @@ Internet-Draft                Atom Profiles                 January 2014
 
 
 
-Wilde                     Expires July 26, 2014                 [Page 3]
+Wilde                   Expires January 24, 2015                [Page 3]
 
-Internet-Draft                Atom Profiles                 January 2014
+Internet-Draft                Atom Profiles                    July 2014
 
 
    "specialization" is useful.  Two examples are intended to illustrate
@@ -220,9 +220,9 @@ Internet-Draft                Atom Profiles                 January 2014
 
 
 
-Wilde                     Expires July 26, 2014                 [Page 4]
+Wilde                   Expires January 24, 2015                [Page 4]
 
-Internet-Draft                Atom Profiles                 January 2014
+Internet-Draft                Atom Profiles                    July 2014
 
 
    to change the semantics of the media type itself, such a decision can
@@ -250,7 +250,7 @@ Internet-Draft                Atom Profiles                 January 2014
    implementations do not generally support this discovery mechanism.
 
    To make AtomPub support of a collection explicit in a feed document,
-   the profile URI urn:ietf:rfc:5023 is suggested.  When including this
+   the profile URI urn:ietf:rfc:5023 is defined.  When including this
    profile URI in a feed, a server indicates AtomPub support:
    <?xml version="1.0" ?>
    <feed xmlns="http://www.w3.org/2005/Atom">
@@ -276,9 +276,9 @@ Internet-Draft                Atom Profiles                 January 2014
 
 
 
-Wilde                     Expires July 26, 2014                 [Page 5]
+Wilde                   Expires January 24, 2015                [Page 5]
 
-Internet-Draft                Atom Profiles                 January 2014
+Internet-Draft                Atom Profiles                    July 2014
 
 
    the <feed> element.
@@ -311,6 +311,31 @@ Internet-Draft                Atom Profiles                 January 2014
    in the feed, according to the definition of profiles in [RFC6906].
    The parameter syntax is specified in Section 3 of RFC XXXX
 
+4.2.  AtomPub Profile URI
+
+   The AtomPub Profile URI urn:ietf:rfc:5023 should be added to the
+   registry of Profile URIs established by [RFC7284].  The registration
+   should use the following information:
+
+      Profile URI: urn:ietf:rfc:5023
+
+      Common Name: Atom Publishing Protocol (AtomPub) Profile
+
+      Description: When using this profile URI for a resource using the
+      application/atom+xml media type, a server indicates AtomPub
+      support.
+
+      Reference: [RFC5023] and RFC XXXX
+
+
+
+
+
+
+Wilde                   Expires January 24, 2015                [Page 6]
+
+Internet-Draft                Atom Profiles                    July 2014
+
 
 5.  Implementation Status
 
@@ -328,14 +353,6 @@ Internet-Draft                Atom Profiles                 January 2014
    intended as, and must not be construed to be, a catalog of available
    implementations or their features.  Readers are advised to note that
    other implementations may exist.
-
-
-
-
-Wilde                     Expires July 26, 2014                 [Page 6]
-
-Internet-Draft                Atom Profiles                 January 2014
-
 
    According to RFC 6982, "this will allow reviewers and working groups
    to assign due consideration to documents that have the benefit of
@@ -357,21 +374,36 @@ Internet-Draft                Atom Profiles                 January 2014
 
    Note to RFC Editor: Please remove this section before publication.
 
-   o  Monitor how the proposal for a "Profile URI Registry"
-      [I-D.lanthaler-profile-registry] is coming along.  If it is
-      successful, then the proposed AtomPub Profile URI Section 2.3
-      should be included in the IANA Considerations Section 4.
+   o  Are there other Atom profile URIs that could be registered as a
+      part of this draft?
 
 
 8.  Change Log
 
    Note to RFC Editor: Please remove this section before publication.
 
-8.1.  From -02 to -03
+
+
+
+
+
+
+Wilde                   Expires January 24, 2015                [Page 7]
+
+Internet-Draft                Atom Profiles                    July 2014
+
+
+8.1.  From -03 to -04
+
+   o  Moved "The Profile URI Registry" from I-D to RFC.
+
+   o  Adding AtomPub Profile registration according to [RFC7284].
+
+8.2.  From -02 to -03
 
    o  Updated author address.
 
-8.2.  From -01 to -02
+8.3.  From -01 to -02
 
    o  Added "Implementation Status" section (Section 5)."
 
@@ -385,20 +417,12 @@ Internet-Draft                Atom Profiles                 January 2014
    o  Added "Open Issues" section (Section 7) and reminder to check the
       progress of the "Profile URI Registry" draft.
 
-
-
-
-Wilde                     Expires July 26, 2014                 [Page 7]
-
-Internet-Draft                Atom Profiles                 January 2014
-
-
    o  Updating "Implementation Status" section to refer to RFC 6982
       [RFC6982].
 
    o  Adding "Security Considerations" section (Section 6)
 
-8.3.  From -00 to -01
+8.4.  From -00 to -01
 
    o  Fixed typos.
 
@@ -417,6 +441,14 @@ Internet-Draft                Atom Profiles                 January 2014
 
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
+
+
+
+Wilde                   Expires January 24, 2015                [Page 8]
+
+Internet-Draft                Atom Profiles                    July 2014
+
+
               RFC 3986, January 2005.
 
    [RFC4287]  Nottingham, M., Ed. and R. Sayre, Ed., "The Atom
@@ -425,12 +457,10 @@ Internet-Draft                Atom Profiles                 January 2014
    [RFC6906]  Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
               March 2013.
 
-9.2.  Informative References
+   [RFC7284]  Lanthaler, M., "The Profile URI Registry", RFC 7284,
+              June 2014.
 
-   [I-D.lanthaler-profile-registry]
-              Lanthaler, M., "The IETF Profile URI Registry",
-              draft-lanthaler-profile-registry-02 (work in progress),
-              June 2013.
+9.2.  Informative References
 
    [RFC2616]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H.,
               Masinter, L., Leach, P., and T. Berners-Lee, "Hypertext
@@ -441,14 +471,6 @@ Internet-Draft                Atom Profiles                 January 2014
 
    [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
-
-
-
-Wilde                     Expires July 26, 2014                 [Page 8]
-
-Internet-Draft                Atom Profiles                 January 2014
-
-
               RFC 6838, January 2013.
 
    [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
@@ -466,6 +488,21 @@ Appendix A.  Acknowledgements
 
    Thanks for comments and suggestions provided by Markus Lanthaler and
    Peter Rushforth.
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires January 24, 2015                [Page 9]
+
+Internet-Draft                Atom Profiles                    July 2014
 
 
 Author's Address
@@ -500,5 +537,24 @@ Author's Address
 
 
 
-Wilde                     Expires July 26, 2014                 [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires January 24, 2015               [Page 10]
 
