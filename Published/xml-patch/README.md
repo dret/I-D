@@ -1,0 +1,1 @@
+Published as [RFC 7351: "A Media Type for XML Patch Operations"](http://tools.ietf.org/html/rfc7351) (August 2014)
