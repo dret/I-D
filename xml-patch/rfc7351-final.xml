@@ -93,18 +93,9 @@ Perhaps:
 
 -->
 
-<!--[rfced] Please note that we believe the use of "XXXX" in cases
-like the following are intentional.  Please confirm.
-
-Original:
-    An XML patch document always uses a "patch" element in the
-   "urn:ietf:rfc:XXXX" namespace as the document element,...
-
--->
-
- An XML patch document always uses a "patch" element in the "urn:ietf:rfc:XXXX" namespace as the document element, which then contains zero or more patch operation elements, which are also in the "urn:ietf:rfc:XXXX" namespace.</t>
+ An XML patch document always uses a "patch" element in the "urn:ietf:rfc:7351" namespace as the document element, which then contains zero or more patch operation elements, which are also in the "urn:ietf:rfc:7351" namespace.</t>
             <figure title="" align="left" alt="" width="" height="">
-               <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;p:patch xmlns:p="urn:ietf:rfc:XXXX"&gt;
+               <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;p:patch xmlns:p="urn:ietf:rfc:7351"&gt;
     &lt;p:add sel="*" type="@new-attribute"&gt;value&lt;/p:add&gt;
 &lt;/p:patch&gt;</artwork>
             </figure>
@@ -112,7 +103,7 @@ Original:
             <figure title="" align="left" alt="" width="" height="">
                <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;p:patch xmlns="http://example.com/ns1"
          xmlns:y="http://example.com/ns2"
-         xmlns:p="urn:ietf:rfc:XXXX"&gt;
+         xmlns:p="urn:ietf:rfc:7351"&gt;
     &lt;p:add sel="doc/elem[@a='foo']"&gt;
         &lt;!-- This is a new child --&gt;
         &lt;child id="ert4773"&gt;
@@ -127,7 +118,7 @@ Original:
             <t>As this example demonstrates, both the document element "patch" and the patch operation elements are in the same XML namespace. This is the result of RFC 5261 only defining types for the patch operation elements, which then can be reused in schemas to define concrete patch elements.</t>
             <t>RFC 5261 defines XSD <xref target="W3C.REC-xmlschema-1-20041028" pageno="false" format="default"/> for the patch operation types. The following schema for the XML patch media type is based on the types defined in RFC 5261, which are imported as "rfc5261.xsd" in the following schema. The schema defines a "patch" document element, and then allows an unlimited (and possibly empty) sequence of the "add", "remove", and "replace" operation elements, which are directly based on the respective types from the schema defined in RFC 5261.</t>
             <figure title="" align="left" alt="" width="" height="">
-               <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;xs:schema targetNamespace="urn:ietf:rfc:XXXX"
+               <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;xs:schema targetNamespace="urn:ietf:rfc:7351"
            xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
     &lt;xs:import schemaLocation="rfc5261.xsd"/&gt;
     &lt;xs:element name="patch"&gt;
@@ -145,7 +136,7 @@ Original:
          <section title="Patch Examples" anchor="examples" toc="default">
             <t>Since the semantics of the XML patch operations are defined by RFC 5261, please refer to the numerous examples in that specification for more XML patch document examples. All the examples in RFC 5261 can be taken as examples for the XML patch media type, when looking at them with two minor changes in mind.</t>
 
-            <t>The two differences are that XML patch documents always use the "patch" element as the document element and that both the "patch" element and the individual operation elements in XML patch documents have to be in the XML namespace with the URI "urn:ietf:rfc:XXXX".</t>
+            <t>The two differences are that XML patch documents always use the "patch" element as the document element and that both the "patch" element and the individual operation elements in XML patch documents have to be in the XML namespace with the URI "urn:ietf:rfc:7351".</t>
 
             <t>For example, consider the patch example in RFC 5261, Appendix A.1, "Adding an Element". In this example, the patch is applied to the following XML document:</t>
             <figure title="" align="left" alt="" width="" height="">
@@ -157,7 +148,7 @@ Original:
             <t>The patch example is based on the following patch document (with the element and namespace changes described above):</t>
             <figure title="" align="left" alt="" width="" height="">
                <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;p:patch xmlns:p="urn:ietf:rfc:XXXX"&gt;
+&lt;p:patch xmlns:p="urn:ietf:rfc:7351"&gt;
     &lt;p:add sel="doc"&gt;&lt;foo id="ert4773"&gt;This is a new child&lt;/foo&gt;&lt;/p:add&gt;
 &lt;/p:patch&gt;</artwork>
             </figure>
