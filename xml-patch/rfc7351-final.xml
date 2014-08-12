@@ -22,78 +22,25 @@
          </address>
       </author>
       <date month="August" year="2014"/>
-
-<!-- [rfced] Please insert any keywords (beyond those that appear in 
-the title) for use on http://www.rfc-editor.org/search.
--->
-
-<keyword>example</keyword>
-
       <abstract>
          <t>The XML patch document format defines an XML document structure for expressing a sequence of patch operations to be applied to an XML document. The XML patch document format builds on the foundations defined in RFC 5261. This specification also provides the media type registration "application/xml-patch+xml", to allow the use of XML patch documents in, for example, HTTP conversations.</t>
       </abstract>
    </front>
    <middle>
       <section title="Introduction" toc="default">
-         <t>The Extensible Markup Language (XML) <xref target="RFC7303" pageno="false" format="default"/> is a common format for the exchange and storage of structured data. HTTP PATCH <xref target="RFC5789" pageno="false" format="default"/> extends 
-
-<!-- [rfced] RFC 2616 has been obsoleted by RFCs 7230, 7231, 7232,
-7233, 7234, and 7235.  Please let us know which of these newer RFCs
-should be listed in place of RFC 2616. -->
-
-
-
-HTTP <xref target="RFC2616" pageno="false" format="default"/> with a method to perform partial modifications to resources. HTTP PATCH requires that patch documents be sent along with the request, and it is therefore useful for there to be standardized patch document formats (identified by media types) for popular media types.</t>
+         <t>The Extensible Markup Language (XML) <xref target="RFC7303" pageno="false" format="default"/> is a common format for the exchange and storage of structured data. HTTP PATCH <xref target="RFC5789" pageno="false" format="default"/> extends HTTP <xref target="RFC7231" pageno="false" format="default"/> with a method to perform partial modifications to resources. HTTP PATCH requires that patch documents be sent along with the request, and it is therefore useful for there to be standardized patch document formats (identified by media types) for popular media types.</t>
          <t>The XML patch media type "application/xml-patch+xml" is an XML document structure for expressing a sequence of operations to apply to a target XML document, suitable for use with the HTTP PATCH method. Servers can freely choose which patch formats they want to accept, and "application/xml-patch+xml" could be a simple default format that can be used unless a server decides to use a different (maybe more sophisticated) patch format for XML.</t>
 
          <t>The format for patch documents is based on the XML patch framework defined in RFC 5261 <xref target="RFC5261" pageno="false" format="default"/>. While RFC 5261 does define a concrete syntax as well as the media type "application/patch-ops-error+xml" for error documents, it only defines XML Schema (XSD) <xref target="W3C.REC-xmlschema-1-20041028" pageno="false" format="default"/> types for patch operations. The concrete document format and the media type for patch operations are defined in an XSD defined in this specification.</t>
 
          <t>This specification relies on RFC 5261 but also requires that errata reported to date are taken into account. The main reason for the errata is the problematic ways in which RFC 5261 relies on XML Path Language (XPath) as the expression language for selecting the location of a patch, while at the same time XPath's data model does not contain sufficient information to determine whether such a selector indeed can be used for a patch operation or should result in an error. Specifically, the problem occurs with namespaces, where XPath does not expose namespace declaration attributes, while the patch model needs them to determine whether or not a namespace patch is allowed. <xref target="implementation-hints" pageno="false" format="default"/> contains more information about the general problem and errata reports.</t>
-
-<!--[rfced] For the ease of the reader, we have updated the following
-sentence and added reference entries pointing to the mentioned errata
-reports in the Informative References section.  Please let us know any
-objections.
-
-Original:
-Appendix A contains more information about the general problem, and
-the errata themselves are available through the regular IETF errata
-system.
-
-Edited: 
-Appendix A contains more information about the general problem
-and errata reports.
-
--->
-
-
 </section>
 
       <section title="Patch Documents" anchor="patch-documents" toc="default">
          <t>The following sections describe and illustrate the XML patch document format.</t>
          <section title="Patch Document Format" anchor="schema" toc="default">
             <t>The XML patch document format is based on a simple schema that uses a "patch" element as the document element and allows an arbitrary sequence of "add", "remove", and "replace" elements as the children of the document element. These children follow the semantics defined in RFC 5261, which means that each element is treated as an individual patch operation, and the result of each patch operation is a patched XML document that is the target XML document for the next patch operation.</t>
-            <t>The following simple example patch document contains a single patch operation. This operation adds a new attribute called "new&nbhy;attribute" to the document element of the target XML document.
-
-<!--[rfced] May we update the following sentence for clarity (by
-making the first clause use "that" instead of "which")?  If this is
-not the intended meaning, please let us know another way to rephrase.
-
-Original:
-    An XML patch document always uses a "patch" element in the
-   "urn:ietf:rfc:XXXX" namespace as the document element, which then
-   contains zero or more patch operation elements, which are also in the
-   "urn:ietf:rfc:XXXX" namespace.
-
-Perhaps:
-   An XML patch document always uses a "patch" element in the
-   "urn:ietf:rfc:XXXX" namespace as the document element that
-   contains zero or more patch operation elements, which are also in the
-   "urn:ietf:rfc:XXXX" namespace.
-
--->
-
- An XML patch document always uses a "patch" element in the "urn:ietf:rfc:7351" namespace as the document element, which then contains zero or more patch operation elements, which are also in the "urn:ietf:rfc:7351" namespace.</t>
+            <t>The following simple example patch document contains a single patch operation. This operation adds a new attribute called "new&nbhy;attribute" to the document element of the target XML document. An XML patch document always uses a "patch" element in the "urn:ietf:rfc:7351" namespace as the document element, which then contains zero or more patch operation elements, which are also in the "urn:ietf:rfc:7351" namespace.</t>
             <figure title="" align="left" alt="" width="" height="">
                <artwork type="xml" xml:space="preserve" name="" align="left" alt="" width="" height="">&lt;p:patch xmlns:p="urn:ietf:rfc:7351"&gt;
     &lt;p:add sel="*" type="@new-attribute"&gt;value&lt;/p:add&gt;
@@ -170,14 +117,6 @@ Perhaps:
                <t>Required parameters: none</t>
                <t>Optional parameters:
                   <list>
-
-<!--[rfced] We will request an update to the IANA registration at
-http://www.iana.org/assignments/media-types/application/xml-patch+xml
-to match any updates made to Section 3 prior to publication (at this
-time, lowercasing "patch document" and the update to the citations
-from RFC 3023 to RFC 7303).
-
--->
                      <t>charset: Same as charset parameter for the media type "application/xml" as specified in RFC 7303 <xref target="RFC7303" pageno="false" format="default"/>.</t>
                   </list></t>
                <t>Encoding considerations: Same as encoding considerations of media type "application/xml" as specified in RFC 7303 <xref target="RFC7303" pageno="false" format="default"/>.</t>
@@ -210,31 +149,7 @@ from RFC 3023 to RFC 7303).
    </middle>
    <back>
       <references title="Normative References">
-
- <!-- [rfced] The following references are not cited in the text.
-      Please let us know where they should be cited or if these references
-      should be deleted from the References section.
-
-      Original:
-      [RFC2045]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
-                 Extensions (MIME) Part One: Format of Internet Message
-                 Bodies", RFC 2045, November 1996.
-
-      [RFC2046]  Freed, N. and N. Borenstein, "Multipurpose Internet Mail
-                 Extensions (MIME) Part Two: Media Types", RFC 2046,
-                 November 1996.
- -->
-
-<?rfc include="reference.RFC.2045" ?>
-<?rfc include="reference.RFC.2046" ?>
 <?rfc include="reference.RFC.7303" ?>
-
-<!-- [rfced] The following RFC has been obsoleted.  We have updated
-this reference as follows. Please let us know any objections.
-
-RFC 3023 became RFC 7303
--->
-
 <?rfc include="reference.RFC.3470" ?>
 <?rfc include="reference.RFC.5234" ?>
 <?rfc include="reference.RFC.5261" ?>
@@ -244,18 +159,8 @@ RFC 3023 became RFC 7303
       </references>
      
     <references title="Informative References">
-<?rfc include="reference.RFC.2616" ?>
 <?rfc include="reference.RFC.5789" ?>
-     
-<!--[rfced]  Please note that the extraneous space from the follwoing references will be removed in post-xml2rfc processing.
-
-Original:
-
-   [Err3477]  RFC Errata, "Errata ID 3477", RFC 5261, .
-
-   [Err3478]  RFC Errata, "Errata ID 3478", RFC 5261, .
-
--->
+<?rfc include="reference.RFC.7231" ?>
 <reference anchor="Err3477"> 
 <front> 
 <title>Errata ID 3477</title>
