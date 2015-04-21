@@ -396,8 +396,8 @@
   <meta name="dct.creator" content="Wilde, E." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-service-link-rel-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2015-4-21" />
-  <meta name="dct.abstract" content="..." />
-  <meta name="description" content="..." />
+  <meta name="dct.abstract" content="Many resources provided on the Web are part of a sets of resources that are provided in a context that is defined and managed by one particular service provider. Often, these sets of resources are referred to as &quot;Web Services&quot; or &quot;Web APIs&quot;. This specification defines two link relations that allows to represent relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers." />
+  <meta name="description" content="Many resources provided on the Web are part of a sets of resources that are provided in a context that is defined and managed by one particular service provider. Often, these sets of resources are referred to as &quot;Web Services&quot; or &quot;Web APIs&quot;. This specification defines two link relations that allows to represent relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers." />
 
 </head>
 
@@ -433,7 +433,7 @@
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>...</p>
+<p>Many resources provided on the Web are part of a sets of resources that are provided in a context that is defined and managed by one particular service provider. Often, these sets of resources are referred to as "Web Services" or "Web APIs". This specification defines two link relations that allows to represent relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
@@ -471,15 +471,26 @@
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">.</p>
+<p id="rfc.section.1.p.1">One of the defiing aspects of the Web is that it is possible to interact with Web resources without any specific prior knowledge of the specific of the resource. By using URIs, HTTP, and media types, the Web's uniform interface allows interactions with resources without the sometimes considerably more complex binding procedures of other approaches.</p>
+<p id="rfc.section.1.p.2">However, many resources on the Web still are provided as part of some set of resources that often are referred to as a "Web Service" or a "Web API". In many cases, these services or APIs are defined and managed as a whole, and it may be desirable for clients to be able to discover this information.</p>
+<p id="rfc.section.1.p.3">Service definition can be separated into two broad categories: One category is entirely targeted for human users and often uses generic formats or human readable documents, such as HTML or PDF. The other category is structured information that followed some more formalized description model, and is intended for consumption my machines, for example for tools and libraries.</p>
+<p id="rfc.section.1.p.4">In the context of this specification, the human-oriented variant is referred to as "documentation", and the machine-oriented variant is referred to as "description".</p>
+<p id="rfc.section.1.p.5">These two categories are not always mutually exclusive, as there are numerous formats that have been proposed that are intended for both human consumption, and for interpretation by machine clients.</p>
+<p id="rfc.section.1.p.6">This specification makes no assumptions about the specific formats used for either of those two categories. It simply assumes that the publisher of a resource may want to make the documentation and/or the description discoverable, and defines two link relations that serve that purpose.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a href="#RFC2119">[1]</a>.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#web-services" id="web-services">Web Services</a></h1>
-<p id="rfc.section.3.p.1">...</p>
+<p id="rfc.section.3.p.1">"Web Services" or "Web APIs" (sometimes also referred to as "HTTP API" or "REST API") are a way how to expose information and services on the Web. Following the principles of Web architecture, they expose URI-identified resources, which are then accessed and transferred using a specific representation. Many services use representations that contain links, and often these links are types links.</p>
+<p id="rfc.section.3.p.2">Using typed links, resources can represent the fact that they are related to other resources. RFC 5988 <a href="#RFC5988">[2]</a> establishes a framework of well-known registered link relation types, which are identified by simple strings and registered in an IANA registry. Any resource that supports typed links according to RFC 5988 can then use this identifier to represent links on the Web without having to re-invent the registered relation type.</p>
+<p id="rfc.section.3.p.3">In recent years, Web services and documentation and description languages have gained popularity, due to the general popularity of the Web as a platform for providing information and services. However, the exact design documentation and description languages varies with a number of factors, such as the general application domain, the preferred application data model, and the preferred approach for exposing services.</p>
+<p id="rfc.section.3.p.4">With this increase in popularity of Web services, it makes sense to provide them with a unified way to link to service documentation and/or description. This link should not make any assumptions about the provided type of documentation and/or description, so that service providers can choose the ones that best fit their services and needs.</p>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#doc-web-services" id="doc-web-services">Documenting Web Services</a></h1>
-<p id="rfc.section.3.1.p.1">...</p>
+<p id="rfc.section.3.1.p.1">In the context of this specification, "documentation" refers to information that is primarily intended for human consumption. Typical formats for this kind of documentation are HTML and PDF.</p>
+<p id="rfc.section.3.1.p.2">Documentation is often structured, but the exact kind of structure depends on the structure of the service that is documented, as well as on the specific way in which the documentation authors choose to document it.</p>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#desc-web-services" id="desc-web-services">Describing Web Services</a></h1>
-<p id="rfc.section.3.2.p.1">...</p>
+<p id="rfc.section.3.2.p.1">In the context of this specification, "description" refers to information that is primarily intended for machine consumption. Typical formats for this are dictated by the technology underlying the service itself, which means that in today's format landscape, description formats exist in XML, JSON, RDF, and a variety of other languages.</p>
+<p id="rfc.section.3.2.p.2">Descriptions are always structured, but the structuring principles depend entirely of the nature of the described service. For example, one of the earlier service description approaches, the Web Services Description Language (WSDL), uses "operations" as its core concept, which are essentially identical to function calls, because the underlying model is based on that of Remote Procedure Calls (RPC). Other description languages for non-RPC approaches to services will use different structuring approaches.</p>
+<p id="rfc.section.3.2.p.3">In order to interpret a service description a client needs to support the specific model underlying the description. If the client does indeed understand the service description, then it can be used for local purposes such as tooling or code libraries.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#link-relations" id="link-relations">Link Relations for Web Services</a></h1>
 <p id="rfc.section.4.p.1">...</p>
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#link-rel-service-doc" id="link-rel-service-doc">The service-doc Link Relation Type</a></h1>
@@ -487,13 +498,13 @@
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#link-rel-service-desc" id="link-rel-service-desc">The service-desc Link Relation Type</a></h1>
 <p id="rfc.section.4.2.p.1">...</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.5.p.1">The link relation types below has been registered by IANA per Section 6.2.1 of RFC 5988 <a href="#RFC5988">[2]</a>:</p>
+<p id="rfc.section.5.p.1">The link relation types below have been registered by IANA per Section 6.2.1 of RFC 5988 <a href="#RFC5988">[2]</a>:</p>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> Link Relation Type: link-doc</h1>
 <p/>
 
 <ul class="empty">
   <li>Relation Name: service-doc</li>
-  <li>Description: ...</li>
+  <li>Description: Linking to service documentation that is primarily intended for human consumption.</li>
   <li>Reference: [[ This document ]]</li>
 </ul>
 
@@ -503,7 +514,7 @@
 
 <ul class="empty">
   <li>Relation Name: service-desc</li>
-  <li>Description: ...</li>
+  <li>Description: Linking to service description that is primarily intended for consumption by machines.</li>
   <li>Reference: [[ This document ]]</li>
 </ul>
 

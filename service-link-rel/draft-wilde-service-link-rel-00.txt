@@ -13,7 +13,16 @@ Expires: October 23, 2015
 
 Abstract
 
-   ...
+   Many resources provided on the Web are part of a sets of resources
+   that are provided in a context that is defined and managed by one
+   particular service provider.  Often, these sets of resources are
+   referred to as "Web Services" or "Web APIs".  This specification
+   defines two link relations that allows to represent relationships
+   from those resources to ones that provide documentation or
+   descriptions of the Web services.  The difference between these
+   concepts is that documentation is primarily intended for human
+   consumers, whereas descriptions are primarily intended for automated
+   consumers.
 
 Status of This Memo
 
@@ -41,15 +50,6 @@ Copyright Notice
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
-   carefully, as they describe your rights and restrictions with respect
-   to this document.  Code Components extracted from this document must
-   include Simplified BSD License text as described in Section 4.e of
-   the Trust Legal Provisions and are provided without warranty as
-   described in the Simplified BSD License.
-
-
-
-
 
 
 
@@ -58,26 +58,71 @@ Wilde                   Expires October 23, 2015                [Page 1]
 Internet-Draft      Web Services Link Relation Types          April 2015
 
 
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Web Services  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     3.1.  Documenting Web Services  . . . . . . . . . . . . . . . .   2
-     3.2.  Describing Web Services . . . . . . . . . . . . . . . . .   2
-   4.  Link Relations for Web Services . . . . . . . . . . . . . . .   2
-     4.1.  The service-doc Link Relation Type  . . . . . . . . . . .   2
-     4.2.  The service-desc Link Relation Type . . . . . . . . . . .   3
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
-     5.1.  Link Relation Type: link-doc  . . . . . . . . . . . . . .   3
-     5.2.  Link Relation Type: link-desc . . . . . . . . . . . . . .   3
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
-   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   3
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Web Services  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Documenting Web Services  . . . . . . . . . . . . . . . .   4
+     3.2.  Describing Web Services . . . . . . . . . . . . . . . . .   4
+   4.  Link Relations for Web Services . . . . . . . . . . . . . . .   4
+     4.1.  The service-doc Link Relation Type  . . . . . . . . . . .   4
+     4.2.  The service-desc Link Relation Type . . . . . . . . . . .   4
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+     5.1.  Link Relation Type: link-doc  . . . . . . . . . . . . . .   5
+     5.2.  Link Relation Type: link-desc . . . . . . . . . . . . . .   5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
 
-   .
+   One of the defiing aspects of the Web is that it is possible to
+   interact with Web resources without any specific prior knowledge of
+   the specific of the resource.  By using URIs, HTTP, and media types,
+   the Web's uniform interface allows interactions with resources
+   without the sometimes considerably more complex binding procedures of
+   other approaches.
+
+   However, many resources on the Web still are provided as part of some
+   set of resources that often are referred to as a "Web Service" or a
+   "Web API".  In many cases, these services or APIs are defined and
+   managed as a whole, and it may be desirable for clients to be able to
+   discover this information.
+
+   Service definition can be separated into two broad categories: One
+   category is entirely targeted for human users and often uses generic
+   formats or human readable documents, such as HTML or PDF.  The other
+   category is structured information that followed some more formalized
+   description model, and is intended for consumption my machines, for
+   example for tools and libraries.
+
+   In the context of this specification, the human-oriented variant is
+   referred to as "documentation", and the machine-oriented variant is
+   referred to as "description".
+
+
+
+Wilde                   Expires October 23, 2015                [Page 2]
+
+Internet-Draft      Web Services Link Relation Types          April 2015
+
+
+   These two categories are not always mutually exclusive, as there are
+   numerous formats that have been proposed that are intended for both
+   human consumption, and for interpretation by machine clients.
+
+   This specification makes no assumptions about the specific formats
+   used for either of those two categories.  It simply assumes that the
+   publisher of a resource may want to make the documentation and/or the
+   description discoverable, and defines two link relations that serve
+   that purpose.
 
 2.  Terminology
 
@@ -87,15 +132,77 @@ Table of Contents
 
 3.  Web Services
 
-   ...
+   "Web Services" or "Web APIs" (sometimes also referred to as "HTTP
+   API" or "REST API") are a way how to expose information and services
+   on the Web. Following the principles of Web architecture, they expose
+   URI-identified resources, which are then accessed and transferred
+   using a specific representation.  Many services use representations
+   that contain links, and often these links are types links.
+
+   Using typed links, resources can represent the fact that they are
+   related to other resources.  RFC 5988 [2] establishes a framework of
+   well-known registered link relation types, which are identified by
+   simple strings and registered in an IANA registry.  Any resource that
+   supports typed links according to RFC 5988 can then use this
+   identifier to represent links on the Web without having to re-invent
+   the registered relation type.
+
+   In recent years, Web services and documentation and description
+   languages have gained popularity, due to the general popularity of
+   the Web as a platform for providing information and services.
+   However, the exact design documentation and description languages
+   varies with a number of factors, such as the general application
+   domain, the preferred application data model, and the preferred
+   approach for exposing services.
+
+   With this increase in popularity of Web services, it makes sense to
+   provide them with a unified way to link to service documentation and/
+   or description.  This link should not make any assumptions about the
+   provided type of documentation and/or description, so that service
+   providers can choose the ones that best fit their services and needs.
+
+
+
+
+
+Wilde                   Expires October 23, 2015                [Page 3]
+
+Internet-Draft      Web Services Link Relation Types          April 2015
+
 
 3.1.  Documenting Web Services
 
-   ...
+   In the context of this specification, "documentation" refers to
+   information that is primarily intended for human consumption.
+   Typical formats for this kind of documentation are HTML and PDF.
+
+   Documentation is often structured, but the exact kind of structure
+   depends on the structure of the service that is documented, as well
+   as on the specific way in which the documentation authors choose to
+   document it.
 
 3.2.  Describing Web Services
 
-   ...
+   In the context of this specification, "description" refers to
+   information that is primarily intended for machine consumption.
+   Typical formats for this are dictated by the technology underlying
+   the service itself, which means that in today's format landscape,
+   description formats exist in XML, JSON, RDF, and a variety of other
+   languages.
+
+   Descriptions are always structured, but the structuring principles
+   depend entirely of the nature of the described service.  For example,
+   one of the earlier service description approaches, the Web Services
+   Description Language (WSDL), uses "operations" as its core concept,
+   which are essentially identical to function calls, because the
+   underlying model is based on that of Remote Procedure Calls (RPC).
+   Other description languages for non-RPC approaches to services will
+   use different structuring approaches.
+
+   In order to interpret a service description a client needs to support
+   the specific model underlying the description.  If the client does
+   indeed understand the service description, then it can be used for
+   local purposes such as tooling or code libraries.
 
 4.  Link Relations for Web Services
 
@@ -105,29 +212,31 @@ Table of Contents
 
    ...
 
-
-
-
-
-Wilde                   Expires October 23, 2015                [Page 2]
-
-Internet-Draft      Web Services Link Relation Types          April 2015
-
-
 4.2.  The service-desc Link Relation Type
 
    ...
 
+
+
+
+
+
+Wilde                   Expires October 23, 2015                [Page 4]
+
+Internet-Draft      Web Services Link Relation Types          April 2015
+
+
 5.  IANA Considerations
 
-   The link relation types below has been registered by IANA per
+   The link relation types below have been registered by IANA per
    Section 6.2.1 of RFC 5988 [2]:
 
 5.1.  Link Relation Type: link-doc
 
       Relation Name: service-doc
 
-      Description: ...
+      Description: Linking to service documentation that is primarily
+      intended for human consumption.
 
       Reference: [[ This document ]]
 
@@ -135,7 +244,8 @@ Internet-Draft      Web Services Link Relation Types          April 2015
 
       Relation Name: service-desc
 
-      Description: ...
+      Description: Linking to service description that is primarily
+      intended for consumption by machines.
 
       Reference: [[ This document ]]
 
@@ -165,4 +275,6 @@ Author's Address
 
 
 
-Wilde                   Expires October 23, 2015                [Page 3]
+
+
+Wilde                   Expires October 23, 2015                [Page 5]
