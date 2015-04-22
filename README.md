@@ -1,7 +1,7 @@
 Internet-Drafts
 ===============
 
-Internet Drafts I've authored or contributed to. All are works-in-progress, except for the following ones: "Abandoned" contains drafts I'm no longer pursuing; "Published" contains those that made it to RFC status.
+Internet Drafts I've authored or contributed to. All are works-in-progress, except for the following ones: "[Abandoned](Abandoned)" contains drafts I'm no longer pursuing; "[Published](Published)" contains those that made it to RFC status.
 
 For individual draft status, see https://datatracker.ietf.org/doc/{draft_name}/
 
