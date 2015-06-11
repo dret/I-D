@@ -40,7 +40,8 @@
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
       </section>
       <section title="The Sunset HTTP Response Header" anchor="sunset-header">
-         <t>...</t>
+         <t>The Sunset HTTP response header field allows a server to communicate the fact that a URI is expected to become unresponsive at a specific point in time. It provides information for clients which they can use to control their usage of the resource.</t>
+         <t>Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</t>
       </section>
       <section title="IANA Considerations" anchor="iana">
          <section title="The Sunset Response Header" anchor="iana-sunset">
@@ -57,6 +58,7 @@
                <t>Human readable explanation: It would be possible to include human-readable information about the reason for the URI's disappearance. This could either be done inline (probably just a simple string), and/or by reference to a URI that will dereference to human-readable information.</t>
                <t>Machine-readable explanation: It would be possible to include machine-readable information about the reason for the URI's disappearance. This could either be done inline (maybe name/value pairs), and/or by reference to a URI that will dereference to machine-readable information.</t>
                <t>New URI: If the resource's new URI is known (for example when a service is migrating in a way that invalidates existing URIs, but has a plan of how these will map to new URIs), then that URI could be advertised in advance (i.e., it's not yet a 3xx, but clients might want to start working with the new URI anyway).</t>
+               <t>Timestamp in the past: Should it be allowed to have timestamps in the past? Maybe either disallow them, or specifically allow them and explain what they mean, for example the fact that a resource that now is redirecting can expose information about when it changed from being the primary resource, to the redirection.</t>
             </list>
          </t>
       </section>
