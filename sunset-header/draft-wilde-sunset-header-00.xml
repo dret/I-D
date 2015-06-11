@@ -40,8 +40,13 @@
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
       </section>
       <section title="The Sunset HTTP Response Header" anchor="sunset-header">
-         <t>The Sunset HTTP response header field allows a server to communicate the fact that a URI is expected to become unresponsive at a specific point in time. It provides information for clients which they can use to control their usage of the resource.</t>
-         <t>Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</t>
+         <t>The Sunset HTTP response header field allows a server to communicate the fact that a resource is expected to become unresponsive at a specific point in time. It provides information for clients which they can use to control their usage of the resource.</t>
+         <t>The Sunset header contains a single timestamp which advertises the point in time when the resource is expected to become unresponsive.</t>
+         <figure>
+            <artwork type="abnf">Sunset = ???</artwork>
+         </figure>
+         <t>Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.
+         <t>Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unresponsive without getting any notification about it beforehand.</t>
       </section>
       <section title="Sunset and Caching" anchor="sunset-and-caching">
          <t>It should be noted that the Sunset HTTP response header field server a different purpose than HTTP caching <xref target="RFC7234"/>. HTTP caching is concerned with making resource representations (i.e., represented resource state) reusable, so that they can be more efficiently used. This is achieved by using header fields that allow clients and intermediaries to better understand when a resource representation can be reused, or when resource state (and thus the representation) may have changed.</t>
