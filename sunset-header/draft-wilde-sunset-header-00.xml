@@ -41,9 +41,13 @@
       </section>
       <section title="The Sunset HTTP Response Header" anchor="sunset-header">
          <t>The Sunset HTTP response header field allows a server to communicate the fact that a resource is expected to become unresponsive at a specific point in time. It provides information for clients which they can use to control their usage of the resource.</t>
-         <t>The Sunset header contains a single timestamp which advertises the point in time when the resource is expected to become unresponsive.</t>
+         <t>The Sunset header contains a single timestamp which advertises the point in time when the resource is expected to become unresponsive. The Sunset value is an HTTP-date timestamp, as defined in Section 7.1.1.1 of <xref target="RFC7231"/>.</t>
          <figure>
-            <artwork type="abnf">Sunset = ???</artwork>
+            <artwork type="abnf">Sunset = HTTP-date</artwork>
+         </figure>
+         <t>For example</t>
+         <figure>
+            <artwork>Sunset: Sat, 31 Dec 2016 23:59:59 GMT</artwork>
          </figure>
          <t>Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</t>
          <t>Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unresponsive without getting any notification about it beforehand.</t>
@@ -169,7 +173,8 @@
             </front>
             <seriesInfo name='RFC' value='7234' />
             <format type='TXT' octets='90647' target='http://www.rfc-editor.org/rfc/rfc7234.txt' />
-         </reference>      </references>
+         </reference>
+      </references>
 <!--
       <section title="Acknowledgements" anchor="acknowledgements">
          <t>Thanks for comments and suggestions provided by ...</t>
