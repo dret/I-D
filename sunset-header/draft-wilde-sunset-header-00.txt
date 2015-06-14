@@ -139,8 +139,14 @@ Internet-Draft                Sunset Header                    June 2015
 
    The Sunset header contains a single timestamp which advertises the
    point in time when the resource is expected to become unresponsive.
+   The Sunset value is an HTTP-date timestamp, as defined in
+   Section 7.1.1.1 of [3].
 
-   Sunset = ???
+   Sunset = HTTP-date
+
+   For example
+
+   Sunset: Sat, 31 Dec 2016 23:59:59 GMT
 
    Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed
    that the resource will in fact be available until that time, and will
@@ -156,12 +162,6 @@ Internet-Draft                Sunset Header                    June 2015
    It should be noted that the Sunset HTTP response header field server
    a different purpose than HTTP caching [4].  HTTP caching is concerned
    with making resource representations (i.e., represented resource
-   state) reusable, so that they can be more efficiently used.  This is
-   achieved by using header fields that allow clients and intermediaries
-   to better understand when a resource representation can be reused, or
-   when resource state (and thus the representation) may have changed.
-
-
 
 
 
@@ -169,6 +169,11 @@ Wilde                    Expires January 1, 2016                [Page 3]
 
 Internet-Draft                Sunset Header                    June 2015
 
+
+   state) reusable, so that they can be more efficiently used.  This is
+   achieved by using header fields that allow clients and intermediaries
+   to better understand when a resource representation can be reused, or
+   when resource state (and thus the representation) may have changed.
 
    The Sunset header field is not concerned with resource state at all.
    It only signals that a resource is expected to become unresponsive at
@@ -213,11 +218,6 @@ Internet-Draft                Sunset Header                    June 2015
    o  Human readable explanation: It would be possible to include human-
       readable information about the reason for the URI's disappearance.
       This could either be done inline (probably just a simple string),
-      and/or by reference to a URI that will dereference to human-
-      readable information.
-
-   o  Machine-readable explanation: It would be possible to include
-      machine-readable information about the reason for the URI's
 
 
 
@@ -226,6 +226,11 @@ Wilde                    Expires January 1, 2016                [Page 4]
 Internet-Draft                Sunset Header                    June 2015
 
 
+      and/or by reference to a URI that will dereference to human-
+      readable information.
+
+   o  Machine-readable explanation: It would be possible to include
+      machine-readable information about the reason for the URI's
       disappearance.  This could either be done inline (maybe name/value
       pairs), and/or by reference to a URI that will dereference to
       machine-readable information.
@@ -269,11 +274,6 @@ Author's Address
 
    Email: dret@berkeley.edu
    URI:   http://dret.net/netdret/
-
-
-
-
-
 
 
 

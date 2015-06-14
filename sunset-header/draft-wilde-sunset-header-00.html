@@ -489,10 +489,12 @@
 <p id="rfc.section.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a href="#RFC2119">[1]</a>.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#sunset-header" id="sunset-header">The Sunset HTTP Response Header</a></h1>
 <p id="rfc.section.3.p.1">The Sunset HTTP response header field allows a server to communicate the fact that a resource is expected to become unresponsive at a specific point in time. It provides information for clients which they can use to control their usage of the resource.</p>
-<p id="rfc.section.3.p.2">The Sunset header contains a single timestamp which advertises the point in time when the resource is expected to become unresponsive.</p>
-<pre>Sunset = ???</pre>
-<p id="rfc.section.3.p.3">Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</p>
-<p id="rfc.section.3.p.4">Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unresponsive without getting any notification about it beforehand.</p>
+<p id="rfc.section.3.p.2">The Sunset header contains a single timestamp which advertises the point in time when the resource is expected to become unresponsive. The Sunset value is an HTTP-date timestamp, as defined in Section 7.1.1.1 of <a href="#RFC7231">[3]</a>.</p>
+<pre>Sunset = HTTP-date</pre>
+<p id="rfc.section.3.p.3">For example</p>
+<pre>Sunset: Sat, 31 Dec 2016 23:59:59 GMT</pre>
+<p id="rfc.section.3.p.4">Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</p>
+<p id="rfc.section.3.p.5">Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unresponsive without getting any notification about it beforehand.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sunset-and-caching" id="sunset-and-caching">Sunset and Caching</a></h1>
 <p id="rfc.section.4.p.1">It should be noted that the Sunset HTTP response header field server a different purpose than HTTP caching <a href="#RFC7234">[4]</a>. HTTP caching is concerned with making resource representations (i.e., represented resource state) reusable, so that they can be more efficiently used. This is achieved by using header fields that allow clients and intermediaries to better understand when a resource representation can be reused, or when resource state (and thus the representation) may have changed.</p>
 <p id="rfc.section.4.p.2">The Sunset header field is not concerned with resource state at all. It only signals that a resource is expected to become unresponsive at a specific point in time. There are no assumptions about if, when, or how often a resource may change state in the meantime.</p>
