@@ -381,7 +381,7 @@
 <link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 The Sunset Response Header"/>
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 Examples"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Example"/>
 <link href="#rfc.section.8" rel="Chapter" title="8 Open Issues"/>
 <link href="#rfc.references" rel="Chapter" title="9 References"/>
 <link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
@@ -389,7 +389,7 @@
 <link href="#rfc.authors" rel="Chapter"/>
 
 
-  <meta name="generator" content="xml2rfc version 2.5.0 - http://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.5.1.dev0 - http://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Wilde, E." />
@@ -463,7 +463,7 @@
 <li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">The Sunset Response Header</a></li>
 </ul><li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
-<li>7.   <a href="#rfc.section.7">Examples</a></li>
+<li>7.   <a href="#rfc.section.7">Example</a></li>
 <li>8.   <a href="#rfc.section.8">Open Issues</a></li>
 <li>9.   <a href="#rfc.references">References</a></li>
 <ul><li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
@@ -474,14 +474,14 @@
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">As a general rule, URIs should be stable and persistent, so that applications can use them as stable and persistent identifiers for resources. However, there are many scenarios where for a variety of reasons, URIs have a limited lifetime. In some of these scenarios, this limited lifetime is known in advance. In this case, it can be useful for resources to make this information about their limited lifetime known. This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a point in the future.</p>
+<p id="rfc.section.1.p.1">As a general rule, URIs should be stable and persistent, so that applications can use them as stable and persistent identifiers for resources. However, there are many scenarios where for a variety of reasons, URIs have a limited lifetime. In some of these scenarios, this limited lifetime is known in advance. In this case, it can be useful for clients if resources make this information about their limited lifetime known. This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at some point in the future.</p>
 <p id="rfc.section.1.p.2">Possible scenarios for known lifetimes of resources include, but are not limited to the following:</p>
 <p/>
 
 <ul class="empty">
-  <li>Temporary Resources: Some resources may have a limited lifetime by definition. For example, a pending order represented by a resource may already list all the details of the order, but may only exist for a limited time unless it is confirmed and then becomes permanent. In such a case, the service managing the pending order can make this limited lifetime explicitly, allowing clients to understand that the pending order, unless confirmed, will disappear at some point in time.</li>
+  <li>Temporary Resources: Some resources may have a limited lifetime by definition. For example, a pending order represented by a resource may already list all the details of the order, but may only exist for a limited time unless it is confirmed and only then becomes permanent. In such a case, the service managing the pending order can make this limited lifetime explicit, allowing clients to understand that the pending order, unless confirmed, will disappear at some point in time.</li>
   <li>Migration: If resources are changing identity because a service migrates them, then this may be known in advance. While it may not yet be appropriate to use HTTP redirect status codes (3xx), it may be interesting for clients to learn about the service's plan to take down the original resource.</li>
-  <li>Retention: There are many cases where regulation or legislation require that resources are kept available for a certain amount of time. However, in many cases there also is a requirement for those resources to be permanently deleted. Since the deletion of the resource in this scenario is governed by well-defined rules, it could be made explicit for clients accessing the resource.</li>
+  <li>Retention: There are many cases where regulation or legislation require that resources are kept available for a certain amount of time. However, in many cases there also is a requirement for those resources to be permanently deleted after some period of time. Since the deletion of the resource in this scenario is governed by well-defined rules, it could be made explicit for clients interacting with the resource.</li>
 </ul>
 
 <p> </p>
@@ -494,10 +494,11 @@
 <p id="rfc.section.3.p.3">For example</p>
 <pre>Sunset: Sat, 31 Dec 2016 23:59:59 GMT</pre>
 <p id="rfc.section.3.p.4">Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</p>
-<p id="rfc.section.3.p.5">Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unresponsive without getting any notification about it beforehand.</p>
+<p id="rfc.section.3.p.5">After the Sunset time has arrived, it is likely that interactions with the resource will either results in client-side errors (HTTP 4xx status codes), or redirect responses (HTTP 3xx status codes). The Sunset header does not expose any information about which of those two behaviors can be expected.</p>
+<p id="rfc.section.3.p.6">Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unavailable without getting any notification about it beforehand.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sunset-and-caching" id="sunset-and-caching">Sunset and Caching</a></h1>
-<p id="rfc.section.4.p.1">It should be noted that the Sunset HTTP response header field server a different purpose than HTTP caching <a href="#RFC7234">[4]</a>. HTTP caching is concerned with making resource representations (i.e., represented resource state) reusable, so that they can be more efficiently used. This is achieved by using header fields that allow clients and intermediaries to better understand when a resource representation can be reused, or when resource state (and thus the representation) may have changed.</p>
-<p id="rfc.section.4.p.2">The Sunset header field is not concerned with resource state at all. It only signals that a resource is expected to become unresponsive at a specific point in time. There are no assumptions about if, when, or how often a resource may change state in the meantime.</p>
+<p id="rfc.section.4.p.1">It should be noted that the Sunset HTTP response header field serves a different purpose than HTTP caching <a href="#RFC7234">[4]</a>. HTTP caching is concerned with making resource representations (i.e., represented resource state) reusable, so that they can be more efficiently used. This is achieved by using header fields that allow clients and intermediaries to better understand when a resource representation can be reused, or when resource state (and thus the representation) may have changed.</p>
+<p id="rfc.section.4.p.2">The Sunset header field is not concerned with resource state at all. It only signals that a resource is expected to become unavailable at a specific point in time. There are no assumptions about if, when, or how often a resource may change state in the meantime.</p>
 <p id="rfc.section.4.p.3">For these reasons, the Sunset header field and HTTP caching should be seen as complimentary, and not as overlapping in scope and functionality.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#iana-sunset" id="iana-sunset">The Sunset Response Header</a></h1>
@@ -509,8 +510,11 @@
 <p id="rfc.section.5.1.p.6">Specification document(s): RFC XXXX</p>
 <h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.6.p.1">...</p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#examples" id="examples">Examples</a></h1>
-<p id="rfc.section.7.p.1">... (( maybe start with a simple one and then have one with caching headers as well? ))</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#example" id="example">Example</a></h1>
+<p id="rfc.section.7.p.1">Assuming that a resource has been created in an archive that for management or compliance reason only stores resources for two years, and permanently deletes them afterwards, then the Sunset header field can be used to expose this information. If such a resource has been created on November 11, 2014, then the following header field can be included in responses:</p>
+<pre>Sunset: Fri, 11 Nov 2016 11:11:11 GMT</pre>
+<p id="rfc.section.7.p.2">This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at this point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or even alert users about this timestamp.</p>
+<p id="rfc.section.7.p.3">Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs it has assigned; if not, the response may be a more generic "404 Not Found".)</p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#open-issues" id="open-issues">Open Issues</a></h1>
 <p id="rfc.section.8.p.1">Note to RFC Editor: Please remove this section before publication.</p>
 <p/>
@@ -519,7 +523,7 @@
   <li>Human readable explanation: It would be possible to include human-readable information about the reason for the URI's disappearance. This could either be done inline (probably just a simple string), and/or by reference to a URI that will dereference to human-readable information.</li>
   <li>Machine-readable explanation: It would be possible to include machine-readable information about the reason for the URI's disappearance. This could either be done inline (maybe name/value pairs), and/or by reference to a URI that will dereference to machine-readable information.</li>
   <li>New URI: If the resource's new URI is known (for example when a service is migrating in a way that invalidates existing URIs, but has a plan of how these will map to new URIs), then that URI could be advertised in advance (i.e., it's not yet a 3xx, but clients might want to start working with the new URI anyway).</li>
-  <li>Timestamp in the past: Should it be allowed to have timestamps in the past? Maybe either disallow them, or specifically allow them and explain what they mean, for example the fact that a resource that now is redirecting can expose information about when it changed from being the primary resource, to the redirection.</li>
+  <li>Timestamp in the past: Should it be allowed to have timestamps in the past? Maybe either disallow them, or specifically allow them and explain what they mean, for example the fact that a resource that now is redirecting can expose information about when it changed from being the primary resource to being the redirection.</li>
 </ul>
 
 <p> </p>

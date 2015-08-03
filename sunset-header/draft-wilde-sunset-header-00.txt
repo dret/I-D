@@ -68,16 +68,16 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  The Sunset HTTP Response Header . . . . . . . . . . . . . . .   3
-   4.  Sunset and Caching  . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Sunset and Caching  . . . . . . . . . . . . . . . . . . . . .   4
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
      5.1.  The Sunset Response Header  . . . . . . . . . . . . . . .   4
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
-   7.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   8.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   5
-     9.2.  Non-Normative References  . . . . . . . . . . . . . . . .   5
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   8.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
+     9.2.  Non-Normative References  . . . . . . . . . . . . . . . .   6
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
@@ -86,10 +86,10 @@ Table of Contents
    resources.  However, there are many scenarios where for a variety of
    reasons, URIs have a limited lifetime.  In some of these scenarios,
    this limited lifetime is known in advance.  In this case, it can be
-   useful for resources to make this information about their limited
-   lifetime known.  This specification defines the Sunset HTTP response
-   header field, which indicates that a URI is likely to become
-   unresponsive at a point in the future.
+   useful for clients if resources make this information about their
+   limited lifetime known.  This specification defines the Sunset HTTP
+   response header field, which indicates that a URI is likely to become
+   unresponsive at some point in the future.
 
    Possible scenarios for known lifetimes of resources include, but are
    not limited to the following:
@@ -97,9 +97,9 @@ Table of Contents
       Temporary Resources: Some resources may have a limited lifetime by
       definition.  For example, a pending order represented by a
       resource may already list all the details of the order, but may
-      only exist for a limited time unless it is confirmed and then
+      only exist for a limited time unless it is confirmed and only then
       becomes permanent.  In such a case, the service managing the
-      pending order can make this limited lifetime explicitly, allowing
+      pending order can make this limited lifetime explicit, allowing
       clients to understand that the pending order, unless confirmed,
       will disappear at some point in time.
 
@@ -120,9 +120,10 @@ Internet-Draft                Sunset Header                    June 2015
       Retention: There are many cases where regulation or legislation
       require that resources are kept available for a certain amount of
       time.  However, in many cases there also is a requirement for
-      those resources to be permanently deleted.  Since the deletion of
-      the resource in this scenario is governed by well-defined rules,
-      it could be made explicit for clients accessing the resource.
+      those resources to be permanently deleted after some period of
+      time.  Since the deletion of the resource in this scenario is
+      governed by well-defined rules, it could be made explicit for
+      clients interacting with the resource.
 
 2.  Terminology
 
@@ -153,15 +154,14 @@ Internet-Draft                Sunset Header                    June 2015
    not be available after that time.  However, since this information is
    provided by the resource itself, it does have some credibility.
 
-   Clients not interpreting an existing Sunset header field can operate
-   as usual and simply may experience the resource becoming unresponsive
-   without getting any notification about it beforehand.
+   After the Sunset time has arrived, it is likely that interactions
+   with the resource will either results in client-side errors (HTTP 4xx
+   status codes), or redirect responses (HTTP 3xx status codes).  The
+   Sunset header does not expose any information about which of those
+   two behaviors can be expected.
 
-4.  Sunset and Caching
 
-   It should be noted that the Sunset HTTP response header field server
-   a different purpose than HTTP caching [4].  HTTP caching is concerned
-   with making resource representations (i.e., represented resource
+
 
 
 
@@ -170,13 +170,22 @@ Wilde                    Expires January 1, 2016                [Page 3]
 Internet-Draft                Sunset Header                    June 2015
 
 
+   Clients not interpreting an existing Sunset header field can operate
+   as usual and simply may experience the resource becoming unavailable
+   without getting any notification about it beforehand.
+
+4.  Sunset and Caching
+
+   It should be noted that the Sunset HTTP response header field serves
+   a different purpose than HTTP caching [4].  HTTP caching is concerned
+   with making resource representations (i.e., represented resource
    state) reusable, so that they can be more efficiently used.  This is
    achieved by using header fields that allow clients and intermediaries
    to better understand when a resource representation can be reused, or
    when resource state (and thus the representation) may have changed.
 
    The Sunset header field is not concerned with resource state at all.
-   It only signals that a resource is expected to become unresponsive at
+   It only signals that a resource is expected to become unavailable at
    a specific point in time.  There are no assumptions about if, when,
    or how often a resource may change state in the meantime.
 
@@ -206,18 +215,9 @@ Internet-Draft                Sunset Header                    June 2015
 
    ...
 
-7.  Examples
 
-   ... (( maybe start with a simple one and then have one with caching
-   headers as well? ))
 
-8.  Open Issues
 
-   Note to RFC Editor: Please remove this section before publication.
-
-   o  Human readable explanation: It would be possible to include human-
-      readable information about the reason for the URI's disappearance.
-      This could either be done inline (probably just a simple string),
 
 
 
@@ -226,6 +226,40 @@ Wilde                    Expires January 1, 2016                [Page 4]
 Internet-Draft                Sunset Header                    June 2015
 
 
+7.  Example
+
+   Assuming that a resource has been created in an archive that for
+   management or compliance reason only stores resources for two years,
+   and permanently deletes them afterwards, then the Sunset header field
+   can be used to expose this information.  If such a resource has been
+   created on November 11, 2014, then the following header field can be
+   included in responses:
+
+   Sunset: Fri, 11 Nov 2016 11:11:11 GMT
+
+   This allows clients that are aware of the Sunset header field to
+   understand that the resource likely will become unavailable at this
+   point in time.  Clients can decide to ignore this information, adjust
+   their own behavior accordingly, or even alert users about this
+   timestamp.
+
+   Even though the Sunset header information is made available by the
+   resource itself, there is no guarantee that the resource indeed will
+   become unavailable, and if so, how the response will look like for
+   requests made after that timestamp.  In case of the archive used as
+   an example here, the resource indeed may be permanently deleted, and
+   requests for the URI after the Sunset timestamp may receive a "410
+   Gone" HTTP response.  (This is assuming that the archive keeps track
+   of the URIs it has assigned; if not, the response may be a more
+   generic "404 Not Found".)
+
+8.  Open Issues
+
+   Note to RFC Editor: Please remove this section before publication.
+
+   o  Human readable explanation: It would be possible to include human-
+      readable information about the reason for the URI's disappearance.
+      This could either be done inline (probably just a simple string),
       and/or by reference to a URI that will dereference to human-
       readable information.
 
@@ -241,11 +275,18 @@ Internet-Draft                Sunset Header                    June 2015
       be advertised in advance (i.e., it's not yet a 3xx, but clients
       might want to start working with the new URI anyway).
 
+
+
+Wilde                    Expires January 1, 2016                [Page 5]
+
+Internet-Draft                Sunset Header                    June 2015
+
+
    o  Timestamp in the past: Should it be allowed to have timestamps in
       the past?  Maybe either disallow them, or specifically allow them
       and explain what they mean, for example the fact that a resource
       that now is redirecting can expose information about when it
-      changed from being the primary resource, to the redirection.
+      changed from being the primary resource to being the redirection.
 
 9.  References
 
@@ -277,4 +318,19 @@ Author's Address
 
 
 
-Wilde                    Expires January 1, 2016                [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires January 1, 2016                [Page 6]
