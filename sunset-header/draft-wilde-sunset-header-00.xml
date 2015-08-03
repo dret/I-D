@@ -71,8 +71,13 @@
       <section title="Security Considerations" anchor="security-considerations">
          <t>...</t>
       </section>
-      <section title="Examples" anchor="examples">
-         <t>... (( maybe start with a simple one and then have one with caching headers as well? ))</t>
+      <section title="Example" anchor="example">
+         <t>Assuming that a resource has been created in an archive that for management or compliance reason only stores resources for two years, and permanently deletes them afterwards, then the Sunset header field can be used to expose this information. If such a resource has been created on November 11, 2014, then the following header field can be included in responses:</t>
+         <figure>
+            <artwork>Sunset: Fri, 11 Nov 2016 11:11:11 GMT</artwork>
+         </figure>
+         <t>This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at this point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or even alert users about this timestamp.</t>
+         <t>Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs it has assigned; if not, the response may be a more generic "404 Not Found".)</t>
       </section>
       <section title="Open Issues" anchor="open-issues">
          <t>Note to RFC Editor: Please remove this section before publication.</t>
