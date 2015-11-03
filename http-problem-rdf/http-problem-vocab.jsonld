@@ -1,0 +1,70 @@
+{
+  "@context": {
+    "problem": "https://tools.ietf.org/html/rfcXXXX/vocab#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "defines": {
+      "@reverse": "rdfs:isDefinedBy"
+    },
+    "rdfs:domain": {
+      "@type": "@id"
+    },
+    "rdfs:range": {
+      "@type": "@id"
+    },
+    "rdfs:subClassOf": {
+      "@type": "@id"
+    }
+  },
+  "@id": "https://tools.ietf.org/html/rfcXXXX/vocab",
+  "@type": "owl:Ontology",
+  "comment": "This document defines a 'problem detail' vocabulary as a way to carry machine-readable details of errors in a HTTP response, to avoid the need to invent new error response formats for HTTP APIs.",
+  "rdfs:label": "Problem Details for HTTP APIs",
+  "defines": [
+    {
+      "@id": "problem:HttpProblem",
+      "@type": "rdfs:Class",
+      "rdfs:comment": "The class of http problem detail descriptions",
+      "rdfs:subClassOf": [
+        "rdfs:Resource"
+      ]
+    },
+    {
+      "@id": "problem:instance",
+      "@type": "xsd:string",
+      "rdfs:comment": "A URI reference that identifies the specific occurrence of the problem",
+      "rdfs:domain": "problem:HttpProblem",
+      "rdfs:range": "xsd:string"
+    },
+    {
+      "@id": "problem:title",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A short, human-readable summary of the problem type",
+      "rdfs:domain": "problem:HttpProblem",
+      "rdfs:range": "xsd:string"
+    },
+    {
+      "@id": "problem:status",
+      "@type": "rdf:Property",
+      "rdfs:comment": "The HTTP status code ([RFC7231], Section 6)",
+      "rdfs:domain": "problem:HttpProblem",
+      "rdfs:range": "xsd:integer"
+    },
+    {
+      "@id": "problem:detail",
+      "@type": "rdf:Property",
+      "rdfs:comment": "A human readable explanation specific to this occurence of the problem",
+      "rdfs:domain": "problem:HttpProblem",
+      "rdfs:range": "xsd:string"
+    },
+    {
+      "@id": "problem:type",
+      "@type": "xsd:string",
+      "rdfs:comment": "A URI reference [RFC3986] that identifies the problem type. When this member is not present, its value is assumed to be 'about:blank'",
+      "rdfs:domain": "problem:HttpProblem",
+      "rdfs:range": "xsd:string"
+    }
+  ]
+}
