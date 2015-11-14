@@ -1,0 +1,448 @@
+
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                               UC Berkeley
+Intended status: Informational                          October 30, 2015
+Expires: May 2, 2016
+
+
+                   RDF Model for HTTP Problem Reports
+                    draft-wilde-http-problem-rdf-00
+
+Abstract
+
+   HTTP Problem Reports are one way how clients can represent structured
+   information about problems that occurred on the HTTP level.
+   Essentially, they carry information that is more detailed than the
+   HTTP Status Code.  This document specifies a way how to represent
+   such information in RDF, and how this RDF model is derived from the
+   existing JSON-based model for HTTP Problem Reports.
+
+Note to Readers
+
+   Please discuss this draft on the W3C Hydra CG mailing list [1].
+
+   Online access to all versions and files is available on github [2].
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on May 2, 2016.
+
+Copyright Notice
+
+   Copyright (c) 2015 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 1]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  HTTP Problem Details for RDF  . . . . . . . . . . . . . . . .   3
+   3.  RDF Vocabulary for HTTP-Problem . . . . . . . . . . . . . . .   3
+   4.  RDF Mapping of HTTP-Problem . . . . . . . . . . . . . . . . .   3
+     4.1.  Converting to JSON-LD . . . . . . . . . . . . . . . . . .   3
+       4.1.1.  External Context  . . . . . . . . . . . . . . . . . .   3
+       4.1.2.  Embedded Context  . . . . . . . . . . . . . . . . . .   3
+       4.1.3.  Link Header . . . . . . . . . . . . . . . . . . . . .   4
+     4.2.  Example . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.3.  Converting Back to JSON . . . . . . . . . . . . . . . . .   5
+   5.  Custom Attributes . . . . . . . . . . . . . . . . . . . . . .   5
+     5.1.  Converting Custom Attributes to JSON-LD . . . . . . . . .   5
+     5.2.  Converting Custom Attributes back to JSON . . . . . . . .   7
+   6.  Limitations . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   8
+   Appendix A.  HTTP-Problem Vocabulary  . . . . . . . . . . . . . .   8
+   Appendix B.  HTTP-Problem Context for JSON-LD . . . . . . . . . .   8
+   Appendix C.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
+
+1.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [3].
+
+   The normative format of http-problem responses is JSON.  This
+   document describes the mapping between a http-problem JSON and its
+   RDF representation.  The following conventions are used to
+   distinguish when we are referring to JSON or to RDF.
+
+   attribute:  refers to a JSON attribute
+
+   object:  refers to a JSON object
+
+   property:  refers to an rdf:Property
+
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 2]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+   individual:  refers to an instance of an rdfs:Class
+
+2.  HTTP Problem Details for RDF
+
+   The Problem Details for HTTP APIs I-D has introduced semantics for
+   detailed HTTP error responses with two dedicated media types:
+   application/problem+json and application/problem+xml.  This
+   specification can be used to create RDF based serializations having
+   the same semantics, to help avoid duplicate and possibly incompatible
+   solutions for RDF based HTTP APIs.
+
+3.  RDF Vocabulary for HTTP-Problem
+
+   This document provides an RDF vocabulary which makes the semantics of
+   HTTP-problem available as RDF.  The vocabulary only copies the
+   attribute descriptions of http problem, but the entire semantics of
+   the Problem Details for HTTP APIs applications remain valid.
+   Applications MUST use the RDF representation in such a way that the
+   RDF representation can be used interchangeably with the normative
+   JSON serialization of [5]
+
+4.  RDF Mapping of HTTP-Problem
+
+4.1.  Converting to JSON-LD
+
+   A JSON http problem response is rendered as JSON-LD problem response
+   by applying the http-problem-rdf JSON-LD context definition made
+   available by this specification at
+
+   https://permanent.url.to/problem.context.jsonld
+
+   to the underlying JSON.  There are three ways to achieve that:
+
+4.1.1.  External Context
+
+   Applications may reference the context definition externally by
+   adding a @context attribute to the JSON whose value is
+   https://permanent.url.to/context.jsonld
+
+4.1.2.  Embedded Context
+
+   Applications may embed the context into JSON by adding a @context
+   attribute to it, which has the same value as the @context in
+   https://permanent.url.to/context.jsonld
+
+
+
+
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 3]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+4.1.3.  Link Header
+
+   Rather than altering the JSON, applications may add a HTTP Link
+   header with the JSON-LD context link relation type to the response:
+
+   Link: <https://permanent.url.to/problem.context.jsonld>;
+      rel="http://www.w3.org/ns/json-ld#context";
+      type="application/ld+json"
+
+4.2.  Example
+
+   HTTP problem JSON-LD with external context
+
+   {
+     "@context": "https://permanent.url.to/http-problem-context.jsonld",
+     "type": "https://example.com/probs/out-of-credit",
+     "title": "You do not have enough credit.",
+     "detail": "Your current balance is 30, but that costs 50.",
+     "instance": "/account/12345/msgs/abc"
+   }
+
+   The @context attribute allows a JSON-LD processor to interpret the
+   attributes as linked data names.
+
+   HTTP problem JSON-LD in compacted form with resolved linked data
+   names
+
+   {
+     "@id": "../account/12345/msgs/abc",
+     "https ://tools.ietf.org/html/rfcXXXX/vocab#detail":
+         "Your current balance is 30, but that costs 50.",
+     "https://tools.ietf.org/html/rfcXXXX/vocab#title":
+         "You do not have enough credit.",
+     "https://tools.ietf.org/html/rfcXXXX/vocab#type": {
+       "@id": "https://example.com/probs/out-of-credit",
+     }
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 4]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+   HTTP problem as RDF n-quads
+
+   <http://json-ld.org/account/12345/msgs/abc>
+       <https://tools.ietf.org/html/rfcXXXX/vocab#detail>
+       "Your current balance is 30, but that costs 50." .
+   <http://json-ld.org/account/12345/msgs/abc>
+       <https://tools.ietf.org/html/rfcXXXX/vocab#title>
+       "You do not have enough credit." .
+   <http://json-ld.org/account/12345/msgs/abc>
+       <https://tools.ietf.org/html/rfcXXXX/vocab#type>
+       <https://example.com/probs/out-of-credit> .
+
+4.3.  Converting Back to JSON
+
+   In order to convert a JSON-LD HTTP-problem back to the canonical JSON
+   model of application/problem+json, applications remove the JSON-LD
+   context (the @context attribute or the JSON-LD Link header).  To make
+   this conversion possible, applications MUST NOT introduce alias
+   mappings or prefixed mappings for the attributes "type", "title",
+   "detail" and "instance" in JSON-LD representations.
+
+5.  Custom Attributes
+
+5.1.  Converting Custom Attributes to JSON-LD
+
+   JSON attributes without a linked data name are ignored in JSON-LD.
+   Therefore, custom attributes like those mentioned by the http-problem
+   I-D need to be mapped in the JSON-LD context to make them visible in
+   the RDF model.  The example below shows two custom attributes,
+   "balance" and "accounts".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 5]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+   HTTP problem JSON-LD with custom properties
+
+{
+  "@context": [
+    "https://raw.githubusercontent.com/dret/I-D/master/http-problem-rdf/http-problem-context.jsonld",
+    {
+      "balance":"https://example.com/probs#balance",
+      "accounts":{
+        "@id":"https://example.com/probs#accounts",
+        "@type":"@id"
+      }
+    }
+  ],
+  "type": "https://example.com/probs/out-of-credit",
+  "title": "You do not have enough credit.",
+  "detail": "Your current balance is 30, but that costs 50.",
+  "instance": "/account/12345/msgs/abc",
+  "balance": 30,
+  "accounts": ["/account/12345",
+                "/account/67890"]
+}
+
+   The linked data names of the custom attributes "balance" and
+   "accounts" are declared in the @context, so that they become visible
+   in the underlying RDF model.  In the example above the custom
+   properties are added as embedded @context, but they could also be
+   externalized according to the JSON-LD rules for external @context
+   files.  As you can see below, the values of the accounts property are
+   coerced to hyperlinks because they were defined to be of
+   "@type":"@id" in the context.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 6]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+   HTTP problem with custom attributes as compacted JSON-LD
+
+   {
+     "@id": "../account/12345/msgs/abc",
+     "https://example.com/probs#accounts": [
+       {
+         "@id": "../account/12345"
+       },
+       {
+         "@id": "../account/67890"
+       }
+     ],
+     "https://example.com/probs#balance": 30,
+     "https://tools.ietf.org/html/rfcXXXX/vocab#detail":
+       "Your current balance is 30, but that costs 50.",
+     "https://tools.ietf.org/html/rfcXXXX/vocab#title":
+       "You do not have enough credit.",
+     "https://tools.ietf.org/html/rfcXXXX/vocab#type": {
+       "@id": "http://example.com/probs#NotEnoughCredit"
+     }
+   }
+
+   Note that custom property URIs may be dereferenceable, but they
+   cannot be used to establish standard http problem attributes, since
+   the URI prefix is not present after conversion to JSON.  In order to
+   establish semantics for custom attributes which can be shared across
+   applications, a link header with profile rel [1] may be used, and the
+   profile URI may be published in the IANA profile registry [2].
+
+5.2.  Converting Custom Attributes back to JSON
+
+   A HTTP-problem JSON-LD with custom properties is converted back to
+   plain JSON by removing the @context attribute.
+
+   To allow this conversion, a custom attribute name in JSON-LD MUST be
+   the same as in the canonical application/problem+json representation.
+   Applications MUST NOT introduce alias mappings or prefixed mappings
+   for custom properties which are different from the custom attributes
+   in JSON.
+
+6.  Limitations
+
+   JSON-LD does not map a JSON list of lists to RDF.  Hence, a JSON-LD
+   representation of an http-problem response does not map list of list
+   attributes in the JSON-LD context either, with the effect that such
+   custom attributes are not visible in the RDF model.
+
+
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 7]
+
+Internet-Draft     RDF Model for HTTP Problem Reports       October 2015
+
+
+7.  Security Considerations
+
+   ...
+
+8.  Normative References
+
+   [1]        Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
+              March 2013.
+
+   [2]        Lanthaler, M., "The Profile URI Registry", RFC 7284, June
+              2014.
+
+   [3]        Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+   [4]        Nottingham, M., "Web Linking", RFC 5988, October 2010.
+
+   [5]        Nottingham, M. and E. Wilde, "Problem Details for HTTP
+              APIs", draft-ietf-appsawg-http-problem-01 (work in
+              progress), September 2015.
+
+   [6]        Sporny, M., Longley, D., Kellogg, G., Lanthaler, M., and
+              N. Lindstroem, "JSON-LD 1.0", W3C Recommendation json-ld,
+              January 2014, <http://www.w3.org/TR/json-ld/>.
+
+   [7]        Cyganiak, R., Wood, D., and M. Lanthaler, "RDF 1.1
+              Concepts and Abstract Syntax", W3C
+              Recommendation rdf11-concepts, February 2015,
+              <http://www.w3.org/TR/rdf11-concepts/>.
+
+   [8]        Bray, T., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", RFC 7159, March 2014.
+
+Appendix A.  HTTP-Problem Vocabulary
+
+Appendix B.  HTTP-Problem Context for JSON-LD
+
+Appendix C.  Acknowledgements
+
+   Thanks for comments and suggestions provided by ...
+
+Author's Address
+
+   Erik Wilde
+   UC Berkeley
+
+   Email: dret@berkeley.edu
+   URI:   http://dret.net/netdret/
+
+
+
+Wilde                      Expires May 2, 2016                  [Page 8]

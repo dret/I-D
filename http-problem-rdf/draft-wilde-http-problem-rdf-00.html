@@ -1,0 +1,708 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>RDF Model for HTTP Problem Reports</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents"/>
+<link href="#rfc.section.1" rel="Chapter" title="1 Terminology"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 HTTP Problem Details for RDF"/>
+<link href="#rfc.section.3" rel="Chapter" title="3 RDF Vocabulary for HTTP-Problem"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 RDF Mapping of HTTP-Problem"/>
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Converting to JSON-LD"/>
+<link href="#rfc.section.4.1.1" rel="Chapter" title="4.1.1 External Context"/>
+<link href="#rfc.section.4.1.2" rel="Chapter" title="4.1.2 Embedded Context"/>
+<link href="#rfc.section.4.1.3" rel="Chapter" title="4.1.3 Link Header"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Example"/>
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Converting Back to JSON"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Custom Attributes"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Converting Custom Attributes to JSON-LD"/>
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Converting Custom Attributes back to JSON"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Limitations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="8 Normative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A HTTP-Problem Vocabulary"/>
+<link href="#rfc.appendix.B" rel="Chapter" title="B HTTP-Problem Context for JSON-LD"/>
+<link href="#rfc.appendix.C" rel="Chapter" title="C Acknowledgements"/>
+<link href="#rfc.authors" rel="Chapter"/>
+
+
+  <meta name="generator" content="xml2rfc version 2.5.1.dev0 - http://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Wilde, E." />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-http-problem-rdf-00" />
+  <meta name="dct.issued" scheme="ISO8601" content="2015-10-30" />
+  <meta name="dct.abstract" content="HTTP Problem Reports are one way how clients can represent structured information about problems that occurred on the HTTP level. Essentially, they carry information that is more detailed than the HTTP Status Code. This document specifies a way how to represent such information in RDF, and how this RDF model is derived from the existing JSON-based model for HTTP Problem Reports." />
+  <meta name="description" content="HTTP Problem Reports are one way how clients can represent structured information about problems that occurred on the HTTP level. Essentially, they carry information that is more detailed than the HTTP Status Code. This document specifies a way how to represent such information in RDF, and how this RDF model is derived from the existing JSON-based model for HTTP Problem Reports." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+  <td class="left">Network Working Group</td>
+  <td class="right">E. Wilde</td>
+</tr>
+<tr>
+  <td class="left">Internet-Draft</td>
+  <td class="right">UC Berkeley</td>
+</tr>
+<tr>
+  <td class="left">Intended status: Informational</td>
+  <td class="right">October 30, 2015</td>
+</tr>
+<tr>
+  <td class="left">Expires: May 2, 2016</td>
+  <td class="right"></td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">RDF Model for HTTP Problem Reports<br />
+  <span class="filename">draft-wilde-http-problem-rdf-00</span></p>
+  
+  <h1 id="rfc.abstract">
+  <a href="#rfc.abstract">Abstract</a>
+</h1>
+<p>HTTP Problem Reports are one way how clients can represent structured information about problems that occurred on the HTTP level. Essentially, they carry information that is more detailed than the HTTP Status Code. This document specifies a way how to represent such information in RDF, and how this RDF model is derived from the existing JSON-based model for HTTP Problem Reports.</p>
+<h1>
+  <a>Note to Readers</a>
+</h1>
+<p>Please discuss this draft on the <a href="https://lists.w3.org/Archives/Public/public-hydra/">W3C Hydra CG mailing list</a>.</p>
+<p>Online access to all versions and files is available on <a href="https://github.com/dret/I-D/tree/master/http-problem-rdf">github</a>.</p>
+<h1 id="rfc.status">
+  <a href="#rfc.status">Status of This Memo</a>
+</h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on May 2, 2016.</p>
+<h1 id="rfc.copyrightnotice">
+  <a href="#rfc.copyrightnotice">Copyright Notice</a>
+</h1>
+<p>Copyright (c) 2015 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Terminology</a></li>
+<li>2.   <a href="#rfc.section.2">HTTP Problem Details for RDF</a></li>
+<li>3.   <a href="#rfc.section.3">RDF Vocabulary for HTTP-Problem</a></li>
+<li>4.   <a href="#rfc.section.4">RDF Mapping of HTTP-Problem</a></li>
+<ul><li>4.1.   <a href="#rfc.section.4.1">Converting to JSON-LD</a></li>
+<ul><li>4.1.1.   <a href="#rfc.section.4.1.1">External Context</a></li>
+<li>4.1.2.   <a href="#rfc.section.4.1.2">Embedded Context</a></li>
+<li>4.1.3.   <a href="#rfc.section.4.1.3">Link Header</a></li>
+</ul><li>4.2.   <a href="#rfc.section.4.2">Example</a></li>
+<li>4.3.   <a href="#rfc.section.4.3">Converting Back to JSON</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Custom Attributes</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Converting Custom Attributes to JSON-LD</a></li>
+<li>5.2.   <a href="#rfc.section.5.2">Converting Custom Attributes back to JSON</a></li>
+</ul><li>6.   <a href="#rfc.section.6">Limitations</a></li>
+<li>7.   <a href="#rfc.section.7">Security Considerations</a></li>
+<li>8.   <a href="#rfc.references">Normative References</a></li>
+<li>Appendix A.   <a href="#rfc.appendix.A">HTTP-Problem Vocabulary</a></li>
+<li>Appendix B.   <a href="#rfc.appendix.B">HTTP-Problem Context for JSON-LD</a></li>
+<li>Appendix C.   <a href="#rfc.appendix.C">Acknowledgements</a></li>
+<li><a href="#rfc.authors">Author's Address</a></li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
+<p id="rfc.section.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a href="#RFC2119">[3]</a>.</p>
+<p id="rfc.section.1.p.2">The normative format of http-problem responses is JSON. This document describes the mapping between a http-problem JSON and its RDF representation. The following conventions are used to distinguish when we are referring to JSON or to RDF.</p>
+<p/>
+
+<dl>
+  <dt>attribute:</dt>
+  <dd style="margin-left: 8">refers to a JSON attribute</dd>
+  <dt>object:</dt>
+  <dd style="margin-left: 8">refers to a JSON object</dd>
+  <dt>property:</dt>
+  <dd style="margin-left: 8">refers to an rdf:Property</dd>
+  <dt>individual:</dt>
+  <dd style="margin-left: 8">refers to an instance of an rdfs:Class</dd>
+</dl>
+
+<p> </p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#introduction" id="introduction">HTTP Problem Details for RDF</a></h1>
+<p id="rfc.section.2.p.1">The Problem Details for HTTP APIs I-D has introduced semantics for detailed HTTP error responses with two dedicated media types: application/problem+json and application/problem+xml. This specification can be used to create RDF based serializations having the same semantics, to help avoid duplicate and possibly incompatible solutions for RDF based HTTP APIs.</p>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> RDF Vocabulary for HTTP-Problem</h1>
+<p id="rfc.section.3.p.1">This document provides an RDF vocabulary which makes the semantics of HTTP-problem available as RDF. The vocabulary only copies the attribute descriptions of http problem, but the entire semantics of the Problem Details for HTTP APIs applications remain valid. Applications MUST use the RDF representation in such a way that the RDF representation can be used interchangeably with the normative JSON serialization of <a href="#I-D.ietf-appsawg-http-problem">[5]</a></p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> RDF Mapping of HTTP-Problem</h1>
+<h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> Converting to JSON-LD</h1>
+<p id="rfc.section.4.1.p.1">A JSON http problem response is rendered as JSON-LD problem response by applying the http-problem-rdf JSON-LD context definition made available by this specification at</p>
+<p id="rfc.section.4.1.p.2">https://permanent.url.to/problem.context.jsonld</p>
+<p id="rfc.section.4.1.p.3">to the underlying JSON. There are three ways to achieve that:</p>
+<h1 id="rfc.section.4.1.1"><a href="#rfc.section.4.1.1">4.1.1.</a> External Context</h1>
+<p id="rfc.section.4.1.1.p.1">Applications may reference the context definition externally by adding a @context attribute to the JSON whose value is https://permanent.url.to/context.jsonld</p>
+<h1 id="rfc.section.4.1.2"><a href="#rfc.section.4.1.2">4.1.2.</a> Embedded Context</h1>
+<p id="rfc.section.4.1.2.p.1">Applications may embed the context into JSON by adding a @context attribute to it, which has the same value as the @context in https://permanent.url.to/context.jsonld</p>
+<h1 id="rfc.section.4.1.3"><a href="#rfc.section.4.1.3">4.1.3.</a> Link Header</h1>
+<p id="rfc.section.4.1.3.p.1">Rather than altering the JSON, applications may add a HTTP Link header with the JSON-LD context link relation type to the response:</p>
+<pre>
+Link: &lt;https://permanent.url.to/problem.context.jsonld&gt;;
+   rel="http://www.w3.org/ns/json-ld#context";
+   type="application/ld+json"
+            </pre>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> Example</h1>
+<p>HTTP problem JSON-LD with external context</p>
+<pre>
+{
+  "@context": "https://permanent.url.to/http-problem-context.jsonld",
+  "type": "https://example.com/probs/out-of-credit",
+  "title": "You do not have enough credit.",
+  "detail": "Your current balance is 30, but that costs 50.",
+  "instance": "/account/12345/msgs/abc"
+}
+            </pre>
+<p id="rfc.section.4.2.p.1">The @context attribute allows a JSON-LD processor to interpret the attributes as linked data names.</p>
+<p>HTTP problem JSON-LD in compacted form with resolved linked data names</p>
+<pre>
+{
+  "@id": "../account/12345/msgs/abc",
+  "https ://tools.ietf.org/html/rfcXXXX/vocab#detail":
+      "Your current balance is 30, but that costs 50.",
+  "https://tools.ietf.org/html/rfcXXXX/vocab#title":
+      "You do not have enough credit.",
+  "https://tools.ietf.org/html/rfcXXXX/vocab#type": {
+    "@id": "https://example.com/probs/out-of-credit",
+  }
+}
+            </pre>
+<p>HTTP problem as RDF n-quads</p>
+<pre>
+&lt;http://json-ld.org/account/12345/msgs/abc&gt;
+    &lt;https://tools.ietf.org/html/rfcXXXX/vocab#detail&gt;
+    "Your current balance is 30, but that costs 50." .
+&lt;http://json-ld.org/account/12345/msgs/abc&gt;
+    &lt;https://tools.ietf.org/html/rfcXXXX/vocab#title&gt;
+    "You do not have enough credit." .
+&lt;http://json-ld.org/account/12345/msgs/abc&gt;
+    &lt;https://tools.ietf.org/html/rfcXXXX/vocab#type&gt;
+    &lt;https://example.com/probs/out-of-credit&gt; .
+            </pre>
+<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> Converting Back to JSON</h1>
+<p id="rfc.section.4.3.p.1">In order to convert a JSON-LD HTTP-problem back to the canonical JSON model of application/problem+json, applications remove the JSON-LD context (the @context attribute or the JSON-LD Link header). To make this conversion possible, applications MUST NOT introduce alias mappings or prefixed mappings for the attributes "type", "title", "detail" and "instance" in JSON-LD representations.  </p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> Custom Attributes</h1>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> Converting Custom Attributes to JSON-LD</h1>
+<p id="rfc.section.5.1.p.1">JSON attributes without a linked data name are ignored in JSON-LD. Therefore, custom attributes like those mentioned by the http-problem I-D need to be mapped in the JSON-LD context to make them visible in the RDF model. The example below shows two custom attributes, "balance" and "accounts".</p>
+<p>HTTP problem JSON-LD with custom properties</p>
+<pre>
+{
+  "@context": [
+    "https://raw.githubusercontent.com/dret/I-D/master/http-problem-rdf/http-problem-context.jsonld",
+    {
+      "balance":"https://example.com/probs#balance",
+      "accounts":{
+        "@id":"https://example.com/probs#accounts",
+        "@type":"@id"
+      }
+    }
+  ],
+  "type": "https://example.com/probs/out-of-credit",
+  "title": "You do not have enough credit.",
+  "detail": "Your current balance is 30, but that costs 50.",
+  "instance": "/account/12345/msgs/abc",
+  "balance": 30,
+  "accounts": ["/account/12345",
+                "/account/67890"]
+}
+        </pre>
+<p id="rfc.section.5.1.p.2">The linked data names of the custom attributes "balance" and "accounts" are declared in the @context, so that they become visible in the underlying RDF model. In the example above the custom properties are added as embedded @context, but they could also be externalized according to the JSON-LD rules for external @context files. As you can see below, the values of the accounts property are coerced to hyperlinks because they were defined to be of "@type":"@id" in the context.  </p>
+<p>HTTP problem with custom attributes as compacted JSON-LD</p>
+<pre>
+{
+  "@id": "../account/12345/msgs/abc",
+  "https://example.com/probs#accounts": [
+    {
+      "@id": "../account/12345"
+    },
+    {
+      "@id": "../account/67890"
+    }
+  ],
+  "https://example.com/probs#balance": 30,
+  "https://tools.ietf.org/html/rfcXXXX/vocab#detail":
+    "Your current balance is 30, but that costs 50.",
+  "https://tools.ietf.org/html/rfcXXXX/vocab#title":
+    "You do not have enough credit.",
+  "https://tools.ietf.org/html/rfcXXXX/vocab#type": {
+    "@id": "http://example.com/probs#NotEnoughCredit"
+  }
+}
+        </pre>
+<p id="rfc.section.5.1.p.3">Note that custom property URIs may be dereferenceable, but they cannot be used to establish standard http problem attributes, since the URI prefix is not present after conversion to JSON.  In order to establish semantics for custom attributes which can be shared across applications, a link header with profile rel <a href="#RFC6906">[1]</a> may be used, and the profile URI may be published in the IANA profile registry <a href="#RFC7284">[2]</a>.</p>
+<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> Converting Custom Attributes back to JSON</h1>
+<p id="rfc.section.5.2.p.1">A HTTP-problem JSON-LD with custom properties is converted back to plain JSON by removing the @context attribute.</p>
+<p id="rfc.section.5.2.p.2">To allow this conversion, a custom attribute name in JSON-LD MUST be the same as in the canonical application/problem+json representation. Applications MUST NOT introduce alias mappings or prefixed mappings for custom properties which are different from the custom attributes in JSON.  </p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> Limitations</h1>
+<p id="rfc.section.6.p.1">JSON-LD does not map a JSON list of lists to RDF. Hence, a JSON-LD representation of an http-problem response does not map list of list attributes in the JSON-LD context either, with the effect that such custom attributes are not visible in the RDF model.</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Security Considerations</h1>
+<p id="rfc.section.7.p.1">...</p>
+<h1 id="rfc.references"><a href="#rfc.references">8.</a> Normative References</h1>
+<table>
+  <tbody>
+    <tr>
+      <td class="reference">
+        <b id="RFC6906">[1]</b>
+      </td>
+      <td class="top"><a>Wilde, E.</a>, "<a href="http://tools.ietf.org/html/rfc6906">The 'profile' Link Relation Type</a>", RFC 6906, March 2013.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7284">[2]</b>
+      </td>
+      <td class="top"><a>Lanthaler, M.</a>, "<a href="http://tools.ietf.org/html/rfc7284">The Profile URI Registry</a>", RFC 7284, June 2014.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC2119">[3]</b>
+      </td>
+      <td class="top"><a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", RFC 2119, March 1997.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC5988">[4]</b>
+      </td>
+      <td class="top"><a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>", RFC 5988, October 2010.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="I-D.ietf-appsawg-http-problem">[5]</b>
+      </td>
+      <td class="top"><a>Nottingham, M.</a> and <a>E. Wilde</a>, "<a href="http://tools.ietf.org/html/draft-ietf-appsawg-http-problem-01">Problem Details for HTTP APIs</a>", Internet-Draft draft-ietf-appsawg-http-problem-01, September 2015.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="JSON-LD">[6]</b>
+      </td>
+      <td class="top"><a>Sporny, M.</a>, <a>Longley, D.</a>, <a>Kellogg, G.</a>, <a>Lanthaler, M.</a> and <a>N. Lindstroem</a>, "<a href="http://www.w3.org/TR/json-ld/">JSON-LD 1.0</a>", W3C Recommendation json-ld, January 2014.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RDF11-CONCEPTS">[7]</b>
+      </td>
+      <td class="top"><a>Cyganiak, R.</a>, <a>Wood, D.</a> and <a>M. Lanthaler</a>, "<a href="http://www.w3.org/TR/rdf11-concepts/">RDF 1.1 Concepts and Abstract Syntax</a>", W3C Recommendation rdf11-concepts, February 2015.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7159">[8]</b>
+      </td>
+      <td class="top"><a>Bray, T.</a>, "<a href="http://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, March 2014.</td>
+    </tr>
+  </tbody>
+</table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#vocabulary" id="vocabulary">HTTP-Problem Vocabulary</a></h1>
+<h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#jsonld-context" id="jsonld-context">HTTP-Problem Context for JSON-LD</a></h1>
+<h1 id="rfc.appendix.C"><a href="#rfc.appendix.C">Appendix C.</a> Acknowledgements</h1>
+<p id="rfc.section.C.p.1">Thanks for comments and suggestions provided by ...</p>
+<h1 id="rfc.authors">
+  <a href="#rfc.authors">Author's Address</a>
+</h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Erik Wilde</span> 
+	  <span class="n hidden">
+		<span class="family-name">Wilde</span>
+	  </span>
+	</span>
+	<span class="org vcardline">UC Berkeley</span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:dret@berkeley.edu">dret@berkeley.edu</a></span>
+
+<span class="vcardline">URI: <a href="http://dret.net/netdret/">http://dret.net/netdret/</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
