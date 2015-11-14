@@ -27,7 +27,7 @@
    <middle>
          <section title="Terminology" anchor="terminology">
          <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
-         <t>The normative format of http-problem responses is JSON. This document describes the mapping between a http-problem JSON and its RDF representation. The following conventions are used to distinguish when JSON or RDF are referred to:</t>
+         <t>The normative format of http-problem responses is JSON. This document describes the mapping between a HTTP-problem JSON and its RDF representation. The following conventions are used to distinguish when JSON or RDF are referred to:</t>
          <t>
             <list style="hanging">
               <t hangText="attribute:">refers to a JSON attribute</t>
@@ -40,12 +40,12 @@
       <section title="HTTP Problem Details for RDF" anchor="introduction">
          <t><xref target="I-D.ietf-appsawg-http-problem"/> defines semantics for detailed HTTP error responses with two dedicated media types: application/problem+json and application/problem+xml. This specification can be used to create RDF based serializations having the same semantics, to help avoid duplicate and possibly incompatible solutions for RDF-based HTTP APIs.</t>
       </section>
-      <section title="RDF Vocabulary for HTTP-Problem">
-          <t>This document provides an RDF vocabulary which makes the semantics of HTTP-problem available as RDF. The vocabulary only copies the attribute descriptions of http problem, but the entire semantics of the Problem Details for HTTP APIs applications remain valid. Applications MUST use the RDF representation in such a way that the RDF representation can be used interchangeably with the normative JSON serialization of <xref target="I-D.ietf-appsawg-http-problem"/></t>
+      <section title="RDF Vocabulary for HTTP-Problem" anchor="rdf-vocabulary">
+          <t>This document provides an RDF vocabulary which makes the semantics of HTTP-problem available as RDF. The vocabulary only copies the attribute descriptions of HTTP-problem, but the entire semantics of the Problem Details for HTTP APIs applications remain valid. Applications MUST use the RDF representation in such a way that the RDF representation can be used interchangeably with the JSON serialization of <xref target="I-D.ietf-appsawg-http-problem"/>.</t>
       </section>
-      <section title="RDF Mapping of HTTP-Problem">
+      <section title="RDF Mapping of HTTP-Problem" anchor="mapping">
         <section title="Converting to JSON-LD">
-          <t>A JSON http problem response is rendered as JSON-LD problem response by applying the http-problem-rdf JSON-LD context definition made available by this specification at</t>
+          <t>A JSON HTTP-problem response is rendered as JSON-LD problem response by applying the http-problem-rdf JSON-LD context definition made available by this specification at</t>
           <t>https://permanent.url.to/problem.context.jsonld</t>
           <t>to the underlying JSON. There are three ways to achieve that:</t>
           <section title="External Context">
@@ -55,7 +55,7 @@
             <t>Applications may embed the context into JSON by adding a @context attribute to it, which has the same value as the @context in https://permanent.url.to/context.jsonld</t>
           </section>
           <section title="Link Header">
-            <t>Rather than altering the JSON, applications may add a HTTP Link header with the JSON-LD context link relation type to the response:</t>
+            <t>Rather than altering the JSON, applications may add an HTTP Link header with the JSON-LD context link relation type to the response:</t>
             <figure>
             <artwork>
 Link: &lt;https://permanent.url.to/problem.context.jsonld&gt;;
@@ -169,7 +169,7 @@ Link: &lt;https://permanent.url.to/problem.context.jsonld&gt;;
 }
         </artwork>
         </figure>
-        <t>Note that custom property URIs may be dereferenceable, but they cannot be used to establish standard http problem attributes, since the URI prefix is not present after conversion to JSON.
+        <t>Note that custom property URIs may be dereferenceable, but they cannot be used to establish standard HTTP-problem attributes, since the URI prefix is not present after conversion to JSON.
         In order to establish semantics for custom attributes which can be shared across applications, a link header with profile rel <xref target="RFC6906"/> may be used, and the profile URI may be published in the IANA profile registry <xref target="RFC7284"/>.</t>
         </section>
         <section title="Converting Custom Attributes back to JSON">
