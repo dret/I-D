@@ -1,21 +1,23 @@
-Internet-Drafts
-===============
+# Internet Drafts
 
-Internet Drafts I've authored or contributed to. All are works-in-progress, except for the following ones: "[Abandoned](Abandoned)" contains drafts I'm no longer pursuing; "[Published](Published)" contains those that made it to RFC status.
+Internet Drafts I've authored or contributed to. All are works-in-progress, except for the ones archived in the following directories:
 
-For individual draft status, see https://datatracker.ietf.org/doc/{draft_name}/
+* "[Abandoned](Abandoned)" contains drafts I am no longer pursuing;
+* "[Published](Published)" contains drafts that made it to RFC status.
+
+For individual draft status, please see https://datatracker.ietf.org/doc/{draft_name}/
 
 For a status summary, see http://datatracker.ietf.org/doc/search/?rfcs=on&activeDrafts=on&oldDrafts=on&by=author&author=Wilde
 
-Giving Feedback
----------------
+
+## Providing Feedback
 
 If the draft you want to make a comment on specifies an e-mail list for feedback, please use this address. Usually, it's in the abstract.
 
-Otherwise, feel free to either [contact me via e-mail](mailto:dret@berkeley.edu), or to open an issue on GitHub.
+Otherwise, feel free to either [contact me via e-mail](mailto:erik.wilde@dret.net), or to open an issue on GitHub.
 
-Collaborating
--------------
+
+## Collaborating
 
 Feel free to fork this repository and issue pull requests (which I might or might not choose to accept). The source is always the XML of the latest version, and HTML/TXT versions are generated using [the old version of xml2rfc](http://xml.resource.org/old.html). The HTML/TXT versions may be outdated, so always check the dates on the XML and HTML/TXT versions. Please do not push HTML/TXT, I will update those occasionally, but not necessarily with every update of the XML.
 
