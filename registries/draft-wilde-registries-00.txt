@@ -1,0 +1,280 @@
+
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                           January 9, 2016
+Intended status: Informational
+Expires: July 12, 2016
+
+
+                         The Use of Registries
+                       draft-wilde-registries-00
+
+Abstract
+
+   Registries on the Internet and the Web fulfill a wide range of tasks,
+   ranging from low-level networking aspects such as packet type
+   identifiers, all the way to application-level protocols and
+   standards.  This document summarizes some of the reasons of why and
+   how to use registries, and how some of them are operated.  It serves
+   as a informative reference for specification writers considering
+   whether to create and manage a registry, allowing them to better
+   understand some of the issues associated with certain design
+   discussions.
+
+Note to Readers
+
+   Please discuss this draft on the apps-discuss mailing list [1].
+
+   Online access to all versions and files is available on GitHub [2].
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on July 12, 2016.
+
+
+
+
+
+
+
+
+Wilde                     Expires July 12, 2016                 [Page 1]
+
+Internet-Draft                 Registries                   January 2016
+
+
+Copyright Notice
+
+   Copyright (c) 2016 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     2.1.  TCP/UDP Port Numbers  . . . . . . . . . . . . . . . . . .   3
+     2.2.  Language Tags . . . . . . . . . . . . . . . . . . . . . .   3
+     2.3.  Web Linking . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Why to use Registries . . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Limited Namespaces  . . . . . . . . . . . . . . . . . . .   4
+     3.2.  Design/Usage Review . . . . . . . . . . . . . . . . . . .   4
+     3.3.  Documentation Requirements  . . . . . . . . . . . . . . .   4
+     3.4.  Centralized Lookup  . . . . . . . . . . . . . . . . . . .   4
+   4.  When to use Registries  . . . . . . . . . . . . . . . . . . .   4
+   5.  How to use Registries . . . . . . . . . . . . . . . . . . . .   4
+     5.1.  Registry Stability  . . . . . . . . . . . . . . . . . . .   4
+     5.2.  Runtime vs. Design-Time . . . . . . . . . . . . . . . . .   4
+     5.3.  Registry Access . . . . . . . . . . . . . . . . . . . . .   4
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+
+1.  Introduction
+
+   Technologies and standards in computer networking have long used the
+   concept of a "Registry" as a place where well-known information is
+   available and managed.  In most case, the main reason to use a
+   registry is to create a technology or standard that has stable parts
+   (the technology/standard itself), as well as some parts that are
+   supposed to evolve, even though the technology/standard itself
+   remains stable and unchanged.
+
+   A registry essentially is a pattern of how to separate those two
+   aspects of a technology/standard, allowing the technology/standard to
+
+
+
+Wilde                     Expires July 12, 2016                 [Page 2]
+
+Internet-Draft                 Registries                   January 2016
+
+
+   remain stable, while the parts of it referencing the registry can
+   evolve over time by changing the registry contents.  For
+   specification writers, this has proven to be a useful and successful
+   pattern.  The "Protocol Registries" maintained by the "Internet
+   Assigned Numbers Authority (IANA)" have steadily increased in number,
+   at the time of writing (January 2016), the [4] contains 1903
+   individual registries.  This number indicates that registries as a
+   "protocol specification pattern" are quite popular and successful.
+
+   Deciding if a specification should use a registry is not an easy
+   task.  It involves identifying those parts that should be kept stable
+   (in the specification itself), and those that should be managed in
+   one or more registries for ongoing management and evolution.  Even
+   after identifying this split, it is necessary to define how exactly
+   the registry part(s) should be managed, involving questions such as
+   submission procedures, review processes, revocation/change
+   management, and access to the registry contents for the worldwide
+   developer community.
+
+   This document is intended to provide an overview to specification
+   developers in terms of why, when, and how to use registries.  It is
+   not meant to provide definitive guidance, but more intended as a
+   reference to consider the different ways in which the general
+   "registry pattern" can be used, and what the possible side-effects on
+   some of these solutions may be.
+
+2.  Examples
+
+   ...
+
+2.1.  TCP/UDP Port Numbers
+
+   [3]
+
+2.2.  Language Tags
+
+   [1]
+
+2.3.  Web Linking
+
+   [2]
+
+3.  Why to use Registries
+
+   ...
+
+
+
+
+
+
+Wilde                     Expires July 12, 2016                 [Page 3]
+
+Internet-Draft                 Registries                   January 2016
+
+
+3.1.  Limited Namespaces
+
+   ...
+
+3.2.  Design/Usage Review
+
+   ...
+
+3.3.  Documentation Requirements
+
+   ...
+
+3.4.  Centralized Lookup
+
+   ...
+
+4.  When to use Registries
+
+   ...
+
+5.  How to use Registries
+
+   ...
+
+5.1.  Registry Stability
+
+   ...
+
+5.2.  Runtime vs. Design-Time
+
+   ...
+
+5.3.  Registry Access
+
+   ...
+
+6.  References
+
+   [1]        Phillips, A. and M. Davis, "Tags for Identifying
+              Languages", RFC 4646, DOI 10.17487/RFC4646, September
+              2006, <http://www.rfc-editor.org/info/rfc4646>.
+
+   [2]        Nottingham, M., "Web Linking", RFC 5988,
+              DOI 10.17487/RFC5988, October 2010,
+              <http://www.rfc-editor.org/info/rfc5988>.
+
+
+
+
+
+
+Wilde                     Expires July 12, 2016                 [Page 4]
+
+Internet-Draft                 Registries                   January 2016
+
+
+   [3]        Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S.
+              Cheshire, "Internet Assigned Numbers Authority (IANA)
+              Procedures for the Management of the Service Name and
+              Transport Protocol Port Number Registry", BCP 165,
+              RFC 6335, DOI 10.17487/RFC6335, August 2011,
+              <http://www.rfc-editor.org/info/rfc6335>.
+
+   [4]        "IANA Protocol Registry", <http://www.iana.org/protocols>.
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by ...
+
+Author's Address
+
+   Erik Wilde
+
+   Email: erik.wilde@dret.net
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires July 12, 2016                 [Page 5]
