@@ -14,7 +14,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="9" month="January" year="2016"/>
+      <date day="19" month="January" year="2016"/>
       <abstract>
          <t>Registries on the Internet and the Web fulfill a wide range of tasks, ranging from low-level networking aspects such as packet type identifiers, all the way to application-level protocols and standards. This document summarizes some of the reasons of why and how to use registries, and how some of them are operated. It serves as a informative reference for specification writers considering whether to create and manage a registry, allowing them to better understand some of the issues associated with certain design discussions.</t>
       </abstract>
@@ -30,24 +30,28 @@
          <t>Deciding if a specification should use a registry is not an easy task. It involves identifying those parts that should be kept stable (in the specification itself), and those that should be managed in one or more registries for ongoing management and evolution. Even after identifying this split, it is necessary to define how exactly the registry part(s) should be managed, involving questions such as submission procedures, review processes, revocation/change management, and access to the registry contents for the worldwide developer community.</t>
          <t>This document is intended to provide an overview to specification developers in terms of why, when, and how to use registries. It is not meant to provide definitive guidance, but more intended as a reference to consider the different ways in which the general "registry pattern" can be used, and what the possible side-effects on some of these solutions may be.</t>
       </section>
-      <section title="Examples">
+      <section title="Examples" anchor="examples">
          <t>...</t>
-         <section title="TCP/UDP Port Numbers">
+         <section title="TCP/UDP Port Numbers" anchor="ports">
             <t><xref target="RFC6335"/></t>
          </section>
-         <section title="Language Tags">
+         <section title="Language Tags" anchor="languages">
             <t><xref target="RFC4646"/></t>
          </section>
-         <section title="Web Linking">
+         <section title="Web Linking" anchor="links">
             <t><xref target="RFC5988"/></t>
          </section>
       </section>
       <section title="Why to use Registries">
-         <t>...</t>
+         <t>Establishing and using a registry can be done for a number of reasons. The following sections list some of these reasons, and in many cases, registries are used for at least some of the reasons described here.</t>
          <section title="Limited Namespaces">
-            <t>...</t>
+            <t>Historically, registries started managing the very limited namespace of identifier fields in protocol packets or other low-level mechanisms such as the port numbers described in <xref target="ports"/>, often limited to a small number of bits or bytes. Carefully managing this very limited set of available identifiers was important, as was a way to allow new values to be added without having to update the protocol specification itself.</t>
+            <t>The higher the level is on which registries are used, the more likely it is that namespaces at least on the technical level are not very constrained. For example, the link relation described in <xref target="links"/> are using strings as identifiers without imposing a length limitations, meaning that the set of possible identifiers is virtually inexhaustible. However, even in this case, the set of helpful and meaningful identifiers (i.e., names that are human-readable and partly self-describing) is limited, and thus even in this case, the realistically useful namespace is much more limited that the theoretical one.</t>
          </section>
          <section title="Design/Usage Review">
+            <t>...</t>
+         </section>
+         <section title="Identifier Design">
             <t>...</t>
          </section>
          <section title="Documentation Requirements">
