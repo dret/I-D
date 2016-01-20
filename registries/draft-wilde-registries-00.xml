@@ -45,7 +45,8 @@
       <section title="Why to use Registries" anchor="why">
          <t>Establishing and using a registry can be done for a number of reasons. The following sections list some of these reasons, and in many cases, registries are used for at least some of the reasons described here.</t>
          <section title="Openness and Extensibility" anchor="open-extensible">
-            <t>...</t>
+            <t>Registries separate a specification into a stable part that is represented by the specification itself, and a dynamic part that is represented by one or more registries that are established by the specification. This pattern allows a specification to remain stable, while still having well-defined parts that are allowed to evolve over time.</t>
+            <t>In order for this pattern to work well, the specification should clearly state what implementations should do when encountering unknown values in those locations where allowable values are managed in a registry. The two most popular processing models are to either silently ignore such a value and continue as if the value was not present at all, or to raise an error and notify higher layers of the fact that something unknown was encountered.</t>
          </section>
          <section title="Limited Namespaces" anchor="limited-namespace">
             <t>Historically, registries started managing the very limited namespace of identifier fields in protocol packets or other low-level mechanisms such as the port numbers described in <xref target="ports"/>, often limited to a small number of bits or bytes. Carefully managing this very limited set of available identifiers was important, as was a way to allow new values to be added without having to update the protocol specification itself.</t>
