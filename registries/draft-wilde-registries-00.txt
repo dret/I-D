@@ -3,9 +3,9 @@
 
 
 Network Working Group                                           E. Wilde
-Internet-Draft                                           January 9, 2016
+Internet-Draft                                          January 19, 2016
 Intended status: Informational
-Expires: July 12, 2016
+Expires: July 22, 2016
 
 
                          The Use of Registries
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 12, 2016.
+   This Internet-Draft will expire on July 22, 2016.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Wilde                     Expires July 12, 2016                 [Page 1]
+Wilde                     Expires July 22, 2016                 [Page 1]
 
 Internet-Draft                 Registries                   January 2016
 
@@ -80,19 +80,22 @@ Table of Contents
      2.1.  TCP/UDP Port Numbers  . . . . . . . . . . . . . . . . . .   3
      2.2.  Language Tags . . . . . . . . . . . . . . . . . . . . . .   3
      2.3.  Web Linking . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  Why to use Registries . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Limited Namespaces  . . . . . . . . . . . . . . . . . . .   4
-     3.2.  Design/Usage Review . . . . . . . . . . . . . . . . . . .   4
-     3.3.  Documentation Requirements  . . . . . . . . . . . . . . .   4
-     3.4.  Centralized Lookup  . . . . . . . . . . . . . . . . . . .   4
-   4.  When to use Registries  . . . . . . . . . . . . . . . . . . .   4
-   5.  How to use Registries . . . . . . . . . . . . . . . . . . . .   4
-     5.1.  Registry Stability  . . . . . . . . . . . . . . . . . . .   4
-     5.2.  Runtime vs. Design-Time . . . . . . . . . . . . . . . . .   4
-     5.3.  Registry Access . . . . . . . . . . . . . . . . . . . . .   4
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
+   3.  Why to use Registries . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  Openness and Extensibility  . . . . . . . . . . . . . . .   4
+     3.2.  Limited Namespaces  . . . . . . . . . . . . . . . . . . .   4
+     3.3.  Design/Usage Review . . . . . . . . . . . . . . . . . . .   5
+     3.4.  Identifier Design . . . . . . . . . . . . . . . . . . . .   5
+     3.5.  Documentation Requirements  . . . . . . . . . . . . . . .   6
+     3.6.  Centralized Lookup  . . . . . . . . . . . . . . . . . . .   6
+   4.  When to use Registries  . . . . . . . . . . . . . . . . . . .   6
+   5.  How to use Registries . . . . . . . . . . . . . . . . . . . .   7
+     5.1.  Registry Stability  . . . . . . . . . . . . . . . . . . .   7
+     5.2.  Registry History  . . . . . . . . . . . . . . . . . . . .   7
+     5.3.  Runtime vs. Design-Time . . . . . . . . . . . . . . . . .   7
+     5.4.  Registry Access . . . . . . . . . . . . . . . . . . . . .   7
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   7
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -104,24 +107,24 @@ Table of Contents
    supposed to evolve, even though the technology/standard itself
    remains stable and unchanged.
 
-   A registry essentially is a pattern of how to separate those two
-   aspects of a technology/standard, allowing the technology/standard to
 
 
-
-Wilde                     Expires July 12, 2016                 [Page 2]
+Wilde                     Expires July 22, 2016                 [Page 2]
 
 Internet-Draft                 Registries                   January 2016
 
 
+   A registry essentially is a pattern of how to separate those two
+   aspects of a technology/standard, allowing the technology/standard to
    remain stable, while the parts of it referencing the registry can
    evolve over time by changing the registry contents.  For
    specification writers, this has proven to be a useful and successful
    pattern.  The "Protocol Registries" maintained by the "Internet
    Assigned Numbers Authority (IANA)" have steadily increased in number,
-   at the time of writing (January 2016), the [4] contains 1903
-   individual registries.  This number indicates that registries as a
-   "protocol specification pattern" are quite popular and successful.
+   at the time of writing (January 2016), the IANA Protocol Registry [4]
+   contains 1903 individual registries.  This number indicates that
+   registries as a "protocol specification pattern" are quite popular
+   and successful.
 
    Deciding if a specification should use a registry is not an easy
    task.  It involves identifying those parts that should be kept stable
@@ -156,39 +159,184 @@ Internet-Draft                 Registries                   January 2016
 
    [2]
 
-3.  Why to use Registries
-
-   ...
 
 
 
 
 
 
-Wilde                     Expires July 12, 2016                 [Page 3]
+Wilde                     Expires July 22, 2016                 [Page 3]
 
 Internet-Draft                 Registries                   January 2016
 
 
-3.1.  Limited Namespaces
+3.  Why to use Registries
 
-   ...
+   Establishing and using a registry can be done for a number of
+   reasons.  The following sections list some of these reasons, and in
+   many cases, registries are used for at least some of the reasons
+   described here.
 
-3.2.  Design/Usage Review
+3.1.  Openness and Extensibility
 
-   ...
+   Registries separate a specification into a stable part that is
+   represented by the specification itself, and a dynamic part that is
+   represented by one or more registries that are established by the
+   specification.  This pattern allows a specification to remain stable,
+   while still having well-defined parts that are allowed to evolve over
+   time.
 
-3.3.  Documentation Requirements
+   In order for this pattern to work well, the specification should
+   clearly state what implementations should do when encountering
+   unknown values in those locations where allowable values are managed
+   in a registry.  The two most popular processing models are to either
+   silently ignore such a value and continue as if the value was not
+   present at all, or to raise an error and notify higher layers of the
+   fact that something unknown was encountered.
 
-   ...
+   Depending on the way values are managed, it is also possible to
+   distinguish between values that are supposed to be registered, and
+   those that are not supposed to be registered and have to be
+   considered unregistered extensions.  The link relation types
+   described in Section 2.3 use such an approach, defining that a link
+   relation is either a string and supposed to be a registered value, or
+   a URI in which case it is not supposed to be a registered value.
+   This strategy works when it is possible to clearly separate the
+   namespace of the place where values are expected into ones that are
+   considered to be registered, and those that are not.
 
-3.4.  Centralized Lookup
+3.2.  Limited Namespaces
 
-   ...
+   Historically, registries started managing the very limited namespace
+   of identifier fields in protocol packets or other low-level
+   mechanisms such as the port numbers described in Section 2.1, often
+   limited to a small number of bits or bytes.  Carefully managing this
+   very limited set of available identifiers was important, as was a way
+   to allow new values to be added without having to update the protocol
+   specification itself.
+
+   The higher the level is on which registries are used, the more likely
+   it is that namespaces at least on the technical level are not very
+   constrained.  For example, the link relation types described in
+
+
+
+Wilde                     Expires July 22, 2016                 [Page 4]
+
+Internet-Draft                 Registries                   January 2016
+
+
+   Section 2.3 are using strings as identifiers without imposing a
+   length limitations, meaning that the set of possible identifiers is
+   virtually inexhaustible.  However, even in this case, the set of
+   helpful and meaningful identifiers (i.e., names that are human-
+   readable and partly self-describing) is limited, and thus even in
+   this case, the realistically useful namespace is much more limited
+   that the theoretical one.
+
+3.3.  Design/Usage Review
+
+   Registries are established in the context of a given specification,
+   and provide a mechanism to make this specification extensible by
+   allowing the registry to evolve over time.  However, the context of
+   the specification very often has a clear design rationale for why a
+   registry is established for a certain set of values.  Any value added
+   or changed in the registry should fit into this context, and having a
+   registry provides an opportunity to have design and usage reviews
+   before the registry gets updated.
+
+   For design and usage reviews to work well, the most crucial aspect is
+   that the context of the registry is well-defined, and states clearly
+   what kind of expectations the design and usage review will be
+   checking.  Often this review process is implemented using a mailing
+   list and designated experts, so that registration requests as well as
+   results of the deign and usage review are done openly and
+   transparently.
+
+3.4.  Identifier Design
+
+   Depending on the namespace, managing the registry namespace may
+   follow certain guidelines.  For numeric values, there may be certain
+   number ranges that are supposed to be used in certain ways.  For
+   string values, there may be some convention or best practices on how
+   to mint identifiers so that the namespace contains values that are
+   following these principles.
+
+   Note that this is different from the design and usage review
+   Section 3.3.  Whereas the design and usage review is about testing
+   whether the meaning associated with a new value follow the
+   constraints defined in the context that established the registry, the
+   identifier design simply checks for how the registered values are
+   chosen.  It thus is a lower bar than a design and usage review, but
+   still requires a review process that allows to propose new values,
+   and provides some feedback about whether these values follow the
+   guidelines or not.
+
+
+
+
+
+
+Wilde                     Expires July 22, 2016                 [Page 5]
+
+Internet-Draft                 Registries                   January 2016
+
+
+3.5.  Documentation Requirements
+
+   Registering a value means that people encountering this value should
+   be able to learn about what it represents.  This means that there
+   should be documentation associated with it that can be used to learn
+   more about the value's meaning.  Many registries at the very least
+   require a very short explanation to be submitted with a registration
+   request, so that the registry itself can list those texts as helpful
+   explanations.
+
+   Going further, many registries also require links to more detailed
+   specifications, so that people looking for complete explanations of
+   the meaning of registered values can follow those links and will find
+   specifications or at least explanations.  The exact requirement on
+   what such a link must refer to is something that the specification
+   creating the registry has to define.  One popular requirement is that
+   it must be publicly available information, so that anybody looking
+   for it can openly access it.
+
+3.6.  Centralized Lookup
+
+   With a registry containing all current values (and possibly listing
+   changed/deprecated ones as well) along with some registration
+   metadata, they provide valuable information for anybody looking for
+   information about registered values in the registry namespace.  All
+   IANA protocol registries [4] are openly accessible on the Web,
+   allowing everybody to lookup the current state of all these
+   registries.
+
+   Even though centralized lookup is an important aspect of openness and
+   extensibility Section 3.1, the usual usage model of these lookup
+   facilities is to use them at design-time rather than at runtime
+   Section 5.3.  This means that the central lookup facilities are meant
+   to be used by developers, and not by the implementations created by
+   those developers.  For the latter model a much more scalable
+   infrastructure would be required, and thus it is important to
+   consider the fact if the namespace managed by a registry fits this
+   model of being useful for developer lookup at design-time, and for
+   value lookup at runtime.
 
 4.  When to use Registries
 
    ...
+
+
+
+
+
+
+
+
+Wilde                     Expires July 22, 2016                 [Page 6]
+
+Internet-Draft                 Registries                   January 2016
+
 
 5.  How to use Registries
 
@@ -198,11 +346,15 @@ Internet-Draft                 Registries                   January 2016
 
    ...
 
-5.2.  Runtime vs. Design-Time
+5.2.  Registry History
 
    ...
 
-5.3.  Registry Access
+5.3.  Runtime vs. Design-Time
+
+   ...
+
+5.4.  Registry Access
 
    ...
 
@@ -215,16 +367,6 @@ Internet-Draft                 Registries                   January 2016
    [2]        Nottingham, M., "Web Linking", RFC 5988,
               DOI 10.17487/RFC5988, October 2010,
               <http://www.rfc-editor.org/info/rfc5988>.
-
-
-
-
-
-
-Wilde                     Expires July 12, 2016                 [Page 4]
-
-Internet-Draft                 Registries                   January 2016
-
 
    [3]        Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S.
               Cheshire, "Internet Assigned Numbers Authority (IANA)
@@ -240,6 +382,17 @@ Appendix A.  Acknowledgements
    Thanks for comments and suggestions provided by ...
 
 Author's Address
+
+
+
+
+
+
+
+Wilde                     Expires July 22, 2016                 [Page 7]
+
+Internet-Draft                 Registries                   January 2016
+
 
    Erik Wilde
 
@@ -277,4 +430,19 @@ Author's Address
 
 
 
-Wilde                     Expires July 12, 2016                 [Page 5]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires July 22, 2016                 [Page 8]

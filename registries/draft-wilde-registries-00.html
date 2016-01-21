@@ -380,15 +380,18 @@
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Language Tags"/>
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 Web Linking"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Why to use Registries"/>
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Limited Namespaces"/>
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Design/Usage Review"/>
-<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Documentation Requirements"/>
-<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Centralized Lookup"/>
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Openness and Extensibility"/>
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Limited Namespaces"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Design/Usage Review"/>
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Identifier Design"/>
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Documentation Requirements"/>
+<link href="#rfc.section.3.6" rel="Chapter" title="3.6 Centralized Lookup"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 When to use Registries"/>
 <link href="#rfc.section.5" rel="Chapter" title="5 How to use Registries"/>
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Registry Stability"/>
-<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Runtime vs. Design-Time"/>
-<link href="#rfc.section.5.3" rel="Chapter" title="5.3 Registry Access"/>
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Registry History"/>
+<link href="#rfc.section.5.3" rel="Chapter" title="5.3 Runtime vs. Design-Time"/>
+<link href="#rfc.section.5.4" rel="Chapter" title="5.4 Registry Access"/>
 <link href="#rfc.references" rel="Chapter" title="6 References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements"/>
 <link href="#rfc.authors" rel="Chapter"/>
@@ -399,7 +402,7 @@
 
   <meta name="dct.creator" content="Wilde, E." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-registries-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-1-9" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-1-19" />
   <meta name="dct.abstract" content="Registries on the Internet and the Web fulfill a wide range of tasks, ranging from low-level networking aspects such as packet type identifiers, all the way to application-level protocols and standards. This document summarizes some of the reasons of why and how to use registries, and how some of them are operated. It serves as a informative reference for specification writers considering whether to create and manage a registry, allowing them to better understand some of the issues associated with certain design discussions." />
   <meta name="description" content="Registries on the Internet and the Web fulfill a wide range of tasks, ranging from low-level networking aspects such as packet type identifiers, all the way to application-level protocols and standards. This document summarizes some of the reasons of why and how to use registries, and how some of them are operated. It serves as a informative reference for specification writers considering whether to create and manage a registry, allowing them to better understand some of the issues associated with certain design discussions." />
 
@@ -416,14 +419,14 @@
 </tr>
 <tr>
   <td class="left">Internet-Draft</td>
-  <td class="right">January 9, 2016</td>
+  <td class="right">January 19, 2016</td>
 </tr>
 <tr>
   <td class="left">Intended status: Informational</td>
   <td class="right"></td>
 </tr>
 <tr>
-  <td class="left">Expires: July 12, 2016</td>
+  <td class="left">Expires: July 22, 2016</td>
   <td class="right"></td>
 </tr>
 
@@ -449,7 +452,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on July 12, 2016.</p>
+<p>This Internet-Draft will expire on July 22, 2016.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -467,15 +470,18 @@
 <li>2.2.   <a href="#rfc.section.2.2">Language Tags</a></li>
 <li>2.3.   <a href="#rfc.section.2.3">Web Linking</a></li>
 </ul><li>3.   <a href="#rfc.section.3">Why to use Registries</a></li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">Limited Namespaces</a></li>
-<li>3.2.   <a href="#rfc.section.3.2">Design/Usage Review</a></li>
-<li>3.3.   <a href="#rfc.section.3.3">Documentation Requirements</a></li>
-<li>3.4.   <a href="#rfc.section.3.4">Centralized Lookup</a></li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Openness and Extensibility</a></li>
+<li>3.2.   <a href="#rfc.section.3.2">Limited Namespaces</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Design/Usage Review</a></li>
+<li>3.4.   <a href="#rfc.section.3.4">Identifier Design</a></li>
+<li>3.5.   <a href="#rfc.section.3.5">Documentation Requirements</a></li>
+<li>3.6.   <a href="#rfc.section.3.6">Centralized Lookup</a></li>
 </ul><li>4.   <a href="#rfc.section.4">When to use Registries</a></li>
 <li>5.   <a href="#rfc.section.5">How to use Registries</a></li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">Registry Stability</a></li>
-<li>5.2.   <a href="#rfc.section.5.2">Runtime vs. Design-Time</a></li>
-<li>5.3.   <a href="#rfc.section.5.3">Registry Access</a></li>
+<li>5.2.   <a href="#rfc.section.5.2">Registry History</a></li>
+<li>5.3.   <a href="#rfc.section.5.3">Runtime vs. Design-Time</a></li>
+<li>5.4.   <a href="#rfc.section.5.4">Registry Access</a></li>
 </ul><li>6.   <a href="#rfc.references">References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
@@ -483,45 +489,58 @@
 
   </ul>
 
-  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> Introduction</h1>
+  <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#intro" id="intro">Introduction</a></h1>
 <p id="rfc.section.1.p.1">Technologies and standards in computer networking have long used the concept of a "Registry" as a place where well-known information is available and managed. In most case, the main reason to use a registry is to create a technology or standard that has stable parts (the technology/standard itself), as well as some parts that are supposed to evolve, even though the technology/standard itself remains stable and unchanged.</p>
-<p id="rfc.section.1.p.2">A registry essentially is a pattern of how to separate those two aspects of a technology/standard, allowing the technology/standard to remain stable, while the parts of it referencing the registry can evolve over time by changing the registry contents. For specification writers, this has proven to be a useful and successful pattern. The "Protocol Registries" maintained by the "Internet Assigned Numbers Authority (IANA)" have steadily increased in number, at the time of writing (January 2016), the <a href="#IANA-Protocol-Registry">[4]</a> contains 1903 individual registries. This number indicates that registries as a "protocol specification pattern" are quite popular and successful.</p>
+<p id="rfc.section.1.p.2">A registry essentially is a pattern of how to separate those two aspects of a technology/standard, allowing the technology/standard to remain stable, while the parts of it referencing the registry can evolve over time by changing the registry contents. For specification writers, this has proven to be a useful and successful pattern. The "Protocol Registries" maintained by the "Internet Assigned Numbers Authority (IANA)" have steadily increased in number, at the time of writing (January 2016), the IANA Protocol Registry <a href="#IANA-Protocol-Registry">[4]</a> contains 1903 individual registries. This number indicates that registries as a "protocol specification pattern" are quite popular and successful.</p>
 <p id="rfc.section.1.p.3">Deciding if a specification should use a registry is not an easy task. It involves identifying those parts that should be kept stable (in the specification itself), and those that should be managed in one or more registries for ongoing management and evolution. Even after identifying this split, it is necessary to define how exactly the registry part(s) should be managed, involving questions such as submission procedures, review processes, revocation/change management, and access to the registry contents for the worldwide developer community.</p>
 <p id="rfc.section.1.p.4">This document is intended to provide an overview to specification developers in terms of why, when, and how to use registries. It is not meant to provide definitive guidance, but more intended as a reference to consider the different ways in which the general "registry pattern" can be used, and what the possible side-effects on some of these solutions may be.</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> Examples</h1>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#examples" id="examples">Examples</a></h1>
 <p id="rfc.section.2.p.1">...</p>
-<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> TCP/UDP Port Numbers</h1>
+<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#ports" id="ports">TCP/UDP Port Numbers</a></h1>
 <p>
   <a href="#RFC6335">[3]</a>
 </p>
-<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> Language Tags</h1>
+<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#languages" id="languages">Language Tags</a></h1>
 <p>
   <a href="#RFC4646">[1]</a>
 </p>
-<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> Web Linking</h1>
+<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#links" id="links">Web Linking</a></h1>
 <p>
   <a href="#RFC5988">[2]</a>
 </p>
-<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> Why to use Registries</h1>
-<p id="rfc.section.3.p.1">...</p>
-<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> Limited Namespaces</h1>
-<p id="rfc.section.3.1.p.1">...</p>
-<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> Design/Usage Review</h1>
-<p id="rfc.section.3.2.p.1">...</p>
-<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> Documentation Requirements</h1>
-<p id="rfc.section.3.3.p.1">...</p>
-<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> Centralized Lookup</h1>
-<p id="rfc.section.3.4.p.1">...</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> When to use Registries</h1>
+<h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#why" id="why">Why to use Registries</a></h1>
+<p id="rfc.section.3.p.1">Establishing and using a registry can be done for a number of reasons. The following sections list some of these reasons, and in many cases, registries are used for at least some of the reasons described here.</p>
+<h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#open-extensible" id="open-extensible">Openness and Extensibility</a></h1>
+<p id="rfc.section.3.1.p.1">Registries separate a specification into a stable part that is represented by the specification itself, and a dynamic part that is represented by one or more registries that are established by the specification. This pattern allows a specification to remain stable, while still having well-defined parts that are allowed to evolve over time.</p>
+<p id="rfc.section.3.1.p.2">In order for this pattern to work well, the specification should clearly state what implementations should do when encountering unknown values in those locations where allowable values are managed in a registry. The two most popular processing models are to either silently ignore such a value and continue as if the value was not present at all, or to raise an error and notify higher layers of the fact that something unknown was encountered.</p>
+<p id="rfc.section.3.1.p.3">Depending on the way values are managed, it is also possible to distinguish between values that are supposed to be registered, and those that are not supposed to be registered and have to be considered unregistered extensions. The link relation types described in <a href="#links">Section 2.3</a> use such an approach, defining that a link relation is either a string and supposed to be a registered value, or a URI in which case it is not supposed to be a registered value. This strategy works when it is possible to clearly separate the namespace of the place where values are expected into ones that are considered to be registered, and those that are not.</p>
+<h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#limited-namespace" id="limited-namespace">Limited Namespaces</a></h1>
+<p id="rfc.section.3.2.p.1">Historically, registries started managing the very limited namespace of identifier fields in protocol packets or other low-level mechanisms such as the port numbers described in <a href="#ports">Section 2.1</a>, often limited to a small number of bits or bytes. Carefully managing this very limited set of available identifiers was important, as was a way to allow new values to be added without having to update the protocol specification itself.</p>
+<p id="rfc.section.3.2.p.2">The higher the level is on which registries are used, the more likely it is that namespaces at least on the technical level are not very constrained. For example, the link relation types described in <a href="#links">Section 2.3</a> are using strings as identifiers without imposing a length limitations, meaning that the set of possible identifiers is virtually inexhaustible. However, even in this case, the set of helpful and meaningful identifiers (i.e., names that are human-readable and partly self-describing) is limited, and thus even in this case, the realistically useful namespace is much more limited that the theoretical one.</p>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#design-review" id="design-review">Design/Usage Review</a></h1>
+<p id="rfc.section.3.3.p.1">Registries are established in the context of a given specification, and provide a mechanism to make this specification extensible by allowing the registry to evolve over time. However, the context of the specification very often has a clear design rationale for why a registry is established for a certain set of values. Any value added or changed in the registry should fit into this context, and having a registry provides an opportunity to have design and usage reviews before the registry gets updated.</p>
+<p id="rfc.section.3.3.p.2">For design and usage reviews to work well, the most crucial aspect is that the context of the registry is well-defined, and states clearly what kind of expectations the design and usage review will be checking. Often this review process is implemented using a mailing list and designated experts, so that registration requests as well as results of the deign and usage review are done openly and transparently.</p>
+<h1 id="rfc.section.3.4"><a href="#rfc.section.3.4">3.4.</a> <a href="#identifier-design" id="identifier-design">Identifier Design</a></h1>
+<p id="rfc.section.3.4.p.1">Depending on the namespace, managing the registry namespace may follow certain guidelines. For numeric values, there may be certain number ranges that are supposed to be used in certain ways. For string values, there may be some convention or best practices on how to mint identifiers so that the namespace contains values that are following these principles.</p>
+<p id="rfc.section.3.4.p.2">Note that this is different from the design and usage review <a href="#design-review">Section 3.3</a>. Whereas the design and usage review is about testing whether the meaning associated with a new value follow the constraints defined in the context that established the registry, the identifier design simply checks for how the registered values are chosen. It thus is a lower bar than a design and usage review, but still requires a review process that allows to propose new values, and provides some feedback about whether these values follow the guidelines or not.</p>
+<h1 id="rfc.section.3.5"><a href="#rfc.section.3.5">3.5.</a> <a href="#documentation" id="documentation">Documentation Requirements</a></h1>
+<p id="rfc.section.3.5.p.1">Registering a value means that people encountering this value should be able to learn about what it represents. This means that there should be documentation associated with it that can be used to learn more about the value's meaning. Many registries at the very least require a very short explanation to be submitted with a registration request, so that the registry itself can list those texts as helpful explanations.</p>
+<p id="rfc.section.3.5.p.2">Going further, many registries also require links to more detailed specifications, so that people looking for complete explanations of the meaning of registered values can follow those links and will find specifications or at least explanations. The exact requirement on what such a link must refer to is something that the specification creating the registry has to define. One popular requirement is that it must be publicly available information, so that anybody looking for it can openly access it.</p>
+<h1 id="rfc.section.3.6"><a href="#rfc.section.3.6">3.6.</a> <a href="#lookup" id="lookup">Centralized Lookup</a></h1>
+<p id="rfc.section.3.6.p.1">With a registry containing all current values (and possibly listing changed/deprecated ones as well) along with some registration metadata, they provide valuable information for anybody looking for information about registered values in the registry namespace. All IANA protocol registries <a href="#IANA-Protocol-Registry">[4]</a> are openly accessible on the Web, allowing everybody to lookup the current state of all these registries.</p>
+<p id="rfc.section.3.6.p.2">Even though centralized lookup is an important aspect of openness and extensibility <a href="#open-extensible">Section 3.1</a>, the usual usage model of these lookup facilities is to use them at design-time rather than at runtime <a href="#runtime-designtime">Section 5.3</a>. This means that the central lookup facilities are meant to be used by developers, and not by the implementations created by those developers. For the latter model a much more scalable infrastructure would be required, and thus it is important to consider the fact if the namespace managed by a registry fits this model of being useful for developer lookup at design-time, and for value lookup at runtime.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#when" id="when">When to use Registries</a></h1>
 <p id="rfc.section.4.p.1">...</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> How to use Registries</h1>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#how" id="how">How to use Registries</a></h1>
 <p id="rfc.section.5.p.1">...</p>
-<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> Registry Stability</h1>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#stability" id="stability">Registry Stability</a></h1>
 <p id="rfc.section.5.1.p.1">...</p>
-<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> Runtime vs. Design-Time</h1>
+<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#history" id="history">Registry History</a></h1>
 <p id="rfc.section.5.2.p.1">...</p>
-<h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> Registry Access</h1>
+<h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#runtime-designtime" id="runtime-designtime">Runtime vs. Design-Time</a></h1>
 <p id="rfc.section.5.3.p.1">...</p>
+<h1 id="rfc.section.5.4"><a href="#rfc.section.5.4">5.4.</a> <a href="#access" id="access">Registry Access</a></h1>
+<p id="rfc.section.5.4.p.1">...</p>
 <h1 id="rfc.references"><a href="#rfc.references">6.</a> References</h1>
 <table>
   <tbody>
@@ -546,7 +565,7 @@
     <tr><td class="reference"><b id="IANA-Protocol-Registry">[4]</b></td><td class="top"><a href="http://www.iana.org/protocols">IANA Protocol Registry</a>"</td>, "</tr>
   </tbody>
 </table>
-<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> Acknowledgements</h1>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#ack" id="ack">Acknowledgements</a></h1>
 <p id="rfc.section.A.p.1">Thanks for comments and suggestions provided by ...</p>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Author's Address</a>
