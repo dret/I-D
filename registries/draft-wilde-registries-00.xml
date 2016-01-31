@@ -69,6 +69,13 @@
             <t>Depending on the namespace, managing the registry namespace may follow certain guidelines. For numeric values, there may be certain number ranges that are supposed to be used in certain ways. For string values, there may be some convention or best practices on how to mint identifiers so that the namespace contains values that are following these principles.</t>
             <t>Note that this is different from the design and usage review <xref target="design-review"/>. Whereas the design and usage review is about testing whether the meaning associated with a new value follow the constraints defined in the context that established the registry, the identifier design simply checks for how the registered values are chosen. It thus is a lower bar than a design and usage review, but still requires a review process that allows to propose new values, and provides some feedback about whether these values follow the guidelines or not.</t>
          </section>
+         <section title="Identifier Lifecycle" anchor="lifecycle">
+            <t>The main reason for registries to exist in contrast to just including a set of predefined values in the underlying technology/standard itself is the ability for these values to change over time. However, registries only make sense if there is some sense of stability to their contents, so that looking at existing registry values at some point in time can be assumed to be a reasonable snapshot for some amount of time.</t>
+            <t>Usually, registry entries are added at a modest pace, and an implementation not supporting the latest additions shouldn't fail, but simply implement some default behavior when encountering unsupported values. This pattern ensures that the namespace can evolve separately from the landscape of implementations.</t>
+            <t>However, adding identifiers is the easiest aspects of registry updates. Things get more complicated when it comes to updating and removing entries. The reason why these things are more complicated is that implementations depending on an identifier having certain semantics will behave incorrectly when the registry has been updated for this identifier with either a change in semantics, or a withdrawal of the entry.</t>
+            <t>For this reason, it often makes sense to include rules in the management of the registry about if/how entries can be updated, or removed. One popular approach is disallow updates with breaking changes, and to allow withdrawal but keep the identifier and mark it as "deprecated". This way it can be ensured that no incompatible entry will be created by somebody using an identifier that was previously used and removed.</t>
+            <t>The exact way how this process is defined depends on the context and purpose of the registry, and also on the namespace size. Tightly constrained namespaces mean that values probably should be managed more carefully, so that the registry does not run out of values. Also, while impossible to predict reliably, it is also important to look at the possible lifetime of implementations (that will use snapshots of the registry at some point in time), and on the long-term effects of having outdated registry snapshots in implementations.</t>
+         </section>
          <section title="Documentation Requirements" anchor="documentation">
             <t>Registering a value means that people encountering this value should be able to learn about what it represents. This means that there should be documentation associated with it that can be used to learn more about the value's meaning. Many registries at the very least require a very short explanation to be submitted with a registration request, so that the registry itself can list those texts as helpful explanations.</t>
             <t>Going further, many registries also require links to more detailed specifications, so that people looking for complete explanations of the meaning of registered values can follow those links and will find specifications or at least explanations. The exact requirement on what such a link must refer to is something that the specification creating the registry has to define. One popular requirement is that it must be publicly available information, so that anybody looking for it can openly access it.</t>
@@ -83,6 +90,9 @@
       </section>
       <section title="How to use Registries" anchor="how">
          <t>...</t>
+         <section title="Implementation Support" anchor="runtime-use">
+            <t>... implement a snapshot, fail over in a controlled way ...</t>
+         </section>
          <section title="Registry Application" anchor="application">
             <t>... template ...</t>
          </section>
