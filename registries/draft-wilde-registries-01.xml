@@ -38,11 +38,11 @@
             <t>The TCP/UDP port number registry is a good example for a very limited and very popular namespace, and thus managing this registry follows a very disciplined review process. RFC 6335 <xref target="RFC6335"/> specifies very specific guidance about assignment, de-assignment, reuse, revocation, and transfer of numbers. This level of detail may not be required for all registries, but it is a good demonstration of what may be necessary in case of constrained and popular namespaces.</t>
          </section>
          <section title="Language Tags" anchor="languages">
-            <t>The ability to identify human languages is important for many scenarios and applications on the Internet, and thus RFC 4646 <xref target="RFC4646"/> defines how to do this. The specification uses a registry to manage the actual language identifiers, because this list is constantly evolving and thus better separated from the specification defining the language tag format itself.</t>
+            <t>The ability to identify human languages is important for many scenarios and applications on the Internet, and thus RFC 5646 <xref target="RFC5646"/> defines how to do this. The specification uses a registry to manage the actual language identifiers, because this list is constantly evolving and thus better separated from the specification defining the language tag format itself.</t>
             <t>Apart from the primary language subtag (identifying for example the English language with the identifier "en"), the language tag format supports additional subtags for extended languages, scripts, regions, variants, extensions, and private use. The primary language subtag uses 2- and 3-letter identifiers that are taken from ISO 639 <xref target="ISO.639.1988"/>. There is a provision for longer identifiers to exist (and be directly registered with IANA), but the goal is to manage actual registration through ISO 639, and use the namespace and identifiers established by this standard.</t>
             <t>While the namespace of the primary language subtags is rather restricted (2- and 3-letter identifiers), IANA's registry itself does not need to be directly concerned with its use and management, as this is handled by ISO through their ISO 639 process.</t>
-            <t>Without going into the details of how all the other subtags namespaces are defined and registered, it should suffice to mention that one of the main goals of RFC 4646 <xref target="RFC4646"/> is to ensure that the language registry of ISO 639 (as well as some others, such as the script registry of ISO 15924) and language tags as used on the Internet stay in sync. Thus, the management of the namespaces created for language tags by RFC 4646 <xref target="RFC4646"/> is mostly delegated to ISO, instead of being managed by IANA itself.</t>
-            <t>Nevertheless, RFC 4646 <xref target="RFC4646"/> does make provisions about the stability of entries in the various namespaces, so that the meaning of language tags remains stable over time. This includes provisions that existing values are not going to be changed, and that even values withdrawn by ISO remain valid and will simply be marked as "deprecated" in the respective IANA registry.</t>
+            <t>Without going into the details of how all the other subtags namespaces are defined and registered, it should suffice to mention that one of the main goals of RFC 5646 <xref target="RFC5646"/> is to ensure that the language registry of ISO 639 (as well as some others, such as the script registry of ISO 15924) and language tags as used on the Internet stay in sync. Thus, the management of the namespaces created for language tags by RFC 5646 <xref target="RFC5646"/> is mostly delegated to ISO, instead of being managed by IANA itself.</t>
+            <t>Nevertheless, RFC 5646 <xref target="RFC5646"/> does make provisions about the stability of entries in the various namespaces, so that the meaning of language tags remains stable over time. This includes provisions that existing values are not going to be changed, and that even values withdrawn by ISO remain valid and will simply be marked as "deprecated" in the respective IANA registry.</t>
          </section>
          <section title="Web Linking" anchor="links">
             <t>Web links can be typed by link relation types, and RFC 5988 <xref target="RFC5988"/> defines a model for how this can be done, and a registry for well-known values. One interesting aspect of the model is that the value space is divided: On the one had there are well-known and registered values identified by strings, and on the other hand it is possible to use URIs, in which case no registration is required. This means that the namespace for the link relation type registry is that of strings, meaning that it is not highly constrained.</t>
@@ -120,16 +120,17 @@
    </middle>
    <back>
       <references title="References">
-         <reference  anchor='RFC4646' target='http://www.rfc-editor.org/info/rfc4646'>
+         <reference  anchor='RFC5646' target='http://www.rfc-editor.org/info/rfc5646'>
             <front>
                <title>Tags for Identifying Languages</title>
-               <author initials='A.' surname='Phillips' fullname='A. Phillips'><organization /></author>
-               <author initials='M.' surname='Davis' fullname='M. Davis'><organization /></author>
-               <date year='2006' month='September' />
-               <abstract><t>This document describes the structure, content, construction, and semantics of language tags for use in cases where it is desirable to indicate the language used in an information object. It also describes how to register values for use in language tags and the creation of user-defined extensions for private interchange. This document, in combination with RFC 4647, replaces RFC 3066, which replaced RFC 1766. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
+               <author initials='A.' surname='Phillips' fullname='A. Phillips' role='editor'><organization /></author>
+               <author initials='M.' surname='Davis' fullname='M. Davis' role='editor'><organization /></author>
+               <date year='2009' month='September' />
+               <abstract><t>This document describes the structure, content, construction, and semantics of language tags for use in cases where it is desirable to indicate the language used in an information object.  It also describes how to register values for use in language tags and the creation of user-defined extensions for private interchange.  This document  specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
             </front>
-            <seriesInfo name='RFC' value='4646'/>
-            <seriesInfo name='DOI' value='10.17487/RFC4646'/>
+            <seriesInfo name='BCP' value='47'/>
+            <seriesInfo name='RFC' value='5646'/>
+            <seriesInfo name='DOI' value='10.17487/RFC5646'/>
          </reference>
          <reference  anchor='RFC5988' target='http://www.rfc-editor.org/info/rfc5988'>
             <front>
