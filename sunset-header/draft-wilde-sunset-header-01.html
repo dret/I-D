@@ -383,9 +383,11 @@
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
 <link href="#rfc.section.7" rel="Chapter" title="7 Example"/>
 <link href="#rfc.section.8" rel="Chapter" title="8 Open Issues"/>
-<link href="#rfc.references" rel="Chapter" title="9 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="9.2 Non-Normative References"/>
+<link href="#rfc.section.9" rel="Chapter" title="9 Change Log"/>
+<link href="#rfc.section.9.1" rel="Chapter" title="9.1 From -00 to -01"/>
+<link href="#rfc.references" rel="Chapter" title="10 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="10.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="10.2 Non-Normative References"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -393,8 +395,8 @@
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Wilde, E." />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-sunset-header-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2015-8-3" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-sunset-header-01" />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-2-3" />
   <meta name="dct.abstract" content="This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future." />
   <meta name="description" content="This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future." />
 
@@ -411,14 +413,14 @@
 </tr>
 <tr>
   <td class="left">Internet-Draft</td>
-  <td class="right">UC Berkeley</td>
+  <td class="right">February 3, 2016</td>
 </tr>
 <tr>
   <td class="left">Intended status: Standards Track</td>
-  <td class="right">August 3, 2015</td>
+  <td class="right"></td>
 </tr>
 <tr>
-  <td class="left">Expires: February 4, 2016</td>
+  <td class="left">Expires: August 6, 2016</td>
   <td class="right"></td>
 </tr>
 
@@ -427,7 +429,7 @@
   </table>
 
   <p class="title">The Sunset HTTP Header<br />
-  <span class="filename">draft-wilde-sunset-header-00</span></p>
+  <span class="filename">draft-wilde-sunset-header-01</span></p>
   
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
@@ -437,18 +439,18 @@
   <a>Note to Readers</a>
 </h1>
 <p>This draft should be discussed on the <a href="https://www.ietf.org/mailman/listinfo/apps-discuss">apps-discuss mailing list</a>.</p>
-<p>Online access to all versions and files is available on <a href="https://github.com/dret/I-D/tree/master/sunset-header">github</a>.</p>
+<p>Online access to all versions and files is available on <a href="https://github.com/dret/I-D/tree/master/sunset-header">GitHub</a>.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 4, 2016.</p>
+<p>This Internet-Draft will expire on August 6, 2016.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
-<p>Copyright (c) 2015 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>Copyright (c) 2016 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
@@ -465,9 +467,11 @@
 </ul><li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
 <li>7.   <a href="#rfc.section.7">Example</a></li>
 <li>8.   <a href="#rfc.section.8">Open Issues</a></li>
-<li>9.   <a href="#rfc.references">References</a></li>
-<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>9.2.   <a href="#rfc.references.2">Non-Normative References</a></li>
+<li>9.   <a href="#rfc.section.9">Change Log</a></li>
+<ul><li>9.1.   <a href="#rfc.section.9.1">From -00 to -01</a></li>
+</ul><li>10.   <a href="#rfc.references">References</a></li>
+<ul><li>10.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>10.2.   <a href="#rfc.references.2">Non-Normative References</a></li>
 </ul><li><a href="#rfc.authors">Author's Address</a></li>
 
 
@@ -499,7 +503,7 @@
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sunset-and-caching" id="sunset-and-caching">Sunset and Caching</a></h1>
 <p id="rfc.section.4.p.1">It should be noted that the Sunset HTTP response header field serves a different purpose than HTTP caching <a href="#RFC7234">[4]</a>. HTTP caching is concerned with making resource representations (i.e., represented resource state) reusable, so that they can be more efficiently used. This is achieved by using header fields that allow clients and intermediaries to better understand when a resource representation can be reused, or when resource state (and thus the representation) may have changed.</p>
 <p id="rfc.section.4.p.2">The Sunset header field is not concerned with resource state at all. It only signals that a resource is expected to become unavailable at a specific point in time. There are no assumptions about if, when, or how often a resource may change state in the meantime.</p>
-<p id="rfc.section.4.p.3">For these reasons, the Sunset header field and HTTP caching should be seen as complimentary, and not as overlapping in scope and functionality.</p>
+<p id="rfc.section.4.p.3">For these reasons, the Sunset header field and HTTP caching should be seen as complementary, and not as overlapping in scope and functionality.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#iana-sunset" id="iana-sunset">The Sunset Response Header</a></h1>
 <p id="rfc.section.5.1.p.1">The Sunset response header should be added to the permanent registry of message header fields (see <a href="#RFC3864">[2]</a>), taking into account the guidelines given by HTTP/1.1 <a href="#RFC7231">[3]</a>.</p>
@@ -527,8 +531,18 @@
 </ul>
 
 <p> </p>
-<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
+<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#change-log" id="change-log">Change Log</a></h1>
+<p id="rfc.section.9.p.1">Note to RFC Editor: Please remove this section before publication.</p>
+<h1 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a> From -00 to -01</h1>
+<p/>
+
+<ul>
+  <li>Fixing Typos.</li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.references"><a href="#rfc.references">10.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">10.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -551,7 +565,7 @@
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Non-Normative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">10.2.</a> Non-Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -573,7 +587,7 @@
 		<span class="family-name">Wilde</span>
 	  </span>
 	</span>
-	<span class="org vcardline">UC Berkeley</span>
+	<span class="org vcardline"></span>
 	<span class="adr">
 	  
 	  <span class="vcardline">
@@ -583,7 +597,7 @@
 	  </span>
 	  <span class="country-name vcardline"></span>
 	</span>
-	<span class="vcardline">EMail: <a href="mailto:dret@berkeley.edu">dret@berkeley.edu</a></span>
+	<span class="vcardline">EMail: <a href="mailto:erik.wilde@dret.net">erik.wilde@dret.net</a></span>
 
 <span class="vcardline">URI: <a href="http://dret.net/netdret/">http://dret.net/netdret/</a></span>
 
