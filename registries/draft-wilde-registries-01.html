@@ -393,8 +393,8 @@
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 Registry Application"/>
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 Registry Stability"/>
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 Registry History"/>
-<link href="#rfc.section.5.5" rel="Chapter" title="5.5 Runtime vs. Design-Time"/>
-<link href="#rfc.section.5.6" rel="Chapter" title="5.6 Registry Access"/>
+<link href="#rfc.section.5.5" rel="Chapter" title="5.5 Registry Access"/>
+<link href="#rfc.section.5.6" rel="Chapter" title="5.6 Runtime vs. Design-Time"/>
 <link href="#rfc.references" rel="Chapter" title="6 References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements"/>
 <link href="#rfc.authors" rel="Chapter"/>
@@ -486,8 +486,8 @@
 <li>5.2.   <a href="#rfc.section.5.2">Registry Application</a></li>
 <li>5.3.   <a href="#rfc.section.5.3">Registry Stability</a></li>
 <li>5.4.   <a href="#rfc.section.5.4">Registry History</a></li>
-<li>5.5.   <a href="#rfc.section.5.5">Runtime vs. Design-Time</a></li>
-<li>5.6.   <a href="#rfc.section.5.6">Registry Access</a></li>
+<li>5.5.   <a href="#rfc.section.5.5">Registry Access</a></li>
+<li>5.6.   <a href="#rfc.section.5.6">Runtime vs. Design-Time</a></li>
 </ul><li>6.   <a href="#rfc.references">References</a></li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a></li>
 <li><a href="#rfc.authors">Author's Address</a></li>
@@ -542,7 +542,7 @@
 <p id="rfc.section.3.6.p.2">Going further, many registries also require links to more detailed specifications, so that people looking for complete explanations of the meaning of registered values can follow those links and will find specifications or at least explanations. The exact requirement on what such a link must refer to is something that the specification creating the registry has to define. One popular requirement is that it must be publicly available information, so that anybody looking for it can openly access it.</p>
 <h1 id="rfc.section.3.7"><a href="#rfc.section.3.7">3.7.</a> <a href="#lookup" id="lookup">Centralized Lookup</a></h1>
 <p id="rfc.section.3.7.p.1">With a registry containing all current values (and possibly listing changed/deprecated ones as well) along with some registration metadata, they provide valuable information for anybody looking for information about registered values in the registry namespace. All IANA protocol registries <a href="#IANA-Protocol-Registry">[5]</a> are openly accessible on the Web, allowing everybody to lookup the current state of all these registries.</p>
-<p id="rfc.section.3.7.p.2">Even though centralized lookup is an important aspect of openness and extensibility <a href="#open-extensible">Section 3.1</a>, the usual usage model of these lookup facilities is to use them at design-time rather than at runtime <a href="#runtime-designtime">Section 5.5</a>. This means that the central lookup facilities are meant to be used by developers, and not by the implementations created by those developers. For the latter model a much more scalable infrastructure would be required, and thus it is important to consider the fact if the namespace managed by a registry fits this model of being useful for developer lookup at design-time, and for value lookup at runtime.</p>
+<p id="rfc.section.3.7.p.2">Even though centralized lookup is an important aspect of openness and extensibility <a href="#open-extensible">Section 3.1</a>, the usual usage model of these lookup facilities is to use them at design-time rather than at runtime <a href="#runtime-designtime">Section 5.6</a>. This means that the central lookup facilities are meant to be used by developers, and not by the implementations created by those developers. For the latter model a much more scalable infrastructure would be required, and thus it is important to consider the fact if the namespace managed by a registry fits this model of being useful for developer lookup at design-time, and for value lookup at runtime.</p>
 <h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#when" id="when">When to use Registries</a></h1>
 <p id="rfc.section.4.p.1">Based on the examples given in <a href="#examples">Section 2</a> and the possible reasons described in <a href="#why">Section 3</a>, the next question is how for designers to decide when they should establish one or more registries to complement a specification. All the issues describes in <a href="#why">Section 3</a> are reasonable motivations, and in many cases it is more than just one of them.</p>
 <p id="rfc.section.4.p.2">For developers using a specification, it is helpful if the specification clearly describes which reasons were most important when deciding to establish one or more registries. This is even more true for developers who are looking to update the registry, because they should be aware of the reasons that were considered when the registry was created.</p>
@@ -558,18 +558,30 @@
 <p id="rfc.section.5.p.1">If a specification does introduce registries as part of how the specification divides static and dynamic parts, then it is interesting to look at how those registries will actually be used. As in the previous sections, the list of topics included here is not necessarily mutually exclusive, and it is likely that for any established registry, there is more than one way how the registry is being used.</p>
 <p id="rfc.section.5.p.2">For authors of specifications establishing registries, the following list of possible ways how a registry might be used may be a good starting point to consider the design options for the registry, such as how to design the submission and update process, and how to provide access to registry contents.</p>
 <h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#runtime-use" id="runtime-use">Implementation Support</a></h1>
-<p id="rfc.section.5.1.p.1">... implement a snapshot, fail over in a controlled way ...</p>
+<p id="rfc.section.5.1.p.1">The usual pattern for using registry-based identifiers in implementations is to support some snapshot of the registry, which either can be complete, or just a subset of the registry contents. Implementation support then is based on the semantics associated with registry values at the time of this snapshot. This means that any registry updates changing semantics will affect and possibly break those implementations, unless there is a strong policy to only allow backwards-compatible changes to identifier semantics.</p>
 <h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#application" id="application">Registry Application</a></h1>
-<p id="rfc.section.5.2.p.1">... template ...</p>
+<p id="rfc.section.5.2.p.1">Since registry contents establish a controlled vocabulary, and each registry has some policies around how that vocabulary can be updated, it usually makes sense to have a template or a form that allows applicants to prepare and submit update requests. It is up to the registry to define how detailed this template is, whether applicants are required to use it, and whether submission is implemented based on that template.</p>
+<p id="rfc.section.5.2.p.2">Following some structure in the application process help with keeping a better record of requested and performed updates of a registry, which can be helpful when it comes to maintaining and providing a registry history <a href="#history">Section 5.4</a>.</p>
 <h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#stability" id="stability">Registry Stability</a></h1>
-<p id="rfc.section.5.3.p.1">... changes beyond editorial ones ...</p>
-<p id="rfc.section.5.3.p.2">... removal of a registry entry ...</p>
+<p id="rfc.section.5.3.p.1">Since implementations often use registries based on snapshots <a href="#runtime-use">Section 5.1</a>, a key issue for registries is the stability of entries. While it is clear that new entries can be added (this after all is the minimal use case of registries: the ability to add identifiers without the need for updating the specification itself), things get more complicated when it comes to updates of existing entries, or removal of exiting entries.</p>
+<p id="rfc.section.5.3.p.2">When it comes to updating entries, then very often the goal is to avoid breaking changes. This means that entries can only be updated in a way that the updated semantics are backwards-compatible with the old semantics. This way, implementations based on the old semantics can safely use those and will not conflict when encountering data or implementations assuming the updated semantics.</p>
+<p id="rfc.section.5.3.p.3">In terms of removal, it also is important to consider whether removed entries should remain registered and blocked for future registrations, so that they cannot be re-used (which essentially would be equivalent to making a breaking change to an existing entry). If such a policy is in-place, then technically speaking there is no actual "removal" of a value rom the registry. Instead, a value can be updated to be deprecated, but it remains in the registry so that it is not re-assigned.</p>
 <h1 id="rfc.section.5.4"><a href="#rfc.section.5.4">5.4.</a> <a href="#history" id="history">Registry History</a></h1>
-<p id="rfc.section.5.4.p.1">... history of all registry updates ...</p>
-<h1 id="rfc.section.5.5"><a href="#rfc.section.5.5">5.5.</a> <a href="#runtime-designtime" id="runtime-designtime">Runtime vs. Design-Time</a></h1>
-<p id="rfc.section.5.5.p.1">... snapshot ...</p>
-<h1 id="rfc.section.5.6"><a href="#rfc.section.5.6">5.6.</a> <a href="#access" id="access">Registry Access</a></h1>
-<p id="rfc.section.5.6.p.1">... API ...</p>
+<p id="rfc.section.5.4.p.1">While not strictly necessary for registry usage and management, in terms of openness and transparency it can be helpful to provide a registry history. This way it is possible to recreate all actions that changed the registry, and to reconstruct the state of the registry at any point in time.</p>
+<p id="rfc.section.5.4.p.2">Some registries have mailing lists associated with them which can be regarded as some sort of history. However, this is a very weak form of history since reconstructing the registry history and its state requires to read all the emails, and infer the resulting registry actions. Having access to the actual actions in machine-readable form can make it much easier to access and recreate registry history.</p>
+<p id="rfc.section.5.4.p.3">Since registry usually are highly structured (often tabular models with small number of columns), they would lend themselves well to representing any updates to the contents in a similarly structured way, along with some metadata about the entry update (such as date, applicant, expert, links to email archives, and similar ways to contextualize the entry update).</p>
+<h1 id="rfc.section.5.5"><a href="#rfc.section.5.5">5.5.</a> <a href="#access" id="access">Registry Access</a></h1>
+<p id="rfc.section.5.5.p.1">Depending on the intended use of a registry, an important question is how developers and/or implementations can access the registry. While the current IANA registries can be accessed via HTTP, they are clearly designed to be used as HTML pages for developers. Alternative or complementary models could provide API-based access, with documented and stable ways how to provide machine-based access to registry contents.</p>
+<p id="rfc.section.5.5.p.2">If an API is considered and provided, then an important question is whether it is intended for accessing registry contents only, or providing full-fledged access to all services of the registry, such as updates <a href="#application">Section 5.2</a> or history access <a href="#history">Section 5.4</a>. The former kind of access is easier to accomplish, because the sets of provided is smaller, and the requirements for authentication and authorization are probably simpler.</p>
+<h1 id="rfc.section.5.6"><a href="#rfc.section.5.6">5.6.</a> <a href="#runtime-designtime" id="runtime-designtime">Runtime vs. Design-Time</a></h1>
+<p id="rfc.section.5.6.p.1">Most implementations use registry snapshots (complete or partial) for using a registry's contents <a href="#runtime-use">Section 5.1</a>. If a registry provides API access, then it would be possible to author implementations that use registry contents at runtime. However, there are two important concerns about this possibility:</p>
+<p/>
+
+<ul class="empty">
+  <li>Having access to registry contents may be of little use other than learning about the existence of new identifiers. In most cases, a registry entry alone will not be sufficient to understand the semantics of a new entry encountered at runtime. If that is the case, then all an implementation can do is to verify that it encountered a new entry that is a valid identifier according to the current registry state, but it cannot implement the behavior associated with that new entry.</li>
+  <li>If the model of the registry allows meaningful implementation behavior by runtime updates, then this can result in this registry becoming overwhelmed by the number of accesses. After all, dynamic implementation behavior then may be preferable over the more traditional snapshot implementation pattern, which then results in the majority of implementations converging to the runtime access model.</li>
+</ul>
+<p id="rfc.section.5.6.p.3">Because of the second issue in particular, any registry supporting and intended for runtime access should make sure that provisions are in place to control registry access. This is no different from any other service on the Internet or Web that also needs to have mechanisms in place to protect itself against suffering under too much load.</p>
 <h1 id="rfc.references"><a href="#rfc.references">6.</a> References</h1>
 <table>
   <tbody>
