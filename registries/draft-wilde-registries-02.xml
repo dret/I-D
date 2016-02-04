@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="no" ?>
+<rfc category="info" ipr="trust200902" docName="draft-wilde-registries-02">
+   <front>
+      <title abbrev="Registries">The Use of Registries</title>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <address>
+            <email>erik.wilde@dret.net</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="3" month="February" year="2016"/>
+      <abstract>
+         <t>Registries on the Internet and the Web fulfill a wide range of tasks, ranging from low-level networking aspects such as packet type identifiers, all the way to application-level protocols and standards. This document summarizes some of the reasons of why and how to use registries, and how some of them are operated. It serves as a informative reference for specification writers considering whether to create and manage a registry, allowing them to better understand some of the issues associated with certain design discussions.</t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>Please discuss this draft on the apps-discuss mailing list <eref target="https://www.ietf.org/mailman/listinfo/apps-discuss"/>.</t>
+         <t>Online access to all versions and files is available on GitHub <eref target="https://github.com/dret/I-D/tree/master/registries"/>.</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction" anchor="intro">
+         <t>Specifications for technologies and standards in computer networking have long used the concept of a "Registry" as a place where well-known information is available and managed. In most case, the main reason to use a registry is to create a specification that has stable parts (the specification itself), as well as some parts that are supposed to evolve while the specification itself remains stable and unchanged.</t>
+         <t>A registry essentially is a pattern of how to separate those two aspects of a specification, allowing the specification to remain stable, while the parts of it referencing the registry can evolve over time by changing the registry contents. For specification writers, this has proven to be a useful and successful pattern. The "Protocol Registries" maintained by the "Internet Assigned Numbers Authority (IANA)" have steadily increased in number. At the time of writing (early 2016), the IANA Protocol Registry <xref target="IANA-Protocol-Registry"/> contains 1903 individual registries. This number indicates that registries as a "protocol specification pattern" are quite popular and successful.</t>
+         <t>Deciding if a specification should use a registry is not an easy task. It involves identifying those parts that should be kept stable (in the specification itself), and those that should be managed in one or more registries for ongoing management and evolution. Even after identifying this split, it is necessary to define how exactly the registry part(s) should be managed, involving questions such as submission procedures, review processes, revocation/change management, and access to the registry contents for the worldwide developer community.</t>
+         <t>This document is intended to provide an overview to specification developers in terms of why, when, and how to use registries. It is not meant to provide definitive guidance, but mostly intended as a reference to consider the different ways in which the general "registry pattern" can be used, and what the possible side-effects on some of these solutions may be.</t>
+      </section>
+      <section title="Examples" anchor="examples">
+         <t>The following list of examples is intended to be illustrative of some of the existing registries, what kind of identifiers they are using, and how they are managed. This list is not intended to highlight these registries in any special way other than explaining some of the specifics of the managed namespaces. As mentioned above, the list of IANA-managed registries is long (around 2000 individual registries), and the examples listed here have been selected somewhat randomly to illustrate certain points.</t>
+         <section title="TCP/UDP Port Numbers" anchor="ports">
+            <t>The registry for TCP/UDP port numbers <xref target="RFC6335"/> is one of the oldest well-known registries on the Internet. Because of its core importance for how the Internet functions, it has been around for a long time, there is a long history about managing and running it, and thus the most up-to-date document about it is relatively new (RFC 6335 <xref target="RFC6335"/> from August 2011).</t>
+            <t>The namespace of ports is a very limited one. Port numbers in TCP and UDP are 16-bit numbers, yielding a namespace of 65'536 port numbers. The port numbers are subdivided into three ranges of system ports (0-1023), user ports (1024-49151), and dynamic ports (49152-65535). IANA only treats system and user port numbers as assignable, whereas dynamic port numbers cannot be assigned at all.</t>
+            <t>The TCP/UDP port number registry is a good example for a very limited and very popular namespace, and thus managing this registry follows a very disciplined review process. RFC 6335 <xref target="RFC6335"/> specifies very specific guidance about assignment, de-assignment, reuse, revocation, and transfer of numbers. This level of detail may not be required for all registries, but it is a good demonstration of what may be necessary in case of constrained and popular namespaces.</t>
+         </section>
+         <section title="Language Tags" anchor="languages">
+            <t>The ability to identify human languages is important for many scenarios and applications on the Internet, and thus RFC 5646 <xref target="RFC5646"/> defines how to do this. The specification uses a registry to manage the actual language identifiers, because this list is constantly evolving and thus better separated from the specification defining the language tag format itself.</t>
+            <t>Apart from the primary language subtag (identifying for example the English language with the identifier "en"), the language tag format supports additional subtags for extended languages, scripts, regions, variants, extensions, and private use. The primary language subtag uses 2- and 3-letter identifiers that are taken from ISO 639 <xref target="ISO.639.1988"/>. There is a provision for longer identifiers to exist (and be directly registered with IANA), but the goal is to manage actual registration through ISO 639, and use the namespace and identifiers established by this standard.</t>
+            <t>While the namespace of the primary language subtags is rather restricted (2- and 3-letter identifiers), IANA's registry itself does not need to be directly concerned with its use and management, as this is handled by ISO through their ISO 639 process.</t>
+            <t>Without going into the details of how all the other subtags namespaces are defined and registered, it should suffice to mention that one of the main goals of RFC 5646 <xref target="RFC5646"/> is to ensure that the language registry of ISO 639 (as well as some others, such as the script registry of ISO 15924) and language tags as used on the Internet stay in sync. Thus, the management of the namespaces created for language tags by RFC 5646 <xref target="RFC5646"/> is mostly delegated to ISO, instead of being managed by IANA itself.</t>
+            <t>Nevertheless, RFC 5646 <xref target="RFC5646"/> does make provisions about the stability of entries in the various namespaces, so that the meaning of language tags remains stable over time. This includes provisions that existing values are not going to be changed, and that even values withdrawn by ISO remain valid and will simply be marked as "deprecated" in the respective IANA registry.</t>
+         </section>
+         <section title="Web Linking" anchor="links">
+            <t>Web links can be typed by link relation types, and RFC 5988 <xref target="RFC5988"/> defines a model for how this can be done, and a registry for well-known values. One interesting aspect of the model is that the value space is divided: On the one had there are well-known and registered values identified by strings, and on the other hand it is possible to use URIs, in which case no registration is required. This means that the namespace for the link relation type registry is that of strings, meaning that it is not highly constrained.</t>
+            <t>With a rather large namespace, it is possible to accommodate a larger set of entries. However, it is still required that additions to the registry are done by following a process that requires describing the requested entries, and referring to a document that contains their definition and some context.</t>
+            <t>In addition, RFC 5988 <xref target="RFC5988"/> does define some constraints for how registered link relation types have to be defined. A submission process and reviews by designated experts are used to make sure that these constraints are met when new entries are submitted for inclusion in the registry.</t>
+         </section>
+      </section>
+      <section title="Why to use Registries" anchor="why">
+         <t>Establishing and using a registry can be done for a number of reasons. The following sections list some of these reasons, and in many cases, registries are used for at least some of the reasons described here.</t>
+         <section title="Openness and Extensibility" anchor="open-extensible">
+            <t>Registries separate a specification into a stable part that is represented by the specification itself, and a dynamic part that is represented by one or more registries that are established by the specification. This pattern allows a specification to remain stable, while still having well-defined parts that are allowed to evolve over time.</t>
+            <t>In order for this pattern to work well, the specification should clearly state what implementations should do when encountering unknown values in those locations where allowable values are managed in a registry. The two most popular processing models are to either silently ignore such a value and continue as if the value was not present at all, or to raise an error and notify higher layers of the fact that something unknown was encountered.</t>
+            <t>Depending on the way values are managed, it is also possible to distinguish between values that are supposed to be registered, and those that are not supposed to be registered and have to be considered unregistered extensions. The link relation types described in <xref target="links"/> use such an approach, defining that a link relation is either a string and supposed to be a registered value, or a URI in which case it is not supposed to be a registered value. This strategy works when it is possible to clearly separate the namespace of the place where values are expected into ones that are considered to be registered, and those that are not.</t>
+         </section>
+         <section title="Limited Namespaces" anchor="limited-namespace">
+            <t>Historically, registries started managing the very limited namespace of identifier fields in protocol packets or other low-level mechanisms such as the port numbers described in <xref target="ports"/>, often limited to a small number of bits or bytes. Carefully managing this very limited set of available identifiers was important, as was a way to allow new values to be added without having to update the protocol specification itself.</t>
+            <t>The higher the level is on which registries are used, the more likely it is that namespaces at least on the technical level are not very constrained. For example, the link relation types described in <xref target="links"/> are using strings as identifiers without imposing a length limitations, meaning that the set of possible identifiers is virtually inexhaustible. However, even in this case, the set of helpful and meaningful identifiers (i.e., names that are human-readable and partly self-describing) is limited, and thus even in this case, the realistically useful namespace is much more limited that the theoretical one.</t>
+         </section>
+         <section title="Design/Usage Review" anchor="design-review">
+            <t>Registries are established in the context of a given specification, and provide a mechanism to make this specification extensible by allowing the registry to evolve over time. However, the context of the specification very often has a clear design rationale for why a registry is established for a certain set of values. Any value added or changed in the registry should fit into this context, and having a registry provides an opportunity to have design and usage reviews before the registry gets updated.</t>
+            <t>For design and usage reviews to work well, the most crucial aspect is that the context of the registry is well-defined, and states clearly what kind of expectations the design and usage review will be checking. Often this review process is implemented using a mailing list and designated experts, so that registration requests as well as results of the deign and usage review are done openly and transparently.</t>
+         </section>
+         <section title="Identifier Design" anchor="identifier-design">
+            <t>Depending on the namespace, managing the registry namespace may follow certain guidelines. For numeric values, there may be certain number ranges that are supposed to be used in certain ways. For string values, there may be some convention or best practices on how to mint identifiers so that the namespace contains values that are following these principles.</t>
+            <t>Note that this is different from the design and usage review <xref target="design-review"/>. Whereas the design and usage review is about testing whether the meaning associated with a new value follow the constraints defined in the context that established the registry, the identifier design simply checks for how the registered values are chosen. It thus is a lower bar than a design and usage review, but still requires a review process that allows to propose new values, and provides some feedback about whether these values follow the guidelines or not.</t>
+         </section>
+         <section title="Identifier Lifecycle" anchor="lifecycle">
+            <t>The main reason for registries to exist in contrast to just including a set of predefined values in the underlying specification itself is the ability for these values to change over time. However, registries only make sense if there is some sense of stability to their contents, so that looking at existing registry values at some point in time can be assumed to be a reasonable snapshot for some amount of time.</t>
+            <t>Usually, registry entries are added at a modest pace, and an implementation not supporting the latest additions shouldn't fail, but simply implement some default behavior when encountering unsupported values. This pattern ensures that the namespace can evolve separately from the landscape of implementations.</t>
+            <t>However, adding identifiers is the easiest aspects of registry updates. Things get more complicated when it comes to updating and removing entries. The reason why these things are more complicated is that implementations depending on an identifier having certain semantics will behave incorrectly when the registry has been updated for this identifier with either a change in semantics, or a withdrawal of the entry.</t>
+            <t>For this reason, it often makes sense to include rules in the management of the registry about if/how entries can be updated, or removed. One popular approach is disallow updates with breaking changes, and to allow withdrawal but keep the identifier and mark it as "deprecated". This way it can be ensured that no incompatible entry will be created by somebody using an identifier that was previously used and removed.</t>
+            <t>The exact way how this process is defined depends on the context and purpose of the registry, and also on the namespace size. Tightly constrained namespaces mean that values probably should be managed more carefully, so that the registry does not run out of values. Also, while impossible to predict reliably, it is also important to look at the possible lifetime of implementations (that will use snapshots of the registry at some point in time), and on the long-term effects of having outdated registry snapshots in implementations.</t>
+         </section>
+         <section title="Documentation Requirements" anchor="documentation">
+            <t>Registering a value means that people encountering this value should be able to learn about what it represents. This means that there should be documentation associated with it that can be used to learn more about the value's meaning. Many registries at the very least require a very short explanation to be submitted with a registration request, so that the registry itself can list those texts as helpful explanations.</t>
+            <t>Going further, many registries also require links to more detailed specifications, so that people looking for complete explanations of the meaning of registered values can follow those links and will find specifications or at least explanations. The exact requirement on what such a link must refer to is something that the specification creating the registry has to define. One popular requirement is that it must be publicly available information, so that anybody looking for it can openly access it.</t>
+         </section>
+         <section title="Centralized Lookup" anchor="lookup">
+            <t>With a registry containing all current values (and possibly listing changed/deprecated ones as well) along with some registration metadata, they provide valuable information for anybody looking for information about registered values in the registry namespace. All IANA protocol registries <xref target="IANA-Protocol-Registry"/> are openly accessible on the Web, allowing everybody to lookup the current state of all these registries.</t>
+            <t>Even though centralized lookup is an important aspect of openness and extensibility <xref target="open-extensible"/>, the usual usage model of these lookup facilities is to use them at design-time rather than at runtime <xref target="runtime-designtime"/>. This means that the central lookup facilities are meant to be used by developers, and not by the implementations created by those developers. For the latter model a much more scalable infrastructure would be required, and thus it is important to consider the fact if the namespace managed by a registry fits this model of being useful for developer lookup at design-time, and for value lookup at runtime.</t>
+         </section>
+      </section>
+      <section title="When to use Registries" anchor="when">
+         <t>Based on the examples given in <xref target="examples"/> and the possible reasons described in <xref target="why"/>, the next question is how for designers to decide when they should establish one or more registries to complement a specification. All the issues describes in <xref target="why"/> are reasonable motivations, and in many cases it is more than just one of them.</t>
+         <t>For developers using a specification, it is helpful if the specification clearly describes which reasons were most important when deciding to establish one or more registries. This is even more true for developers who are looking to update the registry, because they should be aware of the reasons that were considered when the registry was created.</t>
+         <t>For every registry that is established, it is helpful if a specification explains the following general aspects:</t>
+         <t><list>
+            <t>What were the main design rationales behind establishing the registry? The reasons described in <xref target="why"/> may be a good starting point to pick from.</t>
+            <t>What are the management policies for the registry? Depending on a variety of factors such as namespace size, expected frequency of updated, level of review before acceptance, required level of documentation, and possibly others, management can be rather lightweight or a carefully managed process.</t>
+            <t>What is the size of the namespace and the expected rate of how it will be used and possibly exhausted?</t>
+         </list></t>
+      </section>
+      <section title="How to use Registries" anchor="how">
+         <t>If a specification does introduce registries as part of how the specification divides static and dynamic parts, then it is interesting to look at how those registries will actually be used. As in the previous sections, the list of topics included here is not necessarily mutually exclusive, and it is likely that for any established registry, there is more than one way how the registry is being used.</t>
+         <t>For authors of specifications establishing registries, the following list of possible ways how a registry might be used may be a good starting point to consider the design options for the registry, such as how to design the submission and update process, and how to provide access to registry contents.</t>
+         <section title="Implementation Support" anchor="runtime-use">
+            <t>The usual pattern for using registry-based identifiers in implementations is to support some snapshot of the registry, which either can be complete, or just a subset of the registry contents. Implementation support then is based on the semantics associated with registry values at the time of this snapshot. This means that any registry updates changing semantics will affect and possibly break those implementations, unless there is a strong policy to only allow backwards-compatible changes to identifier semantics.</t>
+         </section>
+         <section title="Registry Application" anchor="application">
+            <t>Since registry contents establish a controlled vocabulary, and each registry has some policies around how that vocabulary can be updated, it usually makes sense to have a template or a form that allows applicants to prepare and submit update requests. It is up to the registry to define how detailed this template is, whether applicants are required to use it, and whether submission is implemented based on that template.</t>
+            <t>Following some structure in the application process help with keeping a better record of requested and performed updates of a registry, which can be helpful when it comes to maintaining and providing a registry history <xref target="history"/>.</t>
+         </section>
+         <section title="Registry Stability" anchor="stability">
+            <t>Since implementations often use registries based on snapshots <xref target="runtime-use"/>, a key issue for registries is the stability of entries. While it is clear that new entries can be added (this after all is the minimal use case of registries: the ability to add identifiers without the need for updating the specification itself), things get more complicated when it comes to updates of existing entries, or removal of exiting entries.</t>
+            <t>When it comes to updating entries, then very often the goal is to avoid breaking changes. This means that entries can only be updated in a way that the updated semantics are backwards-compatible with the old semantics. This way, implementations based on the old semantics can safely use those and will not conflict when encountering data or implementations assuming the updated semantics.</t>
+            <t>In terms of removal, it also is important to consider whether removed entries should remain registered and blocked for future registrations, so that they cannot be re-used (which essentially would be equivalent to making a breaking change to an existing entry). If such a policy is in-place, then technically speaking there is no actual "removal" of a value rom the registry. Instead, a value can be updated to be deprecated, but it remains in the registry so that it is not re-assigned.</t>
+         </section>
+         <section title="Registry History" anchor="history">
+            <t>While not strictly necessary for registry usage and management, in terms of openness and transparency it can be helpful to provide a registry history. This way it is possible to recreate all actions that changed the registry, and to reconstruct the state of the registry at any point in time.</t>
+            <t>Some registries have mailing lists associated with them which can be regarded as some sort of history. However, this is a very weak form of history since reconstructing the registry history and its state requires to read all the emails, and infer the resulting registry actions. Having access to the actual actions in machine-readable form can make it much easier to access and recreate registry history.</t>
+            <t>Since registry usually are highly structured (often tabular models with small number of columns), they would lend themselves well to representing any updates to the contents in a similarly structured way, along with some metadata about the entry update (such as date, applicant, expert, links to email archives, and similar ways to contextualize the entry update).</t>
+         </section>
+         <section title="Registry Access" anchor="access">
+            <t>Depending on the intended use of a registry, an important question is how developers and/or implementations can access the registry. While the current IANA registries can be accessed via HTTP, they are clearly designed to be used as HTML pages for developers. Alternative or complementary models could provide API-based access, with documented and stable ways how to provide machine-based access to registry contents.</t>
+            <t>If an API is considered and provided, then an important question is whether it is intended for accessing registry contents only, or providing full-fledged access to all services of the registry, such as updates <xref target="application"/> or history access <xref target="history"/>. The former kind of access is easier to accomplish, because the sets of provided is smaller, and the requirements for authentication and authorization are probably simpler.</t>
+         </section>
+         <section title="Runtime vs. Design-Time" anchor="runtime-designtime">
+            <t>Most implementations use registry snapshots (complete or partial) for using a registry's contents <xref target="runtime-use"/>. If a registry provides API access, then it would be possible to author implementations that use registry contents at runtime. However, there are two important concerns about this possibility:</t>
+            <t><list>
+               <t>Having access to registry contents may be of little use other than learning about the existence of new identifiers. In most cases, a registry entry alone will not be sufficient to understand the semantics of a new entry encountered at runtime. If that is the case, then all an implementation can do is to verify that it encountered a new entry that is a valid identifier according to the current registry state, but it cannot implement the behavior associated with that new entry.</t>
+               <t>If the model of the registry allows meaningful implementation behavior by runtime updates, then this can result in this registry becoming overwhelmed by the number of accesses. After all, dynamic implementation behavior then may be preferable over the more traditional snapshot implementation pattern, which then results in the majority of implementations converging to the runtime access model.</t>
+            </list></t>
+            <t>Because of the second issue in particular, any registry supporting and intended for runtime access should make sure that provisions are in place to control registry access. This is no different from any other service on the Internet or Web that also needs to have mechanisms in place to protect itself against suffering under too much load.</t>
+         </section>
+      </section>
+   </middle>
+   <back>
+      <references title="References">
+         <reference  anchor='RFC5646' target='http://www.rfc-editor.org/info/rfc5646'>
+            <front>
+               <title>Tags for Identifying Languages</title>
+               <author initials='A.' surname='Phillips' fullname='A. Phillips' role='editor'><organization /></author>
+               <author initials='M.' surname='Davis' fullname='M. Davis' role='editor'><organization /></author>
+               <date year='2009' month='September' />
+               <abstract><t>This document describes the structure, content, construction, and semantics of language tags for use in cases where it is desirable to indicate the language used in an information object.  It also describes how to register values for use in language tags and the creation of user-defined extensions for private interchange.  This document  specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
+            </front>
+            <seriesInfo name='BCP' value='47'/>
+            <seriesInfo name='RFC' value='5646'/>
+            <seriesInfo name='DOI' value='10.17487/RFC5646'/>
+         </reference>
+         <reference  anchor='RFC5988' target='http://www.rfc-editor.org/info/rfc5988'>
+            <front>
+               <title>Web Linking</title>
+               <author initials='M.' surname='Nottingham' fullname='M. Nottingham'><organization /></author>
+               <date year='2010' month='October' />
+               <abstract><t>This document specifies relation types for Web links, and defines a registry for them. It also defines the use of such links in HTTP headers with the Link header field. [STANDARDS-TRACK]</t></abstract>
+            </front>
+            <seriesInfo name='RFC' value='5988'/>
+            <seriesInfo name='DOI' value='10.17487/RFC5988'/>
+         </reference>
+         <reference  anchor='RFC6335' target='http://www.rfc-editor.org/info/rfc6335'>
+            <front>
+               <title>Internet Assigned Numbers Authority (IANA) Procedures for the Management of the Service Name and Transport Protocol Port Number Registry</title>
+               <author initials='M.' surname='Cotton' fullname='M. Cotton'><organization /></author>
+               <author initials='L.' surname='Eggert' fullname='L. Eggert'><organization /></author>
+               <author initials='J.' surname='Touch' fullname='J. Touch'><organization /></author>
+               <author initials='M.' surname='Westerlund' fullname='M. Westerlund'><organization /></author>
+               <author initials='S.' surname='Cheshire' fullname='S. Cheshire'><organization /></author>
+               <date year='2011' month='August' />
+               <abstract><t>This document defines the procedures that the Internet Assigned Numbers Authority (IANA) uses when handling assignment and other requests related to the Service Name and Transport Protocol Port Number registry. It also discusses the rationale and principles behind these procedures and how they facilitate the long-term sustainability of the registry.</t><t>This document updates IANA's procedures by obsoleting the previous UDP and TCP port assignment procedures defined in Sections 8 and 9.1 of the IANA Allocation Guidelines, and it updates the IANA service name and port assignment procedures for UDP-Lite, the Datagram Congestion Control Protocol (DCCP), and the Stream Control Transmission Protocol (SCTP). It also updates the DNS SRV specification to clarify what a service name is and how it is registered. This memo documents an Internet Best Current Practice.</t></abstract>
+            </front>
+            <seriesInfo name='BCP' value='165'/>
+            <seriesInfo name='RFC' value='6335'/>
+            <seriesInfo name='DOI' value='10.17487/RFC6335'/>
+         </reference>
+         <reference anchor="ISO.639.1988">
+            <front>
+               <title>Code for the representation of names of languages, 1st edition</title>
+               <author>
+                  <organization>International Organization for Standardization</organization>
+               </author>
+               <date month="" year="1988" />
+            </front>
+            <seriesInfo name="ISO" value="Standard 639" />
+         </reference>
+         <reference anchor="IANA-Protocol-Registry" target="http://www.iana.org/protocols">
+            <front>
+               <title>IANA Protocol Registry</title>
+               <author/>
+               <date/>
+            </front>
+         </reference>
+      </references>
+      <section title="Acknowledgements" anchor="ack">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+   </back>
+</rfc>
