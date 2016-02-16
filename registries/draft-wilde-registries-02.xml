@@ -33,6 +33,7 @@
       </section>
       <section title="Examples" anchor="examples">
          <t>The following list of examples is intended to be illustrative of some of the existing registries, what kind of identifiers they are using, and how they are managed. This list is not intended to highlight these registries in any special way other than explaining some of the specifics of the managed namespaces. As mentioned above, the list of IANA-managed registries is long (around 2000 individual registries), and the examples listed here have been selected somewhat randomly to illustrate certain points.</t>
+         <t>In order to highlight the fact that IANA-managed registries are only one way of how to establish and run a registry, <xref target="dns"/> briefly talks about DNS as an example for the same basic function (providing a managed namespace of identifiers), but one that is based on different constraints and results in a very different operational model and implementation.</t>
          <section title="TCP/UDP Port Numbers" anchor="ports">
             <t>The registry for TCP/UDP port numbers <xref target="RFC6335"/> is one of the oldest well-known registries on the Internet. Because of its core importance for how the Internet functions, it has been around for a long time, there is a long history about managing and running it, and thus the most up-to-date document about it is relatively new (RFC 6335 <xref target="RFC6335"/> from August 2011).</t>
             <t>The namespace of ports is a very limited one. Port numbers in TCP and UDP are 16-bit numbers, yielding a namespace of 65'536 port numbers. The port numbers are subdivided into three ranges of system ports (0-1023), user ports (1024-49151), and dynamic ports (49152-65535). IANA only treats system and user port numbers as assignable, whereas dynamic port numbers cannot be assigned at all.</t>
@@ -49,6 +50,9 @@
             <t>Web links can be typed by link relation types, and RFC 5988 <xref target="RFC5988"/> defines a model for how this can be done, and a registry for well-known values. One interesting aspect of the model is that the value space is divided: On the one had there are well-known and registered values identified by strings, and on the other hand it is possible to use URIs, in which case no registration is required. This means that the namespace for the link relation type registry is that of strings, meaning that it is not highly constrained.</t>
             <t>With a rather large namespace, it is possible to accommodate a larger set of entries. However, it is still required that additions to the registry are done by following a process that requires describing the requested entries, and referring to a document that contains their definition and some context.</t>
             <t>In addition, RFC 5988 <xref target="RFC5988"/> does define some constraints for how registered link relation types have to be defined. A submission process and reviews by designated experts are used to make sure that these constraints are met when new entries are submitted for inclusion in the registry.</t>
+         </section>
+         <section title="Domain Name System (DNS)" anchor="dns">
+            <t>The Domain Name System (DNS), specified in RFC 1034 <xref target="RFC1034"/> and RFC 1035 <xref target="RFC1035"/>, is a distributed infrastructure for hosting a variety of entry types. In the context of the DNS, the entry types are defined by various Resource Record (RR) types. However, since the DNS is used for specific purposes, it is not a generic key/value store. Instead, the assumption is that the key always is a DNS name, whereas the value then is determined by the RR available for that domain.</t>
          </section>
       </section>
       <section title="Why to use Registries" anchor="why">
@@ -157,6 +161,28 @@
    </middle>
    <back>
       <references title="References">
+         <reference  anchor='RFC1034' target='http://www.rfc-editor.org/info/rfc1034'>
+            <front>
+               <title>Domain names - concepts and facilities</title>
+               <author initials='P.V.' surname='Mockapetris' fullname='P.V. Mockapetris'><organization /></author>
+               <date year='1987' month='November' />
+               <abstract><t>This RFC is the revised basic definition of The Domain Name System. It obsoletes RFC-882. This memo describes the domain style names and their used for host address look up and electronic mail forwarding. It discusses the clients and servers in the domain name system and the protocol used between them.</t></abstract>
+            </front>
+            <seriesInfo name='STD' value='13'/>
+            <seriesInfo name='RFC' value='1034'/>
+            <seriesInfo name='DOI' value='10.17487/RFC1034'/>
+         </reference>
+         <reference  anchor='RFC1035' target='http://www.rfc-editor.org/info/rfc1035'>
+            <front>
+               <title>Domain names - implementation and specification</title>
+               <author initials='P.V.' surname='Mockapetris' fullname='P.V. Mockapetris'><organization /></author>
+               <date year='1987' month='November' />
+               <abstract><t>This RFC is the revised specification of the protocol and format used in the implementation of the Domain Name System. It obsoletes RFC-883.This memo documents the details of the domain name client-server communication.</t></abstract>
+            </front>
+            <seriesInfo name='STD' value='13'/>
+            <seriesInfo name='RFC' value='1035'/>
+            <seriesInfo name='DOI' value='10.17487/RFC1035'/>
+         </reference>
          <reference  anchor='RFC5226' target='http://www.rfc-editor.org/info/rfc5226'>
             <front>
                <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
