@@ -95,17 +95,17 @@ Table of Contents
      5.1.  Non-Semantic/Reserved Entries . . . . . . . . . . . . . .  11
      5.2.  Entry Levels  . . . . . . . . . . . . . . . . . . . . . .  11
      5.3.  Separation by Value Syntax  . . . . . . . . . . . . . . .  12
-   6.  How to use Registries . . . . . . . . . . . . . . . . . . . .  12
+   6.  How to use Registries . . . . . . . . . . . . . . . . . . . .  13
      6.1.  Registry Operations . . . . . . . . . . . . . . . . . . .  13
-     6.2.  Registry Creation . . . . . . . . . . . . . . . . . . . .  14
-     6.3.  Registry Interaction  . . . . . . . . . . . . . . . . . .  14
+     6.2.  Registry Creation . . . . . . . . . . . . . . . . . . . .  15
+     6.3.  Registry Interaction  . . . . . . . . . . . . . . . . . .  15
      6.4.  Implementation Support  . . . . . . . . . . . . . . . . .  15
-     6.5.  Registry Stability  . . . . . . . . . . . . . . . . . . .  15
+     6.5.  Registry Stability  . . . . . . . . . . . . . . . . . . .  16
      6.6.  Registry History  . . . . . . . . . . . . . . . . . . . .  16
-     6.7.  Registry Access . . . . . . . . . . . . . . . . . . . . .  16
+     6.7.  Registry Access . . . . . . . . . . . . . . . . . . . . .  17
      6.8.  Runtime vs. Design-Time . . . . . . . . . . . . . . . . .  17
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -578,36 +578,36 @@ Internet-Draft                 Registries                  February 2016
    For some of the reasons described in Section 3, specification authors
    may decide to establish one or more registries, as described in
    Section 4.  However, it may be the case that having such a registry
-   may make it harder for developers to experiment with implementations
+   can make it harder for developers to experiment with implementations
    (without violating the specification), and/or that there should be a
    more "lightweight" way for establishing some identifiers than for
    others.
 
    This section presents some design options for this issue, and
    discusses how these design options are influenced by the registry's
-   identifier namespace.
+   identifier namespace, and the registration policy.
 
 5.1.  Non-Semantic/Reserved Entries
 
    One possible approach is to explicitly reserve parts of the available
    namespace for "non-semantic" purposes.  This means that whenever such
    a value is encountered, it is impossible to conclude based on this
-   value again which concept it represents.  Instead, the interpretation
+   value alone which concept it represents.  Instead, the interpretation
    of the value depends on additional information and/or on context, and
    usually the exact mechanism is outside of the scope of the
    specification.
 
-   One example for this method is the TCP/UDP port example Section 2.1.
-   The namespace for port numbers is two bytes and thus number from 0 to
-   65535.  However, numbers in the range 49152-65535 are considered to
-   be "dynamic ports" and thus are reserved for uses that are outside of
-   the scope of registered values.
+   One example for this method is the TCP/UDP port example given in
+   Section 2.1.  The namespace for port numbers is two bytes and thus
+   numbers from 0 to 65535.  However, numbers in the range 49152-65535
+   are considered to be "dynamic ports", and are reserved for uses that
+   are outside of the scope of registered values.
 
 5.2.  Entry Levels
 
    A different pattern to differentiate values is to have different
    "levels" that values can be registered for.  This effectively
-   partitions the registry into different parts, which sometime carry
+   partitions the registry into different classes, which sometime follow
    certain naming conventions, sometimes not.  In the latter case, when
 
 
@@ -626,19 +626,19 @@ Internet-Draft                 Registries                  February 2016
    they are documented, how the expected stability of the entry is, and
    what level of scrutiny is applied during the review process when
    registering a new value.  Specifications have a wide latitude
-   defining those levels and specifying what they represents and how
-   they affect value semantics and registration procedures.
+   defining those levels and specifying what they represent and how they
+   affect value semantics and registration procedures.
 
    As one example, media types [9] establish a "standards tree" and as
-   well as other trees ("Vendor" and "Personal").  Entries in these
+   well as other trees ("vendor" and "personal").  Entries in these
    trees are distinguished by prefix or lack thereof.  The general idea
    is that the non-standard trees contain entries that are not quite at
-   the same level, significance-wise, as the standard tree.
+   the same level, significance-wise, as the standards tree.
 
    As another example, URI schemes [11] differentiate registrations into
    "permanent" and "provisional" schemes.  In addition, URI schemes can
    also be registered as being "historical".  A "provisional"
-   registration is intended to help with cases where URI deployment is
+   registration is intended to be used in cases where URI deployment is
    likely to happen outside of a private environment, but still
    controlled by a private party.  It is also possible to update a
    registration from "provisional" to "permanent" once the associated
@@ -651,9 +651,46 @@ Internet-Draft                 Registries                  February 2016
 
 5.3.  Separation by Value Syntax
 
-   ...
+   While the examples given in Section 5.2 sometimes use ways to
+   differentiate entry levels by name, this is just a convenience so
+   that it is possible to determine a value's level by value syntax.  In
+   this case, the value syntax is enforced by registration policy,
+   meaning that during the registration process it is ensured that when
+   a registration request for a certain level is made, the registered
+   value conforms to the required syntax.  However, in this case, all
+   values still need to be registered.
 
-   ... [8]
+   A different approach is to separate the value range itself by syntax,
+   and only require registration for partitions of that range.  For
+   example, link relation types as described in Section 2.3 allow
+   strings and URIs as values.  For strings, it is expected that any
+   used values are registered.  For URIs, however, no such registration
+   is required or even possible.  This means that "private link relation
+
+
+
+Wilde                    Expires August 24, 2016               [Page 12]
+
+Internet-Draft                 Registries                  February 2016
+
+
+   types" can be safely identified by URI values, and since it is
+   possible to make these dereferencable, it is also possible to make
+   these values self-documenting and/or self-describing by making human-
+   and/or machine-readable information available at that URI.
+
+   While this separation by value syntax can be useful, it is important
+   to note that by design, any approach that reflects value
+   classification through value syntax automatically means that values
+   cannot moved between categories.  Renaming established and deployed
+   values is a very expensive thing to do, which means that the approach
+   of separation by value syntax should be carefully considered, in
+   particular in light of the fact that it makes it impossible for
+   values to be moved between categories.  This may be acceptable for
+   some scenarios, but may be undesirable in other.  RFC 6648 [8]
+   discusses this problem starting from prefix-based value syntax
+   approaches (the famous "X-" for extension values), but is not limited
+   to discussing this prefix-based approach alone.
 
 6.  How to use Registries
 
@@ -664,15 +701,6 @@ Internet-Draft                 Registries                  February 2016
    necessarily mutually exclusive, and it is likely that for any
    established registry, there is more than one way how the registry is
    being used.
-
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 12]
-
-Internet-Draft                 Registries                  February 2016
-
 
    For authors of specifications establishing registries, the following
    list of possible ways how a registry might be used may be a good
@@ -694,6 +722,14 @@ Internet-Draft                 Registries                  February 2016
    solutions that satisfy those issues.  For an organization like the
    IETF, with a substantial stream of technical specifications, it makes
    a lot of sense to establish both a common workflow, and a common
+
+
+
+Wilde                    Expires August 24, 2016               [Page 13]
+
+Internet-Draft                 Registries                  February 2016
+
+
    implementation, so that specifications can rely on this
    infrastructure, instead of having to re-invent registry operations
    every time they want to establish a registry.
@@ -722,14 +758,6 @@ Internet-Draft                 Registries                  February 2016
       assignment and registration must be open to all interested
       parties.
 
-
-
-
-Wilde                    Expires August 24, 2016               [Page 13]
-
-Internet-Draft                 Registries                  February 2016
-
-
       Transparent: The protocol registries and their associated policies
       should be developed in a transparent manner.
 
@@ -750,6 +778,14 @@ Internet-Draft                 Registries                  February 2016
    registry (see Section 6.2), there are hard limitations based on the
    current implementation which is hosted by IANA.  It is possible that
    a different model may be implemented at a later time, but the current
+
+
+
+Wilde                    Expires August 24, 2016               [Page 14]
+
+Internet-Draft                 Registries                  February 2016
+
+
    model is biased towards email-based workflows and human-readable
    registry access.  If specification authors feel that IANA's
    implementation will not fit their needs, then it is (at least
@@ -777,15 +813,6 @@ Internet-Draft                 Registries                  February 2016
    applicants to prepare and submit update requests.  It is up to the
    registry to define how detailed this template is, whether applicants
    are required to use it, and whether submission is implemented based
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 14]
-
-Internet-Draft                 Registries                  February 2016
-
-
    on that template.  RFC 5226 [4] provides guidelines for specification
    writers how to include any registry interactions in their documents.
 
@@ -804,6 +831,16 @@ Internet-Draft                 Registries                  February 2016
    registry updates changing semantics will affect and possibly break
    those implementations, unless there is a strong policy to only allow
    backwards-compatible changes to identifier semantics.
+
+
+
+
+
+
+Wilde                    Expires August 24, 2016               [Page 15]
+
+Internet-Draft                 Registries                  February 2016
+
 
 6.5.  Registry Stability
 
@@ -831,17 +868,6 @@ Internet-Draft                 Registries                  February 2016
    value can be updated to be deprecated, but it remains in the registry
    so that it is not re-assigned.
 
-
-
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 15]
-
-Internet-Draft                 Registries                  February 2016
-
-
 6.6.  Registry History
 
    While not strictly necessary for registry usage and management, in
@@ -863,6 +889,14 @@ Internet-Draft                 Registries                  February 2016
    way, along with some metadata about the entry update (such as date,
    applicant, expert, links to email archives, and similar ways to
    contextualize the entry update).
+
+
+
+
+Wilde                    Expires August 24, 2016               [Page 16]
+
+Internet-Draft                 Registries                  February 2016
+
 
 6.7.  Registry Access
 
@@ -889,15 +923,6 @@ Internet-Draft                 Registries                  February 2016
    mostly in terms of registry operations.  Such as API could easily
    become overloaded, and then would become a possible point of failure.
    Also, it could become a point of attack, both in terms of denial or
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 16]
-
-Internet-Draft                 Registries                  February 2016
-
-
    service attacks, or in attempts to use the API to access the registry
    in unauthorized ways.
 
@@ -921,6 +946,14 @@ Internet-Draft                 Registries                  February 2016
       If the model of the registry allows meaningful implementation
       behavior by runtime updates, then this can result in this registry
       becoming overwhelmed by the number of accesses.  After all,
+
+
+
+Wilde                    Expires August 24, 2016               [Page 17]
+
+Internet-Draft                 Registries                  February 2016
+
+
       dynamic implementation behavior then may be preferable over the
       more traditional snapshot implementation pattern, which then
       results in the majority of implementations converging to the
@@ -947,13 +980,6 @@ Internet-Draft                 Registries                  February 2016
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
               November 1987, <http://www.rfc-editor.org/info/rfc1035>.
 
-
-
-Wilde                    Expires August 24, 2016               [Page 17]
-
-Internet-Draft                 Registries                  February 2016
-
-
    [3]        Klyne, G., Nottingham, M., and J. Mogul, "Registration
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               DOI 10.17487/RFC3864, September 2004,
@@ -971,6 +997,18 @@ Internet-Draft                 Registries                  February 2016
    [6]        Nottingham, M., "Web Linking", RFC 5988,
               DOI 10.17487/RFC5988, October 2010,
               <http://www.rfc-editor.org/info/rfc5988>.
+
+
+
+
+
+
+
+
+Wilde                    Expires August 24, 2016               [Page 18]
+
+Internet-Draft                 Registries                  February 2016
+
 
    [7]        Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S.
               Cheshire, "Internet Assigned Numbers Authority (IANA)
@@ -1000,16 +1038,6 @@ Internet-Draft                 Registries                  February 2016
               RFC 7595, DOI 10.17487/RFC7595, June 2015,
               <http://www.rfc-editor.org/info/rfc7595>.
 
-
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 18]
-
-Internet-Draft                 Registries                  February 2016
-
-
    [12]       International Organization for Standardization, "Code for
               the representation of names of languages, 1st edition",
               ISO Standard 639, 1988.
@@ -1027,34 +1055,6 @@ Author's Address
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
