@@ -31,7 +31,17 @@
         <xs:complexType>
          <xs:choice maxOccurs="unbounded" minOccurs="0">
           <xs:element name="allow" type="home:arrayType"/>
-          <xs:element name="representations" type="home:arrayType"/>
+          <xs:element name="formats">
+           <xs:complexType>
+            <xs:sequence>
+             <xs:element name="format">
+              <xs:complexType>
+               <xs:attribute name="mediatype" type="home:mediaTypeType"/>
+              </xs:complexType>
+             </xs:element>
+            </xs:sequence>
+           </xs:complexType>
+          </xs:element>
           <xs:element name="accept-patch" type="home:arrayType"/>
           <xs:element name="accept-post" type="home:arrayType"/>
           <xs:element name="accept-put" type="home:arrayType"/>
@@ -77,4 +87,7 @@
    <xs:element name="i"/>
   </xs:sequence>
  </xs:complexType>
+ <xs:simpleType name="mediaTypeType">
+  <xs:restriction base="xs:string"/>
+ </xs:simpleType>
 </xs:schema>
