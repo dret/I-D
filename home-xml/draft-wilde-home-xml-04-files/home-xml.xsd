@@ -42,11 +42,10 @@
             </xs:sequence>
            </xs:complexType>
           </xs:element>
-          <xs:element name="accept-patch" type="home:arrayType"/>
-          <xs:element name="accept-post" type="home:arrayType"/>
-          <xs:element name="accept-put" type="home:arrayType"/>
+          <xs:element name="accept-patch" type="home:mediaTypeArrayType"/>
+          <xs:element name="accept-post" type="home:mediaTypeArrayType"/>
           <xs:element name="accept-ranges" type="home:arrayType"/>
-          <xs:element name="prefer" type="home:arrayType"/>
+          <xs:element name="accept-prefer" type="home:arrayType"/>
           <xs:element name="docs" type="xs:anyURI"/>
           <xs:element name="precondition-req" type="home:arrayType"/>
           <xs:element name="auth-req">
@@ -82,12 +81,17 @@
    <xs:attribute ref="xml:base" use="optional"/>
   </xs:complexType>
  </xs:element>
+ <xs:simpleType name="mediaTypeType">
+  <xs:restriction base="xs:string"/>
+ </xs:simpleType>
  <xs:complexType name="arrayType">
   <xs:sequence maxOccurs="unbounded" minOccurs="0">
    <xs:element name="i"/>
   </xs:sequence>
  </xs:complexType>
- <xs:simpleType name="mediaTypeType">
-  <xs:restriction base="xs:string"/>
- </xs:simpleType>
+ <xs:complexType name="mediaTypeArrayType">
+  <xs:sequence maxOccurs="unbounded" minOccurs="0">
+   <xs:element name="i" type="home:mediaTypeType"/>
+  </xs:sequence>
+ </xs:complexType>
 </xs:schema>
