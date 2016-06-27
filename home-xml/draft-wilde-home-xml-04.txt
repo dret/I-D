@@ -3,9 +3,9 @@
 
 
 Network Working Group                                           E. Wilde
-Internet-Draft                                             June 28, 2016
+Internet-Draft                                             June 27, 2016
 Intended status: Informational
-Expires: December 30, 2016
+Expires: December 29, 2016
 
 
                 Home Documents for HTTP APIs: XML Syntax
@@ -43,7 +43,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 30, 2016.
+   This Internet-Draft will expire on December 29, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Wilde                   Expires December 30, 2016               [Page 1]
+Wilde                   Expires December 29, 2016               [Page 1]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -109,7 +109,7 @@ Internet-Draft             Home Documents XML                  June 2016
 
 
 
-Wilde                   Expires December 30, 2016               [Page 2]
+Wilde                   Expires December 29, 2016               [Page 2]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -165,7 +165,7 @@ Internet-Draft             Home Documents XML                  June 2016
 
 
 
-Wilde                   Expires December 30, 2016               [Page 3]
+Wilde                   Expires December 29, 2016               [Page 3]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -221,7 +221,7 @@ Internet-Draft             Home Documents XML                  June 2016
 
 
 
-Wilde                   Expires December 30, 2016               [Page 4]
+Wilde                   Expires December 29, 2016               [Page 4]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -277,7 +277,7 @@ Internet-Draft             Home Documents XML                  June 2016
 
 
 
-Wilde                   Expires December 30, 2016               [Page 5]
+Wilde                   Expires December 29, 2016               [Page 5]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -333,7 +333,7 @@ Internet-Draft             Home Documents XML                  June 2016
 
 
 
-Wilde                   Expires December 30, 2016               [Page 6]
+Wilde                   Expires December 29, 2016               [Page 6]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -389,7 +389,7 @@ Internet-Draft             Home Documents XML                  June 2016
 
 
 
-Wilde                   Expires December 30, 2016               [Page 7]
+Wilde                   Expires December 29, 2016               [Page 7]
 
 Internet-Draft             Home Documents XML                  June 2016
 
@@ -411,7 +411,10 @@ Internet-Draft             Home Documents XML                  June 2016
    It is up to the individual working groups to use this information as
    they see fit".
 
-      ...
+   For a list of implementations, please refer to the wiki that tracks
+   implementations for the Home Document specification in general:
+
+      <https://github.com/mnot/I-D/wiki/json-home>
 
 6.  Security Considerations
 
@@ -424,8 +427,8 @@ Internet-Draft             Home Documents XML                  June 2016
 7.  Open Issues
 
    o  The move from a predefined list of hints to a hint registry is not
-      yet reflected in the XML; in particular because the latest draft
-      defines the hint data model to be JSON-specific.
+      yet reflected in the XML; in particular because the draft defines
+      the hint data model to be JSON-specific.
 
    o  What is the extension model for the XML syntax?  Should processing
       of other namespaces be defined as "should ignore", so that same-
@@ -435,6 +438,18 @@ Internet-Draft             Home Documents XML                  June 2016
       documentation?  This would probably not be supported in the JSON
       syntax, but could be marked as strictly optional and XML-specific.
 
+
+
+
+
+
+
+
+Wilde                   Expires December 29, 2016               [Page 8]
+
+Internet-Draft             Home Documents XML                  June 2016
+
+
 8.  References
 
 8.1.  Normative References
@@ -442,13 +457,6 @@ Internet-Draft             Home Documents XML                  June 2016
    [I-D.nottingham-json-home]
               Nottingham, M., "Home Documents for HTTP APIs", draft-
               nottingham-json-home-04 (work in progress), May 2016.
-
-
-
-Wilde                   Expires December 30, 2016               [Page 8]
-
-Internet-Draft             Home Documents XML                  June 2016
-
 
    [RFC3023]  Murata, M., St. Laurent, S., and D. Kohn, "XML Media
               Types", RFC 3023, January 2001.
@@ -491,20 +499,16 @@ Internet-Draft             Home Documents XML                  June 2016
               stylesheet-20101028, October 2010,
               <http://www.w3.org/TR/2010/REC-xml-stylesheet-20101028>.
 
-   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
-              Code: The Implementation Status Section", RFC 6982, July
-              2013.
 
 
-
-
-
-
-
-Wilde                   Expires December 30, 2016               [Page 9]
+Wilde                   Expires December 29, 2016               [Page 9]
 
 Internet-Draft             Home Documents XML                  June 2016
 
+
+   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", RFC 6982, July
+              2013.
 
 8.3.  URIs
 
@@ -550,18 +554,18 @@ Appendix A.  XML-to-HTML for Home Documents
            <xsl:call-template name="resolve-URI">
             <xsl:with-param name="URI" select="home:template/@href-template"/>
            </xsl:call-template>
-          </xsl:variable>
-          <a href="{$template-URI}" title="URI template"><xsl:value-of select="$template-URI"/></a>
-         </xsl:otherwise>
-        </xsl:choose>
 
 
 
-Wilde                   Expires December 30, 2016              [Page 10]
+Wilde                   Expires December 29, 2016              [Page 10]
 
 Internet-Draft             Home Documents XML                  June 2016
 
 
+          </xsl:variable>
+          <a href="{$template-URI}" title="URI template"><xsl:value-of select="$template-URI"/></a>
+         </xsl:otherwise>
+        </xsl:choose>
        </code>
        <dl>
         <xsl:if test="home:template/home:var">
@@ -606,18 +610,18 @@ Internet-Draft             Home Documents XML                  June 2016
           </ul>
          </dd>
         </xsl:if>
-       </dl>
-      </li>
-     </xsl:for-each>
-    </ul>
 
 
 
-Wilde                   Expires December 30, 2016              [Page 11]
+Wilde                   Expires December 29, 2016              [Page 11]
 
 Internet-Draft             Home Documents XML                  June 2016
 
 
+       </dl>
+      </li>
+     </xsl:for-each>
+    </ul>
    </body>
   </html>
  </xsl:template>
@@ -665,8 +669,4 @@ Author's Address
 
 
 
-
-
-
-
-Wilde                   Expires December 30, 2016              [Page 12]
+Wilde                   Expires December 29, 2016              [Page 12]
