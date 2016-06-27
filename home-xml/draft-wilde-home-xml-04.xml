@@ -2,7 +2,7 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
    <!ENTITY files 'draft-wilde-home-xml-04-files'>
 ]>
-<?xml-stylesheet type="text/xsl" href="../../XIPr/xipr-1-0.xsl"?>
+<?xml-stylesheet type="text/xsl" href="xipr-1-0.xsl"?>
 <!-- XIPr is used for XInclude processing; you can use any XInclude processor to include the files referenced from within this document. -->
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
@@ -30,11 +30,10 @@
   </front>
   <middle>
     <section title="Introduction">
-      <t>An Internet Draft currently under development <xref target="I-D.nottingham-json-home"/> proposes the concept of "Home Documents for HTTP APIs" and described them as follows:</t>
+      <t>"Home Documents for HTTP APIs" <xref target="I-D.nottingham-json-home"/> proposes the concept of "Home Documents" and describes them as follows:</t>
       <t>"This document proposes a 'home document' format for non-browser HTTP clients. [...] The goal of home documents is to serve as a starting point for hypermedia APIs, where clients need to have an entry point, and then can use the API by following links. Home documents thus serve the same purpose as home pages on web sites: They are stable entry points that provide starting points for clients with some knowledge of the services linked from them."</t>
-      <t>While this general concept of a home document is independent of the representation format, the current draft only defines a JSON syntax. In order to make this concept available across representations, this draft defines an XML syntax for the concepts defined in <xref target="I-D.nottingham-json-home"/>.</t>
-      <t>At this point it is undecided whether both drafts will be merged eventually, or whether they will both be published as separate documents. Regardless of the final publication setup, it should be noted that this draft is only defining the XML syntax, whereas all the concepts represented in this syntax are defined by <xref target="I-D.nottingham-json-home"/>.</t>
-      <t>One notable difference is the handling of links found in "href" or "href-template" attributes on "resource" elements: In the JSON syntax, these are (if they are relative URIs) resolved against the URI of the home document itself. The XML syntax adds support for an optional "xml:base" attribute <xref target="W3C.REC-xmlbase-20090128"/> on the "resources" document element. If this attribute is present, it has to be used according to its specification, and thus becomes part of a possible resolution chain of relative URIs.</t>
+      <t>While this general concept of a home document is independent of the representation format, the specification only defines a JSON syntax. In order to make this concept available across representations, this specification defines an XML syntax for the concepts defined in <xref target="I-D.nottingham-json-home"/>.</t>
+      <t>One notable difference is the handling of links found in "href" or "href-template" attributes of "resource" elements: In the JSON syntax, these are (if they are relative URIs) resolved against the URI of the home document itself. The XML syntax adds support for an optional "xml:base" attribute <xref target="W3C.REC-xmlbase-20090128"/> on the "resources" document element. If this attribute is present, it has to be used according to its specification, and thus becomes part of a possible resolution chain of relative URIs.</t>
     </section>
     <section title="XML Example" anchor="xml-example">
       <t>The following Home Document in XML syntax uses the same data as the Home Document shown in <eref target="http://tools.ietf.org/html/draft-nottingham-json-home-04#section-2">Section 2</eref> of <xref target="I-D.nottingham-json-home"/> (but adding xml:base="http://example.com" to demonstrate the mechanism):</t>
