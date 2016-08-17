@@ -379,16 +379,16 @@
 <link href="#rfc.section.3" rel="Chapter" title="3 Web Services"/>
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Documenting Web Services"/>
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Describing Web Services"/>
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Unified Documentation/Description"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 Link Relations for Web Services"/>
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 The service-doc Link Relation Type"/>
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 The service-desc Link Relation Type"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
-<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Link Relation Type: service-doc"/>
-<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Link Relation Type: service-desc"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 Change Log"/>
-<link href="#rfc.section.7.1" rel="Chapter" title="7.1 From -01 to -02"/>
-<link href="#rfc.section.7.2" rel="Chapter" title="7.2 From -00 to -01"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 Web Service Status Resources"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations"/>
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Link Relation Type: service-doc"/>
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Link Relation Type: service-desc"/>
+<link href="#rfc.section.6.3" rel="Chapter" title="6.3 Link Relation Type: status"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations"/>
 <link href="#rfc.references" rel="Chapter" title="8 References"/>
 <link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
 <link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
@@ -401,9 +401,9 @@
 
   <meta name="dct.creator" content="Wilde, E." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-service-link-rel-02" />
-  <meta name="dct.issued" scheme="ISO8601" content="2016-2-22" />
-  <meta name="dct.abstract" content="Many resources provided on the Web are part of a sets of resources that are provided in a context that is defined and managed by one particular service provider. Often, these sets of resources are referred to as &quot;Web Services&quot; or &quot;Web APIs&quot;. This specification defines two link relations that allow to represent relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers." />
-  <meta name="description" content="Many resources provided on the Web are part of a sets of resources that are provided in a context that is defined and managed by one particular service provider. Often, these sets of resources are referred to as &quot;Web Services&quot; or &quot;Web APIs&quot;. This specification defines two link relations that allow to represent relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers." />
+  <meta name="dct.issued" scheme="ISO8601" content="2016-8-17" />
+  <meta name="dct.abstract" content="Many resources provided on the Web are part of sets of resources that are provided in a context that is managed by one particular service provider. Often, these sets of resources are referred to as &quot;Web Services&quot; or &quot;Web APIs&quot;. This specification defines link relations for representing relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers. It also defines a link relation to identify a status resource that is used to represent operational information about a service's status." />
+  <meta name="description" content="Many resources provided on the Web are part of sets of resources that are provided in a context that is managed by one particular service provider. Often, these sets of resources are referred to as &quot;Web Services&quot; or &quot;Web APIs&quot;. This specification defines link relations for representing relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers. It also defines a link relation to identify a status resource that is used to represent operational information about a service's status." />
 
 </head>
 
@@ -418,14 +418,14 @@
 </tr>
 <tr>
   <td class="left">Internet-Draft</td>
-  <td class="right">February 22, 2016</td>
+  <td class="right">CA Technologies</td>
 </tr>
 <tr>
   <td class="left">Intended status: Informational</td>
-  <td class="right"></td>
+  <td class="right">August 17, 2016</td>
 </tr>
 <tr>
-  <td class="left">Expires: August 25, 2016</td>
+  <td class="left">Expires: February 18, 2017</td>
   <td class="right"></td>
 </tr>
 
@@ -439,7 +439,7 @@
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>Many resources provided on the Web are part of a sets of resources that are provided in a context that is defined and managed by one particular service provider. Often, these sets of resources are referred to as "Web Services" or "Web APIs". This specification defines two link relations that allow to represent relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers.</p>
+<p>Many resources provided on the Web are part of sets of resources that are provided in a context that is managed by one particular service provider. Often, these sets of resources are referred to as "Web Services" or "Web APIs". This specification defines link relations for representing relationships from those resources to ones that provide documentation or descriptions of the Web services. The difference between these concepts is that documentation is primarily intended for human consumers, whereas descriptions are primarily intended for automated consumers. It also defines a link relation to identify a status resource that is used to represent operational information about a service's status.</p>
 <h1>
   <a>Note to Readers</a>
 </h1>
@@ -451,7 +451,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on August 25, 2016.</p>
+<p>This Internet-Draft will expire on February 18, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -468,17 +468,17 @@
 <li>3.   <a href="#rfc.section.3">Web Services</a></li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">Documenting Web Services</a></li>
 <li>3.2.   <a href="#rfc.section.3.2">Describing Web Services</a></li>
+<li>3.3.   <a href="#rfc.section.3.3">Unified Documentation/Description</a></li>
 </ul><li>4.   <a href="#rfc.section.4">Link Relations for Web Services</a></li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">The service-doc Link Relation Type</a></li>
 <li>4.2.   <a href="#rfc.section.4.2">The service-desc Link Relation Type</a></li>
-</ul><li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
-<ul><li>5.1.   <a href="#rfc.section.5.1">Link Relation Type: service-doc</a></li>
-<li>5.2.   <a href="#rfc.section.5.2">Link Relation Type: service-desc</a></li>
-</ul><li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
-<li>7.   <a href="#rfc.section.7">Change Log</a></li>
-<ul><li>7.1.   <a href="#rfc.section.7.1">From -01 to -02</a></li>
-<li>7.2.   <a href="#rfc.section.7.2">From -00 to -01</a></li>
-</ul><li>8.   <a href="#rfc.references">References</a></li>
+</ul><li>5.   <a href="#rfc.section.5">Web Service Status Resources</a></li>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Link Relation Type: service-doc</a></li>
+<li>6.2.   <a href="#rfc.section.6.2">Link Relation Type: service-desc</a></li>
+<li>6.3.   <a href="#rfc.section.6.3">Link Relation Type: status</a></li>
+</ul><li>7.   <a href="#rfc.section.7">Security Considerations</a></li>
+<li>8.   <a href="#rfc.references">References</a></li>
 <ul><li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
 <li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a></li>
@@ -488,12 +488,13 @@
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">One of the defining aspects of the Web is that it is possible to interact with Web resources without any prior knowledge of the specifics of the resource. Following <a href="#W3C.REC-webarch-20041215">[3]</a>, by using URIs, HTTP, and media types, the Web's uniform interface allows interactions with resources without the more complex binding procedures of other approaches.</p>
-<p id="rfc.section.1.p.2">However, many resources on the Web are provided as part of a set of resources that are referred to as a "Web Service" or a "Web API". In many cases, these services or APIs are defined and managed as a whole, and it may be desirable for clients to be able to discover this service definition information.</p>
-<p id="rfc.section.1.p.3">Service definition can be broadly separated into two categories: One category is primarily targeted for human users and often uses generic formats for human readable documents, such as HTML or PDF. The other category is structured information that followed some more formalized description model, and is primarily intended for consumption by machines, for example for tools and code libraries.</p>
-<p id="rfc.section.1.p.4">In the context of this specification, the human-oriented variant is referred to as "documentation", and the machine-oriented variant is referred to as "description".</p>
-<p id="rfc.section.1.p.5">These two categories are not necessarily mutually exclusive, as there are formats that have been proposed that are intended for both human consumption, and for interpretation by machine clients.</p>
-<p id="rfc.section.1.p.6">This specification places no constraints on the specific formats used for either of those two categories. It simply allows publishers of a Web service to make the documentation and/or the description of their services discoverable, and defines two link relations that serve that purpose.</p>
+<p id="rfc.section.1.p.1">One of the defining aspects of the Web is that it is possible to interact with Web resources without any prior knowledge of the specifics of the resource. Following Web Architecture <a href="#W3C.REC-webarch-20041215">[3]</a> by using URIs, HTTP, and media types, the Web's uniform interface allows interactions with resources without the more complex binding procedures of other approaches.</p>
+<p id="rfc.section.1.p.2">Many resources on the Web are provided as part of a set of resources that are referred to as a "Web Service" or a "Web API". In many cases, these services or APIs are defined and managed as a whole, and it may be desirable for clients to be able to discover this service information.</p>
+<p id="rfc.section.1.p.3">Service information can be broadly separated into two categories: One category is primarily targeted for human users and often uses generic representations for human readable documents, such as HTML or PDF. The other category is structured information that follows some more formalized description model, and is primarily intended for consumption by machines, for example for tools and code libraries.</p>
+<p id="rfc.section.1.p.4">In the context of this memo, the human-oriented variant is referred to as "documentation", and the machine-oriented variant is referred to as "description".</p>
+<p id="rfc.section.1.p.5">These two categories are not necessarily mutually exclusive, as there are representations that have been proposed that are intended for both human consumption, and for interpretation by machine clients. In addition, a typical pattern for service documentation/description is that there is human-oriented high-level documentation that is intended to put a service in context and explain the general model, which is complemented by a machine-level description that is intended as a detailed technical description of the service. These two resources could be interlinked, but since they are intended for different audiences, it can make sense to provide entry points for both of them.</p>
+<p id="rfc.section.1.p.6">This memo places no constraints on the specific representations used for either of those two categories. It simply allows providers of a Web service to make the documentation and/or the description of their services discoverable, and defines two link relations that serve that purpose.</p>
+<p id="rfc.section.1.p.7">In addition, this memo defines a link relation that allows providers of a Web service to link to a resource that represents status information about the service. This information often represents operational information that allows service consumers to retrieve information about "service health" and related issues.</p>
 <h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a href="#RFC2119">[1]</a>.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#web-services" id="web-services">Web Services</a></h1>
@@ -502,20 +503,26 @@
 <p id="rfc.section.3.p.3">In recent years, Web services as well as their documentation and description languages have gained popularity, due to the general popularity of the Web as a platform for providing information and services. However, the design of documentation and description languages varies with a number of factors, such as the general application domain, the preferred application data model, and the preferred approach for exposing services.</p>
 <p id="rfc.section.3.p.4">This specification allows service providers to use a unified way to link to service documentation and/or description. This link should not make any assumptions about the provided type of documentation and/or description, so that service providers can choose the ones that best fit their services and needs.</p>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#doc-web-services" id="doc-web-services">Documenting Web Services</a></h1>
-<p id="rfc.section.3.1.p.1">In the context of this specification, "documentation" refers to information that is primarily intended for human consumption. Typical formats for this kind of documentation are HTML and PDF.</p>
+<p id="rfc.section.3.1.p.1">In the context of this specification, "documentation" refers to information that is primarily intended for human consumption. Typical representations for this kind of documentation are HTML and PDF.</p>
 <p id="rfc.section.3.1.p.2">Documentation is often structured, but the exact kind of structure depends on the structure of the service that is documented, as well as on the specific way in which the documentation authors choose to document it.</p>
 <h1 id="rfc.section.3.2"><a href="#rfc.section.3.2">3.2.</a> <a href="#desc-web-services" id="desc-web-services">Describing Web Services</a></h1>
-<p id="rfc.section.3.2.p.1">In the context of this specification, "description" refers to information that is primarily intended for machine consumption. Typical formats for this are dictated by the technology underlying the service itself, which means that in today's technology landscape, description formats exist that are based on XML, JSON, RDF, and a variety of other structured data models. Also, in each of those technologies, there may be a variety of languages that are defined to achieve the same general purpose of describing a Web service.</p>
+<p id="rfc.section.3.2.p.1">In the context of this specification, "description" refers to information that is primarily intended for machine consumption. Typical representations for this are dictated by the technology underlying the service itself, which means that in today's technology landscape, description formats exist that are based on XML, JSON, RDF, and a variety of other structured data models. Also, in each of those technologies, there may be a variety of languages that are defined to achieve the same general purpose of describing a Web service.</p>
 <p id="rfc.section.3.2.p.2">Descriptions are always structured, but the structuring principles depend on the nature of the described service. For example, one of the earlier service description approaches, the Web Services Description Language (WSDL), uses "operations" as its core concept, which are essentially identical to function calls, because the underlying model is based on that of the Remote Procedure Call (RPC) model. Other description languages for non-RPC approaches to services will use different structuring approaches.</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#link-relations" id="link-relations">Link Relations for Web Services</a></h1>
+<h1 id="rfc.section.3.3"><a href="#rfc.section.3.3">3.3.</a> <a href="#service-link-relation" id="service-link-relation">Unified Documentation/Description</a></h1>
+<p id="rfc.section.3.3.p.1">If service providers use an approach where there is no distinction of service documentation <a href="#doc-web-services">Section 3.1</a> and service description <a href="#desc-web-services">Section 3.2</a>, then they may not feel the need to use two separate links. In such a case, an alternative approach is to use the "service" link relation type, which has no indication of whether it links to documentation or description, and thus may be better fit if no such differentiation is required.</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#doc-desc-link-relations" id="doc-desc-link-relations">Link Relations for Web Services</a></h1>
 <p id="rfc.section.4.p.1">In order to allow Web services to represent the relation of individual resources to service documentation or description, this specification introduces and registers two new link relation types.</p>
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#link-rel-service-doc" id="link-rel-service-doc">The service-doc Link Relation Type</a></h1>
-<p id="rfc.section.4.1.p.1">The service-doc link relation type is used to represent the fact that a resource is part of a bigger set of resources that are documented at a specific URI. The target resource is expected to provide documentation that is primarily intended for human consumption.</p>
+<p id="rfc.section.4.1.p.1">The "service-doc" link relation type is used to represent the fact that a resource is part of a bigger set of resources that are documented at a specific URI. The target resource is expected to provide documentation that is primarily intended for human consumption.</p>
 <h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#link-rel-service-desc" id="link-rel-service-desc">The service-desc Link Relation Type</a></h1>
-<p id="rfc.section.4.2.p.1">The service-desc link relation type is used to represent the fact that a resource is part of a bigger set of resources that are described at a specific URI. The target resource is expected to provide a service description that is primarily intended for machine consumption. Very often, it is provided in a format that is consumed by tools, code libraries, or similar components.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">IANA Considerations</a></h1>
-<p id="rfc.section.5.p.1">The link relation types below have been registered by IANA per Section 6.2.1 of RFC 5988 <a href="#RFC5988">[2]</a>:</p>
-<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> Link Relation Type: service-doc</h1>
+<p id="rfc.section.4.2.p.1">The "service-desc" link relation type is used to represent the fact that a resource is part of a bigger set of resources that are described at a specific URI. The target resource is expected to provide a service description that is primarily intended for machine consumption. In many cases, it is provided in a representation that is consumed by tools, code libraries, or similar components.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#link-rel-status" id="link-rel-status">Web Service Status Resources</a></h1>
+<p id="rfc.section.5.p.1">Web services providing access to a set of resources often are hosted and operated in an environment for which status information may be available. This information may be as simple as confirming that a service is operational, or may provide additional information about different aspects of a service, and/or a history of status information, possibly listing incidents and their resolution.</p>
+<p id="rfc.section.5.p.2">The "status" link relation type can be used to link to such a status resource, allowing service consumers to retrieve status information about a Web service's status. Such a link may not be available from all resources provided by a Web service, but from key resources such as a Web service's home resource <a href="#I-D.nottingham-json-home">[4]</a>.</p>
+<p id="rfc.section.5.p.3">This memo does not restrict the representation of a status resource in any way. It may be primarily focused on human or machine consumption, or a combination of both. It may be a simple "traffic light" indicator for service health, or a more sophisticated representation conveying more detailed information such as service subsystems and/or a status history.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">IANA Considerations</a></h1>
+<p id="rfc.section.6.p.1">The link relation types below have been registered by IANA per Section 6.2.1 of RFC 5988 <a href="#RFC5988">[2]</a>:</p>
+<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> Link Relation Type: service-doc</h1>
 <p/>
 
 <ul class="empty">
@@ -525,7 +532,7 @@
 </ul>
 
 <p> </p>
-<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> Link Relation Type: service-desc</h1>
+<h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> Link Relation Type: service-desc</h1>
 <p/>
 
 <ul class="empty">
@@ -535,26 +542,18 @@
 </ul>
 
 <p> </p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> Security Considerations</h1>
-<p id="rfc.section.6.p.1">...</p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#change-log" id="change-log">Change Log</a></h1>
-<p id="rfc.section.7.p.1">Note to RFC Editor: Please remove this section before publication.</p>
-<h1 id="rfc.section.7.1"><a href="#rfc.section.7.1">7.1.</a> From -01 to -02</h1>
+<h1 id="rfc.section.6.3"><a href="#rfc.section.6.3">6.3.</a> Link Relation Type: status</h1>
 <p/>
 
-<ul>
-  <li>...</li>
+<ul class="empty">
+  <li>Relation Name: status</li>
+  <li>Description: Linking to a resource that represents the status of a Web service or API.</li>
+  <li>Reference: [[ This document ]]</li>
 </ul>
 
 <p> </p>
-<h1 id="rfc.section.7.2"><a href="#rfc.section.7.2">7.2.</a> From -00 to -01</h1>
-<p/>
-
-<ul>
-  <li>Variety of minor text edits. See GitHub repository for details.</li>
-</ul>
-
-<p> </p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> Security Considerations</h1>
+<p id="rfc.section.7.p.1">...</p>
 <h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
 <h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table>
@@ -582,10 +581,16 @@
       </td>
       <td class="top"><a>Jacobs, I.</a> and <a>N. Walsh</a>, "<a href="http://www.w3.org/TR/2004/REC-webarch-20041215">Architecture of the World Wide Web, Volume One</a>", World Wide Web Consortium Recommendation REC-webarch-20041215, December 2004.</td>
     </tr>
+    <tr>
+      <td class="reference">
+        <b id="I-D.nottingham-json-home">[4]</b>
+      </td>
+      <td class="top"><a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/draft-nottingham-json-home-04">Home Documents for HTTP APIs</a>", Internet-Draft draft-nottingham-json-home-04, May 2016.</td>
+    </tr>
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> Acknowledgements</h1>
-<p id="rfc.section.A.p.1">Thanks for comments and suggestions provided by Mike Amundsen and Darrell Miller.</p>
+<p id="rfc.section.A.p.1">Thanks for comments and suggestions provided by Mike Amundsen, Oliver Gierke, Sebastien Lambla, and Darrell Miller.</p>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Author's Address</a>
 </h1>
@@ -597,7 +602,7 @@
 		<span class="family-name">Wilde</span>
 	  </span>
 	</span>
-	<span class="org vcardline"></span>
+	<span class="org vcardline">CA Technologies</span>
 	<span class="adr">
 	  
 	  <span class="vcardline">
