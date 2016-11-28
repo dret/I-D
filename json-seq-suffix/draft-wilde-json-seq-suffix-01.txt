@@ -4,26 +4,28 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
-Intended status: Standards Track                      September 20, 2016
-Expires: March 24, 2017
+Intended status: Experimental                          November 28, 2016
+Expires: June 1, 2017
 
 
      A Media Type Structured Syntax Suffix for JSON Text Sequences
-                     draft-wilde-json-seq-suffix-00
+                     draft-wilde-json-seq-suffix-01
 
 Abstract
 
    Structured Syntax Suffixes for media types allow other media types to
    build on them and make it explicit that they are built on an existing
    media type as their foundation.  This specification defines and
-   registers "json-seq" as a structured syntax suffix for JSON Text
+   registers "+json-seq" as a structured syntax suffix for JSON Text
    Sequences.
 
 Note to Readers
 
-   This draft should be discussed on the art mailing list [1].
+   This draft should be discussed on the ietf mailing list
+   (<https://www.ietf.org/mailman/listinfo/ietf>).
 
-   Online access to all versions and files is available on github [2].
+   Online access to all versions and files is available on GitHub
+   (<https://github.com/dret/I-D/tree/master/json-seq-suffix>).
 
 Status of This Memo
 
@@ -40,24 +42,25 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 24, 2017.
+   This Internet-Draft will expire on June 1, 2017.
 
 Copyright Notice
 
    Copyright (c) 2016 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
+
+
+
+
+Wilde                     Expires June 1, 2017                  [Page 1]
+
+Internet-DraftA Media Type Structured Syntax Suffix for JSONovember 2016
+
+
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
-
-
-
-Wilde                    Expires March 24, 2017                 [Page 1]
-
-Internet-DraftA Media Type Structured Syntax Suffix for JSSeptember 2016
-
-
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -69,66 +72,69 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Using +json-seq . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  The "+json-seq" Structured Syntax Suffix  . . . . . . . . . .   2
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
-   5.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     5.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     5.2.  Non-Normative References  . . . . . . . . . . . . . . . .   4
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     6.2.  Non-Normative References  . . . . . . . . . . . . . . . .   5
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
 
-   Media Type Structured Syntax Suffixes [2] were introduced as a way of
-   how a media type can signal that it is based on another media type as
+   Media Type Structured Syntax Suffixes [RFC6838] were introduced as a
+   way for a media type to signal that is based on another media type as
    its foundation.  Some structured syntax suffixes were registered
-   initially [5], including "+json" for the widely popular JSON Format
-   [4] format.
+   initially [RFC6839], including "+json" for the widely popular JSON
+   Format [RFC7159] format.
 
-   JSON Text Sequences [3] is a new specification in the JSON space that
-   defines how a sequence of multiple JSON texts can be represented in
-   one representation.  Since this specification can be used as the
-   foundation for other formats, this specification defines and
-   registers the "+json-seq" structured syntax suffix.
+   JSON Text Sequences [RFC7464] is a new specification in the JSON
+   space that defines how a sequence of multiple JSON texts can be
+   represented in one representation.  Since this specification can be
+   used as the foundation for other formats, this specification defines
+   and registers the "+json-seq" structured syntax suffix.
 
 2.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in RFC 2119 [1].
+   document are to be interpreted as described in RFC 2119 [RFC2119].
 
-3.  Using +json-seq
+3.  The "+json-seq" Structured Syntax Suffix
 
    The use case for the "+json-seq" structured syntax suffix is the same
    as for "+json": It SHOULD be used by media types when parsing the
+
+
+
+
+Wilde                     Expires June 1, 2017                  [Page 2]
+
+Internet-DraftA Media Type Structured Syntax Suffix for JSONovember 2016
+
+
    JSON Text Sequence of a media type leads to a meaningful result, by
    simply using the generic JSON Text Sequence processing.
 
-   Applications encountering such a media type then can either simply
+   Applications encountering such a media type can then either simply
    use generic processing if all they need is a generic view of the JSON
    Text Sequence, or they can use generic JSON Text Sequence tools for
-
-
-
-Wilde                    Expires March 24, 2017                 [Page 2]
-
-Internet-DraftA Media Type Structured Syntax Suffix for JSSeptember 2016
-
-
    initial parsing, and then can implement their own specific processing
    on top of that generic parsing tool.
 
 4.  IANA Considerations
 
    IANA has added the following "+json-seq" structured syntax suffix to
-   its registry of structured syntax suffixes established by [2]:
+   its registry of structured syntax suffixes established by [RFC6838]:
 
       Name: JSON Text Sequence
 
       +suffix: +json-seq
 
-      References: [3]
+      References: [RFC7464]
 
-      Encoding considerations: See [3]
+      Encoding considerations: See [RFC7464] Section 2.2
 
       Fragment identifier considerations: The syntax and semantics of
       fragment identifiers specified for +json-seq SHOULD be as
@@ -152,53 +158,89 @@ Internet-DraftA Media Type Structured Syntax Suffix for JSSeptember 2016
 
       Interoperability considerations: n/a
 
-      Security considerations: See [3]
+      Security considerations: See [RFC7464] Section 3
 
       Contact: Applications and Real-Time Area Working Group
       (art@ietf.org)
 
+
+
+Wilde                     Expires June 1, 2017                  [Page 3]
+
+Internet-DraftA Media Type Structured Syntax Suffix for JSONovember 2016
+
+
       Author/Change controller: The Applications and Real-Time Area
       Working Group.  IESG has change control over this registration.
 
+5.  Security Considerations
 
+   All "Security Considerations" (Section 3) of RFC 7464 [RFC7464]
+   apply.  They are as follows:
 
+   All the security considerations of JSON [RFC7159] apply.  This format
+   provides no cryptographic integrity protection of any kind.
 
+   As usual, parsers must operate on input that is assumed to be
+   untrusted.  This means that parsers must fail gracefully in the face
+   of malicious inputs.
 
+   Note that incremental JSON text parsers can produce partial results
+   and later indicate failure to parse the remainder of a text.  A
+   sequence parser that uses an incremental JSON text parser might treat
+   a sequence like '<RS>"foo"<LF>456<LF><RS>' as a sequence of one
+   element ("foo"), while a sequence parser that uses a non-incremental
+   JSON text parser might treat the same sequence as being empty.  This
+   effect, and texts that fail to parse and are ignored, can be used to
+   smuggle data past sequence parsers that don't warn about JSON text
+   failures.
 
-Wilde                    Expires March 24, 2017                 [Page 3]
-
-Internet-DraftA Media Type Structured Syntax Suffix for JSSeptember 2016
+   Repeated parsing and re-encoding of a JSON text sequence can result
+   in the addition (or stripping) of trailing LF bytes from (to)
+   individual sequence element JSON texts.  This can break signature
+   validation.  JSON has no canonical form for JSON texts, therefore
+   neither does the JSON text sequence format.
 
+6.  References
 
-5.  References
+6.1.  Normative References
 
-5.1.  Normative References
-
-   [1]        Bradner, S., "Key words for use in RFCs to Indicate
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", RFC 2119, March 1997.
 
-   [2]        Freed, N., Klensin, J., and T. Hansen, "Media Type
+   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
               <http://www.rfc-editor.org/info/rfc6838>.
 
-   [3]        Williams, N., "JavaScript Object Notation (JSON) Text
+   [RFC7464]  Williams, N., "JavaScript Object Notation (JSON) Text
               Sequences", RFC 7464, DOI 10.17487/RFC7464, February 2015,
               <http://www.rfc-editor.org/info/rfc7464>.
 
-5.2.  Non-Normative References
 
-   [4]        Garcia-Martin, M. and S. Veikkolainen, "Session
-              Description Protocol (SDP) Extension for Setting Audio and
-              Video Media Streams over Circuit-Switched Bearers in the
-              Public Switched Telephone Network (PSTN)", RFC 7195,
-              DOI 10.17487/RFC7195, May 2014,
-              <http://www.rfc-editor.org/info/rfc7195>.
 
-   [5]        Hansen, T. and A. Melnikov, "Additional Media Type
+
+
+Wilde                     Expires June 1, 2017                  [Page 4]
+
+Internet-DraftA Media Type Structured Syntax Suffix for JSONovember 2016
+
+
+6.2.  Non-Normative References
+
+   [RFC6839]  Hansen, T. and A. Melnikov, "Additional Media Type
               Structured Syntax Suffixes", RFC 6839,
               DOI 10.17487/RFC6839, January 2013,
               <http://www.rfc-editor.org/info/rfc6839>.
+
+   [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
+              2014, <http://www.rfc-editor.org/info/rfc7159>.
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by Allan Doyle, Sean
+   Leonard, and Alexey Melnikov.
 
 Author's Address
 
@@ -221,4 +263,18 @@ Author's Address
 
 
 
-Wilde                    Expires March 24, 2017                 [Page 4]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires June 1, 2017                  [Page 5]
