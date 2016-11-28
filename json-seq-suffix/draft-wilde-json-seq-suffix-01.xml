@@ -58,6 +58,13 @@
             </list>
          </t>
       </section>
+      <section title="Security Considerations" anchor="security-considerations">
+         <t>All "Security Considerations" (Section 3) of RFC 7464 <xref target="RFC7464"/> apply. They are as follows:</t>
+         <t>All the security considerations of JSON <xref target="RFC7159"/> apply. This format provides no cryptographic integrity protection of any kind.</t>
+         <t>As usual, parsers must operate on input that is assumed to be untrusted. This means that parsers must fail gracefully in the face of malicious inputs.</t>
+         <t>Note that incremental JSON text parsers can produce partial results and later indicate failure to parse the remainder of a text. A sequence parser that uses an incremental JSON text parser might treat a sequence like '&lt;RS>"foo"&lt;LF>456&lt;LF>&lt;RS>' as a sequence of one element ("foo"), while a sequence parser that uses a non-incremental JSON text parser might treat the same sequence as being empty. This effect, and texts that fail to parse and are ignored, can be used to smuggle data past sequence parsers that don't warn about JSON text failures.</t>
+         <t>Repeated parsing and re-encoding of a JSON text sequence can result in the addition (or stripping) of trailing LF bytes from (to) individual sequence element JSON texts. This can break signature validation. JSON has no canonical form for JSON texts, therefore neither does the JSON text sequence format.</t>
+      </section>
    </middle>
    <back>
       <references title="Normative References">
