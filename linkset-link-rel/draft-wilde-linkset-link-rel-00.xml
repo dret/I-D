@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="US-ASCII"?>
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd"> [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"> 
+<!ENTITY RFC2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml"> 
+<!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml"> 
+<!ENTITY RFC6690 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6690.xml"> 
+
+]
+
 <?rfc compact="yes" ?>
 <?rfc subcompact="no" ?>
 <?rfc toc="yes" ?>
@@ -34,7 +45,7 @@
     </front>
     <middle>
         <section title="Introduction" anchor="introduction">
-            <t>RFC 5988 <xref target="RFC5988"/> specifies the HTTP "Link" header as a means to 
+            <t><xref target="RFC5988">RFC 5988</xref> specifies the HTTP "Link" header as a means to 
             convey typed links in HTTP responses. The links are provided as the payload of the "Link" header 
             using a syntax specified by the RFC. 
             Cases exist in which providing links by value is impractical or impossible. In these cases, 
@@ -48,7 +59,6 @@
             <t>...</t>
         </section>
         <section title="Scenarios" anchor="scenarios">
-            <t>...</t>
             <section title="Large Number of Links" anchor="link-volume">
                 <t>Cases exist in which a significant number of links needs to be conveyed, 
                 and, as a result, the payload of the HTTP "Link" header becomes large. It is possible to 
@@ -56,7 +66,11 @@
                 specifying an upper boundary for their size. But, when 
                 the number of links and the amount of bytes required for each is unpredictable estimating 
                 a reliable upper boundary is challenging. This is, for example, the case when links 
-                are determined dynamically dependent on a range of contextual factors. 
+                are determined dynamically dependent on a range of contextual factors. While HTTP 
+                [<xref target="RFC2616">RFC 2616</xref>] defines error 
+                codes related to excess communication by the user agent ("413 Request Entity Too Large" 
+                and "414 Request-URI Too Long"), no error codes are defined to indicate that a response header exceeds  
+                the upper boundary that can be handled by the server.
                 Applications take counter measures aimed at controlling the size of the HTTP "Link" header, 
                 for example, by limiting the links they provide to those with select relation types, 
                 thereby limiting the value of the HTTP "Link" header to clients. Providing links by reference, 
@@ -226,6 +240,11 @@ Connection: close
     </middle>
     <back>
         <references title="Normative References">
+&RFC2119; 
+&RFC2616; 
+&RFC5988; 
+&RFC6690;
+            <!--
             <reference anchor="RFC2119">
                 <front>
                     <title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
@@ -251,6 +270,7 @@ Connection: close
                 <seriesInfo name="RFC" value="6690"/>
             </reference>
         </references>
+-->
         <!--
       <references title="Informative References">
       </references>
