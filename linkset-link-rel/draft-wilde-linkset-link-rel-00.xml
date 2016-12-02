@@ -106,8 +106,10 @@
             provision of links with other relation types. 
             </t>
             <t>The entity-body of a response from the Target IRI of a link with the 
-                "linkset" relation type MAY be serialized in various ways, 
-                but the link-value format serialization described here MUST be supported. 
+                "linkset" relation type MAY be serialized in various ways,  
+                but, to achieve interoperability with the by value provision of 
+                 links in the "link" header, 
+                 the link-value format serialization described here SHOULD be supported. 
                 In this serialization, the entity-body MUST be formatted in the 
                 same way as the value of an HTTP "Link" header, 
                 and hence MUST comply to the "link-value" construction rule of Section 5 
@@ -122,8 +124,8 @@
                         link with the "linkset" relation type, when the anchor parameter is not provided.</t>
                 </list>
             </t>
-            <t>For self-containdeness, the use of anchors for all links is RECOMMENDED.</t>
-            <section title="Example" anchor="linkset-link-example">
+           <!-- <t>For self-containdeness, the use of anchors for all links is RECOMMENDED.</t>
+            <section title="Example" anchor="linkset-link-example"> -->
                 <t><xref target="Request1"></xref> shows a user agent issuing an 
                     HTTP head request against resource http://example.org/resource1.</t>
                 <figure title="User Agent Issues HTTP HEAD on Resource" align="center" anchor="Request1">
@@ -188,20 +190,16 @@ Connection: close
 
  <http://authors.example.net/johndoe>
    ; rel="author"
-   ; type="application/rdf+xml"
-   ; anchor="<http://example.org/resource1>",
+   ; type="application/rdf+xml",
  <http://authors.example.net/janedoe>
    ; rel="author"
-   ; type="application/rdf+xml"
-   ; anchor="<http://example.org/resource1>",
+   ; type="application/rdf+xml",
  <http://example.org/resource1/items/AF48EF.pdf>
    ; rel="item"
-   ; type="application/pdf"
-   ; anchor="<http://example.org/resource1>",
+   ; type="application/pdf",
  <http://example.org/resource1/items/CB63DA.html>
    ; rel="item"
-   ; type="text/html"
-   ; anchor="<http://example.org/resource1>",
+   ; type="text/html",
  ...
 
 ]]>
