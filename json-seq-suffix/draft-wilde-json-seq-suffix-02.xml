@@ -30,7 +30,7 @@
          <t>JSON Text Sequences <xref target="RFC7464"/> is a recent specification in the JSON space that defines how a sequence of multiple JSON texts can be represented in one representation. This document defines and registers the "+json-seq" structured syntax suffix in the Structured Syntax Suffix Registry.</t>
       </section>
       <section title="Terminology">
-         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in <xref target="RFC2119"/>.</t>
       </section>
       <section title='The "+json-seq" Structured Syntax Suffix' anchor="definition">
          <t>The use case for the "+json-seq" structured syntax suffix is the same as for "+json": It SHOULD be used by media types when parsing the JSON Text Sequence of a media type leads to a meaningful result, by simply using the generic JSON Text Sequence processing.</t>
@@ -59,7 +59,7 @@
          </t>
       </section>
       <section title="Security Considerations" anchor="security-considerations">
-         <t>All "Security Considerations" (Section 3) of RFC 7464 <xref target="RFC7464"/> apply. They are as follows:</t>
+         <t>All the security considerations of JSON Text Sequences <xref target="RFC7464"/> apply. They are as follows:</t>
          <t>All the security considerations of JSON <xref target="RFC7159"/> apply. This format provides no cryptographic integrity protection of any kind.</t>
          <t>As usual, parsers must operate on input that is assumed to be untrusted. This means that parsers must fail gracefully in the face of malicious inputs.</t>
          <t>Note that incremental JSON text parsers can produce partial results and later indicate failure to parse the remainder of a text. A sequence parser that uses an incremental JSON text parser might treat a sequence like '&lt;RS>"foo"&lt;LF>456&lt;LF>&lt;RS>' as a sequence of one element ("foo"), while a sequence parser that uses a non-incremental JSON text parser might treat the same sequence as being empty. This effect, and texts that fail to parse and are ignored, can be used to smuggle data past sequence parsers that don't warn about JSON text failures.</t>
