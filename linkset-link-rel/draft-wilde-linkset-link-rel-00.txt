@@ -5,17 +5,17 @@
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
 Intended status: Informational                          H. Van de Sompel
-Expires: June 1, 2017                     Los Alamos National Laboratory
-                                                       November 28, 2016
+Expires: June 22, 2017                    Los Alamos National Laboratory
+                                                       December 19, 2016
 
 
-                   A Link Relation Type for Link Sets
+              Linkset: A Link Relation Type for Link Sets
                     draft-wilde-linkset-link-rel-00
 
 Abstract
 
    This specification defines the "linkset" relation type that can be
-   used to link to a set of links.
+   used to link to a resource that provides a set of links.
 
 Note to Readers
 
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 1, 2017.
+   This Internet-Draft will expire on June 22, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 1]
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 1]
 
-Internet-Draft         Linkset Link Relation Type          November 2016
+Internet-Draft         Linkset Link Relation Type          December 2016
 
 
    publication of this document.  Please review these documents
@@ -69,24 +69,29 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Link Sets . . . . . . . . . . . . . . . . . . . . . . . . . .   2
-   4.  Scenarios . . . . . . . . . . . . . . . . . . . . . . . . . .   2
-     4.1.  Large Number of Links . . . . . . . . . . . . . . . . . .   3
-     4.2.  Third-Party Links . . . . . . . . . . . . . . . . . . . .   3
-   5.  Link Relation for Identifying Link Sets . . . . . . . . . . .   3
-     5.1.  Example . . . . . . . . . . . . . . . . . . . . . . . . .   4
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-     6.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .   6
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  Normative References  . . . . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
+   3.  Link Sets . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Scenarios . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     4.1.  Third-Party Links . . . . . . . . . . . . . . . . . . . .   3
+     4.2.  Large Number of Links . . . . . . . . . . . . . . . . . .   3
+   5.  Link Relation for Linking to Link Sets  . . . . . . . . . . .   3
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Link Set Serialized As application/link-format  . . . . .   4
+     6.2.  Link Set Serialized As application/hal+json . . . . . . .   6
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+     7.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .   7
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
-   RFC 5988 [RFC5988] specifies the HTTP "Link" header as a means to
-   convey typed links in HTTP responses.  The links are provided as the
-   payload of the "Link" header using a syntax specified by the RFC.
-   Cases exist in which providing links by value is impractical or
+   A resource typically conveys typed Web Links [RFC5988] as an inherent
+   part of the resource's representation [RFC7231], for example, using
+   the <link> element for HTML representations or the "Link" header in
+   HTTP response headers for representations of any media type.  Cases
+   exist in which providing links in a by value manner is impractical or
    impossible.  In these cases, an approach to provide links by
    reference is desired.  This specification defines the "linkset"
    relation type that allows doing so.
@@ -97,99 +102,86 @@ Table of Contents
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in RFC 2119 [RFC2119].
 
+
+
+
+
+
+
+
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 2]
+
+Internet-Draft         Linkset Link Relation Type          December 2016
+
+
 3.  Link Sets
 
    ...
 
 4.  Scenarios
 
-   ...
+4.1.  Third-Party Links
 
+   Cases exist in which a resource other than the responding resource is
+   better placed to provide web links.  That other resource is hosted by
+   a link server that may be managed by the same custodian as the
+   responding resource or by a third party.  In order for the responding
+   server to provide up-to-date links about its resource, it needs to
+   obtain them from the link server, and embed them in the resource's
+   representation prior to responding to a client.  Doing so increases
+   latency, which may be unnecessary if a client is not intent on
+   consuming links.  Providing links by reference, instead of by value,
+   removes this additional latency by avoiding server-to-server
+   communication required to obtain links.
 
+4.2.  Large Number of Links
 
-
-
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 2]
-
-Internet-Draft         Linkset Link Relation Type          November 2016
-
-
-4.1.  Large Number of Links
-
-   Cases exist in which a significant number of links needs to be
-   conveyed, and, as a result, the payload of the HTTP "Link" header
-   becomes large.  It is possible to statically configure a web server
-   to correctly handle large HTTP response headers by specifying an
-   upper boundary for their size.  But, when the number of links and the
-   amount of bytes required for each is unpredictable estimating a
-   reliable upper boundary is challenging.  This is, for example, the
-   case when links are determined dynamically dependent on a range of
-   contextual factors.  Applications take counter measures aimed at
-   controlling the size of the HTTP "Link" header, for example, by
+   When conveying links in the HTTP "Link" header, cases exist in which
+   the size of the HTTP response header becomes unpredictable.  This is,
+   for example, the case when links are determined dynamically dependent
+   on a range of contextual factors.  It is possible to statically
+   configure a web server to correctly handle large HTTP response
+   headers by specifying an upper boundary for their size.  But, when
+   the number of links and the amount of bytes required for each is
+   unpredictable, estimating a reliable upper boundary is challenging.
+   While HTTP RFC 2616 [RFC2616] defines error codes related to excess
+   communication by the user agent ("413 Request Entity Too Large" and
+   "414 Request-URI Too Long"), no error codes are defined to indicate
+   that a response header exceeds the upper boundary that can be handled
+   by the server.  As a result, applications take counter measures aimed
+   at controlling the size of the HTTP "Link" header, for example, by
    limiting the links they provide to those with select relation types,
    thereby limiting the value of the HTTP "Link" header to clients.
    Providing links by reference, instead of by value, overcomes
    challenges related to the unpredictable nature of the extent of HTTP
    "Link" headers.
 
-4.2.  Third-Party Links
+5.  Link Relation for Linking to Link Sets
 
-   Cases exist in which a server other than the responding server is
-   better placed to provide links.  That other server - the linking
-   server - may be managed by the same custodian as the responding
-   server or by a third party trusted by the custodian of the responding
-   server.  In both cases, the linking server exposes links pertaining
-   to web resources made available by the responding server.  In order
-   for the responding server to provide up-to-date links in the HTTP
-   "Link" header, it needs to obtain them from the link server prior to
-   responding to a client.  Doing so increases latency, which may be
-   unnecessary if a client is not intent on consuming links.  Providing
-   links by reference, instead of by value, removes this additional
-   latency by avoiding server-to-server communication required to obtain
-   links.
+   The "linkset" relation type can be used by a responding resource to
+   refer to another resource that provides a set of links.  Typically
+   the Context IRI of these links is the URI of the responding resource
+   but links with other Context IRIs MAY be provided.
 
-5.  Link Relation for Identifying Link Sets
 
-   The "linkset" relation type can be used to refer to a resource that
-   provides a set of links.  Typically the Context IRI of these links is
-   the URI of the responding resource but other Context IRIs MAY be
-   used.
+
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 3]
+
+Internet-Draft         Linkset Link Relation Type          December 2016
+
+
+   The media type of the link set that is accessible via the Target IRI
+   of a link with the "linkset" relation type is not constrained but the
+   representation of the link set MUST allow a user-agent to
+   unambiguously determine the Context IRI of each provided link.
 
    More than one link with a "linkset" relation type MAY be provided.
    Multiple such links can refer to the same set of links expressed
-   using different serializations or to different sets of links.  The
-   use of a link with the "linkset" relation type does not preclude the
+   using different representations or to different link sets.  The use
+   of a link with the "linkset" relation type does not preclude the
    provision of links with other relation types.
 
-
-
-
-
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 3]
-
-Internet-Draft         Linkset Link Relation Type          November 2016
-
-
-   The entity-body of a response from the Target IRI of a link with the
-   "linkset" relation type MAY be serialized in various ways, but the
-   link-value format serialization described here MUST be supported.  In
-   this serialization, the entity-body MUST be formatted in the same way
-   as the value of an HTTP "Link" header, and hence MUST comply to the
-   "link-value" construction rule of Section 5 of RFC 5988 [RFC5988],
-   and the media type of the entity-body MUST be "application/link-
-   format" as introduced in RFC 6690 [RFC6690].  The Context IRI of
-   links contained in the entity-body MUST be interpreted as follows:
-
-      The Context IRI is the URI in the anchor parameter, when provided.
-
-      The Context IRI is the URI of the resource that conveys the link
-      with the "linkset" relation type, when the anchor parameter is not
-      provided.
-
-   For self-containdeness, the use of anchors for all links is
-   RECOMMENDED.
-
-5.1.  Example
+6.  Examples
 
    Figure 1 shows a user agent issuing an HTTP head request against
    resource http://example.org/resource1.
@@ -202,11 +194,21 @@ Internet-Draft         Linkset Link Relation Type          November 2016
 
              Figure 1: User Agent Issues HTTP HEAD on Resource
 
+   Sections Section 6.1 and Section 6.2 exemplify possible responses to
+   the HTTP request of Figure 1 that include the provision of a link
+   with the "linkset" relation type, as well as a user-agent following
+   those links to retrieve a link set.
+
+6.1.  Link Set Serialized As application/link-format
+
    Figure 2 shows the response to the HEAD request of Figure 1.  The
    response contains a "Link" header with a link that uses the "linkset"
-   relation type.  It indicates that links are provided by a linking
-   server at resource http://example.com/links/http://example.org/
-   resource.
+   relation type.  It indicates that links are provided by another
+   resource http://example.com/links/http://example.org/resource, which
+   has media type application/link-format [RFC6690].  Using this media
+   type, links are serialized in the same manner as the payload of the
+   "Link" header, which lowers the barrier for user-agents that are
+   already able to consume HTTP links.
 
 
 
@@ -219,11 +221,9 @@ Internet-Draft         Linkset Link Relation Type          November 2016
 
 
 
-
-
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 4]
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 4]
 
-Internet-Draft         Linkset Link Relation Type          November 2016
+Internet-Draft         Linkset Link Relation Type          December 2016
 
 
    HTTP/1.1 200 OK
@@ -250,25 +250,23 @@ Internet-Draft         Linkset Link Relation Type          November 2016
    Connection: close
 
 
-      Figure 3: User Agent Issues HTTP GET on Linking Server Resource
+   Figure 3: User Agent Issues HTTP GET on application/link-format Link
+                               Set Resource
 
-   Figure 4 shows response by the linking server to the HTTP GET request
-   of Figure 3.
+   Figure 4 shows response to the HTTP GET request of Figure 3.  As can
+   be seen from this example, in order to support an unambiguous
+   determination of the Context IRI of each link, an approach is taken
+   whereby:
 
+      The Context IRI is the URI in the "anchor" attribute, when
+      provided.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+      When no anchor parameter is provided, the Context IRI is provided
+      by a unique link in the link set that has the "about" relation
+      type and the URI of the link set resource as the value of the
+      "anchor" attribute.  The Target IRI of that link is the Context
+      IRI of all links in the link set that don't have an "anchor"
+      attribute.
 
 
 
@@ -277,48 +275,108 @@ Internet-Draft         Linkset Link Relation Type          November 2016
 
 
 
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 5]
+
+
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 5]
 
-Internet-Draft         Linkset Link Relation Type          November 2016
+Internet-Draft         Linkset Link Relation Type          December 2016
 
 
    HTTP/1.1 200 OK
    Date: Mon, 28 Nov 2016 14:40:02 GMT
    Server: Apache-Coyote/1.1
-   Link: <http://example.org/resource1>
-         ; rel="about"
    Content-Length: 3018
    Content-Type: application/link-format
    Connection: close
 
-    <http://authors.example.net/johndoe>
+   <http://example.org/resource1>
+      ; rel="about"
+      ; anchor="http://example.com/links/http://example.org/resource1",
+   <http://authors.example.net/johndoe>
       ; rel="author"
-      ; type="application/rdf+xml"
-      ; anchor="<http://example.org/resource1>",
+      ; type="application/rdf+xml",
     <http://authors.example.net/janedoe>
       ; rel="author"
-      ; type="application/rdf+xml"
-      ; anchor="<http://example.org/resource1>",
+      ; type="application/rdf+xml",
     <http://example.org/resource1/items/AF48EF.pdf>
       ; rel="item"
-      ; type="application/pdf"
-      ; anchor="<http://example.org/resource1>",
+      ; type="application/pdf",
     <http://example.org/resource1/items/CB63DA.html>
       ; rel="item"
-      ; type="text/html"
-      ; anchor="<http://example.org/resource1>",
+      ; type="text/html",
+    <http://example.net/resource41/>
+      ; rel="related"
+      ; type="application/pdf"
+      ; anchor="http://example.org/resource1/items/AF48EF.pdf",
     ...
 
 
 
-         Figure 4: Response to HTTP GET on Linking Server Resource
+    Figure 4: Response to HTTP GET on the application/link-format Link
+                               Set Resource
 
-6.  IANA Considerations
+6.2.  Link Set Serialized As application/hal+json
+
+   In this example, the reponse to Figure 1 is the same as Figure 2 but
+   the content of the "type" attribute is application/hal+json
+   [I-D.kelly-json-hal] instead of application/link-format.  Similarly,
+   the user-agent's follow-up request is the same as Figure 3 but using
+   application/hal+json in the "Accept" HTTP request header instead of
+   application/link-format.  Figure 5 exemplifies a response to that
+   follow-up HTTP GET request issued against the link set resource.
+
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 6]
+
+Internet-Draft         Linkset Link Relation Type          December 2016
+
+
+   HTTP/1.1 200 OK
+   Date: Mon, 28 Nov 2016 14:40:02 GMT
+   Server: Apache-Coyote/1.1
+   Content-Length: 2021
+   Content-Type: application/hal+json
+   Connection: close
+   <!--
+   <http://example.org/resource1>
+      ; rel="about"
+      ; anchor="http://example.com/links/http://example.org/resource1",
+   <http://authors.example.net/johndoe>
+      ; rel="author"
+      ; type="application/rdf+xml",
+    <http://authors.example.net/janedoe>
+      ; rel="author"
+      ; type="application/rdf+xml",
+    <http://example.org/resource1/items/AF48EF.pdf>
+      ; rel="item"
+      ; type="application/pdf",
+    <http://example.org/resource1/items/CB63DA.html>
+      ; rel="item"
+      ; type="text/html",
+    <http://example.net/resource41/>
+      ; rel="related"
+      ; type="application/pdf"
+      ; anchor="http://example.org/resource1/items/AF48EF.pdf",
+    ...
+   -->
+
+
+    Figure 5: Response to HTTP GET on the application/link-format Link
+                               Set Resource
+
+7.  IANA Considerations
 
    The link relation type below has been registered by IANA per
    Section 6.2.1 of RFC 5988 [RFC5988]:
 
-6.1.  Link Relation Type: linkset
+7.1.  Link Relation Type: linkset
 
       Relation Name: linkset
 
@@ -331,26 +389,48 @@ Internet-Draft         Linkset Link Relation Type          November 2016
 
 
 
-
-
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 6]
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 7]
 
-Internet-Draft         Linkset Link Relation Type          November 2016
+Internet-Draft         Linkset Link Relation Type          December 2016
 
 
-7.  Security Considerations
+8.  Security Considerations
 
    ...
 
-8.  Normative References
+9.  References
+
+9.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", RFC 2119, March 1997.
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <http://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
+   [RFC2616]  Fielding, R., Gettys, J., Mogul, J., Frystyk, H.,
+              Masinter, L., Leach, P., and T. Berners-Lee, "Hypertext
+              Transfer Protocol -- HTTP/1.1", RFC 2616,
+              DOI 10.17487/RFC2616, June 1999,
+              <http://www.rfc-editor.org/info/rfc2616>.
+
+   [RFC5988]  Nottingham, M., "Web Linking", RFC 5988,
+              DOI 10.17487/RFC5988, October 2010,
+              <http://www.rfc-editor.org/info/rfc5988>.
 
    [RFC6690]  Shelby, Z., "Constrained RESTful Environments (CoRE) Link
-              Format", RFC 6690, August 2012.
+              Format", RFC 6690, DOI 10.17487/RFC6690, August 2012,
+              <http://www.rfc-editor.org/info/rfc6690>.
+
+   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
+              DOI 10.17487/RFC7231, June 2014,
+              <http://www.rfc-editor.org/info/rfc7231>.
+
+9.2.  Informative References
+
+   [I-D.kelly-json-hal]
+              Kelly, M., "JSON Hypertext Application Language", draft-
+              kelly-json-hal-08 (work in progress), May 2016.
 
 Authors' Addresses
 
@@ -359,6 +439,15 @@ Authors' Addresses
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
+
+
+
+
+
+
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 8]
+
+Internet-Draft         Linkset Link Relation Type          December 2016
 
 
    Herbert Van de Sompel
@@ -389,4 +478,27 @@ Authors' Addresses
 
 
 
-Wilde & Van de Sompel     Expires June 1, 2017                  [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel     Expires June 22, 2017                 [Page 9]
