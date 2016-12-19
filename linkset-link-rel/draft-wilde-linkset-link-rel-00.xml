@@ -46,8 +46,8 @@
     </front>
     <middle>
         <section title="Introduction" anchor="introduction">
-            <t>A resource typically conveys typed Web Links [<xref target="RFC5988"/>] as an inherent 
-                 part of the resource's representation [<xref target="RFC7231"/>], for example, using the &lt;link&gt; 
+            <t>A resource typically conveys typed Web Links <xref target="RFC5988"/> as an inherent 
+                 part of the resource's representation <xref target="RFC7231"/>, for example, using the &lt;link&gt; 
                  element for HTML representations or the "Link" header in HTTP response headers for representations 
                  of any media type. Cases exist in which providing links in a by value manner is impractical or impossible. 
                  In these cases, an approach to provide links by reference is desired. 
@@ -80,7 +80,7 @@
                 a web server to correctly handle large HTTP response headers by specifying an upper boundary 
                 for their size. But, when the number of links and the amount of bytes required for each is 
                 unpredictable, estimating a reliable upper boundary is challenging. While HTTP 
-                [<xref target="RFC2616">RFC 2616</xref>] defines error codes related to excess communication 
+                <xref target="RFC2616">RFC 2616</xref> defines error codes related to excess communication 
                 by the user agent ("413 Request Entity Too Large" and "414 Request-URI Too Long"), 
                 no error codes are defined to indicate that a response header exceeds  the upper boundary that can 
                 be handled by the server. As a result, applications take counter measures aimed at controlling 
@@ -129,7 +129,7 @@ Connection: close
              <xref target="Request1"></xref>. The response contains a "Link" header with 
              a link that uses the "linkset" relation type. It indicates that links are provided 
              by another resource http://example.com/links/http://example.org/resource, which 
-             has media type application/link-format [<xref target="RFC6690"/>]. Using this 
+             has media type application/link-format <xref target="RFC6690"/>. Using this 
              media type, links are serialized in the same manner as the payload of the "Link" 
              header, which lowers the barrier for user-agents that are already able to consume 
              HTTP links.
@@ -215,11 +215,11 @@ Connection: close
             </section>
             <section title="Link Set Serialized As application/hal+json" anchor="linkset-link-hal-format">
              <t>In this example, the reponse to <xref target="Request1"/> is the same as <xref target="Response1.1"/> 
-             but the content of the "type" attribute is application/hal+json [<xref target="I-D.kelly-json-hal-08"/>] 
+             but the content of the "type" attribute is application/hal+json <xref target="I-D.kelly-json-hal-08"/> 
              instead of application/link-format. 
              Similarly, the user-agent's follow-up request is the same as <xref target="Request2"/> but using 
              application/hal+json in the "Accept" HTTP request header instead of application/link-format. 
-             <xref target="Response3"/> exemplifies a response to that follow-up HTTP GET request issued against 
+             <xref target="Response2.2"/> exemplifies a response to that follow-up HTTP GET request issued against 
              the link set resource.
              </t>
                                 <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.2">
