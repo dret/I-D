@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+
+<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"> 
+<!ENTITY RFC2616 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2616.xml"> 
+<!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml"> 
+<!ENTITY RFC6690 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6690.xml">
+<!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
+<!ENTITY I-D.kelly-json-hal-08 SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.draft-kelly-json-hal-08.xml">
+]>
+
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc category="info" ipr="trust200902" docName="draft-wilde-linkset-link-rel-01">
+    <front>
+        <title abbrev="Linkset Link Relation Type">Linkset: A Link Relation Type for Link Sets</title>
+        <author initials="E." surname="Wilde" fullname="Erik Wilde">
+            <organization>CA Technologies</organization>
+            <address>
+                <email>erik.wilde@dret.net</email>
+                <uri>http://dret.net/netdret/</uri>
+            </address>
+        </author>
+        <author initials="H." surname="Van de Sompel" fullname="Herbert Van de Sompel">
+            <organization>Los Alamos National Laboratory</organization>
+            <address>
+                <email>herbertv@lanl.gov</email>
+                <uri>http://public.lanl.gov/herbertv/</uri>
+            </address>
+        </author>
+        <date day="20" month="December" year="2016"/>
+        <abstract>
+            <t>This specification defines the "linkset" relation type that can be used 
+                to link to a resource that provides a set of links.</t>
+        </abstract>
+        <note title="Note to Readers">
+            <t>Please discuss this draft on the ART mailing list (<eref target="https://www.ietf.org/mailman/listinfo/art"/>).</t>
+            <t>Online access to all versions and files is available on GitHub (<eref target="https://github.com/dret/I-D/tree/master/linkset-link-rel"/>).</t>
+        </note>
+    </front>
+    <middle>
+        <section title="Introduction" anchor="introduction">
+            <t>A resource typically conveys typed Web Links <xref target="RFC5988"/> as an inherent 
+                 part of the resource's representation <xref target="RFC7231"/>, for example, using the &lt;link&gt; 
+                 element for HTML representations or the "Link" header in HTTP response headers for representations 
+                 of any media type. Cases exist in which providing links in a by value manner is impractical or impossible. 
+                 In these cases, an approach to provide links by reference is desired. 
+                 This specification defines the "linkset" relation type that allows doing so.</t>
+        </section>
+        <section title="Terminology" anchor="terminology">
+            <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+        </section>
+        <section title="Link Sets" anchor="linksets">
+            <t>...</t>
+        </section>
+        <section title="Scenarios" anchor="scenarios">
+              <section title="Third-Party Links" anchor="third-party">
+                <t>Cases exist in which a resource other than the responding resource is better placed 
+                to provide web links. That other resource is hosted by a link server that may be managed by 
+                the same custodian as the responding resource or by a third party. In order for the 
+                responding server to provide up-to-date links about its resource, 
+                it needs to obtain them from the link server, and embed them in the resource's 
+                representation prior to responding to a client. 
+                Doing so increases latency, which may be unnecessary if a client is not intent on 
+                consuming links. Providing links by reference, 
+                instead of by value, removes this additional latency by avoiding server-to-server 
+                communication required to obtain links.
+                </t>
+            </section>
+            <section title="Large Number of Links" anchor="link-volume">
+                <t>When conveying links in the HTTP "Link" header, cases exist in which the size of the HTTP 
+                response header becomes unpredictable. This is, for example, the case when links are determined 
+                dynamically dependent on a range of contextual factors. It is possible to statically configure 
+                a web server to correctly handle large HTTP response headers by specifying an upper boundary 
+                for their size. But, when the number of links and the amount of bytes required for each is 
+                unpredictable, estimating a reliable upper boundary is challenging. While HTTP 
+                <xref target="RFC2616">RFC 2616</xref> defines error codes related to excess communication 
+                by the user agent ("413 Request Entity Too Large" and "414 Request-URI Too Long"), 
+                no error codes are defined to indicate that a response header exceeds  the upper boundary that can 
+                be handled by the server. As a result, applications take counter measures aimed at controlling 
+                the size of the HTTP "Link" header, for example, by limiting the links they provide to those 
+                with select relation types, thereby limiting the value of the HTTP "Link" header to clients. 
+                Providing links by reference, instead of by value, overcomes challenges related to the unpredictable 
+                nature of the extent of HTTP "Link" headers.
+                </t>
+             </section>
+        </section>
+        <section title="Link Relation for Linking to Link Sets" anchor="linkset-link-relation">
+            <t>The "linkset" relation type can be used by a responding resource to refer to 
+            another resource that provides a set of links. Typically the Context IRI of these links  
+            is the URI of the responding resource but links with other Context IRIs MAY be provided. 
+            </t>
+            <t>The media type of the link set that is accessible via the Target IRI of a link with the 
+            "linkset" relation type is not constrained but the representation of the link set MUST allow 
+            a user-agent to unambiguously determine the Context IRI of each provided link.  
+            </t>
+            <t>More than one link with a "linkset" relation type MAY be provided. 
+            Multiple such links can refer to the same set of links expressed using different 
+            representations or to different link sets. The use of a link with the "linkset" relation 
+            type does not preclude the provision of links with other relation types. 
+            </t>
+         </section>
+         <section title="Examples" anchor="linkset-link-examples">
+            <t><xref target="Request1"></xref> shows a user agent issuing an 
+            HTTP head request against resource http://example.org/resource1.</t>
+              <figure title="User Agent Issues HTTP HEAD on Resource" align="center" anchor="Request1">
+                <artwork align="left">
+<![CDATA[
+HEAD /resource1 HTTP/1.1
+Host: example.org
+Connection: close
+]]>
+               </artwork> 
+             </figure>
+              <t>Sections <xref target="linkset-link-link-format"/> and <xref target="linkset-link-hal-format"/>
+              exemplify possible responses to the HTTP request of <xref target="Request1"/> that include 
+              the provision of a link with the "linkset" relation type, as well as a user-agent 
+              following those links to retrieve a link set.
+              </t>
+           <section title="Link Set Serialized As application/link-format" anchor="linkset-link-link-format">
+             <t><xref target="Response1.1"></xref> shows the response to the HEAD request of 
+             <xref target="Request1"></xref>. The response contains a "Link" header with 
+             a link that uses the "linkset" relation type. It indicates that links are provided 
+             by another resource http://example.com/links/http://example.org/resource, which 
+             has media type application/link-format <xref target="RFC6690"/>. Using this 
+             media type, links are serialized in the same manner as the payload of the "Link" 
+             header, which lowers the barrier for user-agents that are already able to consume 
+             HTTP links.
+             </t>
+              <figure title="Response to HTTP HEAD on Resource" align="center" anchor="Response1.1">
+                <artwork align="left">
+<![CDATA[
+HTTP/1.1 200 OK
+Date: Mon, 28 Nov 2016 14:37:51 GMT
+Server: Apache-Coyote/1.1
+Link: <http://example.com/links/http://example.org/resource1>
+      ; rel="linkset"
+      ; type="application/link-format"
+Content-Length: 5214
+Content-Type: text/html;charset=utf-8
+Connection: close
+]]>
+                </artwork> 
+              </figure>
+                <t><xref target="Request2"/> shows the user agent issuing an HTTP GET 
+                    request against the Target IRI of the link with the "linkset" relation 
+                    type shown in <xref target="Response1.1"/>. 
+                </t>
+                <figure title="User Agent Issues HTTP GET on application/link-format Link Set Resource" align="center" anchor="Request2">       
+                    <artwork align="left">
+<![CDATA[
+GET /links/http://example.org/resource1 HTTP/1.1
+Host: example.com
+Accept: application/link-format
+Connection: close
+]]>
+                    </artwork> 
+                </figure>
+                <t><xref target="Response2.1"></xref> shows response 
+                    to the HTTP GET request of <xref target="Request2"></xref>. As can be seen from this example, 
+                    in order to support an unambiguous determination of the Context IRI of each link, an approach is taken 
+                     whereby:
+                </t>
+                  <t>
+                  <list>
+                    <t>The Context IRI is the URI in the "anchor" attribute, when provided.</t>
+                    <t>When no anchor parameter is provided, the Context IRI is provided by a unique link 
+                    in the link set that has the "about" relation type and the URI of the link set resource 
+                    as the value of the "anchor" attribute. The Target IRI of that link is the Context IRI of 
+                    all links in the link set that don't have an "anchor" attribute.
+                    </t>
+                  </list>
+                  </t>
+                <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.1">
+                    <artwork align="left">
+<![CDATA[
+HTTP/1.1 200 OK
+Date: Mon, 28 Nov 2016 14:40:02 GMT
+Server: Apache-Coyote/1.1
+Content-Length: 3018
+Content-Type: application/link-format
+Connection: close
+
+<http://example.org/resource1>
+   ; rel="about"
+   ; anchor="http://example.com/links/http://example.org/resource1", 
+<http://authors.example.net/johndoe>
+   ; rel="author"
+   ; type="application/rdf+xml",
+ <http://authors.example.net/janedoe>
+   ; rel="author"
+   ; type="application/rdf+xml",
+ <http://example.org/resource1/items/AF48EF.pdf>
+   ; rel="item"
+   ; type="application/pdf",
+ <http://example.org/resource1/items/CB63DA.html>
+   ; rel="item"
+   ; type="text/html",
+ <http://example.net/resource41/>
+   ; rel="related"
+   ; type="application/pdf"
+   ; anchor="http://example.org/resource1/items/AF48EF.pdf",
+ ...
+
+]]>
+                    </artwork> 
+                </figure>
+            </section>
+            <section title="Link Set Serialized As application/hal+json" anchor="linkset-link-hal-format">
+             <t>In this example, the response to <xref target="Request1"/> is the same as <xref target="Response1.1"/> 
+             but the content of the "type" attribute is application/hal+json <xref target="I-D.kelly-json-hal"/> 
+             instead of application/link-format. 
+             Similarly, the user-agent's follow-up request is the same as <xref target="Request2"/> but using 
+             application/hal+json in the "Accept" HTTP request header instead of application/link-format. 
+             <xref target="Response2.2"/> exemplifies a response to that follow-up HTTP GET request issued against 
+             the link set resource.
+             </t>
+                                <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.2">
+                    <artwork align="left">
+<![CDATA[
+HTTP/1.1 200 OK
+Date: Mon, 28 Nov 2016 14:40:02 GMT
+Server: Apache-Coyote/1.1
+Content-Length: 2021
+Content-Type: application/hal+json
+Connection: close
+<!--
+<http://example.org/resource1>
+   ; rel="about"
+   ; anchor="http://example.com/links/http://example.org/resource1", 
+<http://authors.example.net/johndoe>
+   ; rel="author"
+   ; type="application/rdf+xml",
+ <http://authors.example.net/janedoe>
+   ; rel="author"
+   ; type="application/rdf+xml",
+ <http://example.org/resource1/items/AF48EF.pdf>
+   ; rel="item"
+   ; type="application/pdf",
+ <http://example.org/resource1/items/CB63DA.html>
+   ; rel="item"
+   ; type="text/html",
+ <http://example.net/resource41/>
+   ; rel="related"
+   ; type="application/pdf"
+   ; anchor="http://example.org/resource1/items/AF48EF.pdf",
+ ...
+-->
+]]>
+                    </artwork> 
+                </figure>
+            </section>
+        </section>
+        <section title="IANA Considerations" anchor="iana-considerations">
+            <t>The link relation type below has been registered by IANA per Section 6.2.1 of RFC 5988 <xref target="RFC5988"/>:</t>
+            <section title="Link Relation Type: linkset">
+                <t>
+                    <list>
+                        <t>Relation Name: linkset</t>
+                        <t>Description: The Target IRI of a link with the "linkset" relation type 
+                            provides a set of links.</t>
+                        <t>Reference: [[ This document ]]</t>
+                    </list>
+                </t>
+            </section>
+        </section>
+        <section title="Security Considerations" anchor="security-considerations">
+            <t>...</t>
+        </section>
+    </middle>
+    <back>
+        <references title="Normative References">
+&RFC2119; 
+&RFC2616; 
+&RFC5988; 
+&RFC6690;
+&RFC7231;
+            <!--
+            <reference anchor="RFC2119">
+                <front>
+                    <title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
+                    <author initials="S." surname="Bradner" fullname="Scott Bradner"/>
+                    <date month="March" year="1997"/>
+                </front>
+                <seriesInfo name="RFC" value="2119"/>
+            </reference>
+            <reference anchor="RFC5988">
+                <front>
+                    <title>Web Linking</title>
+                    <author initials="M." surname="Nottingham" fullname="Mark Nottingham"/>
+                    <date month="October" year="2010"/>
+                </front>
+                <seriesInfo name="RFC" value="5988"/>
+            </reference>
+            <reference anchor="RFC6690">
+                <front>
+                    <title>Constrained RESTful Environments (CoRE) Link Format</title>
+                    <author initials="Z." surname="Shelby" fullname="Zach Shelby"/>
+                    <date month="August" year="2012"/>
+                </front>
+                <seriesInfo name="RFC" value="6690"/>
+            </reference>
+-->
+        </references>
+
+      <references title="Informative References">
+&I-D.kelly-json-hal-08;
+      </references>
+             <!--
+      <section title="Acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+-->
+    </back>
+</rfc>
