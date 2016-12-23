@@ -162,54 +162,39 @@ Connection: close
 ]]>
                     </artwork> 
                 </figure>
-                <t><xref target="Response2.1"></xref> shows response 
-                    to the HTTP GET request of <xref target="Request2"></xref>. As can be seen from this example, 
-                    in order to support an unambiguous determination of the Context IRI of each link, an approach is taken 
-                     whereby:
-                </t>
-                  <t>
-                  <list>
-                    <t>The Context IRI is the URI in the "anchor" attribute, when provided.</t>
-                    <t>When no anchor parameter is provided, the Context IRI is provided by a unique link 
-                    in the link set that has the "about" relation type and the URI of the link set resource 
-                    as the value of the "anchor" attribute. The Target IRI of that link is the Context IRI of 
-                    all links in the link set that don't have an "anchor" attribute.
-                    </t>
-                  </list>
-                  </t>
+               <t><xref target="Response2.1"></xref> shows response to the HTTP GET request of <xref target="Request2"></xref>. As can be seen from this example, in order to support an unambiguous determination of the Context IRI of each link, an approach is taken whereby an "anchor" attribute is provided for each link. As can be seen in the example, for most links, the Context IRI is the resource that provided the link with the "linkset" relation type, namely http://example.org/resource1.</t>
                 <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.1">
                     <artwork align="left">
 <![CDATA[
 HTTP/1.1 200 OK
+
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
 Content-Length: 3018
 Content-Type: application/link-format
-Connection: close
 
-<http://example.org/resource1>
-   ; rel="about"
-   ; anchor="http://example.com/links/http://example.org/resource1", 
 <http://authors.example.net/johndoe>
    ; rel="author"
-   ; type="application/rdf+xml",
- <http://authors.example.net/janedoe>
+   ; type="application/rdf+xml"
+   ; anchor="http://example.org/resource1",
+<http://authors.example.net/janedoe>
    ; rel="author"
-   ; type="application/rdf+xml",
- <http://example.org/resource1/items/AF48EF.pdf>
+   ; type="application/rdf+xml"
+   ; anchor="http://example.org/resource1",
+<http://example.org/resource1/items/AF48EF.pdf>
    ; rel="item"
-   ; type="application/pdf",
- <http://example.org/resource1/items/CB63DA.html>
+   ; type="application/pdf"
+   ; anchor="http://example.org/resource1",
+<http://example.org/resource1/items/CB63DA.html>
    ; rel="item"
-   ; type="text/html",
- <http://example.net/resource41/>
+   ; type="text/html"
+   ; anchor="http://example.org/resource1",
+<http://example.net/resource41/>
    ; rel="related"
    ; type="application/pdf"
    ; anchor="http://example.org/resource1/items/AF48EF.pdf",
- ...
-
-]]>
-                    </artwork> 
+...
+]]></artwork> 
                 </figure>
             </section>
             <section title="Link Set Serialized As application/hal+json" anchor="linkset-link-hal-format">
