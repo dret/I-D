@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="windows-1252"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc number="8091" category="info" submissionType="IETF" consensus="yes" ipr="trust200902">
+
+   <front>
+      <title abbrev="JSON Text Sequences">A Media Type Structured Syntax Suffix for JSON Text Sequences</title>
+
+
+<!-- [rfced] Note that we have added a short title to appear in the document
+header.  Please let us know if you prefer an alternate short title.
+
+Original:
+   A Media Type Structured Syntax Suffix for JSO
+
+Current:
+   JSON Text Sequences
+
+-->
+
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>CA Technologies</organization>
+         <address>
+            <email>erik.wilde@dret.net</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+
+      <date month="February" year="2017"/>
+
+<!-- [rfced] Please insert any keywords (beyond those that appear in 
+the title) for use on https://www.rfc-editor.org/search.
+-->
+
+<keyword>example</keyword>
+
+
+      <abstract>
+         <t>Structured syntax suffixes for media types allow other media types
+	 to build on them and make it explicit that they are built on an
+	 existing media type as their foundation. This specification defines
+	 and registers "+json-seq" as a structured syntax suffix for JSON Text
+	 Sequences.</t> 
+      </abstract>
+
+
+
+   </front>
+
+
+   <middle>
+      <section title="Introduction" anchor="intro">
+         <t>Media type structured syntax suffixes <xref target="RFC6838"/>
+	 were introduced as a way for a media type to signal that it is based
+	 on another media type as its foundation. Some structured syntax
+	 suffixes were registered initially <xref target="RFC6839"/>,
+	 including "+json", for the widely popular JSON format <xref target="RFC7159"/>.</t> 
+
+         <t>JSON Text Sequences <xref target="RFC7464"/> is a recent
+	 specification in the JSON space that defines how a sequence of
+	 multiple JSON texts can be represented in one representation. This
+	 document defines and registers the "+json-seq" structured syntax
+	 suffix in the "Structured Syntax Suffix Registry".</t> 
+
+      </section>
+      <section title="Terminology">
+         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+	 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in
+	 this document are to be interpreted as described in <xref target="RFC2119"/>.</t> 
+      </section>
+
+      <section title="The &quot;+json-seq&quot; Structured Syntax Suffix" anchor="definition">
+         <t>The use case for the "+json-seq" structured syntax suffix is the
+	 same as for "+json": It SHOULD be used by media types when parsing
+	 the JSON Text Sequence of a media type leads to a meaningful result,
+	 by simply using the generic JSON Text Sequence processing.</t> 
+
+         <t>Applications encountering such a media type can then either simply
+	 use generic processing if all they need is a generic view of the JSON
+	 Text Sequence, or they can use generic JSON Text Sequence tools for
+	 initial parsing and then implement their own specific processing
+	 on top of that generic parsing tool.</t> 
+      </section>
+
+      <section title="IANA Considerations" anchor="iana">
+        <t>Structured Syntax Suffixes are registered within the "Structured
+	Syntax Suffix Registry" maintained at <eref target="https://www.iana.org/assignments/media-type-structured-suffix"/>.</t> 
+
+        <t>IANA has registered the "+json-seq" structured syntax
+	suffix in accordance with <xref target="RFC6838"/>.</t> 
+
+          <t>
+            <list>
+               <t>Name: JSON Text Sequence</t>
+               <t>+suffix: +json-seq</t>
+               <t>References: <xref target="RFC7464"/>, RFC 8091</t> 
+               <t>Encoding considerations: See <xref target="RFC7464"/> Section 2.2</t>
+               <t>Fragment identifier considerations: The syntax and semantics
+	       of fragment identifiers specified for +json-seq SHOULD be as
+	       specified for "application/json-seq". (At publication of this
+	       document, there is no fragment identification syntax defined
+	       for "application/json-seq".)<list> 
+
+                  <t>The syntax and semantics for fragment identifiers for a
+		  specific "xxx/yyy+json-seq" SHOULD be processed as
+		  follows:<list> 
+
+                        <t>For cases defined in +json-seq, where the fragment
+			identifier resolves per the +json-seq rules, then
+			process as specified in +json-seq.</t> 
+
+                        <t>For cases defined in +json-seq, where the fragment
+			identifier does not resolve per the +json-seq rules,
+			then process as specified in "xxx/yyy+json-seq".</t> 
+
+                        <t>For cases not defined in +json-seq, then process as
+			specified in "xxx/yyy+json-seq".</t> 
+                     </list></t>
+               </list></t>
+               <t>Interoperability considerations: n/a</t>
+               <t>Security considerations: See <xref target="RFC7464"/> Section 3</t>
+               <t>Contact: Applications and Real-Time Area Discussion
+	       (art@ietf.org), or any IESG-designated successor.</t> 
+               <t>Author/Change controller: The Applications and Real-Time
+	       Area Working Group. IESG has change control over this
+	       registration.</t> 
+            </list>
+         </t>
+      </section>
+      <section title="Security Considerations" anchor="security-considerations">
+         <t>All the security considerations of JSON Text Sequences <xref target="RFC7464"/> apply. They are as follows:</t> 
+
+         <t>All the security considerations of JSON <xref target="RFC7159"/>
+	 apply. This format provides no cryptographic integrity protection of
+	 any kind.</t> 
+
+         <t>As usual, parsers must operate on input that is assumed to be
+	 untrusted. This means that parsers must fail gracefully in the face
+	 of malicious inputs.</t> 
+
+         <t>Note that incremental JSON text parsers can produce partial
+	 results and later indicate failure to parse the remainder of a
+	 text. A sequence parser that uses an incremental JSON text parser
+	 might treat a sequence like '&lt;RS&gt;"foo"&lt;LF&gt;456&lt;LF&gt;&lt;RS&gt;' as
+	 a sequence of one element ("foo"), while a sequence parser that uses
+	 a non-incremental JSON text parser might treat the same sequence as
+	 being empty. This effect, and texts that fail to parse and are
+	 ignored, can be used to smuggle data past sequence parsers that don't
+	 warn about JSON text failures.</t>
+
+         <t>Repeated parsing and re-encoding of a JSON text sequence can
+	 result in the addition (or stripping) of trailing LF bytes from (to)
+	 individual sequence element JSON texts. This can break signature
+	 validation. JSON has no canonical form for JSON texts, therefore
+	 neither does the JSON text sequence format.</t> 
+
+      </section>
+<!-- [rfced] The following appear to be capitalized inconsistently.  Please
+consider how/if they should be made uniform.
+
+JSON Text Sequence vs. JSON text sequence 
+   The lowercase form is used consistently in RFC 7464.  In this document, the
+   lowercase form only appears in the quoted text from RFC 7464 (Security
+   Considerations).  Should this document be made consistent with RFC 7464? 
+
+
+-->
+
+
+
+   </middle>
+   <back>
+      <references title="Normative References">
+
+<reference anchor="RFC2119" target="http://www.rfc-editor.org/info/rfc2119">
+<front>
+<title>Key words for use in RFCs to Indicate Requirement Levels</title>
+<author initials="S." surname="Bradner" fullname="S. Bradner"><organization/></author>
+<date year="1997" month="March"/>
+<abstract><t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
+</front>
+<seriesInfo name="BCP" value="14"/>
+<seriesInfo name="RFC" value="2119"/>
+<seriesInfo name="DOI" value="10.17487/RFC2119"/>
+</reference>
+
+
+<reference anchor="RFC6838" target="http://www.rfc-editor.org/info/rfc6838">
+<front>
+<title>Media Type Specifications and Registration Procedures</title>
+<author initials="N." surname="Freed" fullname="N. Freed"><organization/></author>
+<author initials="J." surname="Klensin" fullname="J. Klensin"><organization/></author>
+<author initials="T." surname="Hansen" fullname="T. Hansen"><organization/></author>
+<date year="2013" month="January"/>
+<abstract><t>This document defines procedures for the specification and registration of media types for use in HTTP, MIME, and other Internet protocols.  This memo documents an Internet Best Current Practice.</t></abstract>
+</front>
+<seriesInfo name="BCP" value="13"/>
+<seriesInfo name="RFC" value="6838"/>
+<seriesInfo name="DOI" value="10.17487/RFC6838"/>
+</reference>
+
+
+
+<reference anchor="RFC7464" target="http://www.rfc-editor.org/info/rfc7464">
+<front>
+<title>JavaScript Object Notation (JSON) Text Sequences</title>
+<author initials="N." surname="Williams" fullname="N. Williams"><organization/></author>
+<date year="2015" month="February"/>
+<abstract><t>This document describes the JavaScript Object Notation (JSON) text sequence format and associated media type "application/json-seq".  A JSON text sequence consists of any number of JSON texts, all encoded in UTF-8, each prefixed by an ASCII Record Separator (0x1E), and each ending with an ASCII Line Feed character (0x0A).</t></abstract>
+</front>
+<seriesInfo name="RFC" value="7464"/>
+<seriesInfo name="DOI" value="10.17487/RFC7464"/>
+</reference>
+
+      </references>
+
+
+      <references title="Informative References">
+
+<reference anchor="RFC7159" target="http://www.rfc-editor.org/info/rfc7159">
+<front>
+<title>The JavaScript Object Notation (JSON) Data Interchange Format</title>
+<author initials="T." surname="Bray" fullname="T. Bray" role="editor"><organization/></author>
+<date year="2014" month="March"/>
+<abstract><t>JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data interchange format.  It was derived from the ECMAScript Programming Language Standard.  JSON defines a small set of formatting rules for the portable representation of structured data.</t><t>This document removes inconsistencies with other specifications of JSON, repairs specification errors, and offers experience-based interoperability guidance.</t></abstract>
+</front>
+<seriesInfo name="RFC" value="7159"/>
+<seriesInfo name="DOI" value="10.17487/RFC7159"/>
+</reference>
+
+
+<reference anchor="RFC6839" target="http://www.rfc-editor.org/info/rfc6839">
+<front>
+<title>Additional Media Type Structured Syntax Suffixes</title>
+<author initials="T." surname="Hansen" fullname="T. Hansen"><organization/></author>
+<author initials="A." surname="Melnikov" fullname="A. Melnikov"><organization/></author>
+<date year="2013" month="January"/>
+<abstract><t>A content media type name sometimes includes partitioned meta- information distinguished by a structured syntax to permit noting an attribute of the media as a suffix to the name.  This document defines several structured syntax suffixes for use with media type registrations.  In particular, it defines and registers the "+json", "+ber", "+der", "+fastinfoset", "+wbxml" and "+zip" structured syntax suffixes, and provides a media type structured syntax suffix registration form for the "+xml" structured syntax suffix.  This document  is not an Internet Standards Track specification; it is published for  informational purposes.</t></abstract>
+</front>
+<seriesInfo name="RFC" value="6839"/>
+<seriesInfo name="DOI" value="10.17487/RFC6839"/>
+</reference>
+
+      </references>
+      <section title="Acknowledgements" anchor="acknowledgements" numbered="no">
+         <t>Thanks for comments and suggestions provided by Ben Campbell, Allan Doyle, Warren Kumari, Sean Leonard, Alexey Melnikov, Brian Raymor, and Peter Yee.</t>
+      </section>
+   </back>
+</rfc>
