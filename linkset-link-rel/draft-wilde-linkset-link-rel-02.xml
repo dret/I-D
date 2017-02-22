@@ -123,7 +123,7 @@ Connection: close
              <xref target="Request1"/>. The response contains a "Link" header with 
              a link that uses the "linkset" relation type. It indicates that links are provided 
              by another resource http://example.com/links/http://example.org/resource, which 
-             has media type application/link-format <xref target="RFC6690"/>. Using this 
+             uses the media type application/link-format <xref target="RFC6690"/>. Using this 
              media type, links are serialized in the same manner as the payload of the "Link" 
              header, which lowers the barrier for user-agents that are already able to consume 
              HTTP links.
@@ -143,11 +143,11 @@ Connection: close
 ]]>
                 </artwork> 
               </figure>
-                <t><xref target="Request2"/> shows the user agent issuing an HTTP GET 
+                <t><xref target="Request2"/> shows the client issuing an HTTP GET 
                     request against the Target IRI of the link with the "linkset" relation 
                     type shown in <xref target="Response1.1"/>. 
                 </t>
-                <figure title="User Agent Issues HTTP GET on application/link-format Link Set Resource" align="center" anchor="Request2">       
+                <figure title="Client HTTP GET on application/link-format Link Set Resource" align="center" anchor="Request2">
                     <artwork align="left">
 <![CDATA[
 GET /links/http://example.org/resource1 HTTP/1.1
@@ -160,7 +160,7 @@ Connection: close
                <t><xref target="Response2.1"/> shows response to the HTTP GET request of <xref target="Request2"/>. 
                    As can be seen from this example, in order to support an unambiguous determination of the Context IRI of 
                    each link, an approach is taken whereby an "anchor" attribute is provided for each link. 
-                   For most links, the Context IRI is the resource that provided the link with the "linkset" relation type, 
+                   For most (but not all) links, the Context IRI is the resource that provided the link with the "linkset" relation type, 
                    namely http://example.org/resource1.</t>
                 <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.1">
                     <artwork align="left">
@@ -196,15 +196,13 @@ Content-Type: application/link-format
 ]]></artwork> 
                 </figure>
             </section>
-            <section title="Link Set Serialized As application/hal+json" anchor="linkset-link-hal-format">
-             <t>In this example, the response to <xref target="Request1"/> is the same as <xref target="Response1.1"/> 
+            <section title="Link Set Serialized as application/hal+json" anchor="linkset-link-hal-format">
+             <t>In this example, the response to <xref target="Request1"/> is the same as <xref target="Response1.1"/>,
              but the content of the "type" attribute is application/hal+json <xref target="I-D.kelly-json-hal"/> 
-             instead of application/link-format. 
-             Similarly, the user-agent's follow-up request is the same as <xref target="Request2"/> but using 
+             instead of application/link-format. Similarly, the user-agent's follow-up request is the same as <xref target="Request2"/>, but using 
              application/hal+json in the "Accept" HTTP request header instead of application/link-format. 
-             <xref target="Response2.2"/> exemplifies a response to that follow-up HTTP GET request issued 
-             against the link set resource.
-             </t>
+             <xref target="Response2.2"/> shows a response to that follow-up HTTP GET request issued 
+             for the link set resource.</t>
                 <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.2">
                     <artwork align="left">
 <![CDATA[
