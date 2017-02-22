@@ -70,25 +70,23 @@
                 Doing so increases latency and load, which may be unnecessary if a client is not intent on 
                 consuming links. Providing links by reference, 
                 instead of by value, removes this additional latency by avoiding server-to-server 
-                communication required to obtain links.
-                </t>
+                communication required to obtain links.</t>
             </section>
             <section title="Large Number of Links" anchor="link-volume">
                 <t>When conveying links in the HTTP "Link" header, cases exist in which the size of the HTTP 
                 response header becomes unpredictable. This is, for example, the case when links are determined 
                 dynamically dependent on a range of contextual factors. It is possible to statically configure 
                 a web server to correctly handle large HTTP response headers by specifying an upper boundary 
-                for their size. But, when the number of links and the amount of bytes required for each is 
+                for their size. But when the number of links and the amount of bytes required for each is 
                 unpredictable, estimating a reliable upper boundary is challenging. While HTTP 
-                <xref target="RFC2616">RFC 2616</xref> defines error codes related to excess communication 
+                <xref target="RFC2616"/> defines error codes related to excess communication 
                 by the user agent ("413 Request Entity Too Large" and "414 Request-URI Too Long"), 
-                no error codes are defined to indicate that a response header exceeds  the upper boundary that can 
+                no error codes are defined to indicate that a response header exceeds the upper boundary that can 
                 be handled by the server. As a result, applications take counter measures aimed at controlling 
                 the size of the HTTP "Link" header, for example, by limiting the links they provide to those 
                 with select relation types, thereby limiting the value of the HTTP "Link" header to clients. 
                 Providing links by reference, instead of by value, overcomes challenges related to the unpredictable 
-                nature of the extent of HTTP "Link" headers.
-                </t>
+                nature of the extent of HTTP "Link" headers.</t>
              </section>
         </section>
         <section title="Link Relation for Linking to Link Sets" anchor="linkset-link-relation">
