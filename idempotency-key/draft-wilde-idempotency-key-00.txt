@@ -1,0 +1,224 @@
+
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                           CA Technologies
+Intended status: Standards Track                       February 27, 2017
+Expires: August 31, 2017
+
+
+                    The Idempotency-Key HTTP Header
+                     draft-wilde-idempotency-key-00
+
+Abstract
+
+   ...
+
+Note to Readers
+
+   This draft should be discussed on the apps-discuss mailing list [1].
+
+   Online access to all versions and files is available on github [2].
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on August 31, 2017.
+
+Copyright Notice
+
+   Copyright (c) 2017 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+
+
+
+Wilde                    Expires August 31, 2017                [Page 1]
+
+Internet-Draft               Idempotency-Key               February 2017
+
+
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
+   3.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   2
+     4.1.  The Idempotency-Key Request Header  . . . . . . . . . . .   2
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
+   6.  Implementation Status . . . . . . . . . . . . . . . . . . . .   3
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   3
+     7.2.  Non-Normative References  . . . . . . . . . . . . . . . .   4
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   4
+
+1.  Introduction
+
+   ...
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+3.  Introduction
+
+   ...
+
+4.  IANA Considerations
+
+   This specification defines a response header field for the Hypertext
+   Transfer Protocol (HTTP) that has been registered with the Internet
+   Assigned Numbers Authority (IANA) following the "Registration
+   Procedures for Message Header Fields" [RFC3864].
+
+4.1.  The Idempotency-Key Request Header
+
+   The Idempotency-Key request header should be added to the permanent
+   registry of message header fields (see [RFC3864]), taking into
+   account the guidelines given by HTTP/1.1 [RFC7231].
+
+   Header Field Name: Idempotency-Key
+
+   Applicable Protocol: Hypertext Transfer Protocol (HTTP)
+
+
+
+
+Wilde                    Expires August 31, 2017                [Page 2]
+
+Internet-Draft               Idempotency-Key               February 2017
+
+
+   Status: Standard
+
+   Author/Change controller: IETF
+
+   Specification document(s): RFC XXXX
+
+5.  Security Considerations
+
+   ...
+
+6.  Implementation Status
+
+   Note to RFC Editor: Please remove this section before publication.
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in RFC 6982
+   [RFC6982].  The description of implementations in this section is
+   intended to assist the IETF in its decision processes in progressing
+   drafts to RFCs.  Please note that the listing of any individual
+   implementation here does not imply endorsement by the IETF.
+   Furthermore, no effort has been spent to verify the information
+   presented here that was supplied by IETF contributors.  This is not
+   intended as, and must not be construed to be, a catalog of available
+   implementations or their features.  Readers are advised to note that
+   other implementations may exist.
+
+   According to RFC 6982, "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+      Stripe API: The Stripe API uses Idempotency-Key as an HTTP Header
+      Field, described at <https://stripe.com/blog/idempotency>
+
+      GoCardless Pro API: The GoCardless Pro API uses Idempotency-Key as
+      an HTTP Header Field, described at <https://gocardless.com/blog/
+      idempotency-keys/>
+
+7.  References
+
+7.1.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", RFC 2119, March 1997.
+
+
+
+
+Wilde                    Expires August 31, 2017                [Page 3]
+
+Internet-Draft               Idempotency-Key               February 2017
+
+
+   [RFC3864]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
+              Procedures for Message Header Fields", BCP 90, RFC 3864,
+              September 2004.
+
+   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", RFC 6982, July
+              2013.
+
+   [RFC7231]  Fielding, R. and J. Reschke, "Hypertext Transfer Protocol
+              (HTTP/1.1): Semantics and Content", RFC 7231, June 2014.
+
+7.2.  Non-Normative References
+
+   [RFC5023]  Gregorio, J. and B. Hora, "The Atom Publishing Protocol",
+              RFC 5023, October 2010.
+
+Author's Address
+
+   Erik Wilde
+   CA Technologies
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires August 31, 2017                [Page 4]
