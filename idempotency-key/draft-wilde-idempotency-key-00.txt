@@ -66,14 +66,15 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   2
    3.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   2
-     4.1.  The Idempotency-Key Request Header  . . . . . . . . . . .   2
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .   3
-   6.  Implementation Status . . . . . . . . . . . . . . . . . . . .   3
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   3
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   3
-     7.2.  Non-Normative References  . . . . . . . . . . . . . . . .   4
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  The Idempotency-Key HTTP Header Field . . . . . . . . . . . .   3
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   3
+     5.1.  The Idempotency-Key Request Header  . . . . . . . . . . .   3
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .   4
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     8.2.  Non-Normative References  . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   5
 
 1.  Introduction
 
@@ -87,16 +88,65 @@ Table of Contents
 
 3.  Introduction
 
+   Resources on the Web accessible by HTTP [RFC7231] can respond a
+   variety of HTTP methods.  Some of HTTP's methods are idempotent,
+   which means that they can be repeated safely without risking
+   unintended side-effects.  Idempotency is a useful property because it
+   allows clients to repeat requests in case of error conditions.  For
+   idempotent HTTP methods, the ability to repeat them means that
+   clients have an easy way to handle error conditions.
+
+   HTTP explains the concept of "Idempotent Methods" in Section 4.2.2
+   [RFC7231]:
+
+      A request method is considered "idempotent" if the intended effect
+      on the server of multiple identical requests with that method is
+      the same as the effect for a single such request.  Of the request
+      methods defined by this specification, PUT, DELETE, and safe
+      request methods are idempotent. [...] Idempotent methods are
+      distinguished because the request can be repeated automatically if
+      a communication failure occurs before the client is able to read
+
+
+
+Wilde                    Expires August 31, 2017                [Page 2]
+
+Internet-Draft               Idempotency-Key               February 2017
+
+
+      the server's response.  For example, if a client sends a PUT
+      request and the underlying connection is closed before any
+      response is received, then the client can establish a new
+      connection and retry the idempotent request.  It knows that
+      repeating the request will have the same intended effect, even if
+      the original request succeeded, though the response might differ.
+
+   However, HTTP also has non-idempotent request methods, with POST
+   being the most well-known one.  The problem with POST is that it is
+   not safe for clients to repeat requests, because they might (and
+   often will) produce unintended side-effects on the server side if
+   more than one request is received and processed by the server.
+
+   One possible solution to make this problem more manageable is to
+   require clients to create and use unique tokens for POST requests,
+   which can then be used on the server side to correlate repeated
+   requests.  If such a mechanism is supported on the server side,
+   clients can safely repeat POST requests and count on the server to
+   only process one of them, should more than one be received by the
+   server.
+
+4.  The Idempotency-Key HTTP Header Field
+
    ...
 
-4.  IANA Considerations
+5.  IANA Considerations
 
    This specification defines a response header field for the Hypertext
    Transfer Protocol (HTTP) that has been registered with the Internet
    Assigned Numbers Authority (IANA) following the "Registration
    Procedures for Message Header Fields" [RFC3864].
 
-4.1.  The Idempotency-Key Request Header
+5.1.  The Idempotency-Key Request Header
 
    The Idempotency-Key request header should be added to the permanent
    registry of message header fields (see [RFC3864]), taking into
@@ -106,25 +156,25 @@ Table of Contents
 
    Applicable Protocol: Hypertext Transfer Protocol (HTTP)
 
-
-
-
-Wilde                    Expires August 31, 2017                [Page 2]
-
-Internet-Draft               Idempotency-Key               February 2017
-
-
    Status: Standard
 
    Author/Change controller: IETF
 
    Specification document(s): RFC XXXX
 
-5.  Security Considerations
+
+
+
+Wilde                    Expires August 31, 2017                [Page 3]
+
+Internet-Draft               Idempotency-Key               February 2017
+
+
+6.  Security Considerations
 
    ...
 
-6.  Implementation Status
+7.  Implementation Status
 
    Note to RFC Editor: Please remove this section before publication.
 
@@ -155,24 +205,26 @@ Internet-Draft               Idempotency-Key               February 2017
       an HTTP Header Field, described at <https://gocardless.com/blog/
       idempotency-keys/>
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", RFC 2119, March 1997.
 
-
-
-
-Wilde                    Expires August 31, 2017                [Page 3]
-
-Internet-Draft               Idempotency-Key               February 2017
-
-
    [RFC3864]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               September 2004.
+
+
+
+
+
+
+Wilde                    Expires August 31, 2017                [Page 4]
+
+Internet-Draft               Idempotency-Key               February 2017
+
 
    [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
               Code: The Implementation Status Section", RFC 6982, July
@@ -181,7 +233,7 @@ Internet-Draft               Idempotency-Key               February 2017
    [RFC7231]  Fielding, R. and J. Reschke, "Hypertext Transfer Protocol
               (HTTP/1.1): Semantics and Content", RFC 7231, June 2014.
 
-7.2.  Non-Normative References
+8.2.  Non-Normative References
 
    [RFC5023]  Gregorio, J. and B. Hora, "The Atom Publishing Protocol",
               RFC 5023, October 2010.
@@ -221,4 +273,8 @@ Author's Address
 
 
 
-Wilde                    Expires August 31, 2017                [Page 4]
+
+
+
+
+Wilde                    Expires August 31, 2017                [Page 5]
