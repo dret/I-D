@@ -1,0 +1,33 @@
+<?xml-stylesheet type="text/xsl" href="home-xml-02.xslt"?>
+<resources xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="urn:ietf:params:xml:ns:homedoc home-xml.xsd"
+ xmlns="urn:ietf:params:xml:ns:homedoc" xml:base="tag:me@example.com,2016:">
+ <resource rel="http://example.org/rel/widgets">
+  <link href="/widgets"/>
+ </resource>
+ <resource rel="widgets">
+  <template href-template="/widgets/{widget_id}">
+   <var name="widget_id" URI="widget"/>
+  </template>
+  <hints>
+   <allow>
+    <i>GET</i>
+    <i>PUT</i>
+    <i>DELETE</i>
+    <i>PATCH</i>
+   </allow>
+   <formats>
+    <format mediatype="application/json"/>
+   </formats>
+   <accept-patch>
+    <i>application/json-patch+json</i>
+   </accept-patch>
+   <accept-post>
+    <i>application/xml</i>
+   </accept-post>
+   <accept-ranges>
+    <i>bytes</i>
+   </accept-ranges>
+  </hints>
+ </resource>
+</resources>
