@@ -3,13 +3,13 @@
 
 
 Network Working Group                                           E. Wilde
-Internet-Draft                                          February 3, 2016
-Intended status: Standards Track
-Expires: August 6, 2016
+Internet-Draft                                           CA Technologies
+Intended status: Standards Track                          April 28, 2017
+Expires: October 30, 2017
 
 
                          The Sunset HTTP Header
-                      draft-wilde-sunset-header-01
+                      draft-wilde-sunset-header-02
 
 Abstract
 
@@ -19,9 +19,11 @@ Abstract
 
 Note to Readers
 
-   This draft should be discussed on the apps-discuss mailing list [1].
+   This draft should be discussed on the ART mailing list
+   (<https://www.ietf.org/mailman/listinfo/art>).
 
-   Online access to all versions and files is available on GitHub [2].
+   Online access to all versions and files is available on GitHub
+   (<https://github.com/dret/I-D/tree/master/sunset-header>).
 
 Status of This Memo
 
@@ -38,26 +40,26 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 6, 2016.
+   This Internet-Draft will expire on October 30, 2017.
 
 Copyright Notice
 
-   Copyright (c) 2016 IETF Trust and the persons identified as the
+   Copyright (c) 2017 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
    (http://trustee.ietf.org/license-info) in effect on the date of
+
+
+
+Wilde                   Expires October 30, 2017                [Page 1]
+
+Internet-Draft                Sunset Header                   April 2017
+
+
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
-
-
-
-Wilde                    Expires August 6, 2016                 [Page 1]
-
-Internet-Draft                Sunset Header                February 2016
-
-
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -66,20 +68,22 @@ Internet-Draft                Sunset Header                February 2016
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Temporary Resources . . . . . . . . . . . . . . . . . . .   2
+     1.2.  Migration . . . . . . . . . . . . . . . . . . . . . . . .   3
+     1.3.  Retention . . . . . . . . . . . . . . . . . . . . . . . .   3
+     1.4.  Deprecation . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  The Sunset HTTP Response Header . . . . . . . . . . . . . . .   3
    4.  Sunset and Caching  . . . . . . . . . . . . . . . . . . . . .   4
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
      5.1.  The Sunset Response Header  . . . . . . . . . . . . . . .   4
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
    7.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .   5
    8.  Open Issues . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   9.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     9.1.  From -00 to -01 . . . . . . . . . . . . . . . . . . . . .   6
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .   6
-     10.2.  Non-Normative References . . . . . . . . . . . . . . . .   6
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .   6
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -91,48 +95,60 @@ Table of Contents
    useful for clients if resources make this information about their
    limited lifetime known.  This specification defines the Sunset HTTP
    response header field, which indicates that a URI is likely to become
-   unresponsive at some point in the future.
+   unresponsive at a specified point in the future.
 
    Possible scenarios for known lifetimes of resources include, but are
-   not limited to the following:
+   not limited to the following scenarios.
 
-      Temporary Resources: Some resources may have a limited lifetime by
-      definition.  For example, a pending order represented by a
-      resource may already list all the details of the order, but may
-      only exist for a limited time unless it is confirmed and only then
-      becomes permanent.  In such a case, the service managing the
-      pending order can make this limited lifetime explicit, allowing
-      clients to understand that the pending order, unless confirmed,
-      will disappear at some point in time.
+1.1.  Temporary Resources
+
+   Some resources may have a limited lifetime by definition.  For
+   example, a pending order represented by a resource may already list
+   all the details of the order, but may only exist for a limited time
+   unless it is confirmed and only then becomes permanent.  In such a
 
 
 
-
-
-Wilde                    Expires August 6, 2016                 [Page 2]
+Wilde                   Expires October 30, 2017                [Page 2]
 
-Internet-Draft                Sunset Header                February 2016
+Internet-Draft                Sunset Header                   April 2017
 
 
-      Migration: If resources are changing identity because a service
-      migrates them, then this may be known in advance.  While it may
-      not yet be appropriate to use HTTP redirect status codes (3xx), it
-      may be interesting for clients to learn about the service's plan
-      to take down the original resource.
+   case, the service managing the pending order can make this limited
+   lifetime explicit, allowing clients to understand that the pending
+   order, unless confirmed, will disappear at some point in time.
 
-      Retention: There are many cases where regulation or legislation
-      require that resources are kept available for a certain amount of
-      time.  However, in many cases there also is a requirement for
-      those resources to be permanently deleted after some period of
-      time.  Since the deletion of the resource in this scenario is
-      governed by well-defined rules, it could be made explicit for
-      clients interacting with the resource.
+1.2.  Migration
+
+   If resources are changing identity because a service migrates them,
+   then this may be known in advance.  While it may not yet be
+   appropriate to use HTTP redirect status codes (3xx), it may be
+   interesting for clients to learn about the service's plan to take
+   down the original resource.
+
+1.3.  Retention
+
+   There are many cases where regulation or legislation require that
+   resources are kept available for a certain amount of time.  However,
+   in many cases there also is a requirement for those resources to be
+   permanently deleted after some period of time.  Since the deletion of
+   the resource in this scenario is governed by well-defined rules, it
+   could be made explicit for clients interacting with the resource.
+
+1.4.  Deprecation
+
+   For Web APIs one standard scenario is that an API or specific subsets
+   of an API may get deprecated.  If this is planned in advance, then
+   for the time before the actual deprecation is rolled out, the
+   resources that will be affected by the deprecation can make the date
+   of their deprecation known.  This allows consumers of the API to be
+   notified of the upcoming deprecation.
 
 2.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in RFC 2119 [1].
+   document are to be interpreted as described in RFC 2119 [RFC2119].
 
 3.  The Sunset HTTP Response Header
 
@@ -144,13 +160,21 @@ Internet-Draft                Sunset Header                February 2016
    The Sunset header contains a single timestamp which advertises the
    point in time when the resource is expected to become unresponsive.
    The Sunset value is an HTTP-date timestamp, as defined in
-   Section 7.1.1.1 of [3].
+   Section 7.1.1.1 of [RFC7231].
+
+
+
+
+Wilde                   Expires October 30, 2017                [Page 3]
+
+Internet-Draft                Sunset Header                   April 2017
+
 
    Sunset = HTTP-date
 
    For example
 
-   Sunset: Sat, 31 Dec 2016 23:59:59 GMT
+   Sunset: Sat, 31 Dec 2018 23:59:59 GMT
 
    Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed
    that the resource will in fact be available until that time, and will
@@ -158,17 +182,10 @@ Internet-Draft                Sunset Header                February 2016
    provided by the resource itself, it does have some credibility.
 
    After the Sunset time has arrived, it is likely that interactions
-   with the resource will either results in client-side errors (HTTP 4xx
+   with the resource will either result in client-side errors (HTTP 4xx
    status codes), or redirect responses (HTTP 3xx status codes).  The
    Sunset header does not expose any information about which of those
    two behaviors can be expected.
-
-
-
-Wilde                    Expires August 6, 2016                 [Page 3]
-
-Internet-Draft                Sunset Header                February 2016
-
 
    Clients not interpreting an existing Sunset header field can operate
    as usual and simply may experience the resource becoming unavailable
@@ -177,12 +194,13 @@ Internet-Draft                Sunset Header                February 2016
 4.  Sunset and Caching
 
    It should be noted that the Sunset HTTP response header field serves
-   a different purpose than HTTP caching [4].  HTTP caching is concerned
-   with making resource representations (i.e., represented resource
-   state) reusable, so that they can be more efficiently used.  This is
-   achieved by using header fields that allow clients and intermediaries
-   to better understand when a resource representation can be reused, or
-   when resource state (and thus the representation) may have changed.
+   a different purpose than HTTP caching [RFC7234].  HTTP caching is
+   concerned with making resource representations (i.e., represented
+   resource state) reusable, so that they can be more efficiently used.
+   This is achieved by using header fields that allow clients and
+   intermediaries to better understand when a resource representation
+   can be reused, or when resource state (and thus the representation)
+   may have changed.
 
    The Sunset header field is not concerned with resource state at all.
    It only signals that a resource is expected to become unavailable at
@@ -198,8 +216,15 @@ Internet-Draft                Sunset Header                February 2016
 5.1.  The Sunset Response Header
 
    The Sunset response header should be added to the permanent registry
-   of message header fields (see [2]), taking into account the
-   guidelines given by HTTP/1.1 [3].
+   of message header fields (see [RFC3864]), taking into account the
+   guidelines given by HTTP/1.1 [RFC7231].
+
+
+
+Wilde                   Expires October 30, 2017                [Page 4]
+
+Internet-Draft                Sunset Header                   April 2017
+
 
    Header Field Name: Sunset
 
@@ -215,17 +240,6 @@ Internet-Draft                Sunset Header                February 2016
 
    ...
 
-
-
-
-
-
-
-Wilde                    Expires August 6, 2016                 [Page 4]
-
-Internet-Draft                Sunset Header                February 2016
-
-
 7.  Example
 
    Assuming that a resource has been created in an archive that for
@@ -235,13 +249,13 @@ Internet-Draft                Sunset Header                February 2016
    created on November 11, 2014, then the following header field can be
    included in responses:
 
-   Sunset: Fri, 11 Nov 2016 11:11:11 GMT
+   Sunset: Fri, 11 Nov 2018 11:11:11 GMT
 
    This allows clients that are aware of the Sunset header field to
-   understand that the resource likely will become unavailable at this
-   point in time.  Clients can decide to ignore this information, adjust
-   their own behavior accordingly, or even alert users about this
-   timestamp.
+   understand that the resource likely will become unavailable at the
+   specified point in time.  Clients can decide to ignore this
+   information, adjust their own behavior accordingly, or alert
+   applications or users about this timestamp.
 
    Even though the Sunset header information is made available by the
    resource itself, there is no guarantee that the resource indeed will
@@ -250,8 +264,8 @@ Internet-Draft                Sunset Header                February 2016
    an example here, the resource indeed may be permanently deleted, and
    requests for the URI after the Sunset timestamp may receive a "410
    Gone" HTTP response.  (This is assuming that the archive keeps track
-   of the URIs it has assigned; if not, the response may be a more
-   generic "404 Not Found".)
+   of the URIs that it had previously assigned; if not, the response may
+   be a more generic "404 Not Found".)
 
 8.  Open Issues
 
@@ -260,6 +274,14 @@ Internet-Draft                Sunset Header                February 2016
    o  Human readable explanation: It would be possible to include human-
       readable information about the reason for the URI's disappearance.
       This could either be done inline (probably just a simple string),
+
+
+
+Wilde                   Expires October 30, 2017                [Page 5]
+
+Internet-Draft                Sunset Header                   April 2017
+
+
       and/or by reference to a URI that will dereference to human-
       readable information.
 
@@ -272,15 +294,8 @@ Internet-Draft                Sunset Header                February 2016
    o  New URI: If the resource's new URI is known (for example when a
       service is migrating in a way that invalidates existing URIs, but
       has a plan of how these will map to new URIs), then that URI could
-      be advertised in advance (i.e., it's not yet a 3xx, but clients
+      be advertised in advance (i.e., it is not yet a 3xx, but clients
       might want to start working with the new URI anyway).
-
-
-
-Wilde                    Expires August 6, 2016                 [Page 5]
-
-Internet-Draft                Sunset Header                February 2016
-
 
    o  Timestamp in the past: Should it be allowed to have timestamps in
       the past?  Maybe either disallow them, or specifically allow them
@@ -288,37 +303,45 @@ Internet-Draft                Sunset Header                February 2016
       that now is redirecting can expose information about when it
       changed from being the primary resource to being the redirection.
 
-9.  Change Log
+   o  Sunrise: If resources have planned outages (server maintenance,
+      for example), then they might not just have a sunset to advertise,
+      but also a sunrise.  This would allow consumers to learn about how
+      long a resource might be unavailable.
 
-   Note to RFC Editor: Please remove this section before publication.
+9.  References
 
-9.1.  From -00 to -01
+9.1.  Normative References
 
-   o  Fixing Typos.
-
-10.  References
-
-10.1.  Normative References
-
-   [1]        Bradner, S., "Key words for use in RFCs to Indicate
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", RFC 2119, March 1997.
 
-   [2]        Klyne, G., Nottingham, M., and J. Mogul, "Registration
+   [RFC3864]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               September 2004.
 
-   [3]        Fielding, R. and J. Reschke, "Hypertext Transfer Protocol
+   [RFC7231]  Fielding, R. and J. Reschke, "Hypertext Transfer Protocol
               (HTTP/1.1): Semantics and Content", RFC 7231, June 2014.
 
-10.2.  Non-Normative References
+9.2.  Informative References
 
-   [4]        Fielding, R., Nottingham, M., and J. Reschke, "Hypertext
+   [RFC7234]  Fielding, R., Nottingham, M., and J. Reschke, "Hypertext
               Transfer Protocol (HTTP/1.1): Caching", RFC 7234, June
               2014.
+
+
+
+
+
+
+Wilde                   Expires October 30, 2017                [Page 6]
+
+Internet-Draft                Sunset Header                   April 2017
+
 
 Author's Address
 
    Erik Wilde
+   CA Technologies
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
@@ -333,4 +356,37 @@ Author's Address
 
 
 
-Wilde                    Expires August 6, 2016                 [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires October 30, 2017                [Page 7]
