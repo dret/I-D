@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc category="std" ipr="trust200902" docName="draft-wilde-sunset-header-03">
+   <front>
+      <title abbrev="Sunset Header">The Sunset HTTP Header</title>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>CA Technologies</organization>
+         <address>
+            <email>erik.wilde@dret.net</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="28" month="April" year="2017"/>
+      <abstract>
+         <t>This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future.</t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>This draft should be discussed on the ART mailing list (<eref target="https://www.ietf.org/mailman/listinfo/art"/>).</t>
+         <t>Online access to all versions and files is available on GitHub (<eref target="https://github.com/dret/I-D/tree/master/sunset-header"/>).</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction" anchor="introduction">
+         <t>As a general rule, URIs should be stable and persistent, so that applications can use them as stable and persistent identifiers for resources. However, there are many scenarios where for a variety of reasons, URIs have a limited lifetime. In some of these scenarios, this limited lifetime is known in advance. In this case, it can be useful for clients if resources make this information about their limited lifetime known. This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future.</t>
+         <t>Possible scenarios for known lifetimes of resources include, but are not limited to the following scenarios.</t>
+         <section title="Temporary Resources" anchor="temporary-resources">
+            <t>Some resources may have a limited lifetime by definition. For example, a pending order represented by a resource may already list all the details of the order, but may only exist for a limited time unless it is confirmed and only then becomes permanent. In such a case, the service managing the pending order can make this limited lifetime explicit, allowing clients to understand that the pending order, unless confirmed, will disappear at some point in time.</t>
+         </section>
+         <section title="Migration" anchor="migration">
+            <t>If resources are changing identity because a service migrates them, then this may be known in advance. While it may not yet be appropriate to use HTTP redirect status codes (3xx), it may be interesting for clients to learn about the service's plan to take down the original resource.</t>
+         </section>
+         <section title="Retention" anchor="retention">
+            <t>There are many cases where regulation or legislation require that resources are kept available for a certain amount of time. However, in many cases there also is a requirement for those resources to be permanently deleted after some period of time. Since the deletion of the resource in this scenario is governed by well-defined rules, it could be made explicit for clients interacting with the resource.</t>
+         </section>
+         <section title="Deprecation" anchor="deprecation">
+            <t>For Web APIs one standard scenario is that an API or specific subsets of an API may get deprecated. If this is planned in advance, then for the time before the actual deprecation is rolled out, the resources that will be affected by the deprecation can make the date of their deprecation known. This allows consumers of the API to be notified of the upcoming deprecation.</t>
+         </section>
+      </section>
+      <section title="Terminology">
+         <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+      </section>
+      <section title="The Sunset HTTP Response Header" anchor="sunset-header">
+         <t>The Sunset HTTP response header field allows a server to communicate the fact that a resource is expected to become unresponsive at a specific point in time. It provides information for clients which they can use to control their usage of the resource.</t>
+         <t>The Sunset header contains a single timestamp which advertises the point in time when the resource is expected to become unresponsive. The Sunset value is an HTTP-date timestamp, as defined in Section 7.1.1.1 of <xref target="RFC7231"/>.</t>
+         <figure>
+            <artwork type="abnf">Sunset = HTTP-date</artwork>
+         </figure>
+         <t>For example</t>
+         <figure>
+            <artwork>Sunset: Sat, 31 Dec 2018 23:59:59 GMT</artwork>
+         </figure>
+         <t>Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</t>
+         <t>After the Sunset time has arrived, it is likely that interactions with the resource will either result in client-side errors (HTTP 4xx status codes), or redirect responses (HTTP 3xx status codes). The Sunset header does not expose any information about which of those two behaviors can be expected.</t>
+         <t>Clients not interpreting an existing Sunset header field can operate as usual and simply may experience the resource becoming unavailable without getting any notification about it beforehand.</t>
+      </section>
+      <section title="Sunset and Caching" anchor="sunset-and-caching">
+         <t>It should be noted that the Sunset HTTP response header field serves a different purpose than HTTP caching <xref target="RFC7234"/>. HTTP caching is concerned with making resource representations (i.e., represented resource state) reusable, so that they can be more efficiently used. This is achieved by using header fields that allow clients and intermediaries to better understand when a resource representation can be reused, or when resource state (and thus the representation) may have changed.</t>
+         <t>The Sunset header field is not concerned with resource state at all. It only signals that a resource is expected to become unavailable at a specific point in time. There are no assumptions about if, when, or how often a resource may change state in the meantime.</t>
+         <t>For these reasons, the Sunset header field and HTTP caching should be seen as complementary, and not as overlapping in scope and functionality.</t>
+      </section>
+      <section title="IANA Considerations" anchor="iana">
+         <section title="The Sunset Response Header" anchor="iana-sunset">
+            <t>The Sunset response header should be added to the permanent registry of message header fields (see <xref target="RFC3864"/>), taking into account the guidelines given by HTTP/1.1 <xref target="RFC7231"/>.</t>
+            <t>Header Field Name: Sunset</t>
+            <t>Applicable Protocol: Hypertext Transfer Protocol (HTTP)</t>
+            <t>Status: Standard</t>
+            <t>Author/Change controller: IETF</t>
+            <t>Specification document(s): RFC XXXX</t>
+         </section>
+      </section>
+      <section title="Security Considerations" anchor="security-considerations">
+         <t>...</t>
+      </section>
+      <section title="Example" anchor="example">
+         <t>Assuming that a resource has been created in an archive that for management or compliance reason only stores resources for two years, and permanently deletes them afterwards, then the Sunset header field can be used to expose this information. If such a resource has been created on November 11, 2014, then the following header field can be included in responses:</t>
+         <figure>
+            <artwork>Sunset: Fri, 11 Nov 2018 11:11:11 GMT</artwork>
+         </figure>
+         <t>This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at the specified point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or alert applications or users about this timestamp.</t>
+         <t>Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs that it had previously assigned; if not, the response may be a more generic "404 Not Found".)</t>
+      </section>
+      <section title="Open Issues" anchor="open-issues">
+         <t>Note to RFC Editor: Please remove this section before publication.</t>
+         <t>
+            <list style="symbols">
+               <t>Human readable explanation: It would be possible to include human-readable information about the reason for the URI's disappearance. This could either be done inline (probably just a simple string), and/or by reference to a URI that will dereference to human-readable information.</t>
+               <t>Machine-readable explanation: It would be possible to include machine-readable information about the reason for the URI's disappearance. This could either be done inline (maybe name/value pairs), and/or by reference to a URI that will dereference to machine-readable information.</t>
+               <t>New URI: If the resource's new URI is known (for example when a service is migrating in a way that invalidates existing URIs, but has a plan of how these will map to new URIs), then that URI could be advertised in advance (i.e., it is not yet a 3xx, but clients might want to start working with the new URI anyway).</t>
+               <t>Timestamp in the past: Should it be allowed to have timestamps in the past? Maybe either disallow them, or specifically allow them and explain what they mean, for example the fact that a resource that now is redirecting can expose information about when it changed from being the primary resource to being the redirection.</t>
+               <t>Sunrise: If resources have planned outages (server maintenance, for example), then they might not just have a sunset to advertise, but also a sunrise. This would allow consumers to learn about how long a resource might be unavailable.</t>
+            </list>
+         </t>
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor="RFC2119">
+            <front>
+               <title abbrev="RFC Key Words">Key words for use in RFCs to Indicate Requirement Levels</title>
+               <author initials="S." surname="Bradner" fullname="Scott Bradner">
+                  <organization>Harvard University</organization>
+                  <address>
+                     <postal>
+                        <street>1350 Mass. Ave.</street>
+                        <street>Cambridge</street>
+                        <street>MA 02138</street>
+                     </postal>
+                     <phone>- +1 617 495 3864</phone>
+                  </address>
+               </author>
+               <date month="March" year="1997"/>
+            </front>
+            <seriesInfo name="RFC" value="2119"/>
+         </reference>
+         <reference anchor='RFC3864'>
+            <front>
+               <title>Registration Procedures for Message Header Fields</title>
+               <author initials='G.' surname='Klyne' fullname='G. Klyne'>
+                  <organization /></author>
+               <author initials='M.' surname='Nottingham' fullname='M. Nottingham'>
+                  <organization /></author>
+               <author initials='J.' surname='Mogul' fullname='J. Mogul'>
+                  <organization /></author>
+               <date year='2004' month='September' />
+               <abstract>
+                  <t>This specification defines registration procedures for the message header fields used by Internet mail, HTTP, Netnews and other applications. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='BCP' value='90' />
+            <seriesInfo name='RFC' value='3864' />
+            <format type='TXT' octets='36231' target='http://www.rfc-editor.org/rfc/rfc3864.txt' />
+         </reference>
+         <reference anchor='RFC7231'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless application-level protocol for distributed, collaborative, hypertext information systems. This document defines the semantics of HTTP/1.1 messages, as expressed by request methods, request header fields, response status codes, and response header fields, along with the payload of messages (metadata and body content) and mechanisms for content negotiation.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7231' />
+            <format type='TXT' octets='235053' target='http://www.rfc-editor.org/rfc/rfc7231.txt' />
+         </reference>
+      </references>
+      <references title="Informative References">
+         <reference anchor='RFC7234'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Caching</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding'>
+                  <organization />
+               </author>
+               <author initials='M.' surname='Nottingham' fullname='M. Nottingham'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless application-level protocol for distributed, collaborative, hypertext information systems. This document defines HTTP caches and the associated header fields that control cache behavior or indicate cacheable response messages.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7234' />
+            <format type='TXT' octets='90647' target='http://www.rfc-editor.org/rfc/rfc7234.txt' />
+         </reference>
+      </references>
+<!--
+      <section title="Acknowledgements" anchor="acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+-->
+   </back>
+</rfc>
