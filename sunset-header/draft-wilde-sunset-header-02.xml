@@ -15,7 +15,7 @@
             <uri>http://dret.net/netdret/</uri>
          </address>
       </author>
-      <date day="3" month="February" year="2016"/>
+      <date day="28" month="April" year="2017"/>
       <abstract>
          <t>This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future.</t>
       </abstract>
@@ -52,7 +52,7 @@
          </figure>
          <t>For example</t>
          <figure>
-            <artwork>Sunset: Sat, 31 Dec 2016 23:59:59 GMT</artwork>
+            <artwork>Sunset: Sat, 31 Dec 2018 23:59:59 GMT</artwork>
          </figure>
          <t>Clients SHOULD treat Sunset timestamps as hints: It is not guaranteed that the resource will in fact be available until that time, and will not be available after that time. However, since this information is provided by the resource itself, it does have some credibility.</t>
          <t>After the Sunset time has arrived, it is likely that interactions with the resource will either result in client-side errors (HTTP 4xx status codes), or redirect responses (HTTP 3xx status codes). The Sunset header does not expose any information about which of those two behaviors can be expected.</t>
@@ -79,7 +79,7 @@
       <section title="Example" anchor="example">
          <t>Assuming that a resource has been created in an archive that for management or compliance reason only stores resources for two years, and permanently deletes them afterwards, then the Sunset header field can be used to expose this information. If such a resource has been created on November 11, 2014, then the following header field can be included in responses:</t>
          <figure>
-            <artwork>Sunset: Fri, 11 Nov 2016 11:11:11 GMT</artwork>
+            <artwork>Sunset: Fri, 11 Nov 2018 11:11:11 GMT</artwork>
          </figure>
          <t>This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at the specified point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or alert applications or users about this timestamp.</t>
          <t>Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs that it had previously assigned; if not, the response may be a more generic "404 Not Found".)</t>
