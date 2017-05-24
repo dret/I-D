@@ -16,7 +16,7 @@
 <?rfc toc="yes" ?>
 <?rfc sortrefs="yes" ?>
 <?rfc symrefs="yes" ?>
-<rfc category="info" ipr="trust200902" docName="draft-wilde-linkset-link-rel-02">
+<rfc category="info" ipr="trust200902" docName="draft-wilde-linkset-link-rel-03">
     <front>
         <title abbrev="Linkset Link Relation Type">Linkset: A Link Relation Type for Link Sets</title>
         <author initials="E." surname="Wilde" fullname="Erik Wilde">
@@ -33,7 +33,7 @@
                 <uri>http://public.lanl.gov/herbertv/</uri>
             </address>
         </author>
-        <date day="22" month="February" year="2017"/>
+        <date day="24" month="May" year="2017"/>
         <abstract>
             <t>This specification defines the "linkset" link relation type that can be used 
                 to link to a resource that provides a set of links.</t>
@@ -54,33 +54,6 @@
         </section>
         <section title="Terminology" anchor="terminology">
             <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
-        </section>
-        <section title="Link Sets" anchor="linksets">
-            <t>...</t>
-        </section>
-        <section title="Link Set Concepts" anchor="concepts">
-            <t>...</t>
-            <section title="Link" anchor="link">
-                <t>A "link" relates resources by virtue of connecting them in a way that is meaningful to applications. Links can have any number of participating resources, but in most scenarios on the Web, and in popular link models, they often have exactly two participating resources. In addition, links almost always have directionality, meaning that participating resources play roles in a link and the link is intended to be traversed in a particular way.</t>
-            </section>
-            <section title="Source Resource" anchor="source-resource">
-                <t>For directional links (i.e., the vast majority of links on the Web and in link models), the "source resource" is a resource that is intended to be the start point of link traversal. Depending on the scenario, the source resource can be a URI-identified resource, or it can be a fragment of a URI-identified resource.</t>
-            </section>
-            <section title="Target Resource" anchor="target-resource">
-                <t>For directional links (i.e., the vast majority of links on the Web and in link models), the "target resource" is a resource that is intended to be the end point of link traversal. Depending on the scenario, the source resource can be a URI-identified resource, or it can be a fragment of a URI-identified resource.</t>
-            </section>
-            <section title="Link Anchor" anchor="link-anchor">
-                <t>A "link anchor" is any resource that is participating in a link. In directional link models, a resource can be anchored as "source resource" or as "target resource". While this matters in terms of how a link is intended to be traversed, both roles have the same fundamental meaning that the resource is participating in a link.</t>
-            </section>
-            <section title="Linked Resource" anchor="linked-resource">
-                <t>Any resource that is participating in a link (as "source resource" or as "target resource") is a "linked resource". When attempting to understand how a resource is participating in links (i.e., how it is linked), its participation in links as both "source resource" and "target resource" roles is significant.</t>
-            </section>
-            <section title="Inline Link" anchor="inline-link">
-                <t>...</t>
-            </section>
-            <section title="Out-of-line Link" anchor="out-of-line-link">
-                <t>...</t>
-            </section>
         </section>
         <section title="Scenarios" anchor="scenarios">
               <section title="Third-Party Links" anchor="third-party">
@@ -112,54 +85,93 @@
                 nature of the extent of HTTP "Link" headers.</t>
              </section>
         </section>
-        <section title="Link Relation for Linking to Link Sets" anchor="linkset-link-relation">
-            <t>The "linkset" link relation type is used by a resource to link to 
-            a resource that provides a set of links. Typically the Context IRI of these links  
-            is the URI of the responding resource but links with other Context IRIs MAY be provided.</t>
-            <t>The media type of the link set that is accessible via the Target IRI of a link with the 
-            "linkset" relation type is not constrained, but the representation of the link set MUST allow 
-            a user-agent to unambiguously determine the Context IRI of each provided link.</t>
-            <t>More than one link with a "linkset" relation type MAY be provided. 
-            Multiple such links can refer to the same set of links expressed using different 
-            representations, or to different link sets. The use of a link with the "linkset" relation 
-            type does not preclude the provision of links with other relation types, i.e. it is possible for a resource to combine both inline and out-of-line links.</t>
-         </section>
+        <section title="Origin Resource, Link Set Resource, &quot;linkset&quot; Relation Type" anchor="definitions">
+            <t>This section introduces two types of resources involved in providing links by reference,  
+                as well as the link relation type used to interlink them.</t>
+            <section title="Origin Resource" anchor="origin-resource">
+                <t>An "origin resource" is a resource that makes links in which it participates 
+                    discoverable by providing a typed link that targets a link set resource.</t>
+                <t>Depending on the scenario, the origin resource can be a 
+                    URI-identified resource or a fragment of a URI-identified resource.</t>
+            </section>
+            <section title="Link Set Resource" anchor="link-set-resource">
+                <t>A "link set resource" is a resource - other than the origin resource - with   
+                    a representation that provides one or more links in which 
+                    the origin resource participates as source or target.</t>
+                <t>Because the link set resource is distinct from the origin resource, 
+                    links provided by the link set resource must explicitly express both 
+                    the source and target of each link as a means to allow unambiguous interpretation.</t>
+            </section>
+            <section title="The &quot;linkset&quot; Relation Type for Linking to Link Sets" anchor="linkset-link-relation">
+                <t>A link with the "linkset" link relation type has as Context IRI the IRI of an origin resource, 
+                    and as Target IRI the IRI of an associated link set resource.</t>
+                <t>A link with the "linkset" relation type MAY be provided in the header and/or 
+                    the body of the origin resource's representation.</t>
+                <t>More than one link with a "linkset" relation type MAY be provided. 
+                    Multiple such links can refer to the same set of links expressed using different 
+                    representations, or to different link sets.</t> 
+                <t>The use of a link with the "linkset" relation 
+                    type does not preclude the provision of links with other relation types, 
+                    i.e. the origin resource can provide typed links other than a "linkset" link.</t>
+                <t>The link set resource MAY provide the links that pertain to the origin resource 
+                     in its response header and/or body:</t> 
+                    <t><list style="symbols">
+                        <t>In cases whereby the link set resource provides these links 
+                            in its Link response header, the payload of that header MUST comply with the 
+                            syntax defined in <xref target="RFC5988"/>. The media type of the response 
+                            body is not constrained.</t>
+                        <t>In cases whereby the link set resource provides these links 
+                            in its response body, the body 
+                            MUST allow a user-agent to unambiguously determine the source and target of 
+                            each provided link. The media type of the response 
+                            body is otherwise not constrained.</t>
+                    </list></t>
+                <t>The syntax of the Target IRI of a link with the "linkset" relation type is not 
+                specified and is left to the discretion of implementers. However, it is assumed that 
+                an unmabiguous association with the origin resource that 
+                provides the link to the Target IRI can be derived.</t>
+            </section>
+        </section>
+        
+        <section title="A JSON Format for Link Sets" anchor="json-linkset">
+            <t>Possibly, a format and media type are defined here.</t>
+        </section>
+        
          <section title="Examples" anchor="linkset-link-examples">
-            <t><xref target="Request1"/> shows a client issuing an 
-            HTTP head request for resource http://example.org/resource1.</t>
-              <figure title="Client HTTP HEAD Request" align="center" anchor="Request1">
-                <artwork align="left">
-<![CDATA[
+
+              <t>Sections <xref target="linkset-link-link-format"/> and <xref target="linkset-link-json-format"/>
+              show examples whereby the link set resource provides links pertaining to the origin resource, 
+              in its response header and body, respectively.
+              </t>
+           <section title="Links Provided in the Header of the Link Set Resource" anchor="linkset-link-link-format">
+               <t><xref target="Request1"/> shows a client issuing an 
+                   HTTP head request against origin resource http://example.org/resource1.</t>
+               
+               <figure title="Client HTTP HEAD Request" align="center" anchor="Request1">
+                   <artwork align="left">
+                       <![CDATA[
 HEAD /resource1 HTTP/1.1
 Host: example.org
 Connection: close
 ]]>
-               </artwork> 
-             </figure>
-              <t>Sections <xref target="linkset-link-link-format"/> and <xref target="linkset-link-hal-format"/>
-              show possible responses to the HTTP request of <xref target="Request1"/> that include 
-              the provision of a link with the "linkset" relation type, as well as a client 
-              following those links to retrieve a link set.
-              </t>
-           <section title="Link Set Serialized as application/link-format" anchor="linkset-link-link-format">
-             <t><xref target="Response1.1"/> shows the response to the HEAD request of 
-             <xref target="Request1"/>. The response contains a "Link" header with 
-             a link that uses the "linkset" relation type. It indicates that links are provided 
-             by another resource http://example.com/links/http://example.org/resource, which 
-             uses the media type application/link-format <xref target="RFC6690"/>. Using this 
-             media type, links are serialized in the same manner as the payload of the "Link" 
-             header, which lowers the barrier for user-agents that are already able to consume 
-             HTTP links.
+                   </artwork> 
+               </figure>
+               
+               <t><xref target="Response1.1"/> shows the response to the HEAD request of 
+             <xref target="Request1"/>. The response contains a Link header with  
+             a link that has the "linkset" relation type. It indicates that links pertaining to the 
+             origin resource are provided 
+             by link set resource http://example.com/links?uri=http%3A%2F%2Fexample.org%2Fresource.
              </t>
-              <figure title="Response to HTTP HEAD on Resource" align="center" anchor="Response1.1">
+              <figure title="Response to HTTP HEAD on Origin Resource" align="center" anchor="Response1.1">
                 <artwork align="left">
 <![CDATA[
 HTTP/1.1 200 OK
 Date: Mon, 28 Nov 2016 14:37:51 GMT
 Server: Apache-Coyote/1.1
-Link: <http://example.com/links/http://example.org/resource1>
+Link: <http://example.com/links?uri=http%3A%2F%2Fexample.org%2Fresource>
       ; rel="linkset"
-      ; type="application/link-format"
+      ; type="text/html"
 Content-Length: 5214
 Content-Type: text/html;charset=utf-8
 Connection: close
@@ -167,79 +179,127 @@ Connection: close
                 </artwork> 
               </figure>
                 <t><xref target="Request2"/> shows the client issuing an HTTP GET 
-                    request against the Target IRI of the link with the "linkset" relation 
-                    type shown in <xref target="Response1.1"/>. 
+                    request against the link set resource provided in <xref target="Response1.1"/>. 
                 </t>
-                <figure title="Client HTTP GET on application/link-format Link Set Resource" align="center" anchor="Request2">
+                <figure title="Client HTTP GET against the Link Set Resource" align="center" anchor="Request2">
                     <artwork align="left">
 <![CDATA[
-GET /links/http://example.org/resource1 HTTP/1.1
+GET /links?uri=http%3A%2F%2Fexample.org%2Fresource HTTP/1.1
 Host: example.com
-Accept: application/link-format
 Connection: close
 ]]>
                     </artwork> 
                 </figure>
-               <t><xref target="Response2.1"/> shows response to the HTTP GET request of <xref target="Request2"/>. 
-                   As can be seen from this example, in order to support an unambiguous determination of the Context IRI of 
-                   each link, an approach is taken whereby an "anchor" attribute is provided for each link. 
-                   For most (but not all) links, the Context IRI is the resource that provided the link with the "linkset" relation type, 
-                   namely http://example.org/resource1.</t>
-                <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.1">
+               <t><xref target="Response2.1"/> shows the response headers to the HTTP GET request of <xref target="Request2"/>. 
+                   The links pertaining to the origin resource are provided in the Link response header of the link set resource. 
+                   As can be seen, in order to support an unambiguous determination of the Context IRI of 
+                   each link, the "anchor" attribute is provided for each link. 
+                   Note that most, but not all, links have the origin resource as Context IRI (anchor).
+                   </t>
+                <figure title="Response to HTTP GET against the Link Set Resource" align="center" anchor="Response2.1">
                     <artwork align="left">
 <![CDATA[
 HTTP/1.1 200 OK
 
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
-Content-Length: 3018
-Content-Type: application/link-format
-
-<http://authors.example.net/johndoe>
+Link: <http://authors.example.net/johndoe>
    ; rel="author"
    ; type="application/rdf+xml"
    ; anchor="http://example.org/resource1",
-<http://authors.example.net/janedoe>
+ <http://authors.example.net/janedoe>
    ; rel="author"
    ; type="application/rdf+xml"
    ; anchor="http://example.org/resource1",
-<http://example.org/resource1/items/AF48EF.pdf>
+ <http://example.org/resource1/items/AF48EF.pdf>
    ; rel="item"
    ; type="application/pdf"
    ; anchor="http://example.org/resource1",
-<http://example.org/resource1/items/CB63DA.html>
+ <http://example.org/resource1/items/CB63DA.html>
    ; rel="item"
    ; type="text/html"
    ; anchor="http://example.org/resource1",
-<http://example.net/resource41/>
+ <http://example.net/resource41/>
    ; rel="related"
    ; type="application/pdf"
-   ; anchor="http://example.org/resource1/items/AF48EF.pdf",
-...
+   ; anchor="http://example.org/resource1/items/AF48EF.pdf"
+Content-Type: text/html
+Content-Length: 3018
+
 ]]></artwork> 
                 </figure>
             </section>
-            <section title="Link Set Serialized as application/hal+json" anchor="linkset-link-hal-format">
-             <t>In this example, the response to <xref target="Request1"/> is the same as <xref target="Response1.1"/>,
-             but the content of the "type" attribute is application/hal+json <xref target="I-D.kelly-json-hal"/> 
-             instead of application/link-format. Similarly, the user-agent's follow-up request is the same as <xref target="Request2"/>, but using 
-             application/hal+json in the "Accept" HTTP request header instead of application/link-format. 
-             <xref target="Response2.2"/> shows a response to that follow-up HTTP GET request issued 
-             for the link set resource.</t>
-                <figure title="Response to HTTP GET on the application/link-format Link Set Resource" align="center" anchor="Response2.2">
-                    <artwork align="left">
-<![CDATA[
+             <section title="Link Set Serialized as application/link-format+json" anchor="linkset-link-json-format">
+                 <t><xref target="Request3"/> shows a client issuing an 
+                     HTTP head request against origin resource 
+                      http://example.org/article?id=10.1371/journal.pone.0167475</t>
+                 
+                 <figure title="Client HTTP HEAD Request" align="center" anchor="Request3">
+                     <artwork align="left">
+                         <![CDATA[
+HEAD article?id=10.1371/journal.pone.0167475 HTTP/1.1
+Host: example.org
+Connection: close
+]]>
+                     </artwork> 
+                 </figure>
+                 <t><xref target="Response3.1"/> shows the response to the HEAD request of 
+                     <xref target="Request3"/>. The response contains a Link header with  
+                     a link that has the "linkset" relation type. It indicates that links pertaining to the 
+                     origin resource are provided 
+                     by link set resource http://example.com/links/10.1371/journal.pone.0167475, which 
+                     provicdes a representation with media type application/link-format+json.
+                 </t>
+                 <figure title="Response to HTTP HEAD on Origin Resource" align="center" anchor="Response3.1">
+                     <artwork align="left">
+                         <![CDATA[
 HTTP/1.1 200 OK
+Date: Mon, 28 Nov 2016 14:37:51 GMT
+Server: Apache-Coyote/1.1
+Link: <http://example.com/links/10.1371/journal.pone.0167475>
+      ; rel="linkset"
+      ; type="application/link-format+json"
+Content-Length: 236
+Content-Type: text/html;charset=utf-8
+Connection: close
+]]>
+                     </artwork> 
+                 </figure>
+                 <t><xref target="Request4"/> shows the client issuing an HTTP GET 
+                     request against the link set resource provided in <xref target="Response3.1"/>. 
+                 </t>
+                 <figure title="Client HTTP GET against the Link Set Resource" align="center" anchor="Request4">
+                     <artwork align="left">
+                         <![CDATA[
+GET /links/10.1371/journal.pone.0167475 HTTP/1.1
+Host: example.com
+Accept: application/link-format+json
+Connection: close
+]]>
+                     </artwork> 
+                 </figure>                
+         
+                 <t><xref target="Response4.1"/> shows the response headers to the HTTP GET request of <xref target="Request4"/>. 
+                     The links pertaining to the origin resource are provided in the response body of the link set resource 
+                     and are serialized according to the application/link-format+json media type. 
+                 </t>
+                 <figure title="Response to HTTP GET against the Link Set Resource" align="center" anchor="Response4.1">
+                     <artwork align="left">
+                         <![CDATA[
+HTTP/1.1 200 OK
+
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
-Content-Length: 2021
-Content-Type: application/hal+json
-Connection: close
+Content-Type: application/link-format+json
+Content-Length: 729
 
-...
-]]>
-                    </artwork> 
-                </figure>
+[{"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://authors.example.net/johndoe","rel":"author","type":"application/rdf+xml"},
+ {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://authors.example.net/janedoe","rel":"author","type":"application/rdf+xml"},
+ {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://example.org/resource1/items/AF48EF.pdf","rel":"item","type":},
+ {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":,"rel":,"type":"application/pdf"},
+ {"anchor":"http://example.org/resource1/items/AF48EF.pdf","href":"http://example.net/resource41/","rel":"related","type":"application/pdf"}]
+]]></artwork> 
+                 </figure>
             </section>
         </section>
         <section title="IANA Considerations" anchor="iana-considerations">
@@ -249,7 +309,7 @@ Connection: close
                     <list>
                         <t>Relation Name: linkset</t>
                         <t>Description: The Target IRI of a link with the "linkset" relation type 
-                            provides a set of links.</t>
+                            provides a set of links that pertain to the Context IRI of the link.</t>
                         <t>Reference: [[ This document ]]</t>
                     </list>
                 </t>
@@ -292,13 +352,14 @@ Connection: close
             </reference>
 -->
         </references>
-
+<!--
       <references title="Informative References">
-&I-D.kelly-json-hal-08;
       </references>
+      
+      -->
              <!--
       <section title="Acknowledgements">
-         <t>Thanks for comments and suggestions provided by ...</t>
+         <t>Thanks for comments and suggestions provided by Mark Nottingham, ...</t>
       </section>
 -->
     </back>
