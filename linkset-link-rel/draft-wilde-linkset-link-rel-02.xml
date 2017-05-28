@@ -122,39 +122,39 @@
                     links provided by the link set resource must represent both 
                     the source and target of each link as a means to allow unambiguous interpretation.</t>
             </section>
-            <section title="The &quot;linkset&quot; Relation Type for Linking to Link Sets" anchor="linkset-link-relation">
-                <t>A link with the "linkset" link relation type has as Context IRI the IRI of an origin resource, 
-                    and as Target IRI the IRI of an associated link set resource.</t>
-                <t>A link with the "linkset" relation type MAY be provided in the header and/or 
-                    the body of the origin resource's representation.</t>
-                <t>More than one link with a "linkset" relation type MAY be provided. 
-                    Multiple such links can refer to the same set of links expressed using different 
-                    representations, or to different link sets (potentially provided by different services).</t> 
-                <t>The use of a link with the "linkset" relation 
-                    type does not preclude the provision of links with other relation types, 
-                    i.e. the origin resource can provide typed links other than a "linkset" link. Therefore, the
-                    effective set of links pertaining to the origin resource is the union of the links that the
-                    resource itself provides, and of all links in which it participates which are provided by the
-                    link set resources linked from it via "linkset" links.</t>
-                <t>The link set resource MAY provide the links that pertain to the origin resource 
-                     in its HTTP response header and/or body:</t> 
-                    <t><list style="symbols">
-                        <t>In cases whereby the link set resource provides these links 
-                            in its Link HTTP response header, the payload of that header MUST comply with the 
-                            syntax defined in <xref target="RFC5988"/>. The media type of the response 
-                            body is not constrained.</t>
-                        <t>In cases whereby the link set resource provides these links 
-                            in its response body, the body 
-                            MUST allow a client to unambiguously determine the source and target of 
-                            each provided link. The media type of the response 
-                            body is otherwise not constrained.</t>
-                    </list></t>
-                <t>There is no constraint on the Target IRI of a link with the "linkset" relation type;
-                    designing and using these links is left to the discretion of implementers. However,
-                    it is assumed that 
-                an unambiguous association with the origin resource that 
-                provides the link to the Target IRI can be derived.</t>
-            </section>
+        </section>
+        <section title="The &quot;linkset&quot; Relation Type for Linking to Link Sets" anchor="linkset-link-relation">
+            <t>A link with the "linkset" link relation type has as Context IRI the IRI of an origin resource, 
+                and as Target IRI the IRI of an associated link set resource.</t>
+            <t>A link with the "linkset" relation type MAY be provided in the header and/or 
+                the body of the origin resource's representation.</t>
+            <t>More than one link with a "linkset" relation type MAY be provided. 
+                Multiple such links can refer to the same set of links expressed using different 
+                representations, or to different link sets (potentially provided by different services).</t> 
+            <t>The use of a link with the "linkset" relation 
+                type does not preclude the provision of links with other relation types, 
+                i.e. the origin resource can provide typed links other than a "linkset" link. Therefore, the
+                effective set of links pertaining to the origin resource is the union of the links that the
+                resource itself provides, and of all links in which it participates which are provided by the
+                link set resources linked from it via "linkset" links.</t>
+            <t>The link set resource MAY provide the links that pertain to the origin resource 
+                 in its HTTP response header and/or body:</t> 
+                <t><list style="symbols">
+                    <t>In cases whereby the link set resource provides these links 
+                        in its Link HTTP response header, the payload of that header MUST comply with the 
+                        syntax defined in <xref target="RFC5988"/>. The media type of the response 
+                        body is not constrained.</t>
+                    <t>In cases whereby the link set resource provides these links 
+                        in its response body, the body 
+                        MUST allow a client to unambiguously determine the source and target of 
+                        each provided link. The media type of the response 
+                        body is otherwise not constrained.</t>
+                </list></t>
+            <t>There is no constraint on the Target IRI of a link with the "linkset" relation type;
+                designing and using these links is left to the discretion of implementers. However,
+                it is assumed that 
+            an unambiguous association with the origin resource that 
+            provides the link to the Target IRI can be derived.</t>
         </section>
         
         <section title="A JSON Format for Link Sets" anchor="json-linkset">
