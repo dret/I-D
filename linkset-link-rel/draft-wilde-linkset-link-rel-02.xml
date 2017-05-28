@@ -73,17 +73,17 @@
             <t>The following sections outline some scenarios in which it is useful to have the ability to
                 separate resources and links pertaining to them.</t>
               <section title="Third-Party Links" anchor="third-party">
-                <t>In some cases, it is useful that a service other than the one providing a resource is expected 
-                to provide links for that resource. This "third-party link resource" is hosted by a link server that may be managed by 
+                <t>In some cases, it is useful that a service other than the one providing the origin resource is expected 
+                to provide links for that resource. This "third-party link set resource" is hosted by a server that may be managed by 
                 the same custodian as the interlinked resource, or by a third party. In order for the 
-                server hosting the interlinked resource to provide up-to-date and complete links about its resources, 
-                it would need to obtain them from the link server, and embed them in the resource 
+                server hosting the origin resource to provide up-to-date and complete links about its resources, 
+                it would need to obtain the link set resource from the link server, and embed the links in the resource 
                 representations prior to responding to a client. 
                 Doing so increases latency and load, which may be unnecessary if a client is not intent on 
                 consuming links. Providing links by reference, 
                 instead of by value, removes this additional latency by avoiding server-to-server 
                 communication required to obtain links. It also allows scenarios in which resources and links
-                for them are decentralized, meaning that for example links can be managed by a third party without
+                for them are decentralized, meaning that for example link set resources can be managed by a third party without
                 the resource provider getting involved or even knowing about them.</t>
             </section>
             <section title="Large Number of Links" anchor="link-volume">
@@ -102,18 +102,18 @@
                 with select relation types, thereby limiting the value of the HTTP "Link" header to clients. 
                 Providing links by reference, instead of by value, overcomes challenges related to the unpredictable 
                 nature of the extent of HTTP "Link" headers.</t>
-                <t>In the most extreme scenarios it is even conceivable that links cold be served incrementally,
+                <t>In the most extreme scenarios it is even conceivable that link set resources could be served incrementally,
                 for example through a paged resource model that clients could choose to consume as required. This
-                could be appropriate in scenarios with extremely large numbers of links, such as when representing
+                could be appropriate in scenarios with a large number of links, such as when representing
                 target links for popular resources, where there could be a large (and possibly ranked) list of
-                links for a resource, indicating how it has been participating in links as a target (see the
+                links for the origin resource, indicating how it has been participating in links as a target (see the
                 following scenario for the general concept of target links).</t>
              </section>
             <section title="Incoming Links" anchor="incoming-links">
                 <t>In most cases, it is important to know the links in which a resource participates as a source
-                    (i.e., the links which can be used to navigate from the resource). However, in some cases it
+                    (i.e., the links which can be used to navigate from the origin resource). However, in some cases it
                     may also be interesting to know (some of) the links in which a resource participates as a target
-                    (i.e., the links which can be used to navigate to the resource).</t>
+                    (i.e., the links which can be used to navigate to the origin resource).</t>
                 <t>In most scenarios this knowledge is incomplete because in most Web-inspired scenarios, links to
                     a resource can be made without the linked resource knowing about it, and thus knowing all links
                     linking to a resource is impossible. However, even incomplete information can be useful in some
