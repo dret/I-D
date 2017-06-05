@@ -71,18 +71,22 @@
             <t>The following sections outline some scenarios in which it is useful to have the ability to
                 separate resources and links pertaining to them.</t>
               <section title="Third-Party Links" anchor="third-party">
-                <t>In some cases, it is useful that a service other than the one providing the origin resource is expected 
-                to provide links for that resource. This "third-party link set resource" is hosted by a server that may be managed by 
-                the same custodian as the interlinked resource, or by a third party. In order for the 
-                server hosting the origin resource to provide up-to-date and complete links about its resources, 
-                it would need to obtain the link set resource from the link server, and embed the links in the resource 
-                representations prior to responding to a client. 
-                Doing so increases latency and load, which may be unnecessary if a client is not intent on 
-                consuming links. Providing links by reference, 
-                instead of by value, removes this additional latency by avoiding server-to-server 
-                communication required to obtain links. It also allows scenarios in which resources and links
-                for them are decentralized, meaning that for example link set resources can be managed by a third party without
-                the resource provider getting involved or even knowing about them.</t>
+                 <t>In some cases, it is useful that links pertaining to an origin resource are provided 
+                      by a server other than the one that hosts the origin resource. For example, this allows:</t>
+                     <t><list style="symbols">
+                        <t>Providing links in which the origin resource is involved not just as source but 
+                             also as target.</t> 
+                        <t>Providing links pertaining to the original resource that the server hosting that 
+                             resource is not even aware of.</t>
+                        <t>External management of links pertaining to the origin resource in a special-purpose service.</t>
+                     </list></t>
+                <t>In such cases, a third-party link set resource provides links pertaining to the origin resource. 
+                   This link set resource may be managed by the same custodian as the origin resource or by a third party.</t>
+                <t>In order for the server hosting the origin resource to provide up-to-date and complete links about it, 
+                   it would need to obtain the links from the link set resource, and embed them in the origin resource’s 
+                   representations prior to responding to a client. Doing so increases latency and load, 
+                   which may be unnecessary if a client is not intent on consuming links. Providing links by reference, 
+                  instead of by value, removes the server-to-server communication required to obtain links.</t>
             </section>
             <section title="Large Number of Links" anchor="link-volume">
                 <t>When conveying links in the HTTP "Link" header, cases exist in which the size of the HTTP 
