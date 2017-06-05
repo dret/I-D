@@ -147,11 +147,11 @@
                 then this latter link points at links pertaining to the link set resource, 
                 i.e. in the context of the latter link, the link set resource is an origin resource.</t>
         </section>
-        
+<!--        
         <section title="A JSON Format for Link Sets" anchor="json-linkset">
             <t>Possibly, a format and media type are defined here.</t>
         </section>
-        
+-->        
          <section title="Examples" anchor="linkset-link-examples">
 
               <t>Sections <xref target="linkset-link-link-format"/> and <xref target="linkset-link-json-format"/>
@@ -263,7 +263,7 @@ Connection: close
                      a link that has the "linkset" relation type. It indicates that links pertaining to the 
                      origin resource are provided 
                      by link set resource http://example.com/links/10.1371/journal.pone.0167475, which 
-                     provides a representation with media type application/link-format+json.
+                     provides a representation with vendor media type application/vnd.example.org.linkset+json.
                  </t>
                  <figure title="Response to HTTP HEAD on Origin Resource" align="center" anchor="Response3.1">
                      <artwork align="left">
@@ -273,7 +273,7 @@ Date: Mon, 28 Nov 2016 14:37:51 GMT
 Server: Apache-Coyote/1.1
 Link: <http://example.com/links/10.1371/journal.pone.0167475>
       ; rel="linkset"
-      ; type="application/link-format+json"
+      ; type="application/vnd.example.org.linkset+json"
 Content-Length: 236
 Content-Type: text/html;charset=utf-8
 Connection: close
@@ -288,7 +288,7 @@ Connection: close
                          <![CDATA[
 GET /links/10.1371/journal.pone.0167475 HTTP/1.1
 Host: example.com
-Accept: application/link-format+json
+Accept: application/vnd.example.org.linkset+json
 Connection: close
 ]]>
                      </artwork> 
@@ -296,7 +296,7 @@ Connection: close
          
                  <t><xref target="Response4.1"/> shows the response headers to the HTTP GET request of <xref target="Request4"/>. 
                      The links pertaining to the origin resource are provided in the response body of the link set resource 
-                     and are serialized according to the application/link-format+json media type. 
+                     and are serialized according to the vendor media type application/vnd.example.org.linkset+json. 
                  </t>
                  <figure title="Response to HTTP GET against the Link Set Resource" align="center" anchor="Response4.1">
                      <artwork align="left">
@@ -305,7 +305,7 @@ HTTP/1.1 200 OK
 
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
-Content-Type: application/link-format+json
+Content-Type: application/vnd.example.org.linkset+json
 Content-Length: 729
 
 [{"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://authors.example.net/johndoe","rel":"author","type":"application/rdf+xml"},
