@@ -154,9 +154,11 @@
             <t>There is no constraint on the Target IRI of a link with the "linkset" relation type;
                 designing and using these links is left to the discretion of implementers.</t>
              <t>If an origin resource provides a "linkset" link pointing at a link set resource, 
-                and that link set resource provides a "linkset" link in its turn, 
-                then this latter link points at links pertaining to the link set resource, 
-                i.e. in the context of the latter link, the link set resource is an origin resource.</t>
+                and that link set resource provides a "linkset" link in turn, 
+                then this latter link points at links pertaining to the link set resource. 
+                This means that in the context of the latter link, the link set resource is an origin
+                resource. This also means that linkset relations are not transitive; it is up to a client
+                to decide whether they follow "chains" of linkset links or not.</t>
         </section>
 <!--        
         <section title="A JSON Format for Link Sets" anchor="json-linkset">
