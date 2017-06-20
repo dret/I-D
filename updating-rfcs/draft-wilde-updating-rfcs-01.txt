@@ -1,0 +1,224 @@
+
+
+
+
+Network Working Group                                           E. Wilde
+Internet-Draft                                           CA Technologies
+Intended status: Standards Track                      September 14, 2016
+Expires: March 18, 2017
+
+
+                             Updating RFCs
+                      draft-wilde-updating-rfcs-01
+
+Abstract
+
+   As part of document metadata, RFCs can reference existing RFC that
+   they update or obsolete.  While obsoleting is well-understood
+   (replace the obsoleted RFC in its entirety), updating has more
+   nuances because the updated RFC remains valid.  This document
+   contains some clarifications about how to handle updating in a way
+   that makes it easier for readers to understand how the original and
+   the updating RFC relate.
+
+Note to Readers
+
+   This draft should be discussed on the rfc-interest mailing list [1].
+
+   Online access to all versions and files is available on github [2].
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at http://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on March 18, 2017.
+
+Copyright Notice
+
+   Copyright (c) 2016 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+
+
+
+
+Wilde                    Expires March 18, 2017                 [Page 1]
+
+Internet-Draft                Updating RFCs               September 2016
+
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (http://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Reasons for updating RFC 7233 . . . . . . . . . . . . . . . .   2
+   3.  Documenting the Update Reasons  . . . . . . . . . . . . . . .   3
+   4.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     4.1.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     4.2.  Informative References  . . . . . . . . . . . . . . . . .   4
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   4
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   4
+
+1.  Introduction
+
+   The "RFC Style Guide" [RFC7322] defines two possible ways in which an
+   RFC can relate to existing RFCs: It can obsolete existing RFCs, and/
+   or it can update existing RFCs.  When obsoleting an RFC, the
+   obsoleted RFC is effectively replaced in its entirety by the
+   obsoleting RFC (or parts of it).  For updates, the relationship is a
+   little less clear.
+
+   The obsoleted "Instructions to RFC Authors" [RFC2223] in Section 12
+   describe what "Updates" and "Obsoletes" mean.  These descriptions do
+   not appear in RFC 7322, and even if they did, they might still not
+   always be sufficient to understand the exact nature of the update.
+
+   This memo therefore recommends that RFC authors should include
+   explicit information about any updates that their RFC makes, and
+   include this in a place where it is easy to locate.  This way,
+   readers of the updated RFC as well as those of the updating RFC can
+   easily understand how the two documents relate.
+
+2.  Reasons for updating RFC 7233
+
+   This document clarifies the way in which RFCs should describe their
+   relationship to updated RFCs.  It proposes to include individual
+   "Reasons for updating RFC ..." sections for all updated RFCs as
+   section(s) early on in the document.  These sections are supposed to
+
+
+
+
+Wilde                    Expires March 18, 2017                 [Page 2]
+
+Internet-Draft                Updating RFCs               September 2016
+
+
+   supplement the more formal "Updates" metadata and are not intended to
+   replace it.
+
+3.  Documenting the Update Reasons
+
+   RFC authors that use "Updates" in their document should include
+   individual "Reasons for updating ..." sections for each updated RFC.
+   These sections should be placed relatively early in the document.  In
+   each of these sections, there should be a short description of the
+   nature of the update.
+
+   Authors should note that these sections are in no way intended to
+   replace the more formal "Updates" metadata in the RFC itself.
+   Instead, for each of the RFCs listed in the "Updates" metadata, one
+   such section should be added.
+
+   When writing these sections, it helps to specifically think about the
+   two possible perspectives:
+
+      When reading the updating RFC, there is a clear dependency on the
+      updated RFC.  The most important question for somebody reading and
+      implementing the updating RFC is how this will affect
+      interoperability with implementations only implementing the
+      updated RFC.  Documenting the expected behavior will make it
+      easier for implementers to understand the how different
+      implementations can be expected to interact.
+
+      When reading the updated RFC, it is important to keep in mind that
+      it is still valid as a standalone document.  The most important
+      question for somebody who has implemented the updated RFC is how
+      the new updating RFC may affect interoperability.  Documenting why
+      the updating RFC chose to explicitly update (instead of just being
+      an extension/add-on) will make it easier to understand the nature
+      of the update.
+
+   Generally speaking, using "Updates" often has one of two possible
+   motivations: One is a bug fix or a clarification that negatively
+   affected the original specification, in at least some of the
+   scenarios and implementations.  In such a case, the update should be
+   of interest to everybody implementing the updated RFC, and the
+   section clearly state why and how that is the case.
+
+   The second motivation is that the updating RFC is a backwards
+   compatible extension, which means that strictly speaking, it does not
+   even need to mention the updated RFC.  However, there may be reasons
+   to establish the relationship between the RFCs so the implementers
+   are aware of it and that new implementations of the updated RFC are
+   more likely to also implement the extension in the updating RFC.  In
+
+
+
+Wilde                    Expires March 18, 2017                 [Page 3]
+
+Internet-Draft                Updating RFCs               September 2016
+
+
+   such a case, the section should be clear about the fact that the
+   update is optional, and may make a case for new implementations to
+   support the extension as well.
+
+   In case of non-protocol documents (such as this one), the general
+   question is the same: Does the updated practice specified in the
+   updating document warrant mentioning in the updated RFC?  Once again,
+   if the author of the updating RFC thinks that this would be
+   appropriate, the explanation of the practice update should be given
+   in the "Reasons for updating ..." Section Section 3, so that it is
+   easy to understand why and how the practice was updated.
+
+4.  References
+
+4.1.  Normative References
+
+   [RFC7322]  Flanagan, H. and S. Ginoza, "RFC Style Guide", RFC 7322,
+              DOI 10.17487/RFC7322, September 2014,
+              <http://www.rfc-editor.org/info/rfc7322>.
+
+4.2.  Informative References
+
+   [RFC2223]  Postel, J. and J. Reynolds, "Instructions to RFC Authors",
+              RFC 2223, DOI 10.17487/RFC2223, October 1997,
+              <http://www.rfc-editor.org/info/rfc2223>.
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by Benoit Claise,
+   Spencer Dawkins, Heather Flanagan, and Tony Hansen.
+
+Author's Address
+
+   Erik Wilde
+   CA Technologies
+
+   Email: erik.wilde@dret.net
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                    Expires March 18, 2017                 [Page 4]
