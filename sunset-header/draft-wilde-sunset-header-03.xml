@@ -84,18 +84,6 @@
          <t>This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at the specified point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or alert applications or users about this timestamp.</t>
          <t>Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs that it had previously assigned; if not, the response may be a more generic "404 Not Found".)</t>
       </section>
-      <section title="Open Issues" anchor="open-issues">
-         <t>Note to RFC Editor: Please remove this section before publication.</t>
-         <t>
-            <list style="symbols">
-               <t>Human readable explanation: It would be possible to include human-readable information about the reason for the URI's disappearance. This could either be done inline (probably just a simple string), and/or by reference to a URI that will dereference to human-readable information.</t>
-               <t>Machine-readable explanation: It would be possible to include machine-readable information about the reason for the URI's disappearance. This could either be done inline (maybe name/value pairs), and/or by reference to a URI that will dereference to machine-readable information.</t>
-               <t>New URI: If the resource's new URI is known (for example when a service is migrating in a way that invalidates existing URIs, but has a plan of how these will map to new URIs), then that URI could be advertised in advance (i.e., it is not yet a 3xx, but clients might want to start working with the new URI anyway).</t>
-               <t>Timestamp in the past: Should it be allowed to have timestamps in the past? Maybe either disallow them, or specifically allow them and explain what they mean, for example the fact that a resource that now is redirecting can expose information about when it changed from being the primary resource to being the redirection.</t>
-               <t>Sunrise: If resources have planned outages (server maintenance, for example), then they might not just have a sunset to advertise, but also a sunrise. This would allow consumers to learn about how long a resource might be unavailable.</t>
-            </list>
-         </t>
-      </section>
    </middle>
    <back>
       <references title="Normative References">
