@@ -1,3 +1,4 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -380,14 +381,15 @@
 <link href="#rfc.section.2.2" rel="Chapter" title="2.2 Link Set Resource">
 <link href="#rfc.section.3" rel="Chapter" title="3 Scenarios">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Third-Party Links">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Large Number of Links">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Challenges Writing Links in Header">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Large Number of Links">
 <link href="#rfc.section.4" rel="Chapter" title='4 The "linkset" Relation Type for Linking to Link Sets'>
 <link href="#rfc.section.5" rel="Chapter" title="5 Document Formats for Link Sets">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Native Document Format for Link Sets: application/linkset">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 JSON Document Format for Link Sets: application/linkset+json">
 <link href="#rfc.section.6" rel="Chapter" title="6 Examples">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Links Provided in the Header of the Link Set Resource">
-<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Link Set Serialized as application/link-format+json">
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Links Provided in the Body of the Link Set Resource,                   Link Set Serialized as application/linkset+json">
 <link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 Link Relation Type: linkset">
 <link href="#rfc.section.7.2" rel="Chapter" title="7.2 Media Type: application/linkset">
@@ -397,7 +399,7 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.6.1 - http://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.6.2 - http://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Wilde, E. and H. Van de Sompel" />
@@ -472,7 +474,9 @@
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">Third-Party Links</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">Large Number of Links</a>
+<li>3.2.   <a href="#rfc.section.3.2">Challenges Writing Links in Header</a>
+</li>
+<li>3.3.   <a href="#rfc.section.3.3">Large Number of Links</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">The "linkset" Relation Type for Linking to Link Sets</a>
 </li>
@@ -486,7 +490,7 @@
 </li>
 <ul><li>6.1.   <a href="#rfc.section.6.1">Links Provided in the Header of the Link Set Resource</a>
 </li>
-<li>6.2.   <a href="#rfc.section.6.2">Link Set Serialized as application/link-format+json</a>
+<li>6.2.   <a href="#rfc.section.6.2">Links Provided in the Body of the Link Set Resource,                   Link Set Serialized as application/linkset+json</a>
 </li>
 </ul><li>7.   <a href="#rfc.section.7">IANA Considerations</a>
 </li>
@@ -524,6 +528,7 @@
 </h1>
 <p id="rfc.section.2.2.p.1">A "link set resource" is a resource - distinct from the origin resource, and possibly linked to from the origin resource - that provides one or more links in which the origin resource participates.</p>
 <p id="rfc.section.2.2.p.2">Because the link set resource is distinct from the origin resource, links provided by the link set resource must represent both the source and target of each link to allow unambiguous interpretation.</p>
+<p id="rfc.section.2.2.p.3">Link set resources can be represented in any way that allows representation of links in a way that supports both source and target anchors of links. Section <a href="#linkset-formats" class="xref">Section 5</a> defines two possible representations, both of which are based on the link model introduced by Web Linking <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#scenarios" id="scenarios">Scenarios</a>
 </h1>
@@ -543,11 +548,15 @@
 <p id="rfc.section.3.1.p.3">In such cases, a third-party link set resource provides links pertaining to the origin resource.  This link set resource may be managed by the same custodian as the origin resource, or by a third party.</p>
 <p id="rfc.section.3.1.p.4">In order for the server hosting the origin resource to provide an up-to-date and complete set of links for it, it would need to obtain the links from the link set resource, and embed them in the origin resource's representations prior to responding to a client. Doing so would increase latency and load, which may be unnecessary if a client is not intent on consuming these links. Providing links by reference, instead of by value, removes the server-to-server communication and resulting overhead required to obtain links. Instead, the consumer of the origin resource can decide if they need the additional links as context for the resource.</p>
 <h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#link-volume" id="link-volume">Large Number of Links</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#header-writing" id="header-writing">Challenges Writing Links in Header</a>
 </h1>
-<p id="rfc.section.3.2.p.1">When conveying links in the HTTP "Link" header, it is possible for the size of the HTTP response header to become unpredictable. This can be the case when links are determined dynamically dependent on a range of contextual factors. It is possible to statically configure a web server to correctly handle large HTTP response headers by specifying an upper boundary for their size. But when the number of links is unpredictable, estimating a reliable upper boundary is challenging.</p>
-<p id="rfc.section.3.2.p.2">HTTP <a href="#RFC7231" class="xref">[RFC7231]</a> defines error codes related to excess communication by the user agent ("413 Request Entity Too Large" and "414 Request-URI Too Long"), but no specific error codes are defined to indicate that a response header exceeds the upper boundary that can be handled by the server, and thus it has been truncated.  As a result, applications take counter measures aimed at controlling the size of the HTTP "Link" header, for example by limiting the links they provide to those with select relation types, thereby limiting the value of the HTTP "Link" header to clients.  Providing links by reference, instead of by value, overcomes challenges related to the unpredictable nature of the extent of HTTP "Link" headers.</p>
-<p id="rfc.section.3.2.p.3">In more extreme scenarios it is conceivable that the number of links pertaining to the origin resource becomes so large that the response from the associated link set resource becomes too large.  This could be the case for highly popular origin resources, when the link set includes incoming links as well. In such cases, the link set resource could deliver responses incrementally, for example, using a paged resource model that clients could consume as required.</p>
+<p id="rfc.section.3.2.p.1">In some cases, it is not straightforward to write links to the HTTP Link header from an application. This can, for example, be the case because not all required link information is available to the application or because the application does not have the capability to directly write HTTP headers.  In such cases, providing links by reference can be a solution because a link to a link set pertaining to a resource can typcially be added by means of a web server rewrite rule that leverages the resource's URI.</p>
+<h1 id="rfc.section.3.3">
+<a href="#rfc.section.3.3">3.3.</a> <a href="#link-volume" id="link-volume">Large Number of Links</a>
+</h1>
+<p id="rfc.section.3.3.p.1">When conveying links in the HTTP "Link" header, it is possible for the size of the HTTP response header to become unpredictable. This can be the case when links are determined dynamically dependent on a range of contextual factors. It is possible to statically configure a web server to correctly handle large HTTP response headers by specifying an upper boundary for their size. But when the number of links is unpredictable, estimating a reliable upper boundary is challenging.</p>
+<p id="rfc.section.3.3.p.2">HTTP <a href="#RFC7231" class="xref">[RFC7231]</a> defines error codes related to excess communication by the user agent ("413 Request Entity Too Large" and "414 Request-URI Too Long"), but no specific error codes are defined to indicate that a response header exceeds the upper boundary that can be handled by the server, and thus it has been truncated.  As a result, applications take counter measures aimed at controlling the size of the HTTP "Link" header, for example by limiting the links they provide to those with select relation types, thereby limiting the value of the HTTP "Link" header to clients.  Providing links by reference, instead of by value, overcomes challenges related to the unpredictable nature of the extent of HTTP "Link" headers.</p>
+<p id="rfc.section.3.3.p.3">In more extreme scenarios it is conceivable that the number of links pertaining to the origin resource becomes so large that the response from the associated link set resource becomes too large.  This could be the case for highly popular origin resources, when the link set includes incoming links as well. In such cases, the link set resource could deliver responses incrementally, for example, using a paged resource model that clients could consume as required.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#linkset-link-relation" id="linkset-link-relation">The "linkset" Relation Type for Linking to Link Sets</a>
 </h1>
@@ -567,15 +576,49 @@
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#linkset-formats" id="linkset-formats">Document Formats for Link Sets</a>
 </h1>
-<p id="rfc.section.5.p.1">RFC 5988bis <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a></p>
+<p id="rfc.section.5.p.1">This section specifies two document formats to convey link sets, one that is identical to the payload of the HTTP Link header as specified in <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, the other a JSON-based format that does not have the character encoding limitations to which HTTP headers are subject as per <a href="#RFC5987" class="xref">[RFC5987]</a>.</p>
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#linkset-native" id="linkset-native">Native Document Format for Link Sets: application/linkset</a>
 </h1>
-<p id="rfc.section.5.1.p.1">RFC 5988bis <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a></p>
+<p id="rfc.section.5.1.p.1">This document format is identical to the payload of the HTTP Link header. It is defined in Section 3 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, more specifically by its ABNF production rule for "Link" and subsequent ones.  The media type for this format is application/linkset.</p>
 <h1 id="rfc.section.5.2">
 <a href="#rfc.section.5.2">5.2.</a> <a href="#linkset-json" id="linkset-json">JSON Document Format for Link Sets: application/linkset+json</a>
 </h1>
-<p id="rfc.section.5.2.p.1">JSON <a href="#RFC7159" class="xref">[RFC7159]</a></p>
+<p id="rfc.section.5.2.p.1">The JSON-based format for a link set document is defined by the "links" production rule and subsequent ones from the ABNF in <a href="#ABNF-linkset-json" class="xref">Figure 1</a>. The media type for the format is application/linkset+json.</p>
+<div id="rfc.figure.1"></div>
+<div id="ABNF-linkset-json"></div>
+<pre>
+links = begin-array link *( value-separator link ) end-array
+link = begin-object link-target *( value-separator link-param ) end-object
+link-target = quotation-mark "href" quotation-mark name-separator quotation-mark URI quotation-mark
+link-param = quotation-mark link-param quotation-mark name-separator quotation-mark relation-types quotation-mark
+link-param = ( ( quotation-mark "rel" quotation-mark name-separator quotation-mark relation-types quotation-mark )
+             | ( quotation-mark "anchor" quotation-mark name-separator quotation-mark URI quotation-mark )
+             | ( quotation-mark "rev" quotation-mark name-separator quotation-mark relation-types quotation-mark )
+             | ( quotation-mark "hreflang" quotation-mark name-separator quotation-mark Language-Tag quotation-mark )
+             | ( quotation-mark "media" quotation-mark name-separator quotation-mark media-query-list quotation-mark )                 
+             | ( quotation-mark "title" quotation-mark name-separator quotation-mark unquoted-string quotation-mark )                 
+             | ( quotation-mark "type" quotation-mark name-separator quotation-mark media-type quotation-mark ) 
+             | ( quotation-mark link-extension-attribute quotation-mark name-separator quotation-mark unquoted-string quotation-mark ) 
+             | ( link-extension ) )
+relation-types = relation-type *( ws relation-type ) 
+relation-type  = reg-rel-type | ext-rel-type
+reg-rel-type   = LOALPHA *( LOALPHA | DIGIT | "." | "-" )
+ext-rel-type   = URI      
+link-extension-attribute = unquoted-string
+unquoted-string = *char
+
+                    </pre>
+<p class="figure">Figure 1: ABNF that defines the application/linkset+json format</p>
+<p id="rfc.section.5.2.p.2">The ABNF includes production rules from other specifications, as follows:</p>
+<p></p>
+
+<ul>
+<li>From <a href="#RFC7159" class="xref">[RFC7159]</a>: begin-array , end-array , begin-object , end-object , value-separator , name-separator , ws , quotation-mark , char</li>
+<li>From <a href="#RFC5987" class="xref">[RFC5987]</a>: Language-Tag</li>
+<li>From <a href="#W3C.REC-html401-19991224" class="xref">[W3C.REC-html401-19991224]</a>: media-query-list</li>
+<li>From <a href="#RFC3986" class="xref">[RFC3986]</a>: URI</li>
+</ul>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#linkset-link-examples" id="linkset-link-examples">Examples</a>
 </h1>
@@ -583,8 +626,8 @@
 <h1 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#linkset-link-link-format" id="linkset-link-link-format">Links Provided in the Header of the Link Set Resource</a>
 </h1>
-<p><a href="#Request1" class="xref">Figure 1</a> shows a client issuing an HTTP head request against origin resource http://example.org/resource1.</p>
-<div id="rfc.figure.1"></div>
+<p><a href="#Request1" class="xref">Figure 2</a> shows a client issuing an HTTP head request against origin resource http://example.org/resource1.</p>
+<div id="rfc.figure.2"></div>
 <div id="Request1"></div>
 <pre>
 HEAD /resource1 HTTP/1.1
@@ -592,9 +635,9 @@ Host: example.org
 Connection: close
 
                    </pre>
-<p class="figure">Figure 1: Client HTTP HEAD Request</p>
-<p><a href="#Response1.1" class="xref">Figure 2</a> shows the response to the HEAD request of <a href="#Request1" class="xref">Figure 1</a>. The response contains a Link header with a link that uses the "linkset" relation type. It indicates that links pertaining to the origin resource are provided by link set resource http://example.com/links?uri=http%3A%2F%2Fexample.org%2Fresource.  </p>
-<div id="rfc.figure.2"></div>
+<p class="figure">Figure 2: Client HTTP HEAD Request</p>
+<p><a href="#Response1.1" class="xref">Figure 3</a> shows the response to the HEAD request of <a href="#Request1" class="xref">Figure 2</a>. The response contains a Link header with a link that uses the "linkset" relation type. It indicates that links pertaining to the origin resource are provided by link set resource http://example.com/links?uri=http%3A%2F%2Fexample.org%2Fresource.  </p>
+<div id="rfc.figure.3"></div>
 <div id="Response1.1"></div>
 <pre>
 HTTP/1.1 200 OK
@@ -608,10 +651,10 @@ Content-Type: text/html;charset=utf-8
 Connection: close
 
                 </pre>
-<p class="figure">Figure 2: Response to HTTP HEAD on Origin Resource</p>
+<p class="figure">Figure 3: Response to HTTP HEAD on Origin Resource</p>
 <p id="rfc.section.6.1.p.3">While in this example the IRI of the linkset resource uses a pattern that represents the IRI of the origin resource, this is opaque to the client, which simply follows the provided linkset IRI when retrieving the linkset resource.</p>
-<p><a href="#Request2" class="xref">Figure 3</a> shows the client issuing an HTTP GET request against the link set resource provided in <a href="#Response1.1" class="xref">Figure 2</a>.  </p>
-<div id="rfc.figure.3"></div>
+<p><a href="#Request2" class="xref">Figure 4</a> shows the client issuing an HTTP GET request against the link set resource provided in <a href="#Response1.1" class="xref">Figure 3</a>.  </p>
+<div id="rfc.figure.4"></div>
 <div id="Request2"></div>
 <pre>
 GET /links?uri=http%3A%2F%2Fexample.org%2Fresource HTTP/1.1
@@ -619,13 +662,12 @@ Host: example.com
 Connection: close
 
                     </pre>
-<p class="figure">Figure 3: Client HTTP GET against the Link Set Resource</p>
-<p><a href="#Response2.1" class="xref">Figure 4</a> shows the response headers to the HTTP GET request of <a href="#Request2" class="xref">Figure 3</a>.  The links pertaining to the origin resource are provided in the Link response header of the link set resource.  As can be seen, in order to support an unambiguous determination of the Context IRI of each link, the "anchor" attribute is provided for each link.  Note that most, but not all, links have the origin resource as Context IRI (anchor).  </p>
-<div id="rfc.figure.4"></div>
+<p class="figure">Figure 4: Client HTTP GET against the Link Set Resource</p>
+<p><a href="#Response2.1" class="xref">Figure 5</a> shows the response headers to the HTTP GET request of <a href="#Request2" class="xref">Figure 4</a>.  The links pertaining to the origin resource are provided in the Link response header of the link set resource.  As can be seen, in order to support an unambiguous determination of the Context IRI of each link, the "anchor" attribute is provided for each link.  Note that most, but not all, links have the origin resource as Context IRI (anchor).  </p>
+<div id="rfc.figure.5"></div>
 <div id="Response2.1"></div>
 <pre>
 HTTP/1.1 200 OK
-
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
 Link: &lt;http://authors.example.net/johndoe&gt;
@@ -650,14 +692,13 @@ Link: &lt;http://authors.example.net/johndoe&gt;
    ; anchor="http://example.org/resource1/items/AF48EF.pdf"
 Content-Type: text/html
 Content-Length: 3018
-
 </pre>
-<p class="figure">Figure 4: Response to HTTP GET against the Link Set Resource</p>
+<p class="figure">Figure 5: Response to HTTP GET against the Link Set Resource</p>
 <h1 id="rfc.section.6.2">
-<a href="#rfc.section.6.2">6.2.</a> <a href="#linkset-link-json-format" id="linkset-link-json-format">Link Set Serialized as application/link-format+json</a>
+<a href="#rfc.section.6.2">6.2.</a> <a href="#linkset-link-json-format" id="linkset-link-json-format">Links Provided in the Body of the Link Set Resource,                   Link Set Serialized as application/linkset+json</a>
 </h1>
-<p><a href="#Request3" class="xref">Figure 5</a> is an example of a client issuing an HTTP head request against origin resource http://example.org/article?id=10.1371/journal.pone.0167475</p>
-<div id="rfc.figure.5"></div>
+<p><a href="#Request3" class="xref">Figure 6</a> is an example of a client issuing an HTTP head request against origin resource http://example.org/article?id=10.1371/journal.pone.0167475</p>
+<div id="rfc.figure.6"></div>
 <div id="Request3"></div>
 <pre>
 HEAD article?id=10.1371/journal.pone.0167475 HTTP/1.1
@@ -665,9 +706,9 @@ Host: example.org
 Connection: close
 
                      </pre>
-<p class="figure">Figure 5: Client HTTP HEAD Request</p>
-<p><a href="#Response3.1" class="xref">Figure 6</a> shows the response to the HEAD request of <a href="#Request3" class="xref">Figure 5</a>. The response contains a Link header with a link that has the "linkset" relation type. It indicates that links pertaining to the origin resource are provided by link set resource http://example.com/links/10.1371/journal.pone.0167475, which provides a representation with vendor media type application/vnd.example.org.linkset+json.  </p>
-<div id="rfc.figure.6"></div>
+<p class="figure">Figure 6: Client HTTP HEAD Request</p>
+<p><a href="#Response3.1" class="xref">Figure 7</a> shows the response to the HEAD request of <a href="#Request3" class="xref">Figure 6</a>. The response contains a Link header with a link that has the "linkset" relation type. It indicates that links pertaining to the origin resource are provided by link set resource http://example.com/links/10.1371/journal.pone.0167475, which provides a representation with vendor media type application/vnd.example.org.linkset+json.  </p>
+<div id="rfc.figure.7"></div>
 <div id="Response3.1"></div>
 <pre>
 HTTP/1.1 200 OK
@@ -675,42 +716,42 @@ Date: Mon, 28 Nov 2016 14:37:51 GMT
 Server: Apache-Coyote/1.1
 Link: &lt;http://example.com/links/10.1371/journal.pone.0167475&gt;
       ; rel="linkset"
-      ; type="application/vnd.example.org.linkset+json"
+      ; type="application/linkset+json"
 Content-Length: 236
 Content-Type: text/html;charset=utf-8
 Connection: close
 
                      </pre>
-<p class="figure">Figure 6: Response to HTTP HEAD on Origin Resource</p>
+<p class="figure">Figure 7: Response to HTTP HEAD on Origin Resource</p>
 <p id="rfc.section.6.2.p.3">In this example, the IRI of the linkset resource does not directly represent the IRI of the origin resource anymore. There still is an association possible through a IRI pattern that is including DOI information, but as in the example above, the linkset IRI is opaque to the client which simply accesses the IRI to retrieve the linkset resource.</p>
-<p><a href="#Request4" class="xref">Figure 7</a> shows the client issuing an HTTP GET request against the link set resource provided in <a href="#Response3.1" class="xref">Figure 6</a>.  </p>
-<div id="rfc.figure.7"></div>
+<p><a href="#Request4" class="xref">Figure 8</a> shows the client issuing an HTTP GET request against the link set resource provided in <a href="#Response3.1" class="xref">Figure 7</a>.  </p>
+<div id="rfc.figure.8"></div>
 <div id="Request4"></div>
 <pre>
 GET /links/10.1371/journal.pone.0167475 HTTP/1.1
 Host: example.com
-Accept: application/vnd.example.org.linkset+json
+Accept: application/linkset+json
 Connection: close
 </pre>
-<p class="figure">Figure 7: Client HTTP GET against the Link Set Resource</p>
-<p><a href="#Response4.1" class="xref">Figure 8</a> shows the response headers to the HTTP GET request of <a href="#Request4" class="xref">Figure 7</a>.  The links pertaining to the origin resource are provided in the response body of the link set resource and are serialized according to the vendor media type application/vnd.example.org.linkset+json.  </p>
-<div id="rfc.figure.8"></div>
+<p class="figure">Figure 8: Client HTTP GET against the Link Set Resource</p>
+<p><a href="#Response4.1" class="xref">Figure 9</a> shows the response headers to the HTTP GET request of <a href="#Request4" class="xref">Figure 8</a>.  The links pertaining to the origin resource are provided in the response body of the link set resource and are serialized according to the vendor media type application/vnd.example.org.linkset+json.  </p>
+<div id="rfc.figure.9"></div>
 <div id="Response4.1"></div>
 <pre>
 HTTP/1.1 200 OK
-
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
-Content-Type: application/vnd.example.org.linkset+json
-Content-Length: 729
+Content-Type: application/linkset+json
+Content-Length: 794
 
 [{"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://authors.example.net/johndoe","rel":"author","type":"application/rdf+xml"},
  {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://authors.example.net/janedoe","rel":"author","type":"application/rdf+xml"},
- {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://example.org/resource1/items/AF48EF.pdf","rel":"item","type":},
- {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":,"rel":,"type":"application/pdf"},
+ {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://example.org/resource1/items/AF48EF.pdf","rel":"item","type":"text/html"},
+ {"anchor":"http://example.org/article?id=10.1371/journal.pone.0167475","href":"http://example.org/resource1/items/CB63DA.html","rel":"item","type":"application/pdf"},
  {"anchor":"http://example.org/resource1/items/AF48EF.pdf","href":"http://example.net/resource41/","rel":"related","type":"application/pdf"}]
 </pre>
-<p class="figure">Figure 8: Response to HTTP GET against the Link Set Resource</p>
+<p class="figure">Figure 9: Response to HTTP GET against the Link Set Resource</p>
+<p id="rfc.section.6.2.p.6">If <a href="#Response3.1" class="xref">Figure 7</a> would have provided a link to a link set with media type application/linkset, and if the client would have requested that link set, then the body of the response would have been similar to <a href="#Response4.1" class="xref">Figure 9</a>. But it would have had application/linkset as Content-Type, the payload of the HTTP Link header of <a href="#Response2.1" class="xref">Figure 5</a> as body, and an accordingly adjusted value for Content-Length.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -748,6 +789,16 @@ Content-Length: 729
 <a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
 </tr>
 <tr>
+<td class="reference"><b id="RFC3986">[RFC3986]</b></td>
+<td class="top">
+<a>Berners-Lee, T.</a>, <a>Fielding, R.</a> and <a>L. Masinter</a>, "<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5987">[RFC5987]</b></td>
+<td class="top">
+<a>Reschke, J.</a>, "<a href="http://tools.ietf.org/html/rfc5987">Character Set and Language Encoding for Hypertext Transfer Protocol (HTTP) Header Field Parameters</a>", RFC 5987, DOI 10.17487/RFC5987, August 2010.</td>
+</tr>
+<tr>
 <td class="reference"><b id="RFC5988">[RFC5988]</b></td>
 <td class="top">
 <a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>", RFC 5988, DOI 10.17487/RFC5988, October 2010.</td>
@@ -766,6 +817,11 @@ Content-Length: 729
 <td class="reference"><b id="RFC7231">[RFC7231]</b></td>
 <td class="top">
 <a>Fielding, R.</a> and <a>J. Reschke</a>, "<a href="http://tools.ietf.org/html/rfc7231">Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a>", RFC 7231, DOI 10.17487/RFC7231, June 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="W3C.REC-html401-19991224">[W3C.REC-html401-19991224]</b></td>
+<td class="top">
+<a>Rivoal, F.</a>, "<a>Media Queries</a>", World Wide Web Consortium Recommendation REC-css3-mediaqueries-20120619, June 2012.</td>
 </tr>
 </tbody></table>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
@@ -819,3 +875,4 @@ Content-Length: 729
 
 </body>
 </html>
+
