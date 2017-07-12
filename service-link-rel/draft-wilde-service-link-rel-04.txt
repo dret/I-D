@@ -84,16 +84,18 @@ Table of Contents
    4.  Link Relations for Web Services . . . . . . . . . . . . . . .   5
      4.1.  The service-doc Link Relation Type  . . . . . . . . . . .   5
      4.2.  The service-desc Link Relation Type . . . . . . . . . . .   6
+     4.3.  The service-meta Link Relation Type . . . . . . . . . . .   6
    5.  Web Service Status Resources  . . . . . . . . . . . . . . . .   6
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
-     6.1.  Link Relation Type: service-doc . . . . . . . . . . . . .   6
+     6.1.  Link Relation Type: service-doc . . . . . . . . . . . . .   7
      6.2.  Link Relation Type: service-desc  . . . . . . . . . . . .   7
-     6.3.  Link Relation Type: status  . . . . . . . . . . . . . . .   7
+     6.3.  Link Relation Type: service-meta  . . . . . . . . . . . .   7
+     6.4.  Link Relation Type: status  . . . . . . . . . . . . . . .   7
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   8
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -104,8 +106,6 @@ Table of Contents
    [W3C.REC-webarch-20041215] by using URIs, HTTP, and media types, the
    Web's uniform interface allows interactions with resources without
    the more complex binding procedures of other approaches.
-
-
 
 
 
@@ -260,8 +260,9 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
 4.  Link Relations for Web Services
 
    In order to allow Web services to represent the relation of
-   individual resources to service documentation or description, this
-   specification introduces and registers two new link relation types.
+   individual resources to service documentation/description and
+   metadata, this specification introduces and registers three new link
+   relation types.
 
 4.1.  The service-doc Link Relation Type
 
@@ -270,7 +271,6 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    documented at a specific URI.  The target resource is expected to
    provide documentation that is primarily intended for human
    consumption.
-
 
 
 
@@ -290,6 +290,15 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    provide a service description that is primarily intended for machine
    consumption.  In many cases, it is provided in a representation that
    is consumed by tools, code libraries, or similar components.
+
+4.3.  The service-meta Link Relation Type
+
+   The "service-meta" link relation type is used to link to available
+   metadata for the service context of a resource.  The target resource
+   is expected to provide a service description that is primarily
+   intended for machine consumption.  In many cases, it is provided in a
+   representation that is consumed by tools, code libraries, or similar
+   components.
 
 5.  Web Service Status Resources
 
@@ -318,15 +327,6 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    The link relation types below have been registered by IANA per
    Section 6.2.1 of RFC 5988 [RFC5988]:
 
-6.1.  Link Relation Type: service-doc
-
-      Relation Name: service-doc
-
-      Description: Linking to service documentation that is primarily
-      intended for human consumption.
-
-      Reference: [[ This document ]]
-
 
 
 
@@ -338,6 +338,15 @@ Wilde                   Expires January 13, 2018                [Page 6]
 Internet-Draft    Link Relation Types for Web Services         July 2017
 
 
+6.1.  Link Relation Type: service-doc
+
+      Relation Name: service-doc
+
+      Description: Linking to service documentation that is primarily
+      intended for human consumption.
+
+      Reference: [[ This document ]]
+
 6.2.  Link Relation Type: service-desc
 
       Relation Name: service-desc
@@ -347,7 +356,16 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
 
       Reference: [[ This document ]]
 
-6.3.  Link Relation Type: status
+6.3.  Link Relation Type: service-meta
+
+      Relation Name: service-meta
+
+      Description: Linking to service metadata that is primarily
+      intended for consumption by machines.
+
+      Reference: [[ This document ]]
+
+6.4.  Link Relation Type: status
 
       Relation Name: status
 
@@ -369,6 +387,13 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
 
+
+
+Wilde                   Expires January 13, 2018                [Page 7]
+
+Internet-Draft    Link Relation Types for Web Services         July 2017
+
+
 8.2.  Informative References
 
    [I-D.nottingham-json-home]
@@ -386,14 +411,6 @@ Appendix A.  Acknowledgements
    Thanks for comments and suggestions provided by Mike Amundsen, Oliver
    Gierke, Sebastien Lambla, and Darrell Miller.
 
-
-
-
-Wilde                   Expires January 13, 2018                [Page 7]
-
-Internet-Draft    Link Relation Types for Web Services         July 2017
-
-
 Author's Address
 
    Erik Wilde
@@ -401,23 +418,6 @@ Author's Address
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
