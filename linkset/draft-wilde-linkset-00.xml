@@ -195,41 +195,6 @@
                    The assigned media type for this format is application/linkset.</t>
             </section>
             <section title="JSON Document Format for Link Sets: application/linkset+json" anchor="linkset-json">
-                <t>The JSON-based format for a link set document is defined by the &quot;links&quot; 
-                    production rule and subsequent ones from the ABNF in 
-                    <xref target="ABNF-linkset-json"/>. The media type for the format is application/linkset+json.</t>
-                <figure title="ABNF that defines the application/linkset+json format" align="center" anchor="ABNF-linkset-json">
-                    <artwork align="left"><![CDATA[
-links = begin-array link *( value-separator link ) end-array
-link = begin-object link-target *( value-separator link-param ) end-object
-link-target = quotation-mark "href" quotation-mark name-separator quotation-mark URI quotation-mark
-link-param = quotation-mark link-param quotation-mark name-separator quotation-mark relation-types quotation-mark
-link-param = ( ( quotation-mark "rel" quotation-mark name-separator quotation-mark relation-types quotation-mark )
-             | ( quotation-mark "anchor" quotation-mark name-separator quotation-mark URI quotation-mark )
-             | ( quotation-mark "rev" quotation-mark name-separator quotation-mark relation-types quotation-mark )
-             | ( quotation-mark "hreflang" quotation-mark name-separator quotation-mark Language-Tag quotation-mark )
-             | ( quotation-mark "media" quotation-mark name-separator quotation-mark media-query-list quotation-mark )
-             | ( quotation-mark "title" quotation-mark name-separator quotation-mark unquoted-string quotation-mark )
-             | ( quotation-mark "type" quotation-mark name-separator quotation-mark media-type quotation-mark )
-             | ( quotation-mark link-extension-attribute quotation-mark name-separator quotation-mark unquoted-string quotation-mark )
-             | ( link-extension ) )
-relation-types = relation-type *( ws relation-type ) 
-relation-type  = reg-rel-type | ext-rel-type
-reg-rel-type   = LOALPHA *( LOALPHA | DIGIT | "." | "-" )
-ext-rel-type   = URI
-link-extension-attribute = unquoted-string
-unquoted-string = *char
-]]>
-                    </artwork>
-                </figure>
-                <t>The ABNF includes production rules from other specifications, as follows:</t>
-                    <t><list style="symbols">
-                        <t>From <xref target="RFC7159"/>: begin-array , end-array , begin-object , end-object ,
-                           value-separator , name-separator , ws , quotation-mark , char</t>
-                        <t>From <xref target="RFC5987"/>: Language-Tag</t>
-                        <t>From <xref target="W3C.REC-html401-19991224"/>: media-query-list</t>
-                        <t>From <xref target="RFC3986"/>: URI</t>
-                    </list></t>
             </section>
         </section>
          <section title="Examples" anchor="linkset-link-examples">
