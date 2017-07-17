@@ -183,19 +183,19 @@
         </section>
         <section title="Document Formats for Link Sets" anchor="linkset-formats">
             <t>This section specifies two document formats to convey link sets, one 
-            that is identical to the payload of the HTTP Link header as specified in 
+            that is identical to the payload of the HTTP Link header as specified in RFC 5988bis
             <xref target="I-D.nottingham-rfc5988bis"/>, and the other is a JSON-based format 
             that does not have the character encoding limitations to which HTTP headers 
-            are subject as per <xref target="RFC5987"/>.</t>
+            are subject as per RFC 5987 <xref target="RFC5987"/>.</t>
             <section title="Native Document Format for Link Sets: application/linkset" anchor="linkset-native">
                 <t>This document format is identical to the payload of the 
-                   HTTP Link header. It is defined in Section 3 of 
+                   HTTP Link header. It is defined in Section 3 of RFC 5988bis
                    <xref target="I-D.nottingham-rfc5988bis"/>, more specifically by  
                    its ABNF production rule for &quot;Link&quot; and subsequent ones. 
                    The assigned media type for this format is application/linkset.</t>
             </section>
             <section title="JSON Document Format for Link Sets: application/linkset+json" anchor="linkset-json">
-                <t>For applications that prefer a JSON serialization of link set resources, the following definition provides a JSON <xref target="RFC7159"/> serialization which is intended to faithfully reproduce the abstract model of <xref target="I-D.nottingham-rfc5988bis"/>.</t>
+                <t>For applications that prefer a JSON serialization of link set resources, the following definition provides a JSON <xref target="RFC7159"/> serialization which is intended to faithfully reproduce the abstract model of RFC 5988bis <xref target="I-D.nottingham-rfc5988bis"/>.</t>
                 <t>In the JSON representation, a link set resource is represented by an array, where each member of the array is an object, which is the JSON representation of a link value. Implementations MUST always wrap link value representations in an array, even if a link set contains only one link value. Implementations MUST NOT include any members other than link value objects in the array representing a link set.</t>
                 <section title="Link Value Objects" anchor="linkset-json-link-value-object">
                     <t>A link value object represents an individual link of a link set.</t>
