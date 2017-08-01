@@ -4,8 +4,8 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
-Intended status: Informational                             July 12, 2017
-Expires: January 13, 2018
+Intended status: Informational                            August 1, 2017
+Expires: February 2, 2018
 
 
                   Link Relation Types for Web Services
@@ -18,12 +18,12 @@ Abstract
    provider.  Often, these sets of resources are referred to as "Web
    Services" or "Web APIs".  This specification defines link relations
    for representing relationships from those resources to ones that
-   provide documentation or descriptions of the Web services.  The
-   difference between these concepts is that documentation is primarily
-   intended for human consumers, whereas descriptions are primarily
-   intended for automated consumers.  It also defines a link relation to
-   identify a status resource that is used to represent operational
-   information about a service's status.
+   provide documentation, descriptions, or metadata for these Web
+   services.  Documentation is primarily intended for human consumers,
+   whereas descriptions are primarily intended for automated consumers;
+   metadata is supposed to be information about a service's context.  It
+   also defines a link relation to identify status resources that are
+   used to represent operational information about service status.
 
 Note to Readers
 
@@ -48,14 +48,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 13, 2018.
+   This Internet-Draft will expire on February 2, 2018.
 
 
 
 
-Wilde                   Expires January 13, 2018                [Page 1]
+Wilde                   Expires February 2, 2018                [Page 1]
 
-Internet-Draft    Link Relation Types for Web Services         July 2017
+Internet-Draft    Link Relation Types for Web Services       August 2017
 
 
 Copyright Notice
@@ -76,24 +76,24 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   4
    3.  Web Services  . . . . . . . . . . . . . . . . . . . . . . . .   4
-     3.1.  Documenting Web Services  . . . . . . . . . . . . . . . .   4
+     3.1.  Documenting Web Services  . . . . . . . . . . . . . . . .   5
      3.2.  Describing Web Services . . . . . . . . . . . . . . . . .   5
      3.3.  Unified Documentation/Description . . . . . . . . . . . .   5
-   4.  Link Relations for Web Services . . . . . . . . . . . . . . .   5
-     4.1.  The service-doc Link Relation Type  . . . . . . . . . . .   5
+   4.  Link Relations for Web Services . . . . . . . . . . . . . . .   6
+     4.1.  The service-doc Link Relation Type  . . . . . . . . . . .   6
      4.2.  The service-desc Link Relation Type . . . . . . . . . . .   6
      4.3.  The service-meta Link Relation Type . . . . . . . . . . .   6
    5.  Web Service Status Resources  . . . . . . . . . . . . . . . .   6
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
      6.1.  Link Relation Type: service-doc . . . . . . . . . . . . .   7
      6.2.  Link Relation Type: service-desc  . . . . . . . . . . . .   7
      6.3.  Link Relation Type: service-meta  . . . . . . . . . . . .   7
      6.4.  Link Relation Type: status  . . . . . . . . . . . . . . .   7
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   8
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   8
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   8
@@ -105,14 +105,17 @@ Table of Contents
    specifics of the resource.  Following Web Architecture
    [W3C.REC-webarch-20041215] by using URIs, HTTP, and media types, the
    Web's uniform interface allows interactions with resources without
-   the more complex binding procedures of other approaches.
 
 
 
-Wilde                   Expires January 13, 2018                [Page 2]
+
+Wilde                   Expires February 2, 2018                [Page 2]
 
-Internet-Draft    Link Relation Types for Web Services         July 2017
+Internet-Draft    Link Relation Types for Web Services       August 2017
 
+
+   the more complex binding procedures often necessary with other
+   approaches.
 
    Many resources on the Web are provided as part of a set of resources
    that are referred to as a "Web Service" or a "Web API".  In many
@@ -120,8 +123,9 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    it may be desirable for clients to be able to discover this service
    information.
 
-   Service information can be broadly separated into two categories: One
-   category is primarily targeted for human users and often uses generic
+   Service information that provides information on how to use service
+   resources can be broadly separated into two categories: One category
+   is primarily targeted for human users and often uses generic
    representations for human readable documents, such as HTML or PDF.
    The other category is structured information that follows some more
    formalized description model, and is primarily intended for
@@ -143,32 +147,40 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    different audiences, it can make sense to provide entry points for
    both of them.
 
-   This memo places no constraints on the specific representations used
-   for either of those two categories.  It simply allows providers of a
-   Web service to make the documentation and/or the description of their
-   services discoverable, and defines two link relations that serve that
-   purpose.
+   In addition, while both documentation and descriptions may be
+   provided as part of a Web service, there may be other information as
+   well.  Generally speaking, a Web service may have any metadata/
+   resources associated with it (with documentation/description just
+   being two specific kinds of resource).  If there is a way how all of
+   these metadata/resources are represented, then it should be possible
+   to discover such a resource of general Web service metadata.
 
-   In addition, this memo defines a link relation that allows providers
+   In addition to these resources about mostly static aspects of a Web
+   service, this memo also defines a link relation that allows providers
    of a Web service to link to a resource that represents status
    information about the service.  This information often represents
    operational information that allows service consumers to retrieve
    information about "service health" and related issues.
+
+
+
+
+Wilde                   Expires February 2, 2018                [Page 3]
+
+Internet-Draft    Link Relation Types for Web Services       August 2017
+
+
+   This memo places no constraints on the specific representations used
+   for all of these resources.  It simply allows providers of a Web
+   service to make the documentation, description, metadata, and status
+   of their services discoverable, and defines link relations that serve
+   that purpose.
 
 2.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in RFC 2119 [RFC2119].
-
-
-
-
-
-Wilde                   Expires January 13, 2018                [Page 3]
-
-Internet-Draft    Link Relation Types for Web Services         July 2017
-
 
 3.  Web Services
 
@@ -202,6 +214,21 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    and/or description, so that service providers can choose the ones
    that best fit their services and needs.
 
+   This specification also allows service providers to link to general
+   service metadata, which as one part of it may have links to
+   documentation and/or description, but potentially can have other
+
+
+
+
+Wilde                   Expires February 2, 2018                [Page 4]
+
+Internet-Draft    Link Relation Types for Web Services       August 2017
+
+
+   information about a service as well, such as deployment or
+   operational information.
+
 3.1.  Documenting Web Services
 
    In the context of this specification, "documentation" refers to
@@ -209,22 +236,10 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    Typical representations for this kind of documentation are HTML and
    PDF.
 
-   Documentation is often structured, but the exact kind of structure
-   depends on the structure of the service that is documented, as well
-   as on the specific way in which the documentation authors choose to
-   document it.
-
-
-
-
-
-
-
-
-Wilde                   Expires January 13, 2018                [Page 4]
-
-Internet-Draft    Link Relation Types for Web Services         July 2017
-
+   Documentation is often structured, but the exact kind of
+   documentation structure depends on the structure of the service that
+   is documented, as well as on the specific way in which the
+   documentation authors choose to document it.
 
 3.2.  Describing Web Services
 
@@ -245,7 +260,8 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    which are essentially identical to function calls, because the
    underlying model is based on that of the Remote Procedure Call (RPC)
    model.  Other description languages for non-RPC approaches to
-   services will use different structuring approaches.
+   services will use different structuring approaches, such as
+   structuring service descriptions by URIs and/or URI patterns.
 
 3.3.  Unified Documentation/Description
 
@@ -256,6 +272,15 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    "service" link relation type, which has no indication of whether it
    links to documentation or description, and thus may be better fit if
    no such differentiation is required.
+
+
+
+
+
+Wilde                   Expires February 2, 2018                [Page 5]
+
+Internet-Draft    Link Relation Types for Web Services       August 2017
+
 
 4.  Link Relations for Web Services
 
@@ -272,16 +297,6 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
    provide documentation that is primarily intended for human
    consumption.
 
-
-
-
-
-
-Wilde                   Expires January 13, 2018                [Page 5]
-
-Internet-Draft    Link Relation Types for Web Services         July 2017
-
-
 4.2.  The service-desc Link Relation Type
 
    The "service-desc" link relation type is used to represent the fact
@@ -294,11 +309,13 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
 4.3.  The service-meta Link Relation Type
 
    The "service-meta" link relation type is used to link to available
-   metadata for the service context of a resource.  The target resource
-   is expected to provide a service description that is primarily
-   intended for machine consumption.  In many cases, it is provided in a
-   representation that is consumed by tools, code libraries, or similar
-   components.
+   metadata for the service context of a resource.  Service metadata is
+   any kind of data that may be of interest to existing or potential
+   service users, with documentation/description only being two possible
+   facets of service metadata.  The target resource is expected to
+   provide a service description that is primarily intended for machine
+   consumption.  In many cases, it is provided in a representation that
+   is consumed by tools, code libraries, or similar components.
 
 5.  Web Service Status Resources
 
@@ -311,9 +328,18 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
 
    The "status" link relation type can be used to link to such a status
    resource, allowing service consumers to retrieve status information
-   about a Web service's status.  Such a link may not be available from
-   all resources provided by a Web service, but from key resources such
-   as a Web service's home resource [I-D.nottingham-json-home].
+   about a Web service's status.  Such a link may not be available for
+   and from all resources provided by a Web service, but from key
+
+
+
+Wilde                   Expires February 2, 2018                [Page 6]
+
+Internet-Draft    Link Relation Types for Web Services       August 2017
+
+
+   resources such as a Web service's metadata resource and/or a
+   service's home resource [I-D.nottingham-json-home].
 
    This memo does not restrict the representation of a status resource
    in any way.  It may be primarily focused on human or machine
@@ -326,17 +352,6 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
 
    The link relation types below have been registered by IANA per
    Section 6.2.1 of RFC 5988 [RFC5988]:
-
-
-
-
-
-
-
-Wilde                   Expires January 13, 2018                [Page 6]
-
-Internet-Draft    Link Relation Types for Web Services         July 2017
-
 
 6.1.  Link Relation Type: service-doc
 
@@ -372,6 +387,13 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
       Description: Linking to a resource that represents the status of a
       Web service or API.
 
+
+
+Wilde                   Expires February 2, 2018                [Page 7]
+
+Internet-Draft    Link Relation Types for Web Services       August 2017
+
+
       Reference: [[ This document ]]
 
 7.  Security Considerations
@@ -386,13 +408,6 @@ Internet-Draft    Link Relation Types for Web Services         July 2017
               Requirement Levels", RFC 2119, March 1997.
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988, October 2010.
-
-
-
-Wilde                   Expires January 13, 2018                [Page 7]
-
-Internet-Draft    Link Relation Types for Web Services         July 2017
-
 
 8.2.  Informative References
 
@@ -430,19 +445,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Wilde                   Expires January 13, 2018                [Page 8]
+Wilde                   Expires February 2, 2018                [Page 8]
