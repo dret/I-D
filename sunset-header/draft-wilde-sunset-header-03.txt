@@ -180,10 +180,11 @@ Internet-Draft                Sunset Header                  August 2017
    provided by the resource itself, it does have some credibility.
 
    After the Sunset time has arrived, it is likely that interactions
-   with the resource will either result in client-side errors (HTTP 4xx
-   status codes), or redirect responses (HTTP 3xx status codes).  The
-   Sunset header does not expose any information about which of those
-   two behaviors can be expected.
+   with the resource will result in client-side errors (HTTP 4xx status
+   codes), redirect responses (HTTP 3xx status codes), or the client
+   might not be able to interact with the resource at all.  The Sunset
+   header does not expose any information about which of those behaviors
+   can be expected.
 
    Clients not interpreting an existing Sunset header field can operate
    as usual and simply may experience the resource becoming unavailable
@@ -217,7 +218,6 @@ Internet-Draft                Sunset Header                  August 2017
    of message header fields (see [RFC3864]), taking into account the
    guidelines given by HTTP/1.1 [RFC7231].
 
-   Header Field Name: Sunset
 
 
 
@@ -225,6 +225,8 @@ Wilde                   Expires February 4, 2018                [Page 4]
 
 Internet-Draft                Sunset Header                  August 2017
 
+
+   Header Field Name: Sunset
 
    Applicable Protocol: Hypertext Transfer Protocol (HTTP)
 
@@ -271,9 +273,7 @@ Internet-Draft                Sunset Header                  August 2017
    information, adjust their own behavior accordingly, or alert
    applications or users about this timestamp.
 
-   Even though the Sunset header information is made available by the
-   resource itself, there is no guarantee that the resource indeed will
-   become unavailable, and if so, how the response will look like for
+
 
 
 
@@ -282,6 +282,9 @@ Wilde                   Expires February 4, 2018                [Page 5]
 Internet-Draft                Sunset Header                  August 2017
 
 
+   Even though the Sunset header information is made available by the
+   resource itself, there is no guarantee that the resource indeed will
+   become unavailable, and if so, how the response will look like for
    requests made after that timestamp.  In case of the archive used as
    an example here, the resource indeed may be permanently deleted, and
    requests for the URI after the Sunset timestamp may receive a "410
@@ -316,9 +319,6 @@ Author's Address
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
-
-
-
 
 
 
