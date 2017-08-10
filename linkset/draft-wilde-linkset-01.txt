@@ -320,15 +320,15 @@ Internet-Draft                   Linkset                     August 2017
    o  Each link object MUST have an "href" member with a value that
       represents the link target.
 
-   o  Each link object MUST have a "rel" member with a value that
-      represents a single link relation type.
-
    o  Each link object MAY have an "anchor" member with a value that
       represents the link context.  If this member is not provided, the
       link context is the link set resource.
 
-   o  Each link object MAY have additional members to convey target
-      attributes (see Section 4.2.3).
+   o  The value of both the "href" and "anchor" members MUST be a URI-
+      reference as defined in Section 4.1 of [RFC3986].  Note that for
+      relative references, the baseURI is the URI of the link set
+      resource.
+
 
 
 
@@ -338,14 +338,15 @@ Wilde & Van de Sompel   Expires February 11, 2018               [Page 6]
 Internet-Draft                   Linkset                     August 2017
 
 
-   o  The value of both the "href" and "anchor" members MUST be a URI-
-      reference as defined in Section 4.1 of [RFC3986].  Note that for
-      relative references, the baseURI is the URI of the link set
-      resource.
+   o  Each link object MUST have a "rel" or "rev" member (with the
+      latter one deprecated) with a value that represents a single link
+      relation type.  The value of "rel"/"rev" MUST either be a
+      registered relation type or an extension relation type (URI), as
+      described in Sections 2.1.1 and 2.1.2 of
+      [I-D.nottingham-rfc5988bis], respectively.
 
-   o  The value of "rel" MUST either be a registered relation type or an
-      extension relation type (URI), as described in Sections 2.1.1 and
-      2.1.2 of [I-D.nottingham-rfc5988bis], respectively.
+   o  Each link object MAY have additional members to convey target
+      attributes (see Section 4.2.3).
 
    [ { "href" : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
@@ -364,17 +365,12 @@ Internet-Draft                   Linkset                     August 2017
 
 4.2.3.1.  JSON Representation of RFC 5988bis Target Attributes
 
-   RFC 5988bis defines link relations to be represented via the "rel"
-   and "rev" link parameters, and also defines the "hreflang", "media",
-   "title", "title*", and "type" target attributes.  These target
-   attributes follow different occurrence and value patterns (as
-   discussed in more detail in Section Section 4.2.3.2), but are
-   specifically defined to be handled in the JSON representation as
-   follows:
-
-   o  "rel" and "rev": At least one of these MUST be present.  The value
-      follows the value of the native syntax, i.e. it is a whitespace-
-      separated list of link relation types.
+   RFC 5988bis defines link relations to be potentially annotated via
+   the "hreflang", "media", "title", "title*", and "type" target
+   attributes.  These target attributes follow different occurrence and
+   value patterns (as discussed in more detail in
+   Section Section 4.2.3.2), but are specifically defined to be handled
+   in the JSON representation as follows:
 
    o  "hreflang": The JSON representation only allows one hreflang value
       to be represented.  If there is more than one hreflang value, then
@@ -385,6 +381,10 @@ Internet-Draft                   Linkset                     August 2017
       "media" member, with the value following the same model as in the
       native syntax.
 
+   o  "title"/"title*": This construct is inspired by character encoding
+      and language issues and follows the model defined in RFC 5987.  It
+      therefore follows the general model for serialization of RFC 5987
+      defined target attributes defined in Section Section 4.2.4.
 
 
 
@@ -393,11 +393,6 @@ Wilde & Van de Sompel   Expires February 11, 2018               [Page 7]
 
 Internet-Draft                   Linkset                     August 2017
 
-
-   o  "title"/"title*": This construct is inspired by character encoding
-      and language issues and follows the model defined in RFC 5987.  It
-      therefore follows the general model for serialization of RFC 5987
-      defined target attributes defined in Section Section 4.2.4.
 
    o  "type": The optional "type" parameter is represented by a "type"
       member, with the value following the same model as in the native
@@ -442,6 +437,11 @@ Internet-Draft                   Linkset                     August 2017
        "type" : "text/html"} ]
 
    This example adds the "type" target attribute to the link.
+
+
+
+
+
 
 
 

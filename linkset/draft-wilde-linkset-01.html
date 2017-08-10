@@ -595,11 +595,10 @@
 
 <ul>
 <li>Each link object MUST have an "href" member with a value that represents the link target.</li>
-<li>Each link object MUST have a "rel" member with a value that represents a single link relation type.</li>
 <li>Each link object MAY have an "anchor" member with a value that represents the link context. If this member is not provided, the link context is the link set resource.</li>
-<li>Each link object MAY have additional members to convey target attributes (see <a href="#linkset-json-link-parameter" class="xref">Section 4.2.3</a>).</li>
 <li>The value of both the "href" and "anchor" members MUST be a URI-reference as defined in Section 4.1 of <a href="#RFC3986" class="xref">[RFC3986]</a>.  Note that for relative references, the baseURI is the URI of the link set resource.</li>
-<li>The value of "rel" MUST either be a registered relation type or an extension relation type (URI), as described in Sections 2.1.1 and 2.1.2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, respectively.</li>
+<li>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value that represents a single link relation type. The value of "rel"/"rev" MUST either be a registered relation type or an extension relation type (URI), as described in Sections 2.1.1 and 2.1.2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, respectively.</li>
+<li>Each link object MAY have additional members to convey target attributes (see <a href="#linkset-json-link-parameter" class="xref">Section 4.2.3</a>).</li>
 </ul>
 <pre>
 [ { "href" : "http://example.com/foo", 
@@ -614,11 +613,10 @@
 <h1 id="rfc.section.4.2.3.1">
 <a href="#rfc.section.4.2.3.1">4.2.3.1.</a> <a href="#json-target-attributes-existing" id="json-target-attributes-existing">JSON Representation of RFC 5988bis Target Attributes</a>
 </h1>
-<p id="rfc.section.4.2.3.1.p.1">RFC 5988bis defines link relations to be represented via the "rel" and "rev" link parameters, and also defines the "hreflang", "media", "title", "title*", and "type" target attributes. These target attributes follow different occurrence and value patterns (as discussed in more detail in Section <a href="#json-target-attributes-extension" class="xref">Section 4.2.3.2</a>), but are specifically defined to be handled in the JSON representation as follows:</p>
+<p id="rfc.section.4.2.3.1.p.1">RFC 5988bis defines link relations to be potentially annotated via the "hreflang", "media", "title", "title*", and "type" target attributes. These target attributes follow different occurrence and value patterns (as discussed in more detail in Section <a href="#json-target-attributes-extension" class="xref">Section 4.2.3.2</a>), but are specifically defined to be handled in the JSON representation as follows:</p>
 <p></p>
 
 <ul>
-<li>"rel" and "rev": At least one of these MUST be present. The value follows the value of the native syntax, i.e. it is a whitespace-separated list of link relation types.</li>
 <li>"hreflang": The JSON representation only allows one hreflang value to be represented. If there is more than one hreflang value, then the first one MUST be represented as a "hreflang" member, and subsequent occurrences of hreflang MUST be ignored.</li>
 <li>"media": The optional "media" parameter is represented by a "media" member, with the value following the same model as in the native syntax.</li>
 <li>"title"/"title*": This construct is inspired by character encoding and language issues and follows the model defined in RFC 5987. It therefore follows the general model for serialization of RFC 5987 defined target attributes defined in Section <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.4</a>.</li>
