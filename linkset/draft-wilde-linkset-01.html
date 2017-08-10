@@ -385,7 +385,7 @@
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 JSON Document Format for Link Sets: application/linkset+json">
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Representing a Link Set">
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Representing a Link">
-<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Representing Target Attributes for a Link">
+<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Representing Link Target Attributes">
 <link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 Representing Internationalized Target Attributes for a Link">
 <link href="#rfc.section.5" rel="Chapter" title='5 The "linkset" Relation Type for Linking to Link Sets'>
 <link href="#rfc.section.6" rel="Chapter" title="6 Examples">
@@ -486,7 +486,7 @@
 </li>
 <li>4.2.2.   <a href="#rfc.section.4.2.2">Representing a Link</a>
 </li>
-<li>4.2.3.   <a href="#rfc.section.4.2.3">Representing Target Attributes for a Link</a>
+<li>4.2.3.   <a href="#rfc.section.4.2.3">Representing Link Target Attributes</a>
 </li>
 <li>4.2.4.   <a href="#rfc.section.4.2.4">Representing Internationalized Target Attributes for a Link</a>
 </li>
@@ -556,7 +556,7 @@
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#header-writing" id="header-writing">Challenges Writing to HTTP Header Field</a>
 </h1>
-<p id="rfc.section.3.2.p.1">In some cases, it is not straightforward to write links to the HTTP Link header from an application. This can, for example, be the case because not all required link information is available to the application or because the application does not have the capability to directly write HTTP headers.  In such cases, providing links by reference can be a solution because a link to a link set resource associated with an origin resource can typcially be added by means of a web server rewrite rule that leverages the resource's URI.</p>
+<p id="rfc.section.3.2.p.1">In some cases, it is not straightforward to write links to the HTTP Link header from an application. This can, for example, be the case because not all required link information is available to the application or because the application does not have the capability to directly write HTTP headers.  In such cases, providing links by reference can be a solution because a link to a link set resource associated with an origin resource can typically be added by means of a web server rewrite rule that leverages the resource's URI.</p>
 <h1 id="rfc.section.3.3">
 <a href="#rfc.section.3.3">3.3.</a> <a href="#link-volume" id="link-volume">Large Number of Links</a>
 </h1>
@@ -566,7 +566,7 @@
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#linkset-formats" id="linkset-formats">Document Formats for Link Sets</a>
 </h1>
-<p id="rfc.section.4.p.1">Link set resources can be represented by serializations that support conveying both link contexts and link targets.  This section specifies two document formats based on the abstract model specified in Section 2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> that defines a link as consisting of a "link context", a "link relation type", a "link target", and optional "target attributes". In those terms, a link set resource is a resource that conveys a collection of one or more such links.  The format defined in <a href="#linkset-native" class="xref">Section 4.1</a> is identical to the payload of the HTTP Link header as specified in <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.  The format defined in <a href="#linkset-json" class="xref">Section 4.2</a> is based on JSON and does not have the character encoding limitations to which HTTP headers are subject as per <a href="#RFC5987" class="xref">[RFC5987]</a>.</p>
+<p id="rfc.section.4.p.1">Link set resources can be represented by serializations that support conveying both link contexts and link targets.  This section specifies two document formats based on the abstract model specified in Section 2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> that defines a link as consisting of a "link context", a "link relation type", a "link target", and optional "target attributes". In those terms, a link set resource is a resource that conveys a collection of one or more such links.  The format defined in <a href="#linkset-native" class="xref">Section 4.1</a> is identical to the payload of the HTTP Link header as specified in <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.  The format defined in <a href="#linkset-json" class="xref">Section 4.2</a> is based on JSON and thus does not have the character encoding limitations of HTTP header fields.</p>
 <h1 id="rfc.section.4.1">
 <a href="#rfc.section.4.1">4.1.</a> <a href="#linkset-native" id="linkset-native">HTTP Link Document Format for Link Sets: application/linkset</a>
 </h1>
@@ -598,7 +598,7 @@
 <li>Each link object MAY have an "anchor" member with a value that represents the link context. If this member is not provided, the link context is the link set resource.</li>
 <li>The value of both the "href" and "anchor" members MUST be a URI-reference as defined in Section 4.1 of <a href="#RFC3986" class="xref">[RFC3986]</a>.  Note that for relative references, the baseURI is the URI of the link set resource.</li>
 <li>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value that represents a single link relation type. The value of "rel"/"rev" MUST either be a registered relation type or an extension relation type (URI), as described in Sections 2.1.1 and 2.1.2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, respectively.</li>
-<li>Each link object MAY have additional members to convey target attributes (see <a href="#linkset-json-link-parameter" class="xref">Section 4.2.3</a>).</li>
+<li>Each link object MAY have additional members to convey target attributes (see <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>).</li>
 </ul>
 <pre>
 [ { "href" : "http://example.com/foo", 
@@ -607,7 +607,7 @@
                         </pre>
 <p id="rfc.section.4.2.2.p.3">This example of a JSON-serialized link set contains just one link that conveys the core components of a link: link context, link relation type, and link target.</p>
 <h1 id="rfc.section.4.2.3">
-<a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#linkset-json-link-parameter" id="linkset-json-link-parameter">Representing Target Attributes for a Link</a>
+<a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#linkset-json-link-target" id="linkset-json-link-target">Representing Link Target Attributes</a>
 </h1>
 <p id="rfc.section.4.2.3.p.1">In many cases, a link is further qualified by optional target attributes, either defined by the serialization of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> or extension attributes defined by communities.</p>
 <h1 id="rfc.section.4.2.3.1">
@@ -685,7 +685,7 @@
 <h1 id="rfc.section.4.2.4">
 <a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Representing Internationalized Target Attributes for a Link</a>
 </h1>
-<p id="rfc.section.4.2.4.p.1">In addition to the target attributes described in <a href="#linkset-json-link-parameter" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisks in the attribute name, e.g. "title*" instead of "title". The JSON serialization for these attributes is different than for those of <a href="#linkset-json-link-parameter" class="xref">Section 4.2.3</a>.  They are handled as follows: </p>
+<p id="rfc.section.4.2.4.p.1">In addition to the target attributes described in <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisks in the attribute name, e.g. "title*" instead of "title". The JSON serialization for these attributes is different than for those of <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>.  They are handled as follows: </p>
 <p></p>
 
 <ul><li>Internationalized link parameters use the link parameter name as their name, and their value is either a string representing the link parameter value, or an object representing one or more language tagged link parameter values.  In such an object, the set of members uses a language tag <a href="#RFC5646" class="xref">[RFC5646]</a> as their names, and their values are strings representing the link parameter values associated with the respective language tag.</li></ul>
