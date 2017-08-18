@@ -522,7 +522,7 @@
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
 <p id="rfc.section.1.p.1">Resources on the Web often convey typed Web Links <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> as a  part of resource representations, for example, using the &lt;link&gt; element for HTML representations, or the "Link" header field in HTTP response headers for representations of any media type. In some cases, however, providing links by value is impractical or impossible.  In these cases, an approach to provide links by reference (instead of by value) can solve the problem.</p>
-<p id="rfc.section.1.p.2">To that end, this specification defines two document formats and associated media types to convey a set of links. It also defines the "linkset" relation type that a resource can use to support discovery of another resource that conveys links in which the former resource participates.</p>
+<p id="rfc.section.1.p.2">To that end, this specification defines two document formats and associated media types to represent a set of links. It also defines the "linkset" relation type that a resource can use to support discovery of another resource that conveys links in which the former resource participates.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
@@ -574,7 +574,7 @@
 <h1 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#linkset-json" id="linkset-json">JSON Document Format for Link Sets: application/linkset+json</a>
 </h1>
-<p id="rfc.section.4.2.p.1">This document format is based on JSON  <a href="#RFC7159" class="xref">[RFC7159]</a>. It is described in this section. The assigned media type for this format is "application/linkset+json".</p>
+<p id="rfc.section.4.2.p.1">This document format is based on the native Link header field representation defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, but uses JSON <a href="#RFC7159" class="xref">[RFC7159]</a> as the syntax to represent the information contained in the native format. It is described in this section. The assigned media type for this format is "application/linkset+json".</p>
 <h1 id="rfc.section.4.2.1">
 <a href="#rfc.section.4.2.1">4.2.1.</a> <a href="#linkset-in-json" id="linkset-in-json">Representing a Link Set</a>
 </h1>
@@ -583,29 +583,44 @@
 
 <ul>
 <li>A link set MUST be represented as a JSON array.</li>
-<li>Each individual link of the link set MUST be represented as a distinct JSON object in the array, named a "link object" (see <a href="#linkset-json-link-value-object" class="xref">Section 4.2.2</a>).</li>
+<li>Each individual link of the link set MUST be represented as a distinct JSON object in the array, in the form of a "link object" (see <a href="#linkset-json-link-value-object" class="xref">Section 4.2.2</a>).</li>
+<li>Implementations MUST wrap link objects in an array, even if the link set contains only one link.</li>
+<li>Implementations MUST NOT include any members other than link objects in the array that represents a link set.</li>
 </ul>
-<p id="rfc.section.4.2.1.p.3">Implementations MUST wrap link objects in an array, even if the link set contains only one link.</p>
-<p id="rfc.section.4.2.1.p.4">Implementations MUST NOT include any members other than link objects in the array that represents a link set.</p>
 <h1 id="rfc.section.4.2.2">
 <a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#linkset-json-link-value-object" id="linkset-json-link-value-object">Representing a Link</a>
 </h1>
-<p id="rfc.section.4.2.2.p.1">In the JSON representation, an individual link is represented by a dedicated JSON object, the link object, whereby:</p>
+<p id="rfc.section.4.2.2.p.1">In the JSON representation, an individual link is represented by a dedicated JSON object, the link object. A Link object adheres to the following rules:</p>
 <p></p>
 
 <ul>
 <li>Each link object MUST have an "href" member with a value that represents the link target.</li>
 <li>Each link object MAY have an "anchor" member with a value that represents the link context. If this member is not provided, the link context is the link set resource.</li>
 <li>The value of both the "href" and "anchor" members MUST be a URI-reference as defined in Section 4.1 of <a href="#RFC3986" class="xref">[RFC3986]</a>.  Note that for relative references, the baseURI is the URI of the link set resource.</li>
-<li>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value that represents a single link relation type. The value of "rel"/"rev" MUST either be a registered relation type or an extension relation type (URI), as described in Sections 2.1.1 and 2.1.2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, respectively.</li>
+<li>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value that represents a set of link relation types, represented as an array of strings. The value of each "rel"/"rev" link relation type MUST either be a registered relation type or an extension relation type (URI), as described in Sections 2.1.1 and 2.1.2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, respectively.</li>
 <li>Each link object MAY have additional members to convey target attributes (see <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>).</li>
 </ul>
+<p id="rfc.section.4.2.2.p.3">The following example of a JSON-serialized link set represents one link with the core components of a link: link context, link relation type, and link target.</p>
 <pre>
 [ { "href" : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : "next" } ]
+    "rel" : [ "next" ] } ]
                         </pre>
-<p id="rfc.section.4.2.2.p.3">This example of a JSON-serialized link set contains just one link that conveys the core components of a link: link context, link relation type, and link target.</p>
+<p id="rfc.section.4.2.2.p.4">The following example of a JSON-serialized link set represents two links with the core components of a link: link context, link relation type, and link target. The syntax of this example takes advantage of the fact that multiple relation types can be used in one link object (which effectively turn the link objects into a shortcut representing as many links as there are link relation types).</p>
+<pre>
+[ { "href" : "http://example.com/foo", 
+    "anchor" : "http://example.net/bar", 
+    "rel" : [ "next" , "http://example.net/linkrel" ] } ]
+                        </pre>
+<p id="rfc.section.4.2.2.p.5">The previous example is equivalent to the following one, which does not use the syntax shortcut and therefore represents the two links individually.</p>
+<pre>
+[ { "href" : "http://example.com/foo", 
+    "anchor" : "http://example.net/bar", 
+    "rel" : [ "next" ] },
+  { "href" : "http://example.com/foo", 
+    "anchor" : "http://example.net/bar", 
+    "rel" : [ "http://example.net/linkrel" ] } ]
+                        </pre>
 <h1 id="rfc.section.4.2.3">
 <a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#linkset-json-link-target" id="linkset-json-link-target">Representing Link Target Attributes</a>
 </h1>

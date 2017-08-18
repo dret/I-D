@@ -88,22 +88,22 @@ Table of Contents
            application/linkset+json  . . . . . . . . . . . . . . . .   6
        4.2.1.  Representing a Link Set . . . . . . . . . . . . . . .   6
        4.2.2.  Representing a Link . . . . . . . . . . . . . . . . .   6
-       4.2.3.  Representing Link Target Attributes . . . . . . . . .   7
+       4.2.3.  Representing Link Target Attributes . . . . . . . . .   8
        4.2.4.  Representing Internationalized Target Attributes for
-               a Link  . . . . . . . . . . . . . . . . . . . . . . .   9
+               a Link  . . . . . . . . . . . . . . . . . . . . . . .  10
    5.  The "linkset" Relation Type for Linking to Link Sets  . . . .  10
    6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
      6.1.  Links Provided in the Header of the Link Set Resource . .  11
      6.2.  Links Provided in the Body of the Link Set Resource,
            Link Set Serialized as application/linkset+json . . . . .  13
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
      7.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .  15
-     7.2.  Media Type: application/linkset . . . . . . . . . . . . .  15
-       7.2.1.  IANA Considerations . . . . . . . . . . . . . . . . .  15
-     7.3.  Media Type: application/linkset+json  . . . . . . . . . .  16
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+     7.2.  Media Type: application/linkset . . . . . . . . . . . . .  16
+       7.2.1.  IANA Considerations . . . . . . . . . . . . . . . . .  16
+     7.3.  Media Type: application/linkset+json  . . . . . . . . . .  17
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 
 
@@ -125,10 +125,10 @@ Internet-Draft                   Linkset                     August 2017
    links by reference (instead of by value) can solve the problem.
 
    To that end, this specification defines two document formats and
-   associated media types to convey a set of links.  It also defines the
-   "linkset" relation type that a resource can use to support discovery
-   of another resource that conveys links in which the former resource
-   participates.
+   associated media types to represent a set of links.  It also defines
+   the "linkset" relation type that a resource can use to support
+   discovery of another resource that conveys links in which the former
+   resource participates.
 
 2.  Terminology
 
@@ -292,9 +292,11 @@ Internet-Draft                   Linkset                     August 2017
 
 4.2.  JSON Document Format for Link Sets: application/linkset+json
 
-   This document format is based on JSON [RFC7159].  It is described in
-   this section.  The assigned media type for this format is
-   "application/linkset+json".
+   This document format is based on the native Link header field
+   representation defined by [I-D.nottingham-rfc5988bis], but uses JSON
+   [RFC7159] as the syntax to represent the information contained in the
+   native format.  It is described in this section.  The assigned media
+   type for this format is "application/linkset+json".
 
 4.2.1.  Representing a Link Set
 
@@ -303,19 +305,20 @@ Internet-Draft                   Linkset                     August 2017
    o  A link set MUST be represented as a JSON array.
 
    o  Each individual link of the link set MUST be represented as a
-      distinct JSON object in the array, named a "link object" (see
-      Section 4.2.2).
+      distinct JSON object in the array, in the form of a "link object"
+      (see Section 4.2.2).
 
-   Implementations MUST wrap link objects in an array, even if the link
-   set contains only one link.
+   o  Implementations MUST wrap link objects in an array, even if the
+      link set contains only one link.
 
-   Implementations MUST NOT include any members other than link objects
-   in the array that represents a link set.
+   o  Implementations MUST NOT include any members other than link
+      objects in the array that represents a link set.
 
 4.2.2.  Representing a Link
 
    In the JSON representation, an individual link is represented by a
-   dedicated JSON object, the link object, whereby:
+   dedicated JSON object, the link object.  A Link object adheres to the
+   following rules:
 
    o  Each link object MUST have an "href" member with a value that
       represents the link target.
@@ -326,9 +329,6 @@ Internet-Draft                   Linkset                     August 2017
 
    o  The value of both the "href" and "anchor" members MUST be a URI-
       reference as defined in Section 4.1 of [RFC3986].  Note that for
-      relative references, the baseURI is the URI of the link set
-      resource.
-
 
 
 
@@ -338,23 +338,61 @@ Wilde & Van de Sompel   Expires February 18, 2018               [Page 6]
 Internet-Draft                   Linkset                     August 2017
 
 
+      relative references, the baseURI is the URI of the link set
+      resource.
+
    o  Each link object MUST have a "rel" or "rev" member (with the
-      latter one deprecated) with a value that represents a single link
-      relation type.  The value of "rel"/"rev" MUST either be a
-      registered relation type or an extension relation type (URI), as
-      described in Sections 2.1.1 and 2.1.2 of
-      [I-D.nottingham-rfc5988bis], respectively.
+      latter one deprecated) with a value that represents a set of link
+      relation types, represented as an array of strings.  The value of
+      each "rel"/"rev" link relation type MUST either be a registered
+      relation type or an extension relation type (URI), as described in
+      Sections 2.1.1 and 2.1.2 of [I-D.nottingham-rfc5988bis],
+      respectively.
 
    o  Each link object MAY have additional members to convey target
       attributes (see Section 4.2.3).
 
+   The following example of a JSON-serialized link set represents one
+   link with the core components of a link: link context, link relation
+   type, and link target.
+
    [ { "href" : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : "next" } ]
+       "rel" : [ "next" ] } ]
 
-   This example of a JSON-serialized link set contains just one link
-   that conveys the core components of a link: link context, link
-   relation type, and link target.
+   The following example of a JSON-serialized link set represents two
+   links with the core components of a link: link context, link relation
+   type, and link target.  The syntax of this example takes advantage of
+   the fact that multiple relation types can be used in one link object
+   (which effectively turn the link objects into a shortcut representing
+   as many links as there are link relation types).
+
+   [ { "href" : "http://example.com/foo",
+       "anchor" : "http://example.net/bar",
+       "rel" : [ "next" , "http://example.net/linkrel" ] } ]
+
+   The previous example is equivalent to the following one, which does
+   not use the syntax shortcut and therefore represents the two links
+   individually.
+
+   [ { "href" : "http://example.com/foo",
+       "anchor" : "http://example.net/bar",
+       "rel" : [ "next" ] },
+     { "href" : "http://example.com/foo",
+       "anchor" : "http://example.net/bar",
+       "rel" : [ "http://example.net/linkrel" ] } ]
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018               [Page 7]
+
+Internet-Draft                   Linkset                     August 2017
+
 
 4.2.3.  Representing Link Target Attributes
 
@@ -386,14 +424,6 @@ Internet-Draft                   Linkset                     August 2017
       therefore follows the general model for serialization of RFC 5987
       defined target attributes defined in Section Section 4.2.4.
 
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 7]
-
-Internet-Draft                   Linkset                     August 2017
-
-
    o  "type": The optional "type" parameter is represented by a "type"
       member, with the value following the same model as in the native
       syntax.
@@ -411,6 +441,15 @@ Internet-Draft                   Linkset                     August 2017
    While the native syntax (as defined in Section Section 4.1 supports
    and allows repeating link parameters, the JSON representation defined
    here does not support, and therefore not allow repeated target
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018               [Page 8]
+
+Internet-Draft                   Linkset                     August 2017
+
+
    attributes.  As a result, target attributes that are used as
    repeating cannot be directly represented in the JSON representation.
 
@@ -441,15 +480,6 @@ Internet-Draft                   Linkset                     August 2017
    o  The name of the target attribute MUST be used as the member name
       and the attribute's value MUST be conveyed as that member's value.
 
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 8]
-
-Internet-Draft                   Linkset                     August 2017
-
-
    [ { "href" : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
        "rel"  :  "next",
@@ -463,6 +493,18 @@ Internet-Draft                   Linkset                     August 2017
    variant are handled as follows:
 
    o  tbd
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018               [Page 9]
+
+Internet-Draft                   Linkset                     August 2017
+
 
 4.2.3.2.3.  Not Repeatable Target Attributes of the "token*" Variant
 
@@ -496,16 +538,6 @@ Internet-Draft                   Linkset                     August 2017
       values are strings representing the link parameter values
       associated with the respective language tag.
 
-
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 9]
-
-Internet-Draft                   Linkset                     August 2017
-
-
 5.  The "linkset" Relation Type for Linking to Link Sets
 
    The target of a link with the "linkset" relation type - the link set
@@ -521,6 +553,14 @@ Internet-Draft                   Linkset                     August 2017
    Multiple such links can refer to the same set of links expressed
    using different representations, or to different sets of links
    (potentially provided by different services).
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 10]
+
+Internet-Draft                   Linkset                     August 2017
+
 
    The use of a link with the "linkset" relation type does not preclude
    the provision of links with other relation types, i.e. the origin
@@ -555,13 +595,6 @@ Internet-Draft                   Linkset                     August 2017
    relations are not transitive, and it is up to a client to decide
    whether they follow "nested chains" of "linkset" links or not.
 
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 10]
-
-Internet-Draft                   Linkset                     August 2017
-
-
 6.  Examples
 
    Sections Section 6.1 and Section 6.2 show examples whereby the link
@@ -572,6 +605,18 @@ Internet-Draft                   Linkset                     August 2017
 
    Figure 1 shows a client issuing an HTTP head request against origin
    resource http://example.org/resource1.
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 11]
+
+Internet-Draft                   Linkset                     August 2017
+
 
    HEAD /resource1 HTTP/1.1
    Host: example.org
@@ -607,17 +652,6 @@ Connection: close
    Figure 3 shows the client issuing an HTTP GET request against the
    link set resource provided in Figure 2.
 
-
-
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 11]
-
-Internet-Draft                   Linkset                     August 2017
-
-
    GET /links?uri=http%3A%2F%2Fexample.org%2Fresource HTTP/1.1
    Host: example.com
    Connection: close
@@ -632,6 +666,13 @@ Internet-Draft                   Linkset                     August 2017
    context of each link, the "anchor" attribute is always provided.
    Note that most, but not all, links have the origin resource as link
    context (anchor).
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 12]
+
+Internet-Draft                   Linkset                     August 2017
+
 
    HTTP/1.1 200 OK
    Date: Mon, 28 Nov 2016 14:40:02 GMT
@@ -661,19 +702,6 @@ Internet-Draft                   Linkset                     August 2017
 
        Figure 4: Response to HTTP GET against the Link Set Resource
 
-
-
-
-
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 12]
-
-Internet-Draft                   Linkset                     August 2017
-
-
 6.2.  Links Provided in the Body of the Link Set Resource, Link Set
       Serialized as application/linkset+json
 
@@ -694,6 +722,13 @@ Internet-Draft                   Linkset                     August 2017
    resource are provided by link set resource
    http://example.com/links/10.1371/journal.pone.0167475, which provides
    a representation with media type application/linkset+json.
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 13]
+
+Internet-Draft                   Linkset                     August 2017
+
 
    HTTP/1.1 200 OK
    Date: Mon, 28 Nov 2016 14:37:51 GMT
@@ -718,18 +753,6 @@ Internet-Draft                   Linkset                     August 2017
    Figure 7 shows the client issuing an HTTP GET request against the
    link set resource provided in Figure 6.
 
-
-
-
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 13]
-
-Internet-Draft                   Linkset                     August 2017
-
-
    GET /links/10.1371/journal.pone.0167475 HTTP/1.1
    Host: example.com
    Accept: application/linkset+json
@@ -741,6 +764,27 @@ Internet-Draft                   Linkset                     August 2017
    Figure 7.  The links pertaining to the origin resource are provided
    in the response body of the link set resource and are serialized
    according to the media type application/linkset+json.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 14]
+
+Internet-Draft                   Linkset                     August 2017
+
 
 HTTP/1.1 200 OK
 Date: Mon, 28 Nov 2016 14:40:02 GMT
@@ -775,17 +819,6 @@ Content-Length: 794
 
 7.  IANA Considerations
 
-
-
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 14]
-
-Internet-Draft                   Linkset                     August 2017
-
-
 7.1.  Link Relation Type: linkset
 
    The link relation type below has been registered by IANA per
@@ -798,6 +831,16 @@ Internet-Draft                   Linkset                     August 2017
       the link.
 
       Reference: [[ This document ]]
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 15]
+
+Internet-Draft                   Linkset                     August 2017
+
 
 7.2.  Media Type: application/linkset
 
@@ -833,15 +876,6 @@ Internet-Draft                   Linkset                     August 2017
 
          Macintosh file type code(s): TEXT
 
-
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 15]
-
-Internet-Draft                   Linkset                     August 2017
-
-
       Person & email address to contact for further information: Herbert
       Van de Sompel <herbertv@lanl.gov>
 
@@ -852,6 +886,17 @@ Internet-Draft                   Linkset                     August 2017
       Author: Herbert Van de Sompel <herbertv@lanl.gov>
 
       Change controller: IETF
+
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 16]
+
+Internet-Draft                   Linkset                     August 2017
+
 
 7.3.  Media Type: application/linkset+json
 
@@ -891,18 +936,23 @@ Internet-Draft                   Linkset                     August 2017
 
       Intended usage: COMMON
 
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 16]
-
-Internet-Draft                   Linkset                     August 2017
-
-
       Restrictions on usage: none
 
       Author: Herbert Van de Sompel <herbertv@lanl.gov>
 
       Change controller: IETF
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 17]
+
+Internet-Draft                   Linkset                     August 2017
+
 
 8.  Security Considerations
 
@@ -946,17 +996,19 @@ Internet-Draft                   Linkset                     August 2017
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
               <https://www.rfc-editor.org/info/rfc6838>.
 
-
-
-
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 17]
-
-Internet-Draft                   Linkset                     August 2017
-
-
    [RFC7159]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", RFC 7159, DOI 10.17487/RFC7159, March
               2014, <https://www.rfc-editor.org/info/rfc7159>.
+
+
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 18]
+
+Internet-Draft                   Linkset                     August 2017
+
 
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
@@ -1005,4 +1057,8 @@ Authors' Addresses
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 18]
+
+
+
+
+Wilde & Van de Sompel   Expires February 18, 2018              [Page 19]
