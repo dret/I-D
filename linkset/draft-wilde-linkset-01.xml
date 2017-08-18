@@ -199,7 +199,7 @@
                             Note that for relative references, the baseURI is the URI of the 
                             link set resource.</t>
                         <t>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value 
-                            that represents a single link relation type. The value of "rel"/"rev" MUST either be a registered 
+                            that represents a set of link relation types, represented as an array of strings. The value of each "rel"/"rev" link relation type MUST either be a registered 
                             relation type or an extension relation type (URI), 
                             as described in Sections 2.1.1 and 2.1.2 of 
                             <xref target="I-D.nottingham-rfc5988bis"/>, respectively.</t>
@@ -210,7 +210,7 @@
                         <artwork align="left" type="JSON"><![CDATA[
 [ { "href" : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : "next" } ]]]>
+    "rel" : [ "next" ] } ]]]>
                         </artwork> 
                     </figure>
                     <t>This example of a JSON-serialized link set contains just one link 
