@@ -406,7 +406,7 @@
 
   <meta name="dct.creator" content="Wilde, E. and H. Van de Sompel" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-linkset-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-8-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-8-17" />
   <meta name="dct.abstract" content="This specification defines two media types and a link relation type for sets of links.  Using these media types and/or link relation is useful when it becomes necessary to represent links outside the context of a resource that participates in these links. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
   <meta name="description" content="This specification defines two media types and a link relation type for sets of links.  Using these media types and/or link relation is useful when it becomes necessary to represent links outside the context of a resource that participates in these links. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
 
@@ -430,12 +430,12 @@
 <td class="right">H. Van de Sompel</td>
 </tr>
 <tr>
-<td class="left">Expires: February 11, 2018</td>
+<td class="left">Expires: February 18, 2018</td>
 <td class="right">Los Alamos National Laboratory</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 10, 2017</td>
+<td class="right">August 17, 2017</td>
 </tr>
 
     	
@@ -454,7 +454,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 11, 2018.</p>
+<p>This Internet-Draft will expire on February 18, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2017 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -625,7 +625,9 @@
 <h1 id="rfc.section.4.2.3.2">
 <a href="#rfc.section.4.2.3.2">4.2.3.2.</a> <a href="#json-target-attributes-extension" id="json-target-attributes-extension">JSON Representation of Extension Target Attributes</a>
 </h1>
-<p id="rfc.section.4.2.3.2.p.1">Extension target attributes are any target attributes that are not defined by RFC 5988bis, but are used to qualify links. As per <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, the following cases can occur:</p>
+<p id="rfc.section.4.2.3.2.p.1">Extension target attributes are any target attributes that are not defined by RFC 5988bis, but are used to qualify links. When they occur on links, it is not apparent from their usage in link instances how they are defined. They can be defined in any way deemed necessary, and it is up to the creator of extension target attributes to make sure their usage is well-defined. This is particularly important when it comes to repeatable target attributes.</p>
+<p id="rfc.section.4.2.3.2.p.2">While the native syntax (as defined in Section <a href="#linkset-native" class="xref">Section 4.1</a> supports and allows repeating link parameters, the JSON representation defined here does not support, and therefore not allow repeated target attributes. As a result, target attributes that are used as repeating cannot be directly represented in the JSON representation.</p>
+<p id="rfc.section.4.2.3.2.p.3">As per <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, the following cases can occur:</p>
 <p></p>
 
 <ul>
@@ -643,7 +645,6 @@
 <ul>
 <li>Each target attribute MUST be serialized as a member of the link object that represents the link to which the attribute applies.</li>
 <li>The name of the target attribute MUST be used as the member name and the attribute's value MUST be conveyed as that member's value.</li>
-<li>Implementations MUST ignore attributes they do not understand.</li>
 </ul>
 <pre>
 [ { "href" : "http://example.com/foo",
@@ -658,30 +659,21 @@
 <p id="rfc.section.4.2.3.2.2.p.1">In the JSON representation, repeatable attributes of the "token" variant are handled as follows:</p>
 <p></p>
 
-<ul>
-<li>tbd</li>
-<li>Implementations MUST ignore attributes they do not understand.</li>
-</ul>
+<ul><li>tbd</li></ul>
 <h1 id="rfc.section.4.2.3.2.3">
 <a href="#rfc.section.4.2.3.2.3">4.2.3.2.3.</a> <a href="#linkset-json-link-nr-tokenstar" id="linkset-json-link-nr-tokenstar">Not Repeatable Target Attributes of the "token*" Variant</a>
 </h1>
 <p id="rfc.section.4.2.3.2.3.p.1">In the JSON representation, not repeatable attributes of the "token*" variant are handled as follows:</p>
 <p></p>
 
-<ul>
-<li>tbd</li>
-<li>Implementations MUST ignore attributes they do not understand.</li>
-</ul>
+<ul><li>tbd</li></ul>
 <h1 id="rfc.section.4.2.3.2.4">
 <a href="#rfc.section.4.2.3.2.4">4.2.3.2.4.</a> <a href="#linkset-json-link-r-tokenstar" id="linkset-json-link-r-tokenstar">Repeatable Target Attributes of the "token*" Variant</a>
 </h1>
 <p id="rfc.section.4.2.3.2.4.p.1">In the JSON representation, repeatable attributes of the "token*" variant are handled as follows:</p>
 <p></p>
 
-<ul>
-<li>tbd</li>
-<li>Implementations MUST ignore attributes they do not understand.</li>
-</ul>
+<ul><li>tbd</li></ul>
 <h1 id="rfc.section.4.2.4">
 <a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Representing Internationalized Target Attributes for a Link</a>
 </h1>
