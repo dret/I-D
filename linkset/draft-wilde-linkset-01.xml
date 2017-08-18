@@ -206,14 +206,24 @@
                         <t>Each link object MAY have additional members to 
                             convey target attributes (see <xref target="linkset-json-link-target"/>).</t>
                     </list></t>
-                    <t>The following example of a JSON-serialized link set contains one link 
-                        that conveys the core components of a link: link context, link relation type, and 
+                    <t>The following example of a JSON-serialized link set represents one link 
+                        with the core components of a link: link context, link relation type, and 
                         link target.</t>
                     <figure>
                         <artwork align="left" type="JSON"><![CDATA[
 [ { "href" : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
     "rel" : [ "next" ] } ]]]>
+                        </artwork> 
+                    </figure>
+                    <t>The following example of a JSON-serialized link set represents two links 
+                        with the core components of a link: link context, link relation type, and 
+                        link target. The syntax of this example takes advantage of the fact that multiple relation types can be used in one link object (which effectively turn the link objects into a shortcut representing as many links as there are link relation types).</t>
+                    <figure>
+                        <artwork align="left" type="JSON"><![CDATA[
+[ { "href" : "http://example.com/foo", 
+    "anchor" : "http://example.net/bar", 
+    "rel" : [ "next" , "http://example.net/linkrel" ] } ]]]>
                         </artwork> 
                     </figure>
                 </section>
