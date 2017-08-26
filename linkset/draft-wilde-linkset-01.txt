@@ -5,8 +5,8 @@
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
 Intended status: Informational                          H. Van de Sompel
-Expires: February 18, 2018                Los Alamos National Laboratory
-                                                         August 17, 2017
+Expires: February 27, 2018                Los Alamos National Laboratory
+                                                         August 26, 2017
 
 
       Linkset: Media Types and a Link Relation Type for Link Sets
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 18, 2018.
+   This Internet-Draft will expire on February 27, 2018.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 1]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 1]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 2]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 2]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -165,7 +165,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 3]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 3]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -221,7 +221,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 4]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 4]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -277,7 +277,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 5]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 5]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -333,7 +333,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 6]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 6]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -389,17 +389,16 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 7]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 7]
 
 Internet-Draft                   Linkset                     August 2017
 
 
 4.2.3.  Representing Link Target Attributes
 
-   In many cases, a link is further qualified by optional target
-   attributes, either defined by the serialization of
-   [I-D.nottingham-rfc5988bis] or extension attributes defined by
-   communities.
+   In many cases, a link is further qualified by target attributes,
+   either defined by the serialization of [I-D.nottingham-rfc5988bis] or
+   extension attributes defined and used by communities.
 
 4.2.3.1.  JSON Representation of RFC 5988bis Target Attributes
 
@@ -410,23 +409,26 @@ Internet-Draft                   Linkset                     August 2017
    Section Section 4.2.3.2), but are specifically defined to be handled
    in the JSON representation as follows:
 
-   o  "hreflang": The JSON representation only allows one hreflang value
-      to be represented.  If there is more than one hreflang value, then
-      the first one MUST be represented as a "hreflang" member, and
-      subsequent occurrences of hreflang MUST be ignored.
+   o  "hreflang": The "hreflang" target attribute can be repeated, and
+      thus the JSON representation uses an array to capture occurrences
+      of the "hreflang" target attribute.  The hreflang member of a link
+      object always MUST be an array (even if there only is one value to
+      be represented), and each value in that array MUST be a string,
+      representing one occurrence of an "hreflang" target attribute on a
+      link.
 
-   o  "media": The optional "media" parameter is represented by a
-      "media" member, with the value following the same model as in the
-      native syntax.
+   o  "media": The optional "media" target attribute is represented by a
+      "media" member in the link object, with its value being a single
+      string that is following the same model as in the native syntax.
 
    o  "title"/"title*": This construct is inspired by character encoding
       and language issues and follows the model defined in RFC 5987.  It
       therefore follows the general model for serialization of RFC 5987
       defined target attributes defined in Section Section 4.2.4.
 
-   o  "type": The optional "type" parameter is represented by a "type"
-      member, with the value following the same model as in the native
-      syntax.
+   o  "type": The optional "type" target attribute is represented by a
+      "type" member in the link object, with its value being a single
+      string that is following the same model as in the native syntax.
 
 4.2.3.2.  JSON Representation of Extension Target Attributes
 
@@ -440,16 +442,15 @@ Internet-Draft                   Linkset                     August 2017
 
    While the native syntax (as defined in Section Section 4.1 supports
    and allows repeating link parameters, the JSON representation defined
-   here does not support, and therefore not allow repeated target
 
 
 
-
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 8]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 8]
 
 Internet-Draft                   Linkset                     August 2017
 
 
+   here does not support, and therefore not allow repeated target
    attributes.  As a result, target attributes that are used as
    repeating cannot be directly represented in the JSON representation.
 
@@ -500,8 +501,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-
-Wilde & Van de Sompel   Expires February 18, 2018               [Page 9]
+Wilde & Van de Sompel   Expires February 27, 2018               [Page 9]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -557,7 +557,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 10]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 10]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -613,7 +613,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 11]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 11]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -669,7 +669,7 @@ Connection: close
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 12]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 12]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -725,7 +725,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 13]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 13]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -781,7 +781,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 14]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 14]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -837,7 +837,7 @@ Content-Length: 794
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 15]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 15]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -893,7 +893,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 16]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 16]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -949,7 +949,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 17]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 17]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -962,7 +962,7 @@ Internet-Draft                   Linkset                     August 2017
 
    [I-D.nottingham-rfc5988bis]
               Nottingham, M., "Web Linking", draft-nottingham-
-              rfc5988bis-06 (work in progress), June 2017.
+              rfc5988bis-08 (work in progress), August 2017.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1005,7 +1005,7 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 18]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 18]
 
 Internet-Draft                   Linkset                     August 2017
 
@@ -1061,4 +1061,4 @@ Authors' Addresses
 
 
 
-Wilde & Van de Sompel   Expires February 18, 2018              [Page 19]
+Wilde & Van de Sompel   Expires February 27, 2018              [Page 19]
