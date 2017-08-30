@@ -386,7 +386,7 @@
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Representing a Link Set">
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Representing a Link">
 <link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Representing Link Target Attributes">
-<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 Representing Internationalized Target Attributes for a Link">
+<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 JSON Representation of Extension Target Attributes">
 <link href="#rfc.section.5" rel="Chapter" title='5 The "linkset" Relation Type for Linking to Link Sets'>
 <link href="#rfc.section.6" rel="Chapter" title="6 Examples">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Links Provided in the Header of the Link Set Resource">
@@ -488,7 +488,7 @@
 </li>
 <li>4.2.3.   <a href="#rfc.section.4.2.3">Representing Link Target Attributes</a>
 </li>
-<li>4.2.4.   <a href="#rfc.section.4.2.4">Representing Internationalized Target Attributes for a Link</a>
+<li>4.2.4.   <a href="#rfc.section.4.2.4">JSON Representation of Extension Target Attributes</a>
 </li>
 </ul></ul><li>5.   <a href="#rfc.section.5">The "linkset" Relation Type for Linking to Link Sets</a>
 </li>
@@ -628,74 +628,27 @@
 <h1 id="rfc.section.4.2.3.1">
 <a href="#rfc.section.4.2.3.1">4.2.3.1.</a> <a href="#json-target-attributes-existing" id="json-target-attributes-existing">JSON Representation of RFC 5988bis Target Attributes</a>
 </h1>
-<p id="rfc.section.4.2.3.1.p.1">RFC 5988bis defines link relations to be potentially annotated via the "hreflang", "media", "title", "title*", and "type" target attributes. These target attributes follow different occurrence and value patterns (as discussed in more detail in Section <a href="#json-target-attributes-extension" class="xref">Section 4.2.3.2</a>), but are specifically defined to be handled in the JSON representation as follows:</p>
+<p id="rfc.section.4.2.3.1.p.1">RFC 5988bis allows link relations to be potentially annotated via the "hreflang", "media", "title", "title*", and "type" target attributes. These target attributes follow different occurrence and value patterns (as discussed in more detail in Section <a href="#json-target-attributes-extension" class="xref">Section 4.2.4</a>), but are specifically defined to be handled in the JSON representation as follows:</p>
 <p></p>
 
 <ul>
 <li>"hreflang": The "hreflang" target attribute can be repeated, and thus the JSON representation uses an array to capture occurrences of the "hreflang" target attribute. The hreflang member of a link object always MUST be an array (even if there only is one value to be represented), and each value in that array MUST be a string, representing one occurrence of an "hreflang" target attribute on a link.</li>
 <li>"media": The optional "media" target attribute is represented by a "media" member in the link object, with its value being a single string that is following the same model as in the native syntax.</li>
-<li>"title"/"title*": This construct is inspired by character encoding and language issues and follows the model defined in RFC 5987 <a href="#RFC5987" class="xref">[RFC5987]</a>. It therefore follows the general model for serialization of RFC 5987 defined target attributes defined in Section <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.4</a>.</li>
 <li>"type": The optional "type" target attribute is represented by a "type" member in the link object, with its value being a single string that is following the same model as in the native syntax.</li>
+<li>"title": The optional "title" target attribute is represented by a "title" member in the link object, with its value being a single string that is following the same model as in the native syntax.</li>
+<li>"title*": This construct is inspired by character encoding and language issues and follows the model defined in RFC 5987 <a href="#RFC5987" class="xref">[RFC5987]</a>. The content uses a string-based microsyntax that represents character encoding, an optional language tag, and the actual title. The details of the JSON representation are described in Section <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.3.2</a>.</li>
 </ul>
 <h1 id="rfc.section.4.2.3.2">
-<a href="#rfc.section.4.2.3.2">4.2.3.2.</a> <a href="#json-target-attributes-extension" id="json-target-attributes-extension">JSON Representation of Extension Target Attributes</a>
+<a href="#rfc.section.4.2.3.2">4.2.3.2.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Representing Internationalized Target Attributes for a Link</a>
 </h1>
-<p id="rfc.section.4.2.3.2.p.1">Extension target attributes are any target attributes that are not defined by RFC 5988bis, but are used to qualify links. When they occur on links, it is not apparent from their usage in link instances how they are defined. They can be defined in any way deemed necessary, and it is up to the creator of extension target attributes to make sure their usage is well-defined. This is particularly important when it comes to repeatable target attributes.</p>
-<p id="rfc.section.4.2.3.2.p.2">While the native syntax (as defined in Section <a href="#linkset-native" class="xref">Section 4.1</a> supports and allows repeating link parameters, the JSON representation defined here does not support, and therefore not allow repeated target attributes. As a result, target attributes that are used as repeating cannot be directly represented in the JSON representation.</p>
-<p id="rfc.section.4.2.3.2.p.3">As per <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, the following cases can occur:</p>
-<p></p>
-
-<ul>
-<li>Not repeatable attributes of the "token" variant, e.g. "title" defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.</li>
-<li>Repeatable attributes of the "token" variant, e.g. "hreflang" defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.</li>
-<li>Not repeatable attributes of the "token*" variant that use the content model of RFC 5987 <a href="#RFC5987" class="xref">[RFC5987]</a>, e.g. "title*" defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.</li>
-<li>Repeatable attributes of the "token*" variant that use the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>, e.g. an extension attribute of this type defined by a community</li>
-</ul>
-<h1 id="rfc.section.4.2.3.2.1">
-<a href="#rfc.section.4.2.3.2.1">4.2.3.2.1.</a> <a href="#linkset-json-link-nr-token" id="linkset-json-link-nr-token">Not Repeatable Target Attributes of the "token" Variant</a>
-</h1>
-<p id="rfc.section.4.2.3.2.1.p.1">In the JSON representation, not repeatable attributes of the "token" variant are handled as follows:</p>
-<p></p>
-
-<ul>
-<li>Each target attribute MUST be serialized as a member of the link object that represents the link to which the attribute applies.</li>
-<li>The name of the target attribute MUST be used as the member name and the attribute's value MUST be conveyed as that member's value.</li>
-</ul>
-<pre>
-[ { "href" : "http://example.com/foo",
-    "anchor" : "http://example.net/bar",
-    "rel"  :  "next", 
-    "type" : "text/html"} ]
-                                </pre>
-<p id="rfc.section.4.2.3.2.1.p.3">This example adds the "type" target attribute to the link.</p>
-<h1 id="rfc.section.4.2.3.2.2">
-<a href="#rfc.section.4.2.3.2.2">4.2.3.2.2.</a> <a href="#linkset-json-link-r-token" id="linkset-json-link-r-token">Repeatable Target Attributes of the "token" Variant</a>
-</h1>
-<p id="rfc.section.4.2.3.2.2.p.1">In the JSON representation, repeatable attributes of the "token" variant are handled as follows:</p>
-<p></p>
-
-<ul><li>tbd</li></ul>
-<h1 id="rfc.section.4.2.3.2.3">
-<a href="#rfc.section.4.2.3.2.3">4.2.3.2.3.</a> <a href="#linkset-json-link-nr-tokenstar" id="linkset-json-link-nr-tokenstar">Not Repeatable Target Attributes of the "token*" Variant</a>
-</h1>
-<p id="rfc.section.4.2.3.2.3.p.1">In the JSON representation, not repeatable attributes of the "token*" variant are handled as follows:</p>
-<p></p>
-
-<ul><li>tbd</li></ul>
-<h1 id="rfc.section.4.2.3.2.4">
-<a href="#rfc.section.4.2.3.2.4">4.2.3.2.4.</a> <a href="#linkset-json-link-r-tokenstar" id="linkset-json-link-r-tokenstar">Repeatable Target Attributes of the "token*" Variant</a>
-</h1>
-<p id="rfc.section.4.2.3.2.4.p.1">In the JSON representation, repeatable attributes of the "token*" variant are handled as follows:</p>
-<p></p>
-
-<ul><li>tbd</li></ul>
+<p id="rfc.section.4.2.3.2.p.1">In addition to the target attributes described in <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the attribute model of RFC 5987 <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisk in the attribute name, such as "title*". The JSON serialization for these attributes is different than for those of <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>.</p>
+<p id="rfc.section.4.2.3.2.p.2">Internationalized link parameters use the link parameter name as their name, and their value is either a string representing the link parameter value, or an object representing one or more language tagged link parameter values.  In such an object, the set of members uses a language tag <a href="#RFC5646" class="xref">[RFC5646]</a> as their names, and their values are strings representing the link parameter values associated with the respective language tag.</p>
 <h1 id="rfc.section.4.2.4">
-<a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Representing Internationalized Target Attributes for a Link</a>
+<a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#json-target-attributes-extension" id="json-target-attributes-extension">JSON Representation of Extension Target Attributes</a>
 </h1>
-<p id="rfc.section.4.2.4.p.1">In addition to the target attributes described in <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the content model of RFC 5987 <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisks in the attribute name, e.g. "title*" instead of "title". The JSON serialization for these attributes is different than for those of <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>.  They are handled as follows: </p>
-<p></p>
-
-<ul><li>Internationalized link parameters use the link parameter name as their name, and their value is either a string representing the link parameter value, or an object representing one or more language tagged link parameter values.  In such an object, the set of members uses a language tag <a href="#RFC5646" class="xref">[RFC5646]</a> as their names, and their values are strings representing the link parameter values associated with the respective language tag.</li></ul>
+<p id="rfc.section.4.2.4.p.1">Extension target attributes are any target attributes that are not defined by RFC 5988bis (as listed in Section <a href="#json-target-attributes-existing" class="xref">Section 4.2.3.1</a>), but are used to qualify links. When they occur on links, it is not apparent from their usage in link instances how they are defined. They can be defined in any way deemed necessary, and it is up to the creator of extension target attributes to make sure their usage is well-defined. This is particularly important when it comes to repeatable target attributes.</p>
+<p id="rfc.section.4.2.4.p.2">While the native syntax (as defined in Section <a href="#linkset-native" class="xref">Section 4.1</a> supports and allows repeating link parameters, the JSON representation defined here does not support, and therefore not allow repeated target attributes. For this reason, every extension target attribute is treated as being potentially repeating, and thus represented as a JSON array. Every extension target attribute serialized in the JSON syntax MUST be an array. Each of the values in the array MUST be a string, with each string representing one occurrence of the extension target attribute. Specifically, this means that extension target attributes that do not repeat on a link still MUST be represented as an array, with the attribute value appearing as a string as the single member of that array.</p>
+<p id="rfc.section.4.2.4.p.3">The combined result of that rule and JSON's lacking support for repeating members of the same name means that repeating extension target attributes MUST be combined into one JSON member that has the extension target attribute's name as the member name, and has an array as its value which has the values of all the extension target attribute occurrences as string values of the array.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#linkset-link-relation" id="linkset-link-relation">The "linkset" Relation Type for Linking to Link Sets</a>
 </h1>
