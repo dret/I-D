@@ -2,11 +2,12 @@
 
 
 
+
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
 Intended status: Informational                          H. Van de Sompel
-Expires: March 2, 2018                    Los Alamos National Laboratory
-                                                         August 29, 2017
+Expires: March 5, 2018                    Los Alamos National Laboratory
+                                                       September 1, 2017
 
 
       Linkset: Media Types and a Link Relation Type for Link Sets
@@ -45,7 +46,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 2, 2018.
+   This Internet-Draft will expire on March 5, 2018.
 
 
 
@@ -53,9 +54,9 @@ Status of This Memo
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 1]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 1]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 Copyright Notice
@@ -89,29 +90,29 @@ Table of Contents
        4.2.1.  Representing a Link Set . . . . . . . . . . . . . . .   6
        4.2.2.  Representing a Link . . . . . . . . . . . . . . . . .   6
        4.2.3.  Representing Link Target Attributes . . . . . . . . .   8
-       4.2.4.  JSON Representation of Extension Target Attributes  .   9
-   5.  The "linkset" Relation Type for Linking to Link Sets  . . . .   9
-   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     6.1.  Links Provided in the Header of the Link Set Resource . .  11
+       4.2.4.  JSON Representation of Extension Target Attributes  .  10
+   5.  The "linkset" Relation Type for Linking to Link Sets  . . . .  10
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     6.1.  Links Provided in the Header of the Link Set Resource . .  12
      6.2.  Links Provided in the Body of the Link Set Resource,
-           Link Set Serialized as application/linkset+json . . . . .  12
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
-     7.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .  14
-     7.2.  Media Type: application/linkset . . . . . . . . . . . . .  15
-       7.2.1.  IANA Considerations . . . . . . . . . . . . . . . . .  15
-     7.3.  Media Type: application/linkset+json  . . . . . . . . . .  16
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
-   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  17
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
+           Link Set Serialized as application/linkset+json . . . . .  13
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
+     7.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .  15
+     7.2.  Media Type: application/linkset . . . . . . . . . . . . .  16
+       7.2.1.  IANA Considerations . . . . . . . . . . . . . . . . .  16
+     7.3.  Media Type: application/linkset+json  . . . . . . . . . .  17
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
+   9.  Normative References  . . . . . . . . . . . . . . . . . . . .  18
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
 
 
 
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 2]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 2]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 1.  Introduction
@@ -165,9 +166,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 3]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 3]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
    These are all scenarios in which providing links by reference is
@@ -221,9 +222,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 4]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 4]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 3.3.  Large Number of Links
@@ -277,9 +278,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 5]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 5]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 4.1.  HTTP Link Document Format for Link Sets: application/linkset
@@ -304,9 +305,9 @@ Internet-Draft                   Linkset                     August 2017
 
    o  A link set MUST be represented as a JSON array.
 
-   o  Each individual link of the link set MUST be represented as a
-      distinct JSON object in the array, in the form of a "link object"
-      (see Section 4.2.2).
+   o  A distinct JSON object - the "link object" - in this array MUST be
+      used to represent an individual link or multiple links that have
+      the same link context and link target.  (see Section 4.2.2).
 
    o  Implementations MUST wrap link objects in an array, even if the
       link set contains only one link.
@@ -316,7 +317,8 @@ Internet-Draft                   Linkset                     August 2017
 
 4.2.2.  Representing a Link
 
-   In the JSON representation, an individual link is represented by a
+   In the JSON representation, an individual link or mutiple links that
+   have the same link context and link target is represented by a
    dedicated JSON object, the link object.  A Link object adheres to the
    following rules:
 
@@ -332,22 +334,21 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 6]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 6]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
       relative references, the baseURI is the URI of the link set
       resource.
 
    o  Each link object MUST have a "rel" or "rev" member (with the
-      latter one deprecated) with a value that represents a set of link
-      relation types, represented as an array of strings.  The value of
-      each "rel"/"rev" link relation type MUST either be a registered
-      relation type or an extension relation type (URI), as described in
-      Sections 2.1.1 and 2.1.2 of [I-D.nottingham-rfc5988bis],
-      respectively.
+      latter one deprecated) with a value that represents one or more
+      link relation types, represented as an array of strings.  The
+      value of each "rel"/"rev" link relation type MUST either be a
+      registered relation type or an extension relation type (URI), as
+      described in Sections 2.1.1 and 2.1.2 of
+      [I-D.nottingham-rfc5988bis], respectively.
 
    o  Each link object MAY have additional members to convey target
       attributes (see Section 4.2.3).
@@ -364,8 +365,8 @@ Internet-Draft                   Linkset                     August 2017
    links with the core components of a link: link context, link relation
    type, and link target.  The syntax of this example takes advantage of
    the fact that multiple relation types can be used in one link object
-   (which effectively turn the link objects into a shortcut representing
-   as many links as there are link relation types).
+   to convey muliple links that have the same link context and link
+   target.
 
    [ { "href" : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
@@ -389,9 +390,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 7]
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 7]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 4.2.3.  Representing Link Target Attributes
@@ -402,96 +403,146 @@ Internet-Draft                   Linkset                     August 2017
 
 4.2.3.1.  JSON Representation of RFC 5988bis Target Attributes
 
-   RFC 5988bis allows link relations to be potentially annotated via the
-   "hreflang", "media", "title", "title*", and "type" target attributes.
-   These target attributes follow different occurrence and value
-   patterns (as discussed in more detail in Section Section 4.2.4), but
-   are specifically defined to be handled in the JSON representation as
+   RFC 5988bis defines the following target attributes that may be used
+   to annotate links: "hreflang", "media", "title", "title*", and
+   "type".  These target attributes follow different occurrence and
+   value patterns and MUST be handled in the JSON representation as
    follows:
 
-   o  "hreflang": The "hreflang" target attribute can be repeated, and
-      thus the JSON representation uses an array to capture occurrences
-      of the "hreflang" target attribute.  The hreflang member of a link
-      object always MUST be an array (even if there only is one value to
-      be represented), and each value in that array MUST be a string,
-      representing one occurrence of an "hreflang" target attribute on a
-      link.
+   o  "hreflang": The optional and repeatable "hreflang" target
+      attribute MUST be represented by an array (even if there only is
+      one value to be represented), and each value in that array MUST be
+      a string - representing one value of the "hreflang" target
+      attribute for a link - which follows the same model as in the
+      [I-D.nottingham-rfc5988bis] syntax.
 
-   o  "media": The optional "media" target attribute is represented by a
-      "media" member in the link object, with its value being a single
-      string that is following the same model as in the native syntax.
+   o  "media": The optional and not repeatable "media" target attribute
+      MUST be represented by a "media" member in the link object, and
+      its value MUST be a string that follows the same model as in the
+      [I-D.nottingham-rfc5988bis] syntax.
 
-   o  "type": The optional "type" target attribute is represented by a
-      "type" member in the link object, with its value being a single
-      string that is following the same model as in the native syntax.
+   o  "type": The optional and not repeatable "type" target attribute
+      MUST be represented by a "type" member in the link object, and its
+      value MUST be a string that follows the same model as in the
+      [I-D.nottingham-rfc5988bis] syntax.
 
-   o  "title": The optional "title" target attribute is represented by a
-      "title" member in the link object, with its value being a single
-      string that is following the same model as in the native syntax.
+   o  "title": The optional and not repeatable "title" target attribute
+      MUST be represented by a "title" member in the link object, and
+      its value MUST be a string that follows the same model as in the
+      [I-D.nottingham-rfc5988bis] syntax.
 
-   o  "title*": This construct is inspired by character encoding and
-      language issues and follows the model defined in RFC 5987
-      [RFC5987].  The content uses a string-based microsyntax that
-      represents character encoding, an optional language tag, and the
-      actual title.  The details of the JSON representation are
-      described in Section Section 4.2.3.2.
+   o  "title*": The optional and not repeatable "title*" attribute is
+      motivated by character encoding and language issues and follows
+      the model defined in [RFC5987].  The details of the JSON
+      representation that applies to title* are described in
+      Section 4.2.3.2.
+
+   The following example illustrates how the repeatable "hreflang" and
+   the not repeatable "type" target attributes are conveyed in a link
+   object.
+
+
+
+
+
+
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 8]
+
+Internet-Draft                   Linkset                  September 2017
+
+
+   [ { "href" : "http://example.com/foo",
+       "anchor" : "http://example.net/bar",
+       "rel" : [ "next" ] ,
+       "hreflang" : [ "en" , "de" ] ,
+       "type" " "text/html" } ]
 
 4.2.3.2.  Representing Internationalized Target Attributes for a Link
 
    In addition to the target attributes described in Section 4.2.3,
    [I-D.nottingham-rfc5988bis] also supports attributes that follow the
-   attribute model of RFC 5987 [RFC5987].  In
-   [I-D.nottingham-rfc5988bis], these target attributes are recognizable
+   content model of [RFC5987].  In [I-D.nottingham-rfc5988bis], these
+   target attributes are recognizable by the use of a trailing asterisk
+   in the attribute name, such as "title*".  The content model of
+   [RFC5987] uses a string-based microsyntax that represents character
+   encoding, the actual title expressed according to the title, and an
+   optional language tag pertaining to the title.
+
+   The JSON serialization for these attributes is as follows:
+
+   o  Internationalized target attributes use the attribute name
+      (including the *) as their name.
+
+   o  The character encoding information as prescribed by [RFC5987] is
+      not conveyed as the character encoding used by JSON is fixed.
+
+   o  For attributes that are not repeatable - such as title* - their
+      value is an array.  The first value in the array is a string
+      representing the attribute value.  The optional second value in
+      the array is a language tag [RFC5646] associated with that
+      attribute value.
+
+   o  For attributes that are repeatable, their value is an array that
+      contains one or more arrays.  In each of these latter arrays, the
+      first value is a string representing an attribute value and the
+      optional second array value is a language tag [RFC5646] associated
+      with that attribute value.
+
+   The following example illustrates how the not repeatable "title*"
+   target attribute defined by [RFC5987] is conveyed in a link object.
+
+   [ { "href" : "http://example.com/foo",
+       "anchor" : "http://example.net/bar",
+       "rel" : [ "next" ] ,
+       "title*" : [ "Volgend hoofdstuk" , "nl" ] } ]
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 8]
+
+
+
+
+Wilde & Van de Sompel     Expires March 5, 2018                 [Page 9]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
-
-   by the use of a trailing asterisk in the attribute name, such as
-   "title*".  The JSON serialization for these attributes is different
-   than for those of Section 4.2.3.
-
-   Internationalized link parameters use the link parameter name as
-   their name, and their value is either a string representing the link
-   parameter value, or an object representing one or more language
-   tagged link parameter values.  In such an object, the set of members
-   uses a language tag [RFC5646] as their names, and their values are
-   strings representing the link parameter values associated with the
-   respective language tag.
 
 4.2.4.  JSON Representation of Extension Target Attributes
 
-   Extension target attributes are any target attributes that are not
-   defined by RFC 5988bis (as listed in Section Section 4.2.3.1), but
-   are used to qualify links.  When they occur on links, it is not
-   apparent from their usage in link instances how they are defined.
-   They can be defined in any way deemed necessary, and it is up to the
-   creator of extension target attributes to make sure their usage is
-   well-defined.  This is particularly important when it comes to
-   repeatable target attributes.
+   Extension target attributes are attributes that are not defined by
+   RFC 5988bis (as listed in Section 4.2.3.1), but are nevertheless used
+   to qualify links.  They can be defined by communities in any way
+   deemed necessary, and it is up to them to make sure their usage is
+   understood by target applications.  However, lacking standardization,
+   there is no interoperable understanding of these extension
+   attributes.  One important consequence is that their cardinality is
+   unknown to generic applications.  Therefor, in the JSON
+   serialization, all extension target attributes are treated as de-
+   facto repeatable:
 
-   While the native syntax (as defined in Section Section 4.1 supports
-   and allows repeating link parameters, the JSON representation defined
-   here does not support, and therefore not allow repeated target
-   attributes.  For this reason, every extension target attribute is
-   treated as being potentially repeating, and thus represented as a
-   JSON array.  Every extension target attribute serialized in the JSON
-   syntax MUST be an array.  Each of the values in the array MUST be a
-   string, with each string representing one occurrence of the extension
-   target attribute.  Specifically, this means that extension target
-   attributes that do not repeat on a link still MUST be represented as
-   an array, with the attribute value appearing as a string as the
-   single member of that array.
+   o  Extension target attributes use the attribute name (including the
+      *, if applicable) as their name.
 
-   The combined result of that rule and JSON's lacking support for
-   repeating members of the same name means that repeating extension
-   target attributes MUST be combined into one JSON member that has the
-   extension target attribute's name as the member name, and has an
-   array as its value which has the values of all the extension target
-   attribute occurrences as string values of the array.
+   o  The value of an extension attribute MUST be represented by an
+      array (even if there only is one value to be represented).
+
+   o  If the extension attribute does not have a name with a trailing
+      asterisk, then each value in that array MUST be a string that
+      represents one value of the extension target attribute.
+
+   o  If the extension attribute has a name with a trailing asterisk (it
+      follows the content model of [RFC5987]), then each value in that
+      array MUST be an array.  The value of each array MUST be as
+      described in Section 4.2.3.2.
+
+   The following example illustrates how the not repeatable "title*"
+   target attribute defined by [RFC5987] is conveyed in a link object.
+
+   [ { "href" : "http://example.com/foo",
+       "anchor" : "http://example.net/bar",
+       "rel" : [ "next" ] ,
+       "param" : [ "445887" ] ,
+       "param*" : [[ "vertrouwelijk" , "nl" ]] } ]
 
 5.  The "linkset" Relation Type for Linking to Link Sets
 
@@ -499,17 +550,18 @@ Internet-Draft                   Linkset                     August 2017
    resource - provides a set of links, including links in which the link
    context - the origin resource - particpates.
 
-
-
-Wilde & Van de Sompel     Expires March 2, 2018                 [Page 9]
-
-Internet-Draft                   Linkset                     August 2017
-
-
    A link with the "linkset" relation type MAY be provided in the header
    and/or the body of the origin resource's representation.  It may also
    be discovered by other means, such as through client-side
    information.
+
+
+
+
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 10]
+
+Internet-Draft                   Linkset                  September 2017
+
 
    More than one link with a "linkset" relation type MAY be provided.
    Multiple such links can refer to the same set of links expressed
@@ -557,9 +609,14 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 10]
+
+
+
+
+
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 11]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 6.1.  Links Provided in the Header of the Link Set Resource
@@ -613,9 +670,9 @@ Connection: close
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 11]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 12]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
    in the Link response header of the link set resource.  As can be
@@ -669,9 +726,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 12]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 13]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
    Figure 6 shows the response to the HEAD request of Figure 5.  The
@@ -725,9 +782,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 13]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 14]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 HTTP/1.1 200 OK
@@ -738,19 +795,19 @@ Content-Length: 794
 
 [{"href":"http://authors.example.net/johndoe",
   "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":"author","type":"application/rdf+xml"},
+  "rel":["author"],"type":"application/rdf+xml"},
  {"href":"http://authors.example.net/janedoe",
   "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":"author","type":"application/rdf+xml"},
+  "rel":["author"],"type":"application/rdf+xml"},
  {"href":"http://example.org/resource1/items/AF48EF.pdf",
   "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":"item","type":"text/html"},
+  "rel":["item"],"type":"text/html"},
  {"href":"http://example.org/resource1/items/CB63DA.html",
   "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":"item","type":"application/pdf"},
+  "rel":"[item"],"type":"application/pdf"},
  {"href":"http://example.net/resource41/",
   "anchor":"http://example.org/resource1/items/AF48EF.pdf",
-  "rel":"related","type":"application/pdf"}]
+  "rel":["related"],"type":"application/pdf"}]
 
        Figure 8: Response to HTTP GET against the Link Set Resource
 
@@ -781,9 +838,9 @@ Content-Length: 794
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 14]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 15]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 7.2.  Media Type: application/linkset
@@ -837,9 +894,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 15]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 16]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 7.3.  Media Type: application/linkset+json
@@ -893,9 +950,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 16]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 17]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
 8.  Security Considerations
@@ -949,9 +1006,9 @@ Internet-Draft                   Linkset                     August 2017
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 17]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 18]
 
-Internet-Draft                   Linkset                     August 2017
+Internet-Draft                   Linkset                  September 2017
 
 
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
@@ -1005,4 +1062,4 @@ Authors' Addresses
 
 
 
-Wilde & Van de Sompel     Expires March 2, 2018                [Page 18]
+Wilde & Van de Sompel     Expires March 5, 2018                [Page 19]
