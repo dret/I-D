@@ -2,7 +2,6 @@
 
 
 
-
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
 Intended status: Informational                          H. Van de Sompel
@@ -16,11 +15,14 @@ Expires: March 5, 2018                    Los Alamos National Laboratory
 Abstract
 
    This specification defines two media types and a link relation type
-   for sets of links.  Using these media types and/or link relation is
-   useful when it becomes necessary to represent links outside the
-   context of a resource that participates in these links.  One typical
-   scenario is when the number of links to put in an HTTP Link header
-   field becomes too big, and thus these links should be provided by a
+   for sets of links.  The media types can be used to represents links
+   in a standalone fashion, in one case in the native format used in the
+   HTTP Link header, and in the other case in a JSON-based format.  The
+   link relation can be used to reference these kind of standalone link
+   sets, so that a resource can indicate that additional links putting
+   it into context are available someplace else.  One typical scenario
+   is when the number of links to put in an HTTP Link header field
+   becomes too big, and thus these links should be provided by a
    distinct resource.
 
 Note to Readers
@@ -51,9 +53,6 @@ Status of This Memo
 
 
 
-
-
-
 Wilde & Van de Sompel     Expires March 5, 2018                 [Page 1]
 
 Internet-Draft                   Linkset                  September 2017
@@ -80,17 +79,17 @@ Table of Contents
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Scenarios . . . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.1.  Third-Party Links . . . . . . . . . . . . . . . . . . . .   4
-     3.2.  Challenges Writing to HTTP Header Field . . . . . . . . .   4
+     3.2.  Challenges Writing to HTTP Link Header Field  . . . . . .   4
      3.3.  Large Number of Links . . . . . . . . . . . . . . . . . .   5
    4.  Document Formats for Link Sets  . . . . . . . . . . . . . . .   5
      4.1.  HTTP Link Document Format for Link Sets:
            application/linkset . . . . . . . . . . . . . . . . . . .   6
      4.2.  JSON Document Format for Link Sets:
            application/linkset+json  . . . . . . . . . . . . . . . .   6
-       4.2.1.  Representing a Link Set . . . . . . . . . . . . . . .   6
-       4.2.2.  Representing a Link . . . . . . . . . . . . . . . . .   6
-       4.2.3.  Representing Link Target Attributes . . . . . . . . .   8
-       4.2.4.  JSON Representation of Extension Target Attributes  .  10
+       4.2.1.  Link Sets . . . . . . . . . . . . . . . . . . . . . .   6
+       4.2.2.  Links . . . . . . . . . . . . . . . . . . . . . . . .   6
+       4.2.3.  Link Target Attributes  . . . . . . . . . . . . . . .   8
+       4.2.4.  Extension Target Attributes . . . . . . . . . . . . .  10
    5.  The "linkset" Relation Type for Linking to Link Sets  . . . .  10
    6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
      6.1.  Links Provided in the Header of the Link Set Resource . .  12
@@ -208,11 +207,11 @@ Internet-Draft                   Linkset                  September 2017
    resource can decide if they need the additional links as context for
    the resource.
 
-3.2.  Challenges Writing to HTTP Header Field
+3.2.  Challenges Writing to HTTP Link Header Field
 
    In some cases, it is not straightforward to write links to the HTTP
-   Link header from an application.  This can, for example, be the case
-   because not all required link information is available to the
+   Link header field from an application.  This can, for example, be the
+   case because not all required link information is available to the
    application or because the application does not have the capability
    to directly write HTTP headers.  In such cases, providing links by
    reference can be a solution because a link to a link set resource
@@ -299,7 +298,7 @@ Internet-Draft                   Linkset                  September 2017
    native format.  It is described in this section.  The assigned media
    type for this format is "application/linkset+json".
 
-4.2.1.  Representing a Link Set
+4.2.1.  Link Sets
 
    In the JSON representation of a link set:
 
@@ -315,9 +314,9 @@ Internet-Draft                   Linkset                  September 2017
    o  Implementations MUST NOT include any members other than link
       objects in the array that represents a link set.
 
-4.2.2.  Representing a Link
+4.2.2.  Links
 
-   In the JSON representation, an individual link or mutiple links that
+   In the JSON representation, an individual link or multiple links that
    have the same link context and link target is represented by a
    dedicated JSON object, the link object.  A Link object adheres to the
    following rules:
@@ -357,31 +356,31 @@ Internet-Draft                   Linkset                  September 2017
    link with the core components of a link: link context, link relation
    type, and link target.
 
-   [ { "href" : "http://example.com/foo",
+   [ { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : [ "next" ] } ]
+       "rel"    : [ "next" ] } ]
 
    The following example of a JSON-serialized link set represents two
    links with the core components of a link: link context, link relation
    type, and link target.  The syntax of this example takes advantage of
    the fact that multiple relation types can be used in one link object
-   to convey muliple links that have the same link context and link
+   to represent multiple links that have the same link context and link
    target.
 
-   [ { "href" : "http://example.com/foo",
+   [ { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : [ "next" , "http://example.net/linkrel" ] } ]
+       "rel   " : [ "next" , "http://example.net/linkrel" ] } ]
 
    The previous example is equivalent to the following one, which does
    not use the syntax shortcut and therefore represents the two links
    individually.
 
-   [ { "href" : "http://example.com/foo",
+   [ { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : [ "next" ] },
-     { "href" : "http://example.com/foo",
+       "rel"    : [ "next" ] },
+     { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : [ "http://example.net/linkrel" ] } ]
+       "rel"    : [ "http://example.net/linkrel" ] } ]
 
 
 
@@ -395,7 +394,7 @@ Wilde & Van de Sompel     Expires March 5, 2018                 [Page 7]
 Internet-Draft                   Linkset                  September 2017
 
 
-4.2.3.  Representing Link Target Attributes
+4.2.3.  Link Target Attributes
 
    In many cases, a link is further qualified by target attributes,
    either defined by the serialization of [I-D.nottingham-rfc5988bis] or
@@ -413,7 +412,7 @@ Internet-Draft                   Linkset                  September 2017
       attribute MUST be represented by an array (even if there only is
       one value to be represented), and each value in that array MUST be
       a string - representing one value of the "hreflang" target
-      attribute for a link - which follows the same model as in the
+      attributes for a link - which follows the same model as in the
       [I-D.nottingham-rfc5988bis] syntax.
 
    o  "media": The optional and not repeatable "media" target attribute
@@ -438,7 +437,7 @@ Internet-Draft                   Linkset                  September 2017
       Section 4.2.3.2.
 
    The following example illustrates how the repeatable "hreflang" and
-   the not repeatable "type" target attributes are conveyed in a link
+   the not repeatable "type" target attributes are represented in a link
    object.
 
 
@@ -451,13 +450,13 @@ Wilde & Van de Sompel     Expires March 5, 2018                 [Page 8]
 Internet-Draft                   Linkset                  September 2017
 
 
-   [ { "href" : "http://example.com/foo",
-       "anchor" : "http://example.net/bar",
-       "rel" : [ "next" ] ,
+   [ { "href"     : "http://example.com/foo",
+       "anchor"   : "http://example.net/bar",
+       "rel"      : [ "next" ] ,
        "hreflang" : [ "en" , "de" ] ,
-       "type" " "text/html" } ]
+       "type"     : "text/html" } ]
 
-4.2.3.2.  Representing Internationalized Target Attributes for a Link
+4.2.3.2.  Internationalized Target Attributes for a Link
 
    In addition to the target attributes described in Section 4.2.3,
    [I-D.nottingham-rfc5988bis] also supports attributes that follow the
@@ -491,9 +490,9 @@ Internet-Draft                   Linkset                  September 2017
    The following example illustrates how the not repeatable "title*"
    target attribute defined by [RFC5987] is conveyed in a link object.
 
-   [ { "href" : "http://example.com/foo",
+   [ { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : [ "next" ] ,
+       "rel"    : [ "next" ] ,
        "title*" : [ "Volgend hoofdstuk" , "nl" ] } ]
 
 
@@ -507,7 +506,7 @@ Wilde & Van de Sompel     Expires March 5, 2018                 [Page 9]
 Internet-Draft                   Linkset                  September 2017
 
 
-4.2.4.  JSON Representation of Extension Target Attributes
+4.2.4.  Extension Target Attributes
 
    Extension target attributes are attributes that are not defined by
    RFC 5988bis (as listed in Section 4.2.3.1), but are nevertheless used
@@ -538,17 +537,17 @@ Internet-Draft                   Linkset                  September 2017
    The following example illustrates how the not repeatable "title*"
    target attribute defined by [RFC5987] is conveyed in a link object.
 
-   [ { "href" : "http://example.com/foo",
+   [ { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
-       "rel" : [ "next" ] ,
-       "param" : [ "445887" ] ,
+       "rel"    : [ "next" ] ,
+       "param"  : [ "445887" ] ,
        "param*" : [[ "vertrouwelijk" , "nl" ]] } ]
 
 5.  The "linkset" Relation Type for Linking to Link Sets
 
    The target of a link with the "linkset" relation type - the link set
    resource - provides a set of links, including links in which the link
-   context - the origin resource - particpates.
+   context - the origin resource - participates.
 
    A link with the "linkset" relation type MAY be provided in the header
    and/or the body of the origin resource's representation.  It may also

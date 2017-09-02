@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -379,15 +378,15 @@
 <link href="#rfc.section.2" rel="Chapter" title="2 Terminology">
 <link href="#rfc.section.3" rel="Chapter" title="3 Scenarios">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Third-Party Links">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Challenges Writing to HTTP Header Field">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Challenges Writing to HTTP Link Header Field">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Large Number of Links">
 <link href="#rfc.section.4" rel="Chapter" title="4 Document Formats for Link Sets">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 HTTP Link Document Format for Link Sets: application/linkset">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 JSON Document Format for Link Sets: application/linkset+json">
-<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Representing a Link Set">
-<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Representing a Link">
-<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Representing Link Target Attributes">
-<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 JSON Representation of Extension Target Attributes">
+<link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Link Sets">
+<link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Links">
+<link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Link Target Attributes">
+<link href="#rfc.section.4.2.4" rel="Chapter" title="4.2.4 Extension Target Attributes">
 <link href="#rfc.section.5" rel="Chapter" title='5 The "linkset" Relation Type for Linking to Link Sets'>
 <link href="#rfc.section.6" rel="Chapter" title="6 Examples">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Links Provided in the Header of the Link Set Resource">
@@ -408,8 +407,8 @@
   <meta name="dct.creator" content="Wilde, E. and H. Van de Sompel" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-linkset-01" />
   <meta name="dct.issued" scheme="ISO8601" content="2017-9-1" />
-  <meta name="dct.abstract" content="This specification defines two media types and a link relation type for sets of links.  Using these media types and/or link relation is useful when it becomes necessary to represent links outside the context of a resource that participates in these links. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
-  <meta name="description" content="This specification defines two media types and a link relation type for sets of links.  Using these media types and/or link relation is useful when it becomes necessary to represent links outside the context of a resource that participates in these links. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
+  <meta name="dct.abstract" content="This specification defines two media types and a link relation type for sets of links.  The media types can be used to represents links in a standalone fashion, in one case in the native format used in the HTTP Link header, and in the other case in a JSON-based format. The link relation can be used to reference these kind of standalone link sets, so that a resource can indicate that additional links putting it into context are available someplace else. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
+  <meta name="description" content="This specification defines two media types and a link relation type for sets of links.  The media types can be used to represents links in a standalone fashion, in one case in the native format used in the HTTP Link header, and in the other case in a JSON-based format. The link relation can be used to reference these kind of standalone link sets, so that a resource can indicate that additional links putting it into context are available someplace else. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
 
 </head>
 
@@ -447,7 +446,7 @@
   <span class="filename">draft-wilde-linkset-01</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This specification defines two media types and a link relation type for sets of links.  Using these media types and/or link relation is useful when it becomes necessary to represent links outside the context of a resource that participates in these links. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource.</p>
+<p>This specification defines two media types and a link relation type for sets of links.  The media types can be used to represents links in a standalone fashion, in one case in the native format used in the HTTP Link header, and in the other case in a JSON-based format. The link relation can be used to reference these kind of standalone link sets, so that a resource can indicate that additional links putting it into context are available someplace else. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource.</p>
 <h1><a>Note to Readers</a></h1>
 <p>Please discuss this draft on the ART mailing list (<span>&lt;</span><a href="https://www.ietf.org/mailman/listinfo/art">https://www.ietf.org/mailman/listinfo/art</a><span>&gt;</span>).</p>
 <p>Online access to all versions and files is available on GitHub (<span>&lt;</span><a href="https://github.com/dret/I-D/tree/master/linkset">https://github.com/dret/I-D/tree/master/linkset</a><span>&gt;</span>).</p>
@@ -473,7 +472,7 @@
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">Third-Party Links</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">Challenges Writing to HTTP Header Field</a>
+<li>3.2.   <a href="#rfc.section.3.2">Challenges Writing to HTTP Link Header Field</a>
 </li>
 <li>3.3.   <a href="#rfc.section.3.3">Large Number of Links</a>
 </li>
@@ -483,13 +482,13 @@
 </li>
 <li>4.2.   <a href="#rfc.section.4.2">JSON Document Format for Link Sets: application/linkset+json</a>
 </li>
-<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Representing a Link Set</a>
+<ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Link Sets</a>
 </li>
-<li>4.2.2.   <a href="#rfc.section.4.2.2">Representing a Link</a>
+<li>4.2.2.   <a href="#rfc.section.4.2.2">Links</a>
 </li>
-<li>4.2.3.   <a href="#rfc.section.4.2.3">Representing Link Target Attributes</a>
+<li>4.2.3.   <a href="#rfc.section.4.2.3">Link Target Attributes</a>
 </li>
-<li>4.2.4.   <a href="#rfc.section.4.2.4">JSON Representation of Extension Target Attributes</a>
+<li>4.2.4.   <a href="#rfc.section.4.2.4">Extension Target Attributes</a>
 </li>
 </ul></ul><li>5.   <a href="#rfc.section.5">The "linkset" Relation Type for Linking to Link Sets</a>
 </li>
@@ -555,9 +554,9 @@
 <p id="rfc.section.3.1.p.3">In such cases, a third-party link set resource provides links pertaining to the origin resource.  This link set resource may be managed by the same custodian as the origin resource, or by a third party.</p>
 <p id="rfc.section.3.1.p.4">In order for the server hosting the origin resource to provide an up-to-date and complete set of links in which the origin resource participates, the server would need to obtain the links from the link set resource, and embed them in the origin resource's representations prior to responding to a client. Doing so would increase latency and load, which may be unnecessary if a client is not intent on consuming these links. Providing links by reference, instead of by value, removes the server-to-server communication and resulting overhead required to obtain links. Instead, the consumer of the origin resource can decide if they need the additional links as context for the resource.</p>
 <h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#header-writing" id="header-writing">Challenges Writing to HTTP Header Field</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#header-writing" id="header-writing">Challenges Writing to HTTP Link Header Field</a>
 </h1>
-<p id="rfc.section.3.2.p.1">In some cases, it is not straightforward to write links to the HTTP Link header from an application. This can, for example, be the case because not all required link information is available to the application or because the application does not have the capability to directly write HTTP headers.  In such cases, providing links by reference can be a solution because a link to a link set resource associated with an origin resource can typically be added by means of a web server rewrite rule that leverages the resource's URI.</p>
+<p id="rfc.section.3.2.p.1">In some cases, it is not straightforward to write links to the HTTP Link header field from an application. This can, for example, be the case because not all required link information is available to the application or because the application does not have the capability to directly write HTTP headers.  In such cases, providing links by reference can be a solution because a link to a link set resource associated with an origin resource can typically be added by means of a web server rewrite rule that leverages the resource's URI.</p>
 <h1 id="rfc.section.3.3">
 <a href="#rfc.section.3.3">3.3.</a> <a href="#link-volume" id="link-volume">Large Number of Links</a>
 </h1>
@@ -577,7 +576,7 @@
 </h1>
 <p id="rfc.section.4.2.p.1">This document format is based on the native Link header field representation defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, but uses JSON <a href="#RFC7159" class="xref">[RFC7159]</a> as the syntax to represent the information contained in the native format. It is described in this section. The assigned media type for this format is "application/linkset+json".</p>
 <h1 id="rfc.section.4.2.1">
-<a href="#rfc.section.4.2.1">4.2.1.</a> <a href="#linkset-in-json" id="linkset-in-json">Representing a Link Set</a>
+<a href="#rfc.section.4.2.1">4.2.1.</a> <a href="#linkset-in-json" id="linkset-in-json">Link Sets</a>
 </h1>
 <p id="rfc.section.4.2.1.p.1">In the JSON representation of a link set:</p>
 <p></p>
@@ -589,9 +588,9 @@
 <li>Implementations MUST NOT include any members other than link objects in the array that represents a link set.</li>
 </ul>
 <h1 id="rfc.section.4.2.2">
-<a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#linkset-json-link-value-object" id="linkset-json-link-value-object">Representing a Link</a>
+<a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#linkset-json-link-value-object" id="linkset-json-link-value-object">Links</a>
 </h1>
-<p id="rfc.section.4.2.2.p.1">In the JSON representation, an individual link or mutiple links that have the same link context and link target is represented by a dedicated JSON object, the link object. A Link object adheres to the following rules:</p>
+<p id="rfc.section.4.2.2.p.1">In the JSON representation, an individual link or multiple links that have the same link context and link target is represented by a dedicated JSON object, the link object. A Link object adheres to the following rules:</p>
 <p></p>
 
 <ul>
@@ -603,27 +602,27 @@
 </ul>
 <p id="rfc.section.4.2.2.p.3">The following example of a JSON-serialized link set represents one link with the core components of a link: link context, link relation type, and link target.</p>
 <pre>
-[ { "href" : "http://example.com/foo", 
+[ { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : [ "next" ] } ]
+    "rel"    : [ "next" ] } ]
                         </pre>
-<p id="rfc.section.4.2.2.p.4">The following example of a JSON-serialized link set represents two links with the core components of a link: link context, link relation type, and link target. The syntax of this example takes advantage of the fact that multiple relation types can be used in one link object to convey muliple links that have the same link context and link target.</p>
+<p id="rfc.section.4.2.2.p.4">The following example of a JSON-serialized link set represents two links with the core components of a link: link context, link relation type, and link target. The syntax of this example takes advantage of the fact that multiple relation types can be used in one link object to represent multiple links that have the same link context and link target.</p>
 <pre>
-[ { "href" : "http://example.com/foo", 
+[ { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : [ "next" , "http://example.net/linkrel" ] } ]
+    "rel   " : [ "next" , "http://example.net/linkrel" ] } ]
                         </pre>
 <p id="rfc.section.4.2.2.p.5">The previous example is equivalent to the following one, which does not use the syntax shortcut and therefore represents the two links individually.</p>
 <pre>
-[ { "href" : "http://example.com/foo", 
+[ { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : [ "next" ] },
-  { "href" : "http://example.com/foo", 
+    "rel"    : [ "next" ] },
+  { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : [ "http://example.net/linkrel" ] } ]
+    "rel"    : [ "http://example.net/linkrel" ] } ]
                         </pre>
 <h1 id="rfc.section.4.2.3">
-<a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#linkset-json-link-target" id="linkset-json-link-target">Representing Link Target Attributes</a>
+<a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#linkset-json-link-target" id="linkset-json-link-target">Link Target Attributes</a>
 </h1>
 <p id="rfc.section.4.2.3.p.1">In many cases, a link is further qualified by target attributes, either defined by the serialization of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> or extension attributes defined and used by communities.</p>
 <h1 id="rfc.section.4.2.3.1">
@@ -633,22 +632,22 @@
 <p></p>
 
 <ul>
-<li>"hreflang": The optional and repeatable "hreflang" target attribute MUST be represented by an array (even if there only is one value to be represented), and each value in that array MUST be a string - representing one value of the "hreflang" target attribute for a link - which follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
+<li>"hreflang": The optional and repeatable "hreflang" target attribute MUST be represented by an array (even if there only is one value to be represented), and each value in that array MUST be a string - representing one value of the "hreflang" target attributes for a link - which follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
 <li>"media": The optional and not repeatable "media" target attribute MUST be represented by a "media" member in the link object, and its value MUST be a string that follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
 <li>"type": The optional and not repeatable "type" target attribute MUST be represented by a "type" member in the link object, and its value MUST be a string that follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
 <li>"title": The optional and not repeatable "title" target attribute MUST be represented by a "title" member in the link object, and its value MUST be a string that follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
 <li>"title*": The optional and not repeatable "title*" attribute is motivated by character encoding and language issues and follows the model defined in <a href="#RFC5987" class="xref">[RFC5987]</a>.  The details of the JSON representation that applies to title* are described in <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.3.2</a>.  </li>
 </ul>
-<p id="rfc.section.4.2.3.1.p.3">The following example illustrates how the repeatable "hreflang" and the not repeatable "type" target attributes are conveyed in a link object.</p>
+<p id="rfc.section.4.2.3.1.p.3">The following example illustrates how the repeatable "hreflang" and the not repeatable "type" target attributes are represented in a link object.</p>
 <pre>
-[ { "href" : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel" : [ "next" ] , 
+[ { "href"     : "http://example.com/foo", 
+    "anchor"   : "http://example.net/bar", 
+    "rel"      : [ "next" ] , 
     "hreflang" : [ "en" , "de" ] , 
-    "type" " "text/html" } ]
+    "type"     : "text/html" } ]
                             </pre>
 <h1 id="rfc.section.4.2.3.2">
-<a href="#rfc.section.4.2.3.2">4.2.3.2.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Representing Internationalized Target Attributes for a Link</a>
+<a href="#rfc.section.4.2.3.2">4.2.3.2.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Internationalized Target Attributes for a Link</a>
 </h1>
 <p id="rfc.section.4.2.3.2.p.1">In addition to the target attributes described in <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisk in the attribute name, such as "title*".  The content model of <a href="#RFC5987" class="xref">[RFC5987]</a> uses a string-based microsyntax that represents character encoding, the actual title expressed according to the title, and an optional language tag pertaining to the title. </p>
 <p id="rfc.section.4.2.3.2.p.2">The JSON serialization for these attributes is as follows:</p>
@@ -662,13 +661,13 @@
 </ul>
 <p id="rfc.section.4.2.3.2.p.4">The following example illustrates how the not repeatable "title*" target attribute defined by <a href="#RFC5987" class="xref">[RFC5987]</a> is conveyed in a link object.</p>
 <pre>
-[ { "href" : "http://example.com/foo", 
+[ { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : [ "next" ] , 
+    "rel"    : [ "next" ] , 
     "title*" : [ "Volgend hoofdstuk" , "nl" ] } ]
                             </pre>
 <h1 id="rfc.section.4.2.4">
-<a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#json-target-attributes-extension" id="json-target-attributes-extension">JSON Representation of Extension Target Attributes</a>
+<a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#json-target-attributes-extension" id="json-target-attributes-extension">Extension Target Attributes</a>
 </h1>
 <p id="rfc.section.4.2.4.p.1">Extension target attributes are attributes that are not defined by RFC 5988bis (as listed in <a href="#json-target-attributes-existing" class="xref">Section 4.2.3.1</a>), but are nevertheless used to qualify links.  They can be defined by communities in any way deemed necessary, and it is up to them to make sure their usage is understood by target applications.  However, lacking standardization, there is no interoperable understanding of these extension attributes. One important consequence is that their cardinality is unknown to generic applications. Therefor, in the JSON serialization, all extension target attributes are treated as de-facto repeatable:</p>
 <p></p>
@@ -681,16 +680,16 @@
 </ul>
 <p id="rfc.section.4.2.4.p.3">The following example illustrates how the not repeatable "title*" target attribute defined by <a href="#RFC5987" class="xref">[RFC5987]</a> is conveyed in a link object.</p>
 <pre>
-[ { "href" : "http://example.com/foo", 
+[ { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
-    "rel" : [ "next" ] , 
-    "param" : [ "445887" ] , 
+    "rel"    : [ "next" ] , 
+    "param"  : [ "445887" ] , 
     "param*" : [[ "vertrouwelijk" , "nl" ]] } ]
                         </pre>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#linkset-link-relation" id="linkset-link-relation">The "linkset" Relation Type for Linking to Link Sets</a>
 </h1>
-<p id="rfc.section.5.p.1">The target of a link with the "linkset" relation type - the link set resource - provides a set of links, including links in which the link context - the origin resource - particpates.</p>
+<p id="rfc.section.5.p.1">The target of a link with the "linkset" relation type - the link set resource - provides a set of links, including links in which the link context - the origin resource - participates.</p>
 <p id="rfc.section.5.p.2">A link with the "linkset" relation type MAY be provided in the header and/or the body of the origin resource's representation. It may also be discovered by other means, such as through client-side information.</p>
 <p id="rfc.section.5.p.3">More than one link with a "linkset" relation type MAY be provided.  Multiple such links can refer to the same set of links expressed using different representations, or to different sets of links (potentially provided by different services).</p>
 <p id="rfc.section.5.p.4">The use of a link with the "linkset" relation type does not preclude the provision of links with other relation types, i.e. the origin resource can provide typed links other than a "linkset" link. Therefore, the effective set of links pertaining to the origin resource is the union of the links that the resource itself provides, and of all links - provided by the link set resource - in which it participates.</p>
@@ -1028,4 +1027,3 @@ Content-Length: 794
 
 </body>
 </html>
-
