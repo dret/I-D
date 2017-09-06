@@ -381,8 +381,8 @@
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Challenges Writing to HTTP Link Header Field">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Large Number of Links">
 <link href="#rfc.section.4" rel="Chapter" title="4 Document Formats for Link Sets">
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 HTTP Link Document Format for Link Sets: application/linkset">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 JSON Document Format for Link Sets: application/linkset+json">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 HTTP Link Document Format: application/linkset">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 JSON Document Format: application/linkset+json">
 <link href="#rfc.section.4.2.1" rel="Chapter" title="4.2.1 Link Sets">
 <link href="#rfc.section.4.2.2" rel="Chapter" title="4.2.2 Links">
 <link href="#rfc.section.4.2.3" rel="Chapter" title="4.2.3 Link Target Attributes">
@@ -401,12 +401,12 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.7.0 - http://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.8.0 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Wilde, E. and H. Van de Sompel" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-linkset-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-9-1" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-9-6" />
   <meta name="dct.abstract" content="This specification defines two media types and a link relation type for sets of links.  The media types can be used to represents links in a standalone fashion, in one case in the native format used in the HTTP Link header, and in the other case in a JSON-based format. The link relation can be used to reference these kind of standalone link sets, so that a resource can indicate that additional links putting it into context are available someplace else. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
   <meta name="description" content="This specification defines two media types and a link relation type for sets of links.  The media types can be used to represents links in a standalone fashion, in one case in the native format used in the HTTP Link header, and in the other case in a JSON-based format. The link relation can be used to reference these kind of standalone link sets, so that a resource can indicate that additional links putting it into context are available someplace else. One typical scenario is when the number of links to put in an HTTP Link header field becomes too big, and thus these links should be provided by a distinct resource." />
 
@@ -430,12 +430,12 @@
 <td class="right">H. Van de Sompel</td>
 </tr>
 <tr>
-<td class="left">Expires: March 5, 2018</td>
+<td class="left">Expires: March 10, 2018</td>
 <td class="right">Los Alamos National Laboratory</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">September 1, 2017</td>
+<td class="right">September 6, 2017</td>
 </tr>
 
     	
@@ -452,12 +452,12 @@
 <p>Online access to all versions and files is available on GitHub (<span>&lt;</span><a href="https://github.com/dret/I-D/tree/master/linkset">https://github.com/dret/I-D/tree/master/linkset</a><span>&gt;</span>).</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
-<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 5, 2018.</p>
+<p>This Internet-Draft will expire on March 10, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2017 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
-<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (http://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
   <hr class="noprint" />
@@ -478,9 +478,9 @@
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Document Formats for Link Sets</a>
 </li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">HTTP Link Document Format for Link Sets: application/linkset</a>
+<ul><li>4.1.   <a href="#rfc.section.4.1">HTTP Link Document Format: application/linkset</a>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">JSON Document Format for Link Sets: application/linkset+json</a>
+<li>4.2.   <a href="#rfc.section.4.2">JSON Document Format: application/linkset+json</a>
 </li>
 <ul><li>4.2.1.   <a href="#rfc.section.4.2.1">Link Sets</a>
 </li>
@@ -566,13 +566,14 @@
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#linkset-formats" id="linkset-formats">Document Formats for Link Sets</a>
 </h1>
-<p id="rfc.section.4.p.1">Link set resources can be represented by serializations that support conveying both link contexts and link targets.  This section specifies two document formats based on the abstract model specified in Section 2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> that defines a link as consisting of a "link context", a "link relation type", a "link target", and optional "target attributes". In those terms, a link set resource is a resource that conveys a collection of one or more such links.  The format defined in <a href="#linkset-native" class="xref">Section 4.1</a> is identical to the payload of the HTTP Link header as specified in <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.  The format defined in <a href="#linkset-json" class="xref">Section 4.2</a> is based on JSON and thus does not have the character encoding limitations of HTTP header fields.</p>
+<p id="rfc.section.4.p.1">Link set resources can be represented by serializations that support conveying both link contexts and link targets.  This section specifies two document formats based on the abstract model specified in Section 2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> that defines a link as consisting of a "link context", a "link relation type", a "link target", and optional "target attributes". In those terms, a link set resource is a resource that conveys a collection of one or more such links.</p>
+<p id="rfc.section.4.p.2">The format defined in <a href="#linkset-native" class="xref">Section 4.1</a> is identical to the payload of the HTTP Link header as specified in <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>.  The format defined in <a href="#linkset-json" class="xref">Section 4.2</a> is based on JSON and thus does not have the character encoding limitations of HTTP header fields.</p>
 <h1 id="rfc.section.4.1">
-<a href="#rfc.section.4.1">4.1.</a> <a href="#linkset-native" id="linkset-native">HTTP Link Document Format for Link Sets: application/linkset</a>
+<a href="#rfc.section.4.1">4.1.</a> <a href="#linkset-native" id="linkset-native">HTTP Link Document Format: application/linkset</a>
 </h1>
 <p id="rfc.section.4.1.p.1">This document format is identical to the payload of the HTTP Link header. It is defined in Section 3 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, more specifically by its ABNF production rule for "Link" and subsequent ones.  The assigned media type for this format is "application/linkset".</p>
 <h1 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#linkset-json" id="linkset-json">JSON Document Format for Link Sets: application/linkset+json</a>
+<a href="#rfc.section.4.2">4.2.</a> <a href="#linkset-json" id="linkset-json">JSON Document Format: application/linkset+json</a>
 </h1>
 <p id="rfc.section.4.2.p.1">This document format is based on the native Link header field representation defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, but uses JSON <a href="#RFC7159" class="xref">[RFC7159]</a> as the syntax to represent the information contained in the native format. It is described in this section. The assigned media type for this format is "application/linkset+json".</p>
 <h1 id="rfc.section.4.2.1">
@@ -590,7 +591,7 @@
 <h1 id="rfc.section.4.2.2">
 <a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#linkset-json-link-value-object" id="linkset-json-link-value-object">Links</a>
 </h1>
-<p id="rfc.section.4.2.2.p.1">In the JSON representation, an individual link or multiple links that have the same link context and link target is represented by a dedicated JSON object, the link object. A Link object adheres to the following rules:</p>
+<p id="rfc.section.4.2.2.p.1">In the JSON representation, individual links (as well as multiple links that have the same link context and link target) are represented by a JSON object, the link object. A link object adheres to the following rules:</p>
 <p></p>
 
 <ul>
@@ -598,7 +599,7 @@
 <li>Each link object MAY have an "anchor" member with a value that represents the link context. If this member is not provided, the link context is the link set resource.</li>
 <li>The value of both the "href" and "anchor" members MUST be a URI-reference as defined in Section 4.1 of <a href="#RFC3986" class="xref">[RFC3986]</a>.  Note that for relative references, the baseURI is the URI of the link set resource.</li>
 <li>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value that represents one or more link relation types, represented as an array of strings. The value of each "rel"/"rev" link relation type MUST either be a registered relation type or an extension relation type (URI), as described in Sections 2.1.1 and 2.1.2 of <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, respectively.</li>
-<li>Each link object MAY have additional members to convey target attributes (see <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>).</li>
+<li>Each link object MAY have additional members representing target attributes (see <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>).</li>
 </ul>
 <p id="rfc.section.4.2.2.p.3">The following example of a JSON-serialized link set represents one link with the core components of a link: link context, link relation type, and link target.</p>
 <pre>
@@ -636,7 +637,7 @@
 <li>"media": The optional and not repeatable "media" target attribute MUST be represented by a "media" member in the link object, and its value MUST be a string that follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
 <li>"type": The optional and not repeatable "type" target attribute MUST be represented by a "type" member in the link object, and its value MUST be a string that follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
 <li>"title": The optional and not repeatable "title" target attribute MUST be represented by a "title" member in the link object, and its value MUST be a string that follows the same model as in the <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> syntax.</li>
-<li>"title*": The optional and not repeatable "title*" attribute is motivated by character encoding and language issues and follows the model defined in <a href="#RFC5987" class="xref">[RFC5987]</a>.  The details of the JSON representation that applies to title* are described in <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.3.2</a>.  </li>
+<li>"title*": The optional and not repeatable "title*" target attribute is motivated by character encoding and language issues and follows the model defined in <a href="#RFC5987" class="xref">[RFC5987]</a>.  The details of the JSON representation that applies to title* are described in <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.3.2</a>.  </li>
 </ul>
 <p id="rfc.section.4.2.3.1.p.3">The following example illustrates how the repeatable "hreflang" and the not repeatable "type" target attributes are represented in a link object.</p>
 <pre>
@@ -649,43 +650,35 @@
 <h1 id="rfc.section.4.2.3.2">
 <a href="#rfc.section.4.2.3.2">4.2.3.2.</a> <a href="#linkset-json-i18n-link-parameter" id="linkset-json-i18n-link-parameter">Internationalized Target Attributes for a Link</a>
 </h1>
-<p id="rfc.section.4.2.3.2.p.1">In addition to the target attributes described in <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisk in the attribute name, such as "title*".  The content model of <a href="#RFC5987" class="xref">[RFC5987]</a> uses a string-based microsyntax that represents character encoding, the actual title expressed according to the title, and an optional language tag pertaining to the title. </p>
+<p id="rfc.section.4.2.3.2.p.1">In addition to the target attributes described in <a href="#linkset-json-link-target" class="xref">Section 4.2.3</a>, <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> also supports attributes that follow the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>.  In <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a>, these target attributes are recognizable by the use of a trailing asterisk in the attribute name, such as "title*".  The content model of <a href="#RFC5987" class="xref">[RFC5987]</a> uses a string-based microsyntax that represents the character encoding, an optional language tag, and the escaped attribute value encoded according to the specified character encoding.</p>
 <p id="rfc.section.4.2.3.2.p.2">The JSON serialization for these attributes is as follows:</p>
 <p></p>
 
 <ul>
 <li>Internationalized target attributes use the attribute name (including the *) as their name.</li>
-<li>The character encoding information as prescribed by <a href="#RFC5987" class="xref">[RFC5987]</a> is not conveyed as the character encoding used by JSON is fixed.</li>
-<li>For attributes that are not repeatable - such as title* - their value is an array. The first value in the array is a string representing the attribute value. The optional second value in the array is a language tag <a href="#RFC5646" class="xref">[RFC5646]</a> associated with that attribute value.</li>
-<li>For attributes that are repeatable, their value is an array that contains one or more arrays. In each of these latter arrays, the first value is a string representing an attribute value and the optional second array value is a language tag <a href="#RFC5646" class="xref">[RFC5646]</a> associated with that attribute value.</li>
+<li>The character encoding information as prescribed by <a href="#RFC5987" class="xref">[RFC5987]</a> is not preserved; instead, the attribute value is represented in the character encoding used for the JSON link set.</li>
+<li>The attribute value is an array that contains one or more arrays. In each of these arrays, the first value is a string representing the attribute value (in its unescaped version), and the optional second array value is a language tag <a href="#RFC5646" class="xref">[RFC5646]</a> associated with that attribute value.</li>
 </ul>
-<p id="rfc.section.4.2.3.2.p.4">The following example illustrates how the not repeatable "title*" target attribute defined by <a href="#RFC5987" class="xref">[RFC5987]</a> is conveyed in a link object.</p>
+<p id="rfc.section.4.2.3.2.p.4">The following example illustrates how the "title*" target attribute defined by <a href="#I-D.nottingham-rfc5988bis" class="xref">[I-D.nottingham-rfc5988bis]</a> is represented in a link object.</p>
 <pre>
 [ { "href"   : "http://example.com/foo", 
     "anchor" : "http://example.net/bar", 
     "rel"    : [ "next" ] , 
-    "title*" : [ "Volgend hoofdstuk" , "nl" ] } ]
+    "title*" : [ [ "nachstes Kapitel", "de" ] ] } ]
                             </pre>
+<p id="rfc.section.4.2.3.2.p.5">The above example assumes that the german title contains an umlaut character (which in the native syntax would be encoded as title*=UTF-8'de'n%c3%a4chstes%20Kapitel), which gets encoded in its unescaped form (but not shown here due to the limitations of RFC publication) in the JSON representation. Implementations MUST properly decode/encode RFC 5987 style target attributes when transcoding between the native and the JSON syntax.</p>
 <h1 id="rfc.section.4.2.4">
 <a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#json-target-attributes-extension" id="json-target-attributes-extension">Extension Target Attributes</a>
 </h1>
-<p id="rfc.section.4.2.4.p.1">Extension target attributes are attributes that are not defined by RFC 5988bis (as listed in <a href="#json-target-attributes-existing" class="xref">Section 4.2.3.1</a>), but are nevertheless used to qualify links.  They can be defined by communities in any way deemed necessary, and it is up to them to make sure their usage is understood by target applications.  However, lacking standardization, there is no interoperable understanding of these extension attributes. One important consequence is that their cardinality is unknown to generic applications. Therefor, in the JSON serialization, all extension target attributes are treated as de-facto repeatable:</p>
+<p id="rfc.section.4.2.4.p.1">Extension target attributes are attributes that are not defined by RFC 5988bis (as listed in <a href="#json-target-attributes-existing" class="xref">Section 4.2.3.1</a>), but are nevertheless used to qualify links.  They can be defined by communities in any way deemed necessary, and it is up to them to make sure their usage is understood by target applications.  However, lacking standardization, there is no interoperable understanding of these extension attributes. One important consequence is that their cardinality is unknown to generic applications. Therefore, in the JSON serialization, all extension target attributes are treated as repeatable:</p>
 <p></p>
 
 <ul>
 <li>Extension target attributes use the attribute name (including the *, if applicable) as their name.</li>
 <li>The value of an extension attribute MUST be represented by an array (even if there only is one value to be represented).</li>
 <li>If the extension attribute does not have a name with a trailing asterisk, then each value in that array MUST be a string that represents one value of the extension target attribute.</li>
-<li>If the extension attribute has a name with a trailing asterisk (it follows the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>), then each value in that array MUST be an array. The value of each array MUST be as described in <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.3.2</a>.</li>
+<li>If the extension attribute has a name with a trailing asterisk (it follows the content model of <a href="#RFC5987" class="xref">[RFC5987]</a>), then each value in that array MUST be an array. The value of each array MUST be structured as described in <a href="#linkset-json-i18n-link-parameter" class="xref">Section 4.2.3.2</a>.</li>
 </ul>
-<p id="rfc.section.4.2.4.p.3">The following example illustrates how the not repeatable "title*" target attribute defined by <a href="#RFC5987" class="xref">[RFC5987]</a> is conveyed in a link object.</p>
-<pre>
-[ { "href"   : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel"    : [ "next" ] , 
-    "param"  : [ "445887" ] , 
-    "param*" : [[ "vertrouwelijk" , "nl" ]] } ]
-                        </pre>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#linkset-link-relation" id="linkset-link-relation">The "linkset" Relation Type for Linking to Link Sets</a>
 </h1>
@@ -923,52 +916,52 @@ Content-Length: 794
 <tr>
 <td class="reference"><b id="I-D.nottingham-rfc5988bis">[I-D.nottingham-rfc5988bis]</b></td>
 <td class="top">
-<a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/draft-nottingham-rfc5988bis-08">Web Linking</a>", Internet-Draft draft-nottingham-rfc5988bis-08, August 2017.</td>
+<a>Nottingham, M.</a>, "<a href="https://tools.ietf.org/html/draft-nottingham-rfc5988bis-08">Web Linking</a>", Internet-Draft draft-nottingham-rfc5988bis-08, August 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
-<a>Bradner, S.</a>, "<a href="http://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC3986">[RFC3986]</b></td>
 <td class="top">
-<a>Berners-Lee, T.</a>, <a>Fielding, R.</a> and <a>L. Masinter</a>, "<a href="http://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005.</td>
+<a>Berners-Lee, T.</a>, <a>Fielding, R.</a> and <a>L. Masinter</a>, "<a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC5646">[RFC5646]</b></td>
 <td class="top">
-<a>Phillips, A.</a> and <a>M. Davis</a>, "<a href="http://tools.ietf.org/html/rfc5646">Tags for Identifying Languages</a>", BCP 47, RFC 5646, DOI 10.17487/RFC5646, September 2009.</td>
+<a>Phillips, A.</a> and <a>M. Davis</a>, "<a href="https://tools.ietf.org/html/rfc5646">Tags for Identifying Languages</a>", BCP 47, RFC 5646, DOI 10.17487/RFC5646, September 2009.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC5987">[RFC5987]</b></td>
 <td class="top">
-<a>Reschke, J.</a>, "<a href="http://tools.ietf.org/html/rfc5987">Character Set and Language Encoding for Hypertext Transfer Protocol (HTTP) Header Field Parameters</a>", RFC 5987, DOI 10.17487/RFC5987, August 2010.</td>
+<a>Reschke, J.</a>, "<a href="https://tools.ietf.org/html/rfc5987">Character Set and Language Encoding for Hypertext Transfer Protocol (HTTP) Header Field Parameters</a>", RFC 5987, DOI 10.17487/RFC5987, August 2010.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC5988">[RFC5988]</b></td>
 <td class="top">
-<a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/rfc5988">Web Linking</a>", RFC 5988, DOI 10.17487/RFC5988, October 2010.</td>
+<a>Nottingham, M.</a>, "<a href="https://tools.ietf.org/html/rfc5988">Web Linking</a>", RFC 5988, DOI 10.17487/RFC5988, October 2010.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC6690">[RFC6690]</b></td>
 <td class="top">
-<a>Shelby, Z.</a>, "<a href="http://tools.ietf.org/html/rfc6690">Constrained RESTful Environments (CoRE) Link Format</a>", RFC 6690, DOI 10.17487/RFC6690, August 2012.</td>
+<a>Shelby, Z.</a>, "<a href="https://tools.ietf.org/html/rfc6690">Constrained RESTful Environments (CoRE) Link Format</a>", RFC 6690, DOI 10.17487/RFC6690, August 2012.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC6838">[RFC6838]</b></td>
 <td class="top">
-<a>Freed, N.</a>, <a>Klensin, J.</a> and <a>T. Hansen</a>, "<a href="http://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>", BCP 13, RFC 6838, DOI 10.17487/RFC6838, January 2013.</td>
+<a>Freed, N.</a>, <a>Klensin, J.</a> and <a>T. Hansen</a>, "<a href="https://tools.ietf.org/html/rfc6838">Media Type Specifications and Registration Procedures</a>", BCP 13, RFC 6838, DOI 10.17487/RFC6838, January 2013.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC7159">[RFC7159]</b></td>
 <td class="top">
-<a>Bray, T.</a>, "<a href="http://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
+<a>Bray, T.</a>, "<a href="https://tools.ietf.org/html/rfc7159">The JavaScript Object Notation (JSON) Data Interchange Format</a>", RFC 7159, DOI 10.17487/RFC7159, March 2014.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC7231">[RFC7231]</b></td>
 <td class="top">
-<a>Fielding, R.</a> and <a>J. Reschke</a>, "<a href="http://tools.ietf.org/html/rfc7231">Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a>", RFC 7231, DOI 10.17487/RFC7231, June 2014.</td>
+<a>Fielding, R.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc7231">Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a>", RFC 7231, DOI 10.17487/RFC7231, June 2014.</td>
 </tr>
 <tr>
 <td class="reference"><b id="W3C.REC-html401-19991224">[W3C.REC-html401-19991224]</b></td>

@@ -5,8 +5,8 @@
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
 Intended status: Informational                          H. Van de Sompel
-Expires: March 5, 2018                    Los Alamos National Laboratory
-                                                       September 1, 2017
+Expires: March 10, 2018                   Los Alamos National Laboratory
+                                                       September 6, 2017
 
 
       Linkset: Media Types and a Link Relation Type for Link Sets
@@ -41,19 +41,19 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 5, 2018.
+   This Internet-Draft will expire on March 10, 2018.
 
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 1]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 1]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -65,7 +65,7 @@ Copyright Notice
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -82,17 +82,15 @@ Table of Contents
      3.2.  Challenges Writing to HTTP Link Header Field  . . . . . .   4
      3.3.  Large Number of Links . . . . . . . . . . . . . . . . . .   5
    4.  Document Formats for Link Sets  . . . . . . . . . . . . . . .   5
-     4.1.  HTTP Link Document Format for Link Sets:
-           application/linkset . . . . . . . . . . . . . . . . . . .   6
-     4.2.  JSON Document Format for Link Sets:
-           application/linkset+json  . . . . . . . . . . . . . . . .   6
+     4.1.  HTTP Link Document Format: application/linkset  . . . . .   6
+     4.2.  JSON Document Format: application/linkset+json  . . . . .   6
        4.2.1.  Link Sets . . . . . . . . . . . . . . . . . . . . . .   6
        4.2.2.  Links . . . . . . . . . . . . . . . . . . . . . . . .   6
        4.2.3.  Link Target Attributes  . . . . . . . . . . . . . . .   8
        4.2.4.  Extension Target Attributes . . . . . . . . . . . . .  10
    5.  The "linkset" Relation Type for Linking to Link Sets  . . . .  10
    6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
-     6.1.  Links Provided in the Header of the Link Set Resource . .  12
+     6.1.  Links Provided in the Header of the Link Set Resource . .  11
      6.2.  Links Provided in the Body of the Link Set Resource,
            Link Set Serialized as application/linkset+json . . . . .  13
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
@@ -109,7 +107,9 @@ Table of Contents
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 2]
+
+
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 2]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -165,7 +165,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 3]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 3]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -221,7 +221,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 4]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 4]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -267,22 +267,22 @@ Internet-Draft                   Linkset                  September 2017
    consisting of a "link context", a "link relation type", a "link
    target", and optional "target attributes".  In those terms, a link
    set resource is a resource that conveys a collection of one or more
-   such links.  The format defined in Section 4.1 is identical to the
-   payload of the HTTP Link header as specified in
-   [I-D.nottingham-rfc5988bis].  The format defined in Section 4.2 is
-   based on JSON and thus does not have the character encoding
-   limitations of HTTP header fields.
+   such links.
+
+   The format defined in Section 4.1 is identical to the payload of the
+   HTTP Link header as specified in [I-D.nottingham-rfc5988bis].  The
+   format defined in Section 4.2 is based on JSON and thus does not have
+   the character encoding limitations of HTTP header fields.
 
 
 
 
-
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 5]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 5]
 
 Internet-Draft                   Linkset                  September 2017
 
 
-4.1.  HTTP Link Document Format for Link Sets: application/linkset
+4.1.  HTTP Link Document Format: application/linkset
 
    This document format is identical to the payload of the HTTP Link
    header.  It is defined in Section 3 of [I-D.nottingham-rfc5988bis],
@@ -290,7 +290,7 @@ Internet-Draft                   Linkset                  September 2017
    subsequent ones.  The assigned media type for this format is
    "application/linkset".
 
-4.2.  JSON Document Format for Link Sets: application/linkset+json
+4.2.  JSON Document Format: application/linkset+json
 
    This document format is based on the native Link header field
    representation defined by [I-D.nottingham-rfc5988bis], but uses JSON
@@ -316,10 +316,10 @@ Internet-Draft                   Linkset                  September 2017
 
 4.2.2.  Links
 
-   In the JSON representation, an individual link or multiple links that
-   have the same link context and link target is represented by a
-   dedicated JSON object, the link object.  A Link object adheres to the
-   following rules:
+   In the JSON representation, individual links (as well as multiple
+   links that have the same link context and link target) are
+   represented by a JSON object, the link object.  A link object adheres
+   to the following rules:
 
    o  Each link object MUST have an "href" member with a value that
       represents the link target.
@@ -333,7 +333,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 6]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 6]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -349,7 +349,7 @@ Internet-Draft                   Linkset                  September 2017
       described in Sections 2.1.1 and 2.1.2 of
       [I-D.nottingham-rfc5988bis], respectively.
 
-   o  Each link object MAY have additional members to convey target
+   o  Each link object MAY have additional members representing target
       attributes (see Section 4.2.3).
 
    The following example of a JSON-serialized link set represents one
@@ -389,7 +389,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 7]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 7]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -430,10 +430,10 @@ Internet-Draft                   Linkset                  September 2017
       its value MUST be a string that follows the same model as in the
       [I-D.nottingham-rfc5988bis] syntax.
 
-   o  "title*": The optional and not repeatable "title*" attribute is
-      motivated by character encoding and language issues and follows
-      the model defined in [RFC5987].  The details of the JSON
-      representation that applies to title* are described in
+   o  "title*": The optional and not repeatable "title*" target
+      attribute is motivated by character encoding and language issues
+      and follows the model defined in [RFC5987].  The details of the
+      JSON representation that applies to title* are described in
       Section 4.2.3.2.
 
    The following example illustrates how the repeatable "hreflang" and
@@ -445,7 +445,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 8]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 8]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -463,9 +463,10 @@ Internet-Draft                   Linkset                  September 2017
    content model of [RFC5987].  In [I-D.nottingham-rfc5988bis], these
    target attributes are recognizable by the use of a trailing asterisk
    in the attribute name, such as "title*".  The content model of
-   [RFC5987] uses a string-based microsyntax that represents character
-   encoding, the actual title expressed according to the title, and an
-   optional language tag pertaining to the title.
+   [RFC5987] uses a string-based microsyntax that represents the
+   character encoding, an optional language tag, and the escaped
+   attribute value encoded according to the specified character
+   encoding.
 
    The JSON serialization for these attributes is as follows:
 
@@ -473,38 +474,40 @@ Internet-Draft                   Linkset                  September 2017
       (including the *) as their name.
 
    o  The character encoding information as prescribed by [RFC5987] is
-      not conveyed as the character encoding used by JSON is fixed.
+      not preserved; instead, the attribute value is represented in the
+      character encoding used for the JSON link set.
 
-   o  For attributes that are not repeatable - such as title* - their
-      value is an array.  The first value in the array is a string
-      representing the attribute value.  The optional second value in
-      the array is a language tag [RFC5646] associated with that
-      attribute value.
+   o  The attribute value is an array that contains one or more arrays.
+      In each of these arrays, the first value is a string representing
+      the attribute value (in its unescaped version), and the optional
+      second array value is a language tag [RFC5646] associated with
+      that attribute value.
 
-   o  For attributes that are repeatable, their value is an array that
-      contains one or more arrays.  In each of these latter arrays, the
-      first value is a string representing an attribute value and the
-      optional second array value is a language tag [RFC5646] associated
-      with that attribute value.
-
-   The following example illustrates how the not repeatable "title*"
-   target attribute defined by [RFC5987] is conveyed in a link object.
+   The following example illustrates how the "title*" target attribute
+   defined by [I-D.nottingham-rfc5988bis] is represented in a link
+   object.
 
    [ { "href"   : "http://example.com/foo",
        "anchor" : "http://example.net/bar",
        "rel"    : [ "next" ] ,
-       "title*" : [ "Volgend hoofdstuk" , "nl" ] } ]
+       "title*" : [ [ "nachstes Kapitel", "de" ] ] } ]
+
+   The above example assumes that the german title contains an umlaut
+   character (which in the native syntax would be encoded as title*=UTF-
+   8'de'n%c3%a4chstes%20Kapitel), which gets encoded in its unescaped
+   form (but not shown here due to the limitations of RFC publication)
+   in the JSON representation.  Implementations MUST properly decode/
 
 
 
 
-
-
-
-Wilde & Van de Sompel     Expires March 5, 2018                 [Page 9]
+Wilde & Van de Sompel    Expires March 10, 2018                 [Page 9]
 
 Internet-Draft                   Linkset                  September 2017
 
+
+   encode RFC 5987 style target attributes when transcoding between the
+   native and the JSON syntax.
 
 4.2.4.  Extension Target Attributes
 
@@ -515,9 +518,9 @@ Internet-Draft                   Linkset                  September 2017
    understood by target applications.  However, lacking standardization,
    there is no interoperable understanding of these extension
    attributes.  One important consequence is that their cardinality is
-   unknown to generic applications.  Therefor, in the JSON
-   serialization, all extension target attributes are treated as de-
-   facto repeatable:
+   unknown to generic applications.  Therefore, in the JSON
+   serialization, all extension target attributes are treated as
+   repeatable:
 
    o  Extension target attributes use the attribute name (including the
       *, if applicable) as their name.
@@ -531,17 +534,8 @@ Internet-Draft                   Linkset                  September 2017
 
    o  If the extension attribute has a name with a trailing asterisk (it
       follows the content model of [RFC5987]), then each value in that
-      array MUST be an array.  The value of each array MUST be as
-      described in Section 4.2.3.2.
-
-   The following example illustrates how the not repeatable "title*"
-   target attribute defined by [RFC5987] is conveyed in a link object.
-
-   [ { "href"   : "http://example.com/foo",
-       "anchor" : "http://example.net/bar",
-       "rel"    : [ "next" ] ,
-       "param"  : [ "445887" ] ,
-       "param*" : [[ "vertrouwelijk" , "nl" ]] } ]
+      array MUST be an array.  The value of each array MUST be
+      structured as described in Section 4.2.3.2.
 
 5.  The "linkset" Relation Type for Linking to Link Sets
 
@@ -554,18 +548,19 @@ Internet-Draft                   Linkset                  September 2017
    be discovered by other means, such as through client-side
    information.
 
-
-
-
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 10]
-
-Internet-Draft                   Linkset                  September 2017
-
-
    More than one link with a "linkset" relation type MAY be provided.
    Multiple such links can refer to the same set of links expressed
    using different representations, or to different sets of links
    (potentially provided by different services).
+
+
+
+
+
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 10]
+
+Internet-Draft                   Linkset                  September 2017
+
 
    The use of a link with the "linkset" relation type does not preclude
    the provision of links with other relation types, i.e. the origin
@@ -606,22 +601,22 @@ Internet-Draft                   Linkset                  September 2017
    set resource provides links pertaining to the origin resource, in its
    response header and body, respectively.
 
-
-
-
-
-
-
-
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 11]
-
-Internet-Draft                   Linkset                  September 2017
-
-
 6.1.  Links Provided in the Header of the Link Set Resource
 
    Figure 1 shows a client issuing an HTTP head request against origin
    resource http://example.org/resource1.
+
+
+
+
+
+
+
+
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 11]
+
+Internet-Draft                   Linkset                  September 2017
+
 
    HEAD /resource1 HTTP/1.1
    Host: example.org
@@ -666,19 +661,18 @@ Connection: close
 
    Figure 4 shows the response headers to the HTTP GET request of
    Figure 3.  The links pertaining to the origin resource are provided
-
-
-
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 12]
-
-Internet-Draft                   Linkset                  September 2017
-
-
    in the Link response header of the link set resource.  As can be
    seen, in order to support an unambiguous determination of the link
    context of each link, the "anchor" attribute is always provided.
    Note that most, but not all, links have the origin resource as link
    context (anchor).
+
+
+
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 12]
+
+Internet-Draft                   Linkset                  September 2017
+
 
    HTTP/1.1 200 OK
    Date: Mon, 28 Nov 2016 14:40:02 GMT
@@ -722,20 +716,19 @@ Internet-Draft                   Linkset                  September 2017
 
                     Figure 5: Client HTTP HEAD Request
 
-
-
-
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 13]
-
-Internet-Draft                   Linkset                  September 2017
-
-
    Figure 6 shows the response to the HEAD request of Figure 5.  The
    response contains a Link header with a link that has the "linkset"
    relation type.  It indicates that links pertaining to the origin
    resource are provided by link set resource
    http://example.com/links/10.1371/journal.pone.0167475, which provides
    a representation with media type application/linkset+json.
+
+
+
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 13]
+
+Internet-Draft                   Linkset                  September 2017
+
 
    HTTP/1.1 200 OK
    Date: Mon, 28 Nov 2016 14:37:51 GMT
@@ -781,7 +774,14 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 14]
+
+
+
+
+
+
+
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 14]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -837,7 +837,7 @@ Content-Length: 794
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 15]
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 15]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -893,7 +893,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 16]
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 16]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -949,7 +949,7 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 17]
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 17]
 
 Internet-Draft                   Linkset                  September 2017
 
@@ -966,8 +966,8 @@ Internet-Draft                   Linkset                  September 2017
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997, <https://www.rfc-
-              editor.org/info/rfc2119>.
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC3986]  Berners-Lee, T., Fielding, R., and L. Masinter, "Uniform
               Resource Identifier (URI): Generic Syntax", STD 66,
@@ -984,8 +984,8 @@ Internet-Draft                   Linkset                  September 2017
               <https://www.rfc-editor.org/info/rfc5987>.
 
    [RFC5988]  Nottingham, M., "Web Linking", RFC 5988,
-              DOI 10.17487/RFC5988, October 2010, <https://www.rfc-
-              editor.org/info/rfc5988>.
+              DOI 10.17487/RFC5988, October 2010,
+              <https://www.rfc-editor.org/info/rfc5988>.
 
    [RFC6690]  Shelby, Z., "Constrained RESTful Environments (CoRE) Link
               Format", RFC 6690, DOI 10.17487/RFC6690, August 2012,
@@ -1005,15 +1005,15 @@ Internet-Draft                   Linkset                  September 2017
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 18]
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 18]
 
 Internet-Draft                   Linkset                  September 2017
 
 
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
-              DOI 10.17487/RFC7231, June 2014, <https://www.rfc-
-              editor.org/info/rfc7231>.
+              DOI 10.17487/RFC7231, June 2014,
+              <https://www.rfc-editor.org/info/rfc7231>.
 
    [W3C.REC-html401-19991224]
               Rivoal, F., "Media Queries", World Wide Web
@@ -1061,4 +1061,4 @@ Authors' Addresses
 
 
 
-Wilde & Van de Sompel     Expires March 5, 2018                [Page 19]
+Wilde & Van de Sompel    Expires March 10, 2018                [Page 19]
