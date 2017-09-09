@@ -343,8 +343,20 @@
                             then each value in that array MUST be an array. The value of each array 
                             MUST be structured as described in <xref target="linkset-json-i18n-link-parameter"/>.</t>
                     </list></t>
-                   </section>
+                    <figure>
+                        <artwork align="left" type="JSON"><![CDATA[
+[ { "href"   : "http://example.com/foo",
+    "anchor" : "http://example.net/bar",
+    "rel"    : [ "next" ] ,
+    "foo"    : [ "foovalue" ] ,
+    "bar"    : [ "barone", "bartwo" ] ,
+    "baz*"   : [ [ "bazvalue", "en" ] ] } ]]]>
+                        </artwork> 
+                    </figure>
+                    <t>The example shows a link object with three extension target attributes. Every extension target attribute is represented by an array. The two first ones are regular extension target attributes, with the first one ("foo") having only one value, while the second one ("bar") appeared twice and thus there are two values to represent.</t>
+                    <t>The last extension target attribute ("baz" follows the naming rule of RFC 5987 and therefore is encoded according to the rules described in Section <xref target="linkset-json-i18n-link-parameter"/>. Specifically, the array representing the extension target attribute contains arrays, each of which represents the value itself, and the language tag (if one is specified).</t>
                 </section>
+            </section>
         </section>
         
         <section title="The &quot;linkset&quot; Relation Type for Linking to Link Sets" anchor="linkset-link-relation">
