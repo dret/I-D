@@ -13,8 +13,7 @@
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
 <!ENTITY RFC6838 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6838.xml">
 <!ENTITY RFC5646 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5646.xml">
-<!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
-<!ENTITY I-D.nottingham-rfc5988bis SYSTEM "https://xml2rfc.tools.ietf.org/public/rfc/bibxml3/reference.I-D.draft-nottingham-rfc5988bis-08.xml">
+<!ENTITY RFC8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 ]>
 
 <?rfc compact="yes" ?>
@@ -53,7 +52,7 @@
     </front>
     <middle>
         <section title="Introduction" anchor="introduction">
-            <t>Resources on the Web often convey typed Web Links <xref target="I-D.nottingham-rfc5988bis"/> 
+            <t>Resources on the Web often convey typed Web Links <xref target="RFC8288"/> 
                as a  part of resource representations, for example, using the &lt;link&gt; 
                element for HTML representations, or the "Link" header field in HTTP response 
                headers for representations of any media type. In some cases, however, 
@@ -68,15 +67,15 @@
         <section title="Terminology" anchor="terminology">
             <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
             <t>This specification uses the terms "link context" and "link target" as defined in 
-                <xref target="I-D.nottingham-rfc5988bis"/>. 
-                (These terms respectively correspond with "Context IRI" and "Target IRI" as used in RFC 5988
-                <xref target="RFC5988"/>). Although defined as IRIs, in common scenarios they are also URIs.</t> 
+                <xref target="RFC8288"/>. 
+                (These terms respectively correspond with "Context IRI" and "Target IRI" as used in RFC 8288
+                <xref target="RFC8288"/>). Although defined as IRIs, in common scenarios they are also URIs.</t> 
             <t>Additionally, this specification uses the following terms for types of resources involved 
                 in providing links by reference:</t> 
             <t><list style="symbols">
                 <t>A "link set resource" is a resource that conveys a set of links. <xref target="linkset-formats"/> 
                    defines two representations for a set of links, based on the abstract link model defined in 
-                    <xref target="I-D.nottingham-rfc5988bis"/>.</t>
+                    <xref target="RFC8288"/>.</t>
                 <t>An "origin resource" is a resource that participates in one or more links provided 
                    by a link set resource. An origin resource can support discovery of an associated 
                    link set resource by using the relation type defined in <xref target="linkset-link-relation"/>.
@@ -152,23 +151,23 @@
             <t>Link set resources can be represented by serializations that support 
                 conveying both link contexts and link targets. 
                 This section specifies two document formats based on the abstract model  
-                specified in Section 2 of <xref target="I-D.nottingham-rfc5988bis"/> 
+                specified in Section 2 of <xref target="RFC8288"/> 
                 that defines a link as consisting of a "link context", a "link relation type", a "link target", 
                 and optional "target attributes". In those terms, a link set resource 
                 is a resource that conveys a collection of one or more such links.</t>
                 <t>The format defined in <xref target="linkset-native"/> is identical to the payload 
-                of the HTTP Link header as specified in <xref target="I-D.nottingham-rfc5988bis"/>. 
+                    of the HTTP Link header as specified in <xref target="RFC8288"/>. 
                 The format defined in <xref target="linkset-json"/> is based on JSON and thus
                 does not have the character encoding limitations of HTTP header fields.</t>
             <section title="HTTP Link Document Format: application/linkset" anchor="linkset-native">
                 <t>This document format is identical to the payload of the 
                     HTTP Link header. It is defined in Section 3 of 
-                    <xref target="I-D.nottingham-rfc5988bis"/>, more specifically by  
+                    <xref target="RFC8288"/>, more specifically by  
                     its ABNF production rule for &quot;Link&quot; and subsequent ones. 
                     The assigned media type for this format is &quot;application/linkset&quot;.</t>
             </section>
             <section title="JSON Document Format: application/linkset+json" anchor="linkset-json">
-                <t>This document format is based on the native Link header field representation defined by <xref target="I-D.nottingham-rfc5988bis"/>, but uses JSON <xref target="RFC7159"/> as the syntax to represent the information contained in the native format. It is described in this 
+                <t>This document format is based on the native Link header field representation defined by <xref target="RFC8288"/>, but uses JSON <xref target="RFC7159"/> as the syntax to represent the information contained in the native format. It is described in this 
                     section. The assigned media type for this format is &quot;application/linkset+json&quot;.</t>
                 <section title="Link Sets" anchor="linkset-in-json">
                     <t>In the JSON representation of a link set:</t>
@@ -201,7 +200,7 @@
                             that represents one or more link relation types, represented as an array of strings. The value of each "rel"/"rev" link relation type MUST either be a registered 
                             relation type or an extension relation type (URI), 
                             as described in Sections 2.1.1 and 2.1.2 of 
-                            <xref target="I-D.nottingham-rfc5988bis"/>, respectively.</t>
+                            <xref target="RFC8288"/>, respectively.</t>
                         <t>Each link object MAY have additional members 
                             representing target attributes (see <xref target="linkset-json-link-target"/>).</t>
                     </list></t>
@@ -241,10 +240,10 @@
                 </section>
                 <section title="Link Target Attributes" anchor="linkset-json-link-target">
                     <t>In many cases, a link is further qualified by target attributes, 
-                        either defined by the serialization of <xref target="I-D.nottingham-rfc5988bis"/> 
+                        either defined by the serialization of <xref target="RFC8288"/> 
                         or extension attributes defined and used by communities.</t>
-                    <section title="JSON Representation of RFC 5988bis Target Attributes" anchor="json-target-attributes-existing">
-                        <t>RFC 5988bis defines the following target attributes that may be used to annotate links: 
+                    <section title="JSON Representation of RFC 8288 Target Attributes" anchor="json-target-attributes-existing">
+                        <t>RFC 8288 defines the following target attributes that may be used to annotate links: 
                             "hreflang", "media", "title", "title*", and "type". 
                             These target attributes follow different occurrence and value patterns 
                             and MUST be handled in the JSON representation as follows:</t>
@@ -253,17 +252,17 @@
                                 MUST be represented by an array (even if there only is one value to be represented), 
                                 and each value in that array MUST be a string - representing one value 
                                 of the "hreflang" target attributes for a link - which follows the same 
-                                model as in the <xref target="I-D.nottingham-rfc5988bis"/> syntax.</t>
+                                model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"media": The optional and not repeatable "media" target attribute MUST be 
                                 represented by a "media" member 
                                 in the link object, and its value MUST be a string that follows the 
-                                same model as in the <xref target="I-D.nottingham-rfc5988bis"/> syntax.</t>
+                                same model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"type": The optional and not repeatable "type" target attribute MUST be represented by a "type" member 
                                 in the link object, and its value MUST be a string that follows the 
-                                same model as in the <xref target="I-D.nottingham-rfc5988bis"/> syntax.</t>
+                                same model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"title": The optional and not repeatable "title" target attribute MUST be represented by a "title" 
                                 member in the link object, and its value MUST be a string that follows 
-                                the same model as in the <xref target="I-D.nottingham-rfc5988bis"/> syntax.</t>
+                                the same model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"title*": The optional and not repeatable "title*" target attribute 
                                 is motivated by character encoding 
                                 and language issues and follows the model defined in <xref target="RFC5987"/>. 
@@ -287,9 +286,9 @@
                     </section>
                     <section title="Internationalized Target Attributes for a Link" anchor="linkset-json-i18n-link-parameter">
                         <t>In addition to the target attributes described in <xref target="linkset-json-link-target"/>,  
-                            <xref target="I-D.nottingham-rfc5988bis"/> also supports 
+                            <xref target="RFC8288"/> also supports 
                             attributes that follow the content model of <xref target="RFC5987"/>. 
-                            In <xref target="I-D.nottingham-rfc5988bis"/>, these target 
+                            In <xref target="RFC8288"/>, these target 
                             attributes are recognizable by the use of a trailing asterisk in the attribute name, 
                             such as "title*". 
                             The content model of <xref target="RFC5987"/> uses a string-based microsyntax 
@@ -308,7 +307,7 @@
                                     language tag <xref target="RFC5646"/> associated with that attribute value.</t>
                         </list></t>
                         <t>The following example illustrates how the "title*" target attribute 
-                            defined by <xref target="I-D.nottingham-rfc5988bis"/> is represented in a link object.</t>
+                            defined by <xref target="RFC8288"/> is represented in a link object.</t>
                         <figure>
                             <artwork align="left" type="JSON"><![CDATA[
 [ { "href"   : "http://example.com/foo", 
@@ -321,7 +320,7 @@
                     </section>
                 </section>
                 <section title="Extension Target Attributes" anchor="json-target-attributes-extension">
-                    <t>Extension target attributes are attributes that are not defined by RFC 5988bis 
+                    <t>Extension target attributes are attributes that are not defined by RFC 8288 
                         (as listed in <xref target="json-target-attributes-existing"/>), but are nevertheless 
                         used to qualify links. 
                         They can be defined by communities in any way deemed necessary, and it is up to them 
@@ -396,7 +395,7 @@
                 <t><list style="symbols">
                     <t>In cases where the link set resource provides these links 
                         in its Link HTTP response header, the payload of that header MUST comply with the 
-                        syntax defined in Web Linking <xref target="I-D.nottingham-rfc5988bis"/>. The media type of the response 
+                        syntax defined in Web Linking <xref target="RFC8288"/>. The media type of the response 
                         body is not constrained.</t>
                     <t>In cases where the link set resource provides these links 
                         in its response body, the body 
@@ -588,7 +587,7 @@ Content-Length: 794
         </section>
         <section title="IANA Considerations" anchor="iana-considerations">
             <section title="Link Relation Type: linkset">
-                <t>The link relation type below has been registered by IANA per Section 6.2.1 of Web Linking <xref target="I-D.nottingham-rfc5988bis"/>:</t>
+                <t>The link relation type below has been registered by IANA per Section 6.2.1 of Web Linking <xref target="RFC8288"/>:</t>
                 <t>
                     <list>
                         <t>Relation Name: linkset</t>
@@ -667,12 +666,11 @@ Content-Length: 794
 &RFC6690;
 &RFC7159;
 &RFC7231;
-&I-D.nottingham-rfc5988bis;
+&RFC8288;
 &RFC5987;
 &RFC3986;
 &RFC6838;
 &RFC5646;
-&RFC5988;
             <reference anchor="W3C.REC-html401-19991224">
                 <front>
                     <title abbrev="Media Queries">Media Queries</title>
