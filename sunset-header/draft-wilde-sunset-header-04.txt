@@ -4,8 +4,8 @@
 
 Network Working Group                                           E. Wilde
 Internet-Draft                                           CA Technologies
-Intended status: Standards Track                          August 3, 2017
-Expires: February 4, 2018
+Intended status: Standards Track                       November 10, 2017
+Expires: May 14, 2018
 
 
                          The Sunset HTTP Header
@@ -15,7 +15,9 @@ Abstract
 
    This specification defines the Sunset HTTP response header field,
    which indicates that a URI is likely to become unresponsive at a
-   specified point in the future.
+   specified point in the future.  It also defines a sunset link
+   relation type that allows linking to resources providing information
+   about an upcoming resource or service sunset.
 
 Note to Readers
 
@@ -33,31 +35,32 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 4, 2018.
+   This Internet-Draft will expire on May 14, 2018.
 
 Copyright Notice
 
    Copyright (c) 2017 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
+
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 1]
+
+Internet-Draft                Sunset Header                November 2017
+
+
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
-
-
-
-Wilde                   Expires February 4, 2018                [Page 1]
-
-Internet-Draft                Sunset Header                  August 2017
-
-
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -68,22 +71,25 @@ Internet-Draft                Sunset Header                  August 2017
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-     1.1.  Temporary Resources . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Temporary Resources . . . . . . . . . . . . . . . . . . .   3
      1.2.  Migration . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.3.  Retention . . . . . . . . . . . . . . . . . . . . . . . .   3
      1.4.  Deprecation . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  The Sunset HTTP Response Header . . . . . . . . . . . . . . .   3
+   3.  The Sunset HTTP Response Header . . . . . . . . . . . . . . .   4
    4.  Sunset and Caching  . . . . . . . . . . . . . . . . . . . . .   4
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-     5.1.  The Sunset Response Header  . . . . . . . . . . . . . . .   5
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   5
-   7.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   6
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   6
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
+   5.  The Sunset Link Relation Type . . . . . . . . . . . . . . . .   5
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
+     6.1.  The Sunset Response Header  . . . . . . . . . . . . . . .   6
+     6.2.  The Sunset Link Relation Type . . . . . . . . . . . . . .   6
+   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .   6
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   9.  Example . . . . . . . . . . . . . . . . . . . . . . . . . . .   8
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .   8
+     10.2.  Informative References . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   9
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -97,6 +103,21 @@ Table of Contents
    response header field, which indicates that a URI is likely to become
    unresponsive at a specified point in the future.
 
+   This specification also defines a link relation type "sunset" that
+   allows to provide information about a resource's or a service's
+   sunset policy, and/or upcoming sunsets, and/or possible mitigation
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 2]
+
+Internet-Draft                Sunset Header                November 2017
+
+
+   scenarios for resource/service users.  This specification does not
+   place any constraints on the nature of the linked resource, which can
+   be targeted at humans, at machines, or a combination of both.
+
    Possible scenarios for known lifetimes of resources include, but are
    not limited to the following scenarios.
 
@@ -106,14 +127,6 @@ Table of Contents
    example, a pending order represented by a resource may already list
    all the details of the order, but may only exist for a limited time
    unless it is confirmed and only then becomes permanent.  In such a
-
-
-
-Wilde                   Expires February 4, 2018                [Page 2]
-
-Internet-Draft                Sunset Header                  August 2017
-
-
    case, the service managing the pending order can make this limited
    lifetime explicit, allowing clients to understand that the pending
    order, unless confirmed, will disappear at some point in time.
@@ -150,6 +163,13 @@ Internet-Draft                Sunset Header                  August 2017
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in RFC 2119 [RFC2119].
 
+
+
+Wilde                     Expires May 14, 2018                  [Page 3]
+
+Internet-Draft                Sunset Header                November 2017
+
+
 3.  The Sunset HTTP Response Header
 
    The Sunset HTTP response header field allows a server to communicate
@@ -162,13 +182,6 @@ Internet-Draft                Sunset Header                  August 2017
    The Sunset value is an HTTP-date timestamp, as defined in
    Section 7.1.1.1 of [RFC7231], and SHOULD be a timestamp in the
    future.
-
-
-
-Wilde                   Expires February 4, 2018                [Page 3]
-
-Internet-Draft                Sunset Header                  August 2017
-
 
    Timestamps in the past SHOULD be considered to mean the present time,
    meaning that the resource is expected to become unavailable at any
@@ -204,6 +217,15 @@ Internet-Draft                Sunset Header                  August 2017
    resource state) reusable, so that they can be more efficiently used.
    This is achieved by using header fields that allow clients and
    intermediaries to better understand when a resource representation
+
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 4]
+
+Internet-Draft                Sunset Header                November 2017
+
+
    can be reused, or when resource state (and thus the representation)
    may have changed.
 
@@ -216,35 +238,134 @@ Internet-Draft                Sunset Header                  August 2017
    seen as complementary, and not as overlapping in scope and
    functionality.
 
+5.  The Sunset Link Relation Type
+
+   The Sunset HTTP header field indicates the upcoming unavailability of
+   a resource or a service.  In addition, resource may want to make
+   information available that provides additional information about how
+   unavailability will be handled for resources or services.  This
+   information can be broadly described by the following three topics:
+
+      Sunset policy: The policy for which resources and in which way
+      sunsets may occur may be published as part of service's
+      description.  Sunsets may only/mostly affect a subset of a
+      service's resources, and may be exposed according to a certain
+      policy (e.g., one week in advance).
+
+      Upcoming sunset: There may be additional information about an
+      upcoming sunset, which can be published as a resource that can be
+      consumed by those looking for this additional information.
+
+      Sunset mitigation: There may be information about possible
+      mitigation/migration strategies, such as possible ways how
+      resource users can switch to alternative resources/services.
+
+   Any information regarding the above issues (and possibly additional
+   ones) can be made available through a URI that then can be linked to
+   using the sunset link relation type.  This specification places no
+   constraints on the scope or the type of the linked resource.  The
+   scope can be for a resource or for a service.  The type is determined
+   by the media type of the linked resource, and can be targeted at
+   humans, at machines, or a combination of both.
+
+6.  IANA Considerations
 
 
 
 
 
-Wilde                   Expires February 4, 2018                [Page 4]
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 5]
 
-Internet-Draft                Sunset Header                  August 2017
+Internet-Draft                Sunset Header                November 2017
 
 
-5.  IANA Considerations
-
-5.1.  The Sunset Response Header
+6.1.  The Sunset Response Header
 
    The Sunset response header should be added to the permanent registry
    of message header fields (see [RFC3864]), taking into account the
    guidelines given by HTTP/1.1 [RFC7231].
 
-   Header Field Name: Sunset
+      Header Field Name: Sunset
 
-   Applicable Protocol: Hypertext Transfer Protocol (HTTP)
+      Applicable Protocol: Hypertext Transfer Protocol (HTTP)
 
-   Status: Standard
+      Status: Standard
 
-   Author/Change controller: IETF
+      Author/Change controller: IETF
 
-   Specification document(s): RFC XXXX
+      Specification document(s): RFC XXXX
 
-6.  Security Considerations
+6.2.  The Sunset Link Relation Type
+
+   The sunset link relation type should be added to the permanent
+   registry of link relation types according to Section 4.2 of RFC 8288
+   [RFC8288]:
+
+      Relation Name: sunset
+
+      Description: Linking to a resource providing information about a
+      resource's or service's sunset policy and/or information.
+
+      Reference: RFC XXXX
+
+7.  Implementation Status
+
+   Note to RFC Editor: Please remove this section before publication.
+
+   This section records the status of known implementations of the
+   protocol defined by this specification at the time of posting of this
+   Internet-Draft, and is based on a proposal described in RFC 6982
+   [RFC6982].  The description of implementations in this section is
+   intended to assist the IETF in its decision processes in progressing
+   drafts to RFCs.  Please note that the listing of any individual
+   implementation here does not imply endorsement by the IETF.
+   Furthermore, no effort has been spent to verify the information
+   presented here that was supplied by IETF contributors.  This is not
+   intended as, and must not be construed to be, a catalog of available
+   implementations or their features.  Readers are advised to note that
+   other implementations may exist.
+
+   According to RFC 6982, "this will allow reviewers and working groups
+   to assign due consideration to documents that have the benefit of
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 6]
+
+Internet-Draft                Sunset Header                November 2017
+
+
+   running code, which may serve as evidence of valuable experimentation
+   and feedback that have made the implemented protocols more mature.
+   It is up to the individual working groups to use this information as
+   they see fit".
+
+      Name: https://github.com/hskrasek/guzzle-sunset
+
+      Licensing: MIT
+
+      Organization: WeWork
+
+      Name: https://github.com/wework/faraday-sunset
+
+      Licensing: MIT
+
+      Description: A Ruby gem adding HTTP client middleware for Sunset
+      to Faraday
+
+      Organization: WeWork
+
+      Name: https://github.com/wework/rails-sunset
+
+      Licensing: MIT
+
+      Description: Create shortcuts for backend developers to use Sunset
+      (The Rails Way).
+
+8.  Security Considerations
 
    The Sunset header field should be treated as a resource hint, meaning
    that the resource is indicating its potential unavailability.  The
@@ -264,7 +385,16 @@ Internet-Draft                Sunset Header                  August 2017
    advertised date or only when the resource in fact becomes
    unavailable) is outside the scope of this specification.
 
-7.  Example
+
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 7]
+
+Internet-Draft                Sunset Header                November 2017
+
+
+9.  Example
 
    Assuming that a resource has been created in an archive that for
    management or compliance reasons only stores resources for two years,
@@ -274,13 +404,6 @@ Internet-Draft                Sunset Header                  August 2017
    included in responses:
 
    Sunset: Fri, 11 Nov 2018 11:11:11 GMT
-
-
-
-Wilde                   Expires February 4, 2018                [Page 5]
-
-Internet-Draft                Sunset Header                  August 2017
-
 
    This allows clients that are aware of the Sunset header field to
    understand that the resource likely will become unavailable at the
@@ -298,9 +421,9 @@ Internet-Draft                Sunset Header                  August 2017
    of the URIs that it had previously assigned; if not, the response may
    be a more generic "404 Not Found".)
 
-8.  References
+10.  References
 
-8.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", RFC 2119, March 1997.
@@ -312,7 +435,26 @@ Internet-Draft                Sunset Header                  August 2017
    [RFC7231]  Fielding, R. and J. Reschke, "Hypertext Transfer Protocol
               (HTTP/1.1): Semantics and Content", RFC 7231, June 2014.
 
-8.2.  Informative References
+   [RFC8288]  Nottingham, M., "Web Linking", RFC 8288,
+              DOI 10.17487/RFC8288, October 2017,
+              <https://www.rfc-editor.org/info/rfc8288>.
+
+
+
+
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 8]
+
+Internet-Draft                Sunset Header                November 2017
+
+
+10.2.  Informative References
+
+   [RFC6982]  Sheffer, Y. and A. Farrel, "Improving Awareness of Running
+              Code: The Implementation Status Section", RFC 6982, July
+              2013.
 
    [RFC7234]  Fielding, R., Nottingham, M., and J. Reschke, "Hypertext
               Transfer Protocol (HTTP/1.1): Caching", RFC 7234, June
@@ -333,4 +475,30 @@ Author's Address
 
 
 
-Wilde                   Expires February 4, 2018                [Page 6]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires May 14, 2018                  [Page 9]
