@@ -34,6 +34,19 @@
         <section title="Problem Statement" anchor="problem-statement">
             <t>HAL is meant as a simple JSON-based way how services and consumers can work with simple hypermedia formats, and yet can treat them (mostly) as plain JSON. As one aspect of the general design goal, HAL minimizes the constraints it puts on the format.</t>
             <t>The way hypermedia links are represented in HAL is inspired by Web Linking <xref target="RFC8288"/>, where links are typed, and the link relation type is either a simple string, or a URI. HAL introduces a mechanism that is called a "curie" (but is not in fact the CURIE concept as standardized in a specification of this name). Using the "curie" mechanism, HAL supports shortcuts of link relations, allowing HAL to represent link relations that are in fact URIs in a prefix-based notation. The following example from the HAL specification illustrates the mechanism:</t>
+            <figure>
+                <artwork type="json">{
+  "_links": {
+    "self": { "href": "/orders" },
+    "curies": [{
+      "name": "acme",
+      "href": "http://docs.acme.com/relations/{rel}",
+      "templated": true
+    }],
+    "acme:widgets": { "href": "/widgets" }
+  }
+}</artwork>
+            </figure>
         </section>
         <section title="WebHAL Profile" anchor="webhal-profile">
             <t>...</t>
