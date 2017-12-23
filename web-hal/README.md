@@ -1,3 +1,3 @@
 # WebHAL: A HAL Profile for Web Compatibility
 
-...
+The Hypertext Application Language (HAL) is a simple JSON-based vocabulary for representing hypermedia using JSON. One particular feature of HAL makes the language problematic in environments where it is important that link relation types are always interpreted in a consistent way. WebHAL is a profile that disallows this problematic feature (which is optional to use in HAL), and thus makes link relation types well-defined for environments where Web Linking semantics according to RFC 8288 are required. WebHAL is defined as a profile of HAL, which means that every WebHAL document is a HAL document. WebHAL also defines a process how any HAL document can be transformed into a WebHAL document.
