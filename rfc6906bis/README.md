@@ -1,3 +1,3 @@
 # Identifying Profiles on the Web
 
-...
+Profiles are a way to refine an existing media type so that the original semantics are not affected, but to represent the fact that the media type now adheres to additional constraints (extensions and/or limitations of the media type). Any representation that conforms to a profile also conforms to the original media type. Profiles were introduced in RFC 6906, which defined a link relation type and suggested that media types should support a profile parameter. This specification obsoletes the original text with some clarifications, and also introduces a registered HTTP preference for profiles, which allows profiles to be negotiated without the need for a profile media type parameter.
