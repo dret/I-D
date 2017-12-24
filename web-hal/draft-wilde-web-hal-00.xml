@@ -47,7 +47,7 @@
   }
 }</artwork>
             </figure>
-            <t>In this example, the effective link relation is "http://docs.acme.com/relations/widgets", with the "acme:widgets" link using the shortcut notation for its link relation.</t>
+            <t>In this example, the effective link relation type is "http://docs.acme.com/relations/widgets", with the "acme:widgets" link using the shortcut notation for its link relation type.</t>
             <t>The problem is that HAL makes resolving these templated link relations optional. This means that based on HAL, it is permissible to interpret the link relation as being "http://docs.acme.com/relations/widgets" or "acme:widgets".</t>
             <t>As a result, any consumers of this HAL service may interpret the link as having the link relation "acme:widgets". If these consumers now store the link or start exposing it in any way, the original identity of the link relation ("http://docs.acme.com/relations/widgets") is lost. Not only is the identity lost, it also cannot be restored, because the binding to the prefix definition likely will get lost if the HAL representation is not preserved or forwarded directly, but instead programming logic extracts links and their link relations, and then stores those or constructs new representations.</t>
             <t>The bigger effect of this is that link relations as defined by Web Linking <xref target="RFC8288"/> are not reliably processed in a landscape of service providers and consumers where HAL's "curie" mechanism is used. Link relations can use their identity, which creates interoperability problem throughout the landscape.</t>
