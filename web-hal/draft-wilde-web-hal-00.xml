@@ -52,6 +52,9 @@
             <t>As a result, some consumers of this HAL service may interpret the link as having the link relation "acme:widgets". If these consumers store the link or start exposing it in any way, the original identity of the link relation ("http://docs.acme.com/relations/widgets") is lost. Not only is the identity lost, it also cannot be restored, because the binding to the prefix definition likely will get lost if the HAL representation is not preserved or forwarded directly, but instead programming logic extracts links and their link relation types, and then stores those or constructs new representations.</t>
             <t>The bigger effect of this is that link relations as defined by Web Linking <xref target="RFC8288"/> are not reliably processed in a landscape of service providers and consumers where HAL's "curie" mechanism is used. Link relations can use their identity, which creates interoperability problem throughout the landscape.</t>
         </section>
+        <section title="WebHAL as a Safe HAL Profile" anchor="webhal">
+            <t>To avoid the ambiguities and potential problems mentioned in the previous section, HAL can be used in a way which strictly avoids the use of the "curie" mechanism. This can be done within the limitations of the HAL format, since using "curie" is optional, and every HAL document using this feature can be tranbsformed into an equivalent HAL document that does not use the feature (as shown in Section <xref target="hal-to-webhal"/>).</t>
+        </section>
         <section title="WebHAL Profile" anchor="webhal-profile">
             <t>...</t>
         </section>
