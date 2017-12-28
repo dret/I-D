@@ -67,9 +67,10 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Problem Statement . . . . . . . . . . . . . . . . . . . . . .   3
-   3.  WebHAL Profile  . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  Normative References  . . . . . . . . . . . . . . . . . . . .   3
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  WebHAL Profile  . . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Normative References  . . . . . . . . . . . . . . . . . . . .   4
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   4
 
 1.  Introduction
 
@@ -108,7 +109,6 @@ Table of Contents
 
 
 
-
 Wilde                     Expires July 5, 2018                  [Page 2]
 
 Internet-Draft                   WebHAL                     January 2018
@@ -116,13 +116,75 @@ Internet-Draft                   WebHAL                     January 2018
 
 2.  Problem Statement
 
-   ...
+   HAL is meant as a simple JSON-based way how services and consumers
+   can work with simple hypermedia formats, and yet can treat them
+   (mostly) as plain JSON.  As one aspect of the general design goal,
+   HAL minimizes the constraints it puts on the format.
+
+   The way hypermedia links are represented in HAL is inspired by Web
+   Linking [RFC8288], where links are typed, and the link relation type
+   is either a simple string, or a URI.  HAL introduces a mechanism that
+   is called a "curie" (but is not in fact the CURIE concept as
+   standardized in a specification of this name).  Using the "curie"
+   mechanism, HAL supports shortcuts of link relations, allowing HAL to
+   represent link relations that are in fact URIs in a prefix-based
+   notation.  The following example from the HAL specification
+   illustrates the mechanism:
+
+   {
+     "_links": {
+       "self": { "href": "/orders" },
+       "curies": [{
+         "name": "acme",
+         "href": "http://docs.acme.com/relations/{rel}",
+         "templated": true
+       }],
+       "acme:widgets": { "href": "/widgets" }
+     }
+   }
+
+   In this example, the effective link relation is
+   "http://docs.acme.com/relations/widgets", with the "acme:widgets"
+   link using the shortcut notation for its link relation.
+
+   The problem is that HAL makes resolving these templated link
+   relations optional.  This means that based on HAL, it is permissible
+   to interpret the link relation as being
+   "http://docs.acme.com/relations/widgets" or "acme:widgets".
+
+   As a result, any consumers of this HAL service may interpret the link
+   as having the link relation "acme:widgets".  If these consumers now
+   store the link or start exposing it in any way, the original identity
+   of the link relation ("http://docs.acme.com/relations/widgets") is
+   lost.  Not only is the identity lost, it also cannot be restored,
+   because the binding to the prefix definition likely will get lost if
+   the HAL representation is not preserved or forwarded directly, but
+   instead programming logic extracts links and their link relations,
+   and then stores those or constructs new representations.
+
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 3]
+
+Internet-Draft                   WebHAL                     January 2018
+
+
+   The bigger effect of this is that link relations as defined by Web
+   Linking [RFC8288] are not reliably processed in a landscape of
+   service providers and consumers where HAL's "curie" mechanism is
+   used.  Link relations can use their identity, which creates
+   interoperability problem throughout the landscape.
 
 3.  WebHAL Profile
 
    ...
 
-4.  Normative References
+4.  IANA Considerations
+
+   ...
+
+5.  Normative References
 
    [RFC6906]  Wilde, E., "The 'profile' Link Relation Type", RFC 6906,
               DOI 10.17487/RFC6906, March 2013,
@@ -159,10 +221,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-Wilde                     Expires July 5, 2018                  [Page 3]
+Wilde                     Expires July 5, 2018                  [Page 4]

@@ -377,7 +377,8 @@
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Problem Statement">
 <link href="#rfc.section.3" rel="Chapter" title="3 WebHAL Profile">
-<link href="#rfc.references" rel="Chapter" title="4 Normative References">
+<link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations">
+<link href="#rfc.references" rel="Chapter" title="5 Normative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -446,7 +447,9 @@
 </li>
 <li>3.   <a href="#rfc.section.3">WebHAL Profile</a>
 </li>
-<li>4.   <a href="#rfc.references">Normative References</a>
+<li>4.   <a href="#rfc.section.4">IANA Considerations</a>
+</li>
+<li>5.   <a href="#rfc.references">Normative References</a>
 </li>
 <li><a href="#rfc.authors">Author's Address</a>
 </li>
@@ -464,13 +467,33 @@
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#problem-statement" id="problem-statement">Problem Statement</a>
 </h1>
-<p id="rfc.section.2.p.1">...</p>
+<p id="rfc.section.2.p.1">HAL is meant as a simple JSON-based way how services and consumers can work with simple hypermedia formats, and yet can treat them (mostly) as plain JSON. As one aspect of the general design goal, HAL minimizes the constraints it puts on the format.</p>
+<p id="rfc.section.2.p.2">The way hypermedia links are represented in HAL is inspired by Web Linking <a href="#RFC8288" class="xref">[RFC8288]</a>, where links are typed, and the link relation type is either a simple string, or a URI. HAL introduces a mechanism that is called a "curie" (but is not in fact the CURIE concept as standardized in a specification of this name). Using the "curie" mechanism, HAL supports shortcuts of link relations, allowing HAL to represent link relations that are in fact URIs in a prefix-based notation. The following example from the HAL specification illustrates the mechanism:</p>
+<pre>{
+  "_links": {
+    "self": { "href": "/orders" },
+    "curies": [{
+      "name": "acme",
+      "href": "http://docs.acme.com/relations/{rel}",
+      "templated": true
+    }],
+    "acme:widgets": { "href": "/widgets" }
+  }
+}</pre>
+<p id="rfc.section.2.p.3">In this example, the effective link relation is "http://docs.acme.com/relations/widgets", with the "acme:widgets" link using the shortcut notation for its link relation.</p>
+<p id="rfc.section.2.p.4">The problem is that HAL makes resolving these templated link relations optional. This means that based on HAL, it is permissible to interpret the link relation as being "http://docs.acme.com/relations/widgets" or "acme:widgets".</p>
+<p id="rfc.section.2.p.5">As a result, any consumers of this HAL service may interpret the link as having the link relation "acme:widgets". If these consumers now store the link or start exposing it in any way, the original identity of the link relation ("http://docs.acme.com/relations/widgets") is lost. Not only is the identity lost, it also cannot be restored, because the binding to the prefix definition likely will get lost if the HAL representation is not preserved or forwarded directly, but instead programming logic extracts links and their link relations, and then stores those or constructs new representations.</p>
+<p id="rfc.section.2.p.6">The bigger effect of this is that link relations as defined by Web Linking <a href="#RFC8288" class="xref">[RFC8288]</a> are not reliably processed in a landscape of service providers and consumers where HAL's "curie" mechanism is used. Link relations can use their identity, which creates interoperability problem throughout the landscape.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#webhal-profile" id="webhal-profile">WebHAL Profile</a>
 </h1>
 <p id="rfc.section.3.p.1">...</p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
+</h1>
+<p id="rfc.section.4.p.1">...</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">4.</a> Normative References</h1>
+<a href="#rfc.references">5.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC6906">[RFC6906]</b></td>
