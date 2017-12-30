@@ -31,6 +31,9 @@
             <t>In scenarios where it is required that clients end up with a consistent interpretation of the hyperlinks, such as when for example Web Linking <xref target="RFC8288"/> is part of the picture and hyperlinks should be consistently identified by either registered relation types (simple strings) or extension relation types (URIs), it is possible to define and use a subset of HAL that is avoids those mechanisms that introduce semantic ambiguity.</t>
             <t>This memo defines a subset of HAL which is technically defined as a profile <xref target="RFC6906"/> which can be identified by a media type parameter and/or a property in the HAL representation itself. This subset is called WebHAL and is specifically intended to work well in scenarios where Web Linking is in use, and where the representation of hyperlinks should be free of any ambiguities.</t>
         </section>
+        <section title="Terminology">
+            <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <xref target="RFC2119"/>.</t>
+        </section>
         <section title="Problem Statement" anchor="problem-statement">
             <t>HAL is meant as a simple JSON-based way how services and consumers can work with simple hypermedia formats, and yet can treat them (mostly) as plain JSON. As one aspect of the general design goal, HAL minimizes the constraints it puts on the format.</t>
             <t>The way hypermedia links are represented in HAL is inspired by Web Linking <xref target="RFC8288"/>, where links are typed, and the link relation type is either a simple string, or a URI. HAL introduces a mechanism that is called a "curie" (but is not in fact the CURIE concept as standardized in a specification of this name). Using the "curie" mechanism, HAL supports a shorthand notation for link relation types, allowing HAL to represent link relation types that are in fact URIs in a prefix-based notation. The following example from the HAL specification illustrates the mechanism:</t>
@@ -88,6 +91,17 @@
     </middle>
     <back>
         <references title="Normative References">
+            <reference  anchor='RFC2119' target='https://www.rfc-editor.org/info/rfc2119'>
+                <front>
+                    <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+                    <author initials='S.' surname='Bradner' fullname='S. Bradner'><organization /></author>
+                    <date year='1997' month='March' />
+                    <abstract><t>In many standards track documents several words are used to signify the requirements in the specification.  These words are often capitalized. This document defines these words as they should be interpreted in IETF documents.  This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.</t></abstract>
+                </front>
+                <seriesInfo name='BCP' value='14'/>
+                <seriesInfo name='RFC' value='2119'/>
+                <seriesInfo name='DOI' value='10.17487/RFC2119'/>
+            </reference>
             <reference  anchor='RFC6906' target='https://www.rfc-editor.org/info/rfc6906'>
                 <front>
                     <title>The 'profile' Link Relation Type</title>
