@@ -375,22 +375,26 @@
 
   <link href="#rfc.toc" rel="Contents">
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
-<link href="#rfc.section.2" rel="Chapter" title="2 IANA Considerations">
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Link Relation Type">
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 HTTP Preference">
-<link href="#rfc.references" rel="Chapter" title="3 Normative References">
+<link href="#rfc.section.2" rel="Chapter" title="2 Terminology">
+<link href="#rfc.section.3" rel="Chapter" title="3 Profiles">
+<link href="#rfc.section.4" rel="Chapter" title="4 Profiles and HTTP">
+<link href="#rfc.section.5" rel="Chapter" title="5 Profile HTTP Preference">
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations">
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Link Relation Type">
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 HTTP Preference">
+<link href="#rfc.references" rel="Chapter" title="7 Normative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements">
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.8.2 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.8.3 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Wilde, E." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-rfc6906bis-00" />
   <meta name="dct.issued" scheme="ISO8601" content="2018-1-1" />
-  <meta name="dct.abstract" content="..." />
-  <meta name="description" content="..." />
+  <meta name="dct.abstract" content="Profiles are a way to refine an existing media type so that the original semantics are not affected, but to represent the fact that the media type now adheres to additional constraints (extensions and/or limitations of the media type). Any representation that conforms to a profile also conforms to the original media type. Profiles were introduced in RFC 6906, which defined a link relation type and suggested that media types should support a profile parameter. This specification obsoletes the original text with some clarifications, and also introduces a registered HTTP preference for profiles, which allows profiles to be negotiated without the need for a profile media type parameter." />
+  <meta name="description" content="Profiles are a way to refine an existing media type so that the original semantics are not affected, but to represent the fact that the media type now adheres to additional constraints (extensions and/or limitations of the media type). Any representation that conforms to a profile also conforms to the original media type. Profiles were introduced in RFC 6906, which defined a link relation type and suggested that media types should support a profile parameter. This specification obsoletes the original text with some clarifications, and also introduces a registered HTTP preference for profiles, which allows profiles to be negotiated without the need for a profile media type parameter." />
 
 </head>
 
@@ -424,7 +428,7 @@
   <span class="filename">draft-wilde-rfc6906bis-00</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>...</p>
+<p>Profiles are a way to refine an existing media type so that the original semantics are not affected, but to represent the fact that the media type now adheres to additional constraints (extensions and/or limitations of the media type). Any representation that conforms to a profile also conforms to the original media type. Profiles were introduced in RFC 6906, which defined a link relation type and suggested that media types should support a profile parameter. This specification obsoletes the original text with some clarifications, and also introduces a registered HTTP preference for profiles, which allows profiles to be negotiated without the need for a profile media type parameter.</p>
 <h1><a>Note to Readers</a></h1>
 <p>Please discuss this draft on the ART mailing list (<span>&lt;</span><a href="https://www.ietf.org/mailman/listinfo/art">https://www.ietf.org/mailman/listinfo/art</a><span>&gt;</span>).</p>
 <p>Online access to all versions and files is available on GitHub (<span>&lt;</span><a href="https://github.com/dret/I-D/tree/master/rfc6906bis">https://github.com/dret/I-D/tree/master/rfc6906bis</a><span>&gt;</span>).</p>
@@ -444,13 +448,21 @@
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a>
 </li>
-<li>2.   <a href="#rfc.section.2">IANA Considerations</a>
+<li>2.   <a href="#rfc.section.2">Terminology</a>
 </li>
-<ul><li>2.1.   <a href="#rfc.section.2.1">Link Relation Type</a>
+<li>3.   <a href="#rfc.section.3">Profiles</a>
 </li>
-<li>2.2.   <a href="#rfc.section.2.2">HTTP Preference</a>
+<li>4.   <a href="#rfc.section.4">Profiles and HTTP</a>
 </li>
-</ul><li>3.   <a href="#rfc.references">Normative References</a>
+<li>5.   <a href="#rfc.section.5">Profile HTTP Preference</a>
+</li>
+<li>6.   <a href="#rfc.section.6">IANA Considerations</a>
+</li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Link Relation Type</a>
+</li>
+<li>6.2.   <a href="#rfc.section.6.2">HTTP Preference</a>
+</li>
+</ul><li>7.   <a href="#rfc.references">Normative References</a>
 </li>
 <li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a>
 </li>
@@ -463,21 +475,64 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">...</p>
+<p id="rfc.section.1.p.1">Profiles were introduced by RFC 6906 <a href="#RFC6906" class="xref">[RFC6906]</a> as a way to represent additional semantics for existing media types. The original specification defined a link relation type for indicating the presence of a profile, and also suggested for media types to consider supporting profile parameters.</p>
+<p id="rfc.section.1.p.2">Experience has shown that both approaches are not ideal. A link relation type typically implies a traversable link, while a profile "link" is intended to be an identifier only. A media type parameter must be defined by a media type itself, and so far only very few media types support a parameter for representing profile information. As a way to improve this situation, this updated specification adds a new way to represent profile information at the HTTP level (Section <a href="#profile-http" class="xref">Section 4</a>).</p>
 <h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
+<a href="#rfc.section.2">2.</a> <a href="#terminology" id="terminology">Terminology</a>
 </h1>
-<p id="rfc.section.2.p.1">...</p>
-<h1 id="rfc.section.2.1">
-<a href="#rfc.section.2.1">2.1.</a> <a href="#IANA-profile-link-relation-type" id="IANA-profile-link-relation-type">Link Relation Type</a>
+<p id="rfc.section.2.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119 <a href="#RFC2119" class="xref">[RFC2119]</a>.</p>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#profiles" id="profiles">Profiles</a>
 </h1>
-<p id="rfc.section.2.1.p.1">...</p>
-<h1 id="rfc.section.2.2">
-<a href="#rfc.section.2.2">2.2.</a> <a href="#IANA-profile-http-preference" id="IANA-profile-http-preference">HTTP Preference</a>
+<p id="rfc.section.3.p.1">The concept of a profile has no strict definition on the Internet or on the web. For the purpose of this specification, a profile can be described as additional constraints that can be used to process a resource representation, such as structural constraints, conventions, extensions, or any other aspects that do not alter the basic media type semantics. A profile MUST NOT change the basic semantics of the resource representation (as defined by the media type) when processed without profile knowledge, so that clients both with and without knowledge of a profiled resource can safely use the same representation.</p>
+<p id="rfc.section.3.p.2">While this specification associates profiles with resource representations, creators and users of profiles MAY define and manage them in a way that allows them to be used across media types; thus, they could be associated with a resource, independent of their representations (i.e., using the same profile URI for different media types). However, such a design is outside of the scope of this specification, and clients SHOULD treat profiles as being associated with a resource representation.</p>
+<p id="rfc.section.3.p.3">Profiles can be combined, meaning that a single resource representation can conform to zero or any number of profiles. Depending on the profile support of clients, it is possible that the same resource representation, when linked to a number of profiles, can be processed with different sets of processing rules, based on the profile support of the clients.</p>
+<p id="rfc.section.3.p.4">Profiles are identified by URI. However, as is the case with, for example, XML namespace URIs, the URI in this case only serves as an identifier, meaning that the presence of a specific URI has to be sufficient for a client to assert that a resource representation conforms to a profile. Thus, clients SHOULD treat profile URIs as identifiers and not as links, but profiles MAY be defined in a way that the URIs do identify retrievable profile descriptions and thus can be accessed by clients by dereferencing the profile URI. For profiles intended for use in environments where clients may encounter unknown profile URIs, profile maintainers SHOULD consider to make the profile URI dereferencable and provide useful documentation at that URI. The design and representation of such profile descriptions, however, is outside the scope of this specification.</p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#profile-http" id="profile-http">Profiles and HTTP</a>
 </h1>
-<p id="rfc.section.2.2.p.1">...</p>
+<p id="rfc.section.4.p.1">The original profile specification <a href="#RFC6906" class="xref">[RFC6906]</a> suggested that media types should consider supporting a profile media type parameter. The idea was that this would make the profile visible on the HTTP level, and ideally even negotiable. However, this also meant that it was the media type's responsibility to support such a parameter, and since media types are typically widely used and long lived, only very few support such a media type parameter.</p>
+<p id="rfc.section.4.p.2">The HTTP Prefer header <a href="#RFC7240" class="xref">[RFC7240]</a> introduces a mechanism where clients and servers can communicate preferences, without binding those to the media type. Specifically, the header is based on a registry which allows new preferences to be registered, so that new preferences can be defined and then exchanged, based on that header. This means that preferences can be exchanged in a way which is independent from the media type. One way to use this mechanism, as described in Section <a href="#IANA-profile-http-preference" class="xref">Section 6.2</a>, is to define a preference that represents profile information.</p>
+<p id="rfc.section.4.p.3">Using the HTTP Prefer header, profile information becomes readily accessible at the HTTP level, without the need for the media type to support or even know the notion of profiles.</p>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#profile-http-preference" id="profile-http-preference">Profile HTTP Preference</a>
+</h1>
+<p id="rfc.section.5.p.1">...</p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#IANA" id="IANA">IANA Considerations</a>
+</h1>
+<p id="rfc.section.6.p.1">...</p>
+<h1 id="rfc.section.6.1">
+<a href="#rfc.section.6.1">6.1.</a> <a href="#IANA-profile-link-relation-type" id="IANA-profile-link-relation-type">Link Relation Type</a>
+</h1>
+<p id="rfc.section.6.1.p.1">This specification updates the "Link Relation Type" registry entry for "profile" in Web Linking <a href="#RFC8288" class="xref">[RFC8288]</a> to refer to this document.</p>
+<p></p>
+
+<ul class="empty">
+<li>Relation Name: profile</li>
+<li>Description: Identifying that a resource representation conforms to a certain profile, without affecting the non-profile semantics of the resource representation.</li>
+<li>Reference: RFC XXXX</li>
+<li>Notes: Profile URIs are primarily intended to be used as identifiers, and thus clients SHOULD NOT indiscriminately access profile URIs.</li>
+</ul>
+
+<p> </p>
+<h1 id="rfc.section.6.2">
+<a href="#rfc.section.6.2">6.2.</a> <a href="#IANA-profile-http-preference" id="IANA-profile-http-preference">HTTP Preference</a>
+</h1>
+<p id="rfc.section.6.2.p.1">The HTTP Preference below has been registered by IANA per Section 5.1 of RFC 7240 <a href="#RFC7240" class="xref">[RFC7240]</a>:</p>
+<p></p>
+
+<ul class="empty">
+<li>Preference: profile</li>
+<li>Value:</li>
+<li>Optional Parameters:</li>
+<li>Description:</li>
+<li>Reference: RFC XXXX</li>
+</ul>
+
+<p> </p>
 <h1 id="rfc.references">
-<a href="#rfc.references">3.</a> Normative References</h1>
+<a href="#rfc.references">7.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -502,7 +557,7 @@
 </tbody></table>
 <h1 id="rfc.appendix.A">
 <a href="#rfc.appendix.A">Appendix A.</a> Acknowledgements</h1>
-<p id="rfc.section.A.p.1">Thanks for comments and suggestions provided by ...</p>
+<p id="rfc.section.A.p.1">Thanks for comments and suggestions provided by Ruben Verborgh.</p>
 <p id="rfc.section.A.p.2">Acknowledgements in the original specification <a href="#RFC6906" class="xref">[RFC6906]</a> included Erlend Hamnaberg, Markus Lanthaler, Simon Mayer, Mark Nottingham, Julian Reschke, James Snell, Herbert Van de Sompel, and Tim Williams. These acknowledgements are equally relevant for this updated version of the specification.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Author's Address</a></h1>
 <div class="avoidbreak">

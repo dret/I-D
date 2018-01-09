@@ -13,7 +13,17 @@ Expires: July 5, 2018
 
 Abstract
 
-   ...
+   Profiles are a way to refine an existing media type so that the
+   original semantics are not affected, but to represent the fact that
+   the media type now adheres to additional constraints (extensions and/
+   or limitations of the media type).  Any representation that conforms
+   to a profile also conforms to the original media type.  Profiles were
+   introduced in RFC 6906, which defined a link relation type and
+   suggested that media types should support a profile parameter.  This
+   specification obsoletes the original text with some clarifications,
+   and also introduces a registered HTTP preference for profiles, which
+   allows profiles to be negotiated without the need for a profile media
+   type parameter.
 
 Note to Readers
 
@@ -40,6 +50,14 @@ Status of This Memo
 
    This Internet-Draft will expire on July 5, 2018.
 
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 1]
+
+Internet-Draft                  Profiles                    January 2018
+
+
 Copyright Notice
 
    Copyright (c) 2018 IETF Trust and the persons identified as the
@@ -50,14 +68,6 @@ Copyright Notice
    (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
-
-
-
-Wilde                     Expires July 5, 2018                  [Page 1]
-
-Internet-Draft                  Profiles                    January 2018
-
-
    to this document.  Code Components extracted from this document must
    include Simplified BSD License text as described in Section 4.e of
    the Trust Legal Provisions and are provided without warranty as
@@ -66,30 +76,172 @@ Internet-Draft                  Profiles                    January 2018
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
-   2.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   2
-     2.1.  Link Relation Type  . . . . . . . . . . . . . . . . . . .   2
-     2.2.  HTTP Preference . . . . . . . . . . . . . . . . . . . . .   2
-   3.  Normative References  . . . . . . . . . . . . . . . . . . . .   2
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   3
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  Profiles  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  Profiles and HTTP . . . . . . . . . . . . . . . . . . . . . .   4
+   5.  Profile HTTP Preference . . . . . . . . . . . . . . . . . . .   4
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   4
+     6.1.  Link Relation Type  . . . . . . . . . . . . . . . . . . .   4
+     6.2.  HTTP Preference . . . . . . . . . . . . . . . . . . . . .   5
+   7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
 
+   Profiles were introduced by RFC 6906 [RFC6906] as a way to represent
+   additional semantics for existing media types.  The original
+   specification defined a link relation type for indicating the
+   presence of a profile, and also suggested for media types to consider
+   supporting profile parameters.
+
+   Experience has shown that both approaches are not ideal.  A link
+   relation type typically implies a traversable link, while a profile
+   "link" is intended to be an identifier only.  A media type parameter
+   must be defined by a media type itself, and so far only very few
+   media types support a parameter for representing profile information.
+   As a way to improve this situation, this updated specification adds a
+   new way to represent profile information at the HTTP level
+   (Section Section 4).
+
+
+
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 2]
+
+Internet-Draft                  Profiles                    January 2018
+
+
+2.  Terminology
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+3.  Profiles
+
+   The concept of a profile has no strict definition on the Internet or
+   on the web.  For the purpose of this specification, a profile can be
+   described as additional constraints that can be used to process a
+   resource representation, such as structural constraints, conventions,
+   extensions, or any other aspects that do not alter the basic media
+   type semantics.  A profile MUST NOT change the basic semantics of the
+   resource representation (as defined by the media type) when processed
+   without profile knowledge, so that clients both with and without
+   knowledge of a profiled resource can safely use the same
+   representation.
+
+   While this specification associates profiles with resource
+   representations, creators and users of profiles MAY define and manage
+   them in a way that allows them to be used across media types; thus,
+   they could be associated with a resource, independent of their
+   representations (i.e., using the same profile URI for different media
+   types).  However, such a design is outside of the scope of this
+   specification, and clients SHOULD treat profiles as being associated
+   with a resource representation.
+
+   Profiles can be combined, meaning that a single resource
+   representation can conform to zero or any number of profiles.
+   Depending on the profile support of clients, it is possible that the
+   same resource representation, when linked to a number of profiles,
+   can be processed with different sets of processing rules, based on
+   the profile support of the clients.
+
+   Profiles are identified by URI.  However, as is the case with, for
+   example, XML namespace URIs, the URI in this case only serves as an
+   identifier, meaning that the presence of a specific URI has to be
+   sufficient for a client to assert that a resource representation
+   conforms to a profile.  Thus, clients SHOULD treat profile URIs as
+   identifiers and not as links, but profiles MAY be defined in a way
+   that the URIs do identify retrievable profile descriptions and thus
+   can be accessed by clients by dereferencing the profile URI.  For
+   profiles intended for use in environments where clients may encounter
+   unknown profile URIs, profile maintainers SHOULD consider to make the
+   profile URI dereferencable and provide useful documentation at that
+   URI.  The design and representation of such profile descriptions,
+   however, is outside the scope of this specification.
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 3]
+
+Internet-Draft                  Profiles                    January 2018
+
+
+4.  Profiles and HTTP
+
+   The original profile specification [RFC6906] suggested that media
+   types should consider supporting a profile media type parameter.  The
+   idea was that this would make the profile visible on the HTTP level,
+   and ideally even negotiable.  However, this also meant that it was
+   the media type's responsibility to support such a parameter, and
+   since media types are typically widely used and long lived, only very
+   few support such a media type parameter.
+
+   The HTTP Prefer header [RFC7240] introduces a mechanism where clients
+   and servers can communicate preferences, without binding those to the
+   media type.  Specifically, the header is based on a registry which
+   allows new preferences to be registered, so that new preferences can
+   be defined and then exchanged, based on that header.  This means that
+   preferences can be exchanged in a way which is independent from the
+   media type.  One way to use this mechanism, as described in
+   Section Section 6.2, is to define a preference that represents
+   profile information.
+
+   Using the HTTP Prefer header, profile information becomes readily
+   accessible at the HTTP level, without the need for the media type to
+   support or even know the notion of profiles.
+
+5.  Profile HTTP Preference
+
    ...
 
-2.  IANA Considerations
+6.  IANA Considerations
 
    ...
 
-2.1.  Link Relation Type
+6.1.  Link Relation Type
 
-   ...
+   This specification updates the "Link Relation Type" registry entry
+   for "profile" in Web Linking [RFC8288] to refer to this document.
 
-2.2.  HTTP Preference
+      Relation Name: profile
 
-   ...
+      Description: Identifying that a resource representation conforms
+      to a certain profile, without affecting the non-profile semantics
+      of the resource representation.
 
-3.  Normative References
+      Reference: RFC XXXX
+
+      Notes: Profile URIs are primarily intended to be used as
+      identifiers, and thus clients SHOULD NOT indiscriminately access
+      profile URIs.
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 4]
+
+Internet-Draft                  Profiles                    January 2018
+
+
+6.2.  HTTP Preference
+
+   The HTTP Preference below has been registered by IANA per Section 5.1
+   of RFC 7240 [RFC7240]:
+
+      Preference: profile
+
+      Value:
+
+      Optional Parameters:
+
+      Description:
+
+      Reference: RFC XXXX
+
+7.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -104,29 +256,31 @@ Table of Contents
               DOI 10.17487/RFC7240, June 2014,
               <https://www.rfc-editor.org/info/rfc7240>.
 
-
-
-
-
-
-Wilde                     Expires July 5, 2018                  [Page 2]
-
-Internet-Draft                  Profiles                    January 2018
-
-
    [RFC8288]  Nottingham, M., "Web Linking", RFC 8288,
               DOI 10.17487/RFC8288, October 2017,
               <https://www.rfc-editor.org/info/rfc8288>.
 
 Appendix A.  Acknowledgements
 
-   Thanks for comments and suggestions provided by ...
+   Thanks for comments and suggestions provided by Ruben Verborgh.
 
    Acknowledgements in the original specification [RFC6906] included
    Erlend Hamnaberg, Markus Lanthaler, Simon Mayer, Mark Nottingham,
    Julian Reschke, James Snell, Herbert Van de Sompel, and Tim Williams.
    These acknowledgements are equally relevant for this updated version
    of the specification.
+
+
+
+
+
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 5]
+
+Internet-Draft                  Profiles                    January 2018
+
 
 Author's Address
 
@@ -165,4 +319,18 @@ Author's Address
 
 
 
-Wilde                     Expires July 5, 2018                  [Page 3]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 6]
