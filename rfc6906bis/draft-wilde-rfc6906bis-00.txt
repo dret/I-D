@@ -84,7 +84,7 @@ Table of Contents
      6.1.  Link Relation Type  . . . . . . . . . . . . . . . . . . .   4
      6.2.  HTTP Preference . . . . . . . . . . . . . . . . . . . . .   5
    7.  Normative References  . . . . . . . . . . . . . . . . . . . .   5
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   6
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   6
 
 1.  Introduction
@@ -133,21 +133,28 @@ Internet-Draft                  Profiles                    January 2018
    knowledge of a profiled resource can safely use the same
    representation.
 
+   An easy way to conceptualize profiles is to imagine both a media type
+   and a profile having a schema (even though none of them need to have
+   one).  If the profile schema is a refinement/augmentation of the
+   media type schema, and if any valid profile instance is a valid media
+   type instance, then the profile indeed is one according to the
+   working definition used in this specification.
+
    While this specification associates profiles with resource
    representations, creators and users of profiles MAY define and manage
    them in a way that allows them to be used across media types; thus,
-   they could be associated with a resource, independent of their
-   representations (i.e., using the same profile URI for different media
-   types).  However, such a design is outside of the scope of this
-   specification, and clients SHOULD treat profiles as being associated
-   with a resource representation.
+   they could be associated with various representations of a resource
+   (i.e., using the same profile URI for different media types).
+   However, such a design is outside of the scope of this specification,
+   and clients SHOULD treat profiles as always being associated with a
+   resource representation (i.e., media types).
 
    Profiles can be combined, meaning that a single resource
    representation can conform to zero or any number of profiles.
    Depending on the profile support of clients, it is possible that the
    same resource representation, when linked to a number of profiles,
    can be processed with different sets of processing rules, based on
-   the profile support of the clients.
+   the profile support of individual clients.
 
    Profiles are identified by URI.  However, as is the case with, for
    example, XML namespace URIs, the URI in this case only serves as an
@@ -155,13 +162,6 @@ Internet-Draft                  Profiles                    January 2018
    sufficient for a client to assert that a resource representation
    conforms to a profile.  Thus, clients SHOULD treat profile URIs as
    identifiers and not as links, but profiles MAY be defined in a way
-   that the URIs do identify retrievable profile descriptions and thus
-   can be accessed by clients by dereferencing the profile URI.  For
-   profiles intended for use in environments where clients may encounter
-   unknown profile URIs, profile maintainers SHOULD consider to make the
-   profile URI dereferencable and provide useful documentation at that
-   URI.  The design and representation of such profile descriptions,
-   however, is outside the scope of this specification.
 
 
 
@@ -169,6 +169,14 @@ Wilde                     Expires July 5, 2018                  [Page 3]
 
 Internet-Draft                  Profiles                    January 2018
 
+
+   that the URIs do identify retrievable profile descriptions and thus
+   can be accessed by clients by dereferencing the profile URI.  For
+   profiles intended for use in environments where clients may encounter
+   unknown profile URIs, profile maintainers SHOULD consider to make the
+   profile URI dereferencable and provide useful documentation at that
+   URI.  The design and representation of such profile descriptions,
+   however, is outside the scope of this specification.
 
 4.  Profiles and HTTP
 
@@ -209,6 +217,15 @@ Internet-Draft                  Profiles                    January 2018
 
       Relation Name: profile
 
+
+
+
+
+Wilde                     Expires July 5, 2018                  [Page 4]
+
+Internet-Draft                  Profiles                    January 2018
+
+
       Description: Identifying that a resource representation conforms
       to a certain profile, without affecting the non-profile semantics
       of the resource representation.
@@ -218,13 +235,6 @@ Internet-Draft                  Profiles                    January 2018
       Notes: Profile URIs are primarily intended to be used as
       identifiers, and thus clients SHOULD NOT indiscriminately access
       profile URIs.
-
-
-
-Wilde                     Expires July 5, 2018                  [Page 4]
-
-Internet-Draft                  Profiles                    January 2018
-
 
 6.2.  HTTP Preference
 
@@ -260,16 +270,6 @@ Internet-Draft                  Profiles                    January 2018
               DOI 10.17487/RFC8288, October 2017,
               <https://www.rfc-editor.org/info/rfc8288>.
 
-Appendix A.  Acknowledgements
-
-   Thanks for comments and suggestions provided by Ruben Verborgh.
-
-   Acknowledgements in the original specification [RFC6906] included
-   Erlend Hamnaberg, Markus Lanthaler, Simon Mayer, Mark Nottingham,
-   Julian Reschke, James Snell, Herbert Van de Sompel, and Tim Williams.
-   These acknowledgements are equally relevant for this updated version
-   of the specification.
-
 
 
 
@@ -282,6 +282,16 @@ Wilde                     Expires July 5, 2018                  [Page 5]
 Internet-Draft                  Profiles                    January 2018
 
 
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by Ruben Verborgh.
+
+   Acknowledgements in the original specification [RFC6906] included
+   Erlend Hamnaberg, Markus Lanthaler, Simon Mayer, Mark Nottingham,
+   Julian Reschke, James Snell, Herbert Van de Sompel, and Tim Williams.
+   These acknowledgements are equally relevant for this updated version
+   of the specification.
+
 Author's Address
 
    Erik Wilde
@@ -289,16 +299,6 @@ Author's Address
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
-
 
 
 
