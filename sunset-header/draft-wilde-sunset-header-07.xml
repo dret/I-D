@@ -66,6 +66,11 @@
          <t>The Sunset header field is not concerned with resource state at all. It only signals that a resource is expected to become unavailable at a specific point in time. There are no assumptions about if, when, or how often a resource may change state in the meantime.</t>
          <t>For these reasons, the Sunset header field and HTTP caching should be seen as complementary, and not as overlapping in scope and functionality.</t>
       </section>
+      <section title="Sunset Scope" anchor="sunset-scope">
+         <t>The Sunset header field applies to the resource that returns it, meaning that it announces the upcoming sunset of that specific resources. However, as discussed in Section <xref target="deprecation"/>, there may be scenarios where the scope of the announced Sunset information it larger than just the single resource where it appears.</t>
+         <t>Resources are free to define such an increased scope, and usually this scope will be documented by the resource, so that consumers of the resource know about the increased scope and can behave accordingly. However, it is important to take into account that such increased scoping is invisible for consumers who are unaware of the increased scoping rules. This means that these consumers will not be aware of the increased scope, and will not interpret Sunset information different from its standard meaning (i.e., it applies to the resource only).</t>
+         <t>Using such an increased scope still may make sense, as Sunset information is only a hint anyway, and thus is optional information that cannot be depended on, and clients should always be implemented in ways that allow them to function without Sunset information. Increased scope information may help clients to glean additional hints from resources (e.g., concluding that an API is being deprecated because its home/start resource announces a Sunset), and thus might allow them to implement behavior that allows them to make educated guesses about resources becoming unavailable.</t>
+      </section>
       <section title="The Sunset Link Relation Type" anchor="sunset-link-relation">
          <t>The Sunset HTTP header field indicates the upcoming retirement of a resource or a service. In addition, resource may want to make information available that provides additional information about how retirement will be handled for resources or services. This information can be broadly described by the following three topics:</t>
          <t>
@@ -100,11 +105,6 @@
                </list>
             </t>
          </section>
-      </section>
-      <section title="Sunset Scope" anchor="sunset-scope">
-         <t>The Sunset header field applies to the resource that returns it, meaning that it announces the upcoming sunset of that specific resources. However, as discussed in Section <xref target="deprecation"/>, there may be scenarios where the scope of the announced Sunset information it larger than just the single resource where it appears.</t>
-         <t>Resources are free to define such an increased scope, and usually this scope will be documented by the resource, so that consumers of the resource know about the increased scope and can behave accordingly. However, it is important to take into account that such increased scoping is invisible for consumers who are unaware of the increased scoping rules. This means that these consumers will not be aware of the increased scope, and will not interpret Sunset information different from its standard meaning (i.e., it applies to the resource only).</t>
-         <t>Using such an increased scope still may make sense, as Sunset information is only a hint anyway, and thus is optional information that cannot be depended on, and clients should always be implemented in ways that allow them to function without Sunset information. Increased scope information may help clients to glean additional hints from resources (e.g., concluding that an API is being deprecated because its home/start resource announces a Sunset), and thus might allow them to implement behavior that allows them to make educated guesses about resources becoming unavailable.</t>
       </section>
       <section title="Implementation Status" anchor="implementation-status">
          <!--
