@@ -7,7 +7,7 @@
 <?rfc symrefs="yes" ?>
 <rfc category="info" ipr="trust200902" docName="draft-wilde-sunset-header-09">
    <front>
-      <title abbrev="Sunset Header">The Sunset HTTP Header</title>
+      <title abbrev="Sunset Header">The Sunset HTTP Header Field</title>
       <author initials="E." surname="Wilde" fullname="Erik Wilde">
          <organization/>
          <address>
@@ -156,12 +156,12 @@
             <artwork>Sunset: Fri, 11 Nov 2026 11:11:11 GMT</artwork>
          </figure>
          <t>This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at the specified point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or alert applications or users about this timestamp.</t>
-         <t>Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs that it had previously assigned; if not, the response may be a more generic "404 Not Found".)</t>
+         <t>Even though the Sunset header field is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs that it had previously assigned; if not, the response may be a more generic "404 Not Found".)</t>
          <t>Before the Sunset header field even appears for the first time (it may not appear from the very beginning), it is possible that the resource (or possibly just the "home" resource of the service context) communicates its sunset policy by using the sunset link relation. If communicated as an HTTP header field, it might look as following:</t>
          <figure>
             <artwork>Link: &lt;http://example.net/sunset>;rel="sunset";type="text/html"</artwork>
          </figure>
-         <t>In this case, the linked resource provides sunset policy information about the service context. It may be documentation aimed at developers, for example informing them that the lifetime of a certain class of resources is ten years after creation, and that Sunset headers will be served as soon as the sunset date is less than some given period of time. It may also inform developers whether the service will respond with 410 or 404 after the sunset time, as discussed above.</t>
+         <t>In this case, the linked resource provides sunset policy information about the service context. It may be documentation aimed at developers, for example informing them that the lifetime of a certain class of resources is ten years after creation, and that Sunset header fields will be served as soon as the sunset date is less than some given period of time. It may also inform developers whether the service will respond with 410 or 404 after the sunset time, as discussed above.</t>
       </section>
    </middle>
    <back>
