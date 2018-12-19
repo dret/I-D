@@ -157,7 +157,7 @@
          </figure>
          <t>This allows clients that are aware of the Sunset header field to understand that the resource likely will become unavailable at the specified point in time. Clients can decide to ignore this information, adjust their own behavior accordingly, or alert applications or users about this timestamp.</t>
          <t>Even though the Sunset header information is made available by the resource itself, there is no guarantee that the resource indeed will become unavailable, and if so, how the response will look like for requests made after that timestamp. In case of the archive used as an example here, the resource indeed may be permanently deleted, and requests for the URI after the Sunset timestamp may receive a "410 Gone" HTTP response. (This is assuming that the archive keeps track of the URIs that it had previously assigned; if not, the response may be a more generic "404 Not Found".)</t>
-         <t>Before the Sunset header even appears for the first time (it may not appear fro the very beginning), it is possible that the resource (or possibly just the "home" resource of the service context) communicates its sunset policy by using the sunset link relation. If communicated as an HTTP header field, it might look as following:</t>
+         <t>Before the Sunset header field even appears for the first time (it may not appear fro the very beginning), it is possible that the resource (or possibly just the "home" resource of the service context) communicates its sunset policy by using the sunset link relation. If communicated as an HTTP header field, it might look as following:</t>
          <figure>
             <artwork>Link: &lt;http://example.net/sunset>;rel="sunset";type="text/html"</artwork>
          </figure>
