@@ -3,9 +3,9 @@
 
 
 Network Working Group                                           E. Wilde
-Internet-Draft                                         December 24, 2018
+Internet-Draft                                         December 26, 2018
 Intended status: Informational
-Expires: June 27, 2019
+Expires: June 29, 2019
 
 
                   Link Relation Types for Web Services
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on June 27, 2019.
+   This Internet-Draft will expire on June 29, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Wilde                     Expires June 27, 2019                 [Page 1]
+Wilde                     Expires June 29, 2019                 [Page 1]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Wilde                     Expires June 27, 2019                 [Page 2]
+Wilde                     Expires June 29, 2019                 [Page 2]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
@@ -165,7 +165,7 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 
 
 
-Wilde                     Expires June 27, 2019                 [Page 3]
+Wilde                     Expires June 29, 2019                 [Page 3]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
@@ -173,8 +173,10 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 2.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
-   document are to be interpreted as described in RFC 2119 [RFC2119].
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in BCP
+   14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
 3.  Web Services
 
@@ -219,9 +221,7 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 
 
 
-
-
-Wilde                     Expires June 27, 2019                 [Page 4]
+Wilde                     Expires June 29, 2019                 [Page 4]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
@@ -277,7 +277,7 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 
 
 
-Wilde                     Expires June 27, 2019                 [Page 5]
+Wilde                     Expires June 29, 2019                 [Page 5]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
@@ -292,19 +292,18 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 4.1.  The service-doc Link Relation Type
 
    The "service-doc" link relation type is used to represent the fact
-   that a resource is part of a bigger set of resources that are
-   documented at a specific URI.  The target resource is expected to
-   provide documentation that is primarily intended for human
-   consumption.
+   that a resource or a set of resources are documented at a specific
+   URI.  The target resource is expected to provide documentation that
+   is primarily intended for human consumption.
 
 4.2.  The service-desc Link Relation Type
 
    The "service-desc" link relation type is used to represent the fact
-   that a resource is part of a bigger set of resources that are
-   described at a specific URI.  The target resource is expected to
-   provide a service description that is primarily intended for machine
-   consumption.  In many cases, it is provided in a representation that
-   is consumed by tools, code libraries, or similar components.
+   that a resource or a set of resources are described at a specific
+   URI.  The target resource is expected to provide a service
+   description that is primarily intended for machine consumption.  In
+   many cases, it is provided in a representation that is consumed by
+   tools, code libraries, or similar components.
 
 4.3.  The service-meta Link Relation Type
 
@@ -326,17 +325,21 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
    specific mechanism will depend on the context where the "service-
    meta" link relation is being used.
 
+   One example for this is that a "service-desc" link may identify an
+   OpenAPI description, which is supposed to be the machine-readable
+   description of a Web API.  A "service-meta" link may identify a
+   resource that contains additional metadata about the Web API, such as
+   labels that classify the API according to a labeling scheme, and a
 
 
 
-
-
-
-
-Wilde                     Expires June 27, 2019                 [Page 6]
+Wilde                     Expires June 29, 2019                 [Page 6]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
+
+   privacy policy that makes statements about how the Web API manages
+   personally identifiable information.
 
 5.  Web Service Status Resources
 
@@ -383,16 +386,15 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
       Description: Identifies service description for the context that
       is primarily intended for consumption by machines.
 
-      Reference: [[ This document ]]
 
 
 
-
-
-Wilde                     Expires June 27, 2019                 [Page 7]
+Wilde                     Expires June 29, 2019                 [Page 7]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
+
+      Reference: [[ This document ]]
 
 6.3.  Link Relation Type: service-meta
 
@@ -416,11 +418,11 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 
    Web service providers should be aware that service descriptions and
    documentation may be used by attackers to gain additional information
-   about a service, and to test for known security issues.  It may thus
-   be advisable to keep service descriptions and documentation to those
-   aspects of a service that are necessary to use the service, and to
-   exclude any implementation details that are not necessary for using
-   the service.
+   about a service (and in particular its implementation), and to test
+   for known security issues.  It may thus be advisable to keep service
+   descriptions and documentation to those aspects of a service that are
+   necessary to use the service, and to exclude any details that are not
+   necessary for using the service.
 
    Another potential security issue for Web service providers is that
    publishing service descriptions and documentation may generally allow
@@ -434,8 +436,8 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
    documentation can be out of sync or simply incorrect.  Blindly
    trusting service descriptions and documentation (in particular when
    descriptions are retrieved and interpreted programmatically) is not a
-   safe practice.  Web service consumers should always assume that
-   service descriptions and documentation may be incorrect, and should
+   safe practice.  Web service consumers SHOULD always assume that
+   service descriptions and documentation may be incorrect, and SHOULD
    behave accordingly.
 
 
@@ -443,9 +445,7 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 
 
 
-
-
-Wilde                     Expires June 27, 2019                 [Page 8]
+Wilde                     Expires June 29, 2019                 [Page 8]
 
 Internet-Draft    Link Relation Types for Web Services     December 2018
 
@@ -456,6 +456,10 @@ Internet-Draft    Link Relation Types for Web Services     December 2018
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", RFC 2119, March 1997.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
    [RFC8288]  Nottingham, M., "Web Linking", RFC 8288,
               DOI 10.17487/RFC8288, October 2017,
@@ -497,8 +501,4 @@ Author's Address
 
 
 
-
-
-
-
-Wilde                     Expires June 27, 2019                 [Page 9]
+Wilde                     Expires June 29, 2019                 [Page 9]
