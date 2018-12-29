@@ -401,7 +401,7 @@
 
   <meta name="dct.creator" content="Wilde, E." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-wilde-sunset-header-09" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-12-26" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-12-29" />
   <meta name="dct.abstract" content="This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future. It also defines a sunset link relation type that allows linking to resources providing information about an upcoming resource or service sunset." />
   <meta name="description" content="This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future. It also defines a sunset link relation type that allows linking to resources providing information about an upcoming resource or service sunset." />
 
@@ -418,14 +418,14 @@
 </tr>
 <tr>
 <td class="left">Internet-Draft</td>
-<td class="right">December 26, 2018</td>
+<td class="right">December 29, 2018</td>
 </tr>
 <tr>
 <td class="left">Intended status: Informational</td>
 <td class="right"></td>
 </tr>
 <tr>
-<td class="left">Expires: June 29, 2019</td>
+<td class="left">Expires: July 2, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -442,7 +442,7 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on June 29, 2019.</p>
+<p>This Internet-Draft will expire on July 2, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -505,7 +505,7 @@
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#temporary-resources" id="temporary-resources">Temporary Resources</a>
 </h1>
-<p id="rfc.section.1.1.p.1">Some resources may have a limited lifetime by definition. For example, a pending order represented by a resource may already list all the details of the order, but may only exist for a limited time unless it is confirmed and only then becomes permanent. In such a case, the service managing the pending order can make this limited lifetime explicit, allowing clients to understand that the pending order, unless confirmed, will disappear at some point in time.</p>
+<p id="rfc.section.1.1.p.1">Some resources may have a limited lifetime by definition. For example, a pending shopping order represented by a resource may already list all order details, but may only exist for a limited time unless it is confirmed and only then becomes an acknowledged shopping order. In such a case, the service managing the pending shopping order can make this limited lifetime explicit, allowing clients to understand that the pending order, unless confirmed, will disappear at some point in time.</p>
 <h1 id="rfc.section.1.2">
 <a href="#rfc.section.1.2">1.2.</a> <a href="#migration" id="migration">Migration</a>
 </h1>
@@ -596,8 +596,8 @@
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.8.p.1">Generally speaking, information about upcoming sunsets can leak information that otherwise might not be available. For example, a resource representing a registration can leak information about the expiration date when it exposes sunset information. For this reason, any use of sunset information where the sunset represents an expiration or allows the calculation of another date (such as calculating a creation date because it is known that resource expire after one year) should be treated in the same way as if this information would be made available directly in the resource's representation.</p>
-<p id="rfc.section.8.p.2">The Sunset header field should be treated as a resource hint, meaning that the resource is indicating its potential retirement. The definitive test whether or not the resource in fact is available or not will be to attempt to interact with it. Applications should never treat an advertised Sunset date as a definitive prediction that is going to happen at the specified point in time. The Sunset indication may have been inserted by an intermediary, or the advertised date may get changed or withdrawn by the resource owner.</p>
+<p id="rfc.section.8.p.1">Generally speaking, information about upcoming sunsets can leak information that otherwise might not be available. For example, a resource representing a registration can leak information about the expiration date when it exposes sunset information. For this reason, any use of sunset information where the sunset represents an expiration or allows the calculation of another date (such as calculating a creation date because it is known that resources expire after one year) should be treated in the same way as if this information would be made available directly in the resource's representation.</p>
+<p id="rfc.section.8.p.2">The Sunset header field SHOULD be treated as a resource hint, meaning that the resource is indicating (and not guaranteeing with certainty) its potential retirement. The definitive test whether or not the resource in fact is available or not will be to attempt to interact with it. Applications should never treat an advertised Sunset date as a definitive prediction that is going to happen at the specified point in time. The Sunset indication may have been inserted by an intermediary, or the advertised date may get changed or withdrawn by the resource owner.</p>
 <p id="rfc.section.8.p.3">The main purpose of the Sunset header field is to signal intent, so that applications using resources may get a warning ahead of time and can react accordingly. What an appropriate reaction is (such as switching to a different resource or service), what it will be based on (such as machine-readable formats that allow the switching to be done automatically), and when it will happen (such as ahead of the advertised date or only when the resource in fact becomes unavailable) is outside the scope of this specification.</p>
 <p id="rfc.section.8.p.4">In cases where a sunset policy is linked by using the sunset link relation type, clients SHOULD be careful about taking any actions based on this information. It SHOULD be verified that the information is authentic and accurate. Furthermore, it SHOULD be tested that this information is only applied to resources that are within the scope of the policy, making sure that sunset policies cannot "hijack" resources by for example providing migration information for them.</p>
 <h1 id="rfc.section.9">
