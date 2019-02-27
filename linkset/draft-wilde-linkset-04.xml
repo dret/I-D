@@ -33,13 +33,13 @@
             </address>
         </author>
         <author initials="H." surname="Van de Sompel" fullname="Herbert Van de Sompel">
-            <organization>Los Alamos National Laboratory</organization>
+            <organization>Data Archiving and Networked Services</organization>
             <address>
-                <email>herbertv@lanl.gov</email>
-                <uri>http://public.lanl.gov/herbertv/</uri>
+                <email>herbert.van.de.sompel@dans.knaw.nl</email>
+                <uri>https://orcid.org/0000-0002-0715-6126</uri>
             </address>
         </author>
-        <date day="17" month="September" year="2018"/>
+        <date day="14" month="February" year="2019"/>
         <abstract>
             <t>This specification defines two media types and a link relation type for sets of links. 
                 The media types can be used to represents links in a standalone fashion, in one case in the native format used in the HTTP Link header, and in the other case in a JSON-based format. The link relation can be used to reference these kind of standalone link sets, so that a resource can indicate that additional links putting it into context are available someplace else. One typical scenario is when the number of links to put in 
@@ -156,137 +156,236 @@
                 that defines a link as consisting of a "link context", a "link relation type", a "link target", 
                 and optional "target attributes". In those terms, a link set resource 
                 is a resource that conveys a collection of one or more such links.</t>
-                <t>The format defined in <xref target="linkset-native"/> is identical to the payload 
-                    of the HTTP Link header as specified in <xref target="RFC8288"/>. 
-                The format defined in <xref target="linkset-json"/> is based on JSON and thus
+                <t>The format defined in <xref target="linkset-native"/> is near identical to the payload 
+                    of the HTTP Link header as specified in <xref target="RFC8288"/>.</t>
+                <t>The format defined in <xref target="linkset-json"/> is based on JSON and thus
                 does not have the character encoding limitations of HTTP header fields.</t>
             <section title="HTTP Link Document Format: application/linkset" anchor="linkset-native">
-                <t>This document format is identical to the payload of the 
-                    HTTP Link header. It is defined in Section 3 of 
+                <t>This document format is near identical to the payload of the 
+                    HTTP Link header as defined in Section 3 of 
                     <xref target="RFC8288"/>, more specifically by  
                     its ABNF production rule for &quot;Link&quot; and subsequent ones. 
-                    The assigned media type for this format is &quot;application/linkset&quot;.</t>
+                    In order to support use cases where link set documents are used 
+                    outside the context of an HTTP interaction,  
+                    the following constraints are imposed on that format:</t>
+                <t><list style="symbols">
+                    <t>For every link provided by the link set, the link context MUST 
+                        explicitly be provided using the "anchor" attribute.</t>
+                    <t>The URIs of the link context ("anchor" attribute) and link target 
+                        ("href" attribute) MUST be absolute URIs as defined in Section 4.3 
+                        of <xref target="RFC3986"/>.</t>
+                </list></t>
+                   <t>The assigned media type for this format is &quot;application/linkset&quot;.</t>
             </section>
             <section title="JSON Document Format: application/linkset+json" anchor="linkset-json">
-                <t>This document format is based on the native Link header field representation defined by <xref target="RFC8288"/>, but uses JSON <xref target="RFC8259"/> as the syntax to represent the information contained in the native format. It is described in this 
+                <t>This document format uses JSON <xref target="RFC8259"/> as the syntax to represent 
+                    a set of typed links. It is described in this 
                     section. The assigned media type for this format is &quot;application/linkset+json&quot;.</t>
+                
+                <t>The serialization was designed such that it can directly be used as the 
+                    content of a JSON-LD serialization by adding an appropriate context. 
+                    <xref target="appendix-1"/> shows an example of a possible context that, when added to the 
+                    a JSON serialization, allows it to be interpreted as RDF.</t>
+                
                 <section title="Link Sets" anchor="linkset-in-json">
                     <t>In the JSON representation of a link set:</t>
                     <t><list style="symbols">
-                        <t>A link set MUST be represented as a JSON array.</t>
-                        <t>A distinct JSON object - the &quot;link object&quot; - in this array 
-                            MUST be used to represent an individual link or multiple links 
-                            that have the same link context and link target. 
-                            (see <xref target="linkset-json-link-value-object"/>).</t>
-                        <t>Implementations MUST wrap link objects in an array, 
-                           even if the link set contains only one link.</t> 
-                        <t>Implementations MUST NOT include any members other than link objects 
-                           in the array that represents a link set.</t>
+                        <t>A link set MUST be represented as a JSON object, which MUST have "linkset" as its sole member.</t>
+                        <t>The "linkset" member is an array in which a distinct JSON object - 
+                            the &quot;link context object&quot; (see <xref target="linkset-json-link-context-object"/>) - 
+                            MUST be used to represent links that have the same link context. 
+                            </t>
+                        <t>Even if there is only one link context object, it MUST be wrapped in an array. 
+                            Members other than link context objects MUST NOT be included 
+                            in this array.</t> 
                     </list></t>
                 </section>
-                <section title="Links" anchor="linkset-json-link-value-object">
-                    <t>In the JSON representation, individual links (as well as multiple links that have the same link context and link target) 
-                        are represented by a JSON object, the link object. A link object adheres to the following rules:</t>
+                
+                <section title="Link Context Object" anchor="linkset-json-link-context-object">
+                    <t>In the JSON representation, one or more links that have the same link context,  
+                        are represented by a JSON object, the link context object. A link context object 
+                        adheres to the following rules:</t>
                     <t><list style="symbols"> 
-                        <t>Each link object MUST have an "href" member with a value that represents 
-                            the link target.</t>
-                        <t>Each link object MAY have an "anchor" member with a value that represents 
-                            the link context. If this member is not provided, the link context 
-                            is the link set resource.</t>
-                        <t>The value of both the "href" and "anchor" members MUST be a URI-reference 
-                            as defined in Section 4.1 of <xref target="RFC3986"/>. 
-                            Note that for relative references, the baseURI is the URI of the 
-                            link set resource.</t>
-                        <t>Each link object MUST have a "rel" or "rev" member (with the latter one deprecated) with a value 
-                            that represents one or more link relation types, represented as an array of strings. The value of each "rel"/"rev" link relation type MUST either be a registered 
-                            relation type or an extension relation type (URI), 
-                            as described in Sections 2.1.1 and 2.1.2 of 
-                            <xref target="RFC8288"/>, respectively.</t>
-                        <t>Each link object MAY have additional members 
-                            representing target attributes (see <xref target="linkset-json-link-target"/>).</t>
+                        <t>Each link context object MUST have an "anchor" member with a value that represents 
+                            the link context. This value MUST be an absolute URI  
+                            as defined in Section 4.3 of <xref target="RFC3986"/>.</t>
+                        <t>For each distinct relation type that the link context has with link targets, 
+                            a link context object MUST have an additional member. 
+                            This member is an array in which a distinct JSON object 
+                            - the &quot; link target object&quot; (see <xref target="linkset-json-link-target-object"/>) - 
+                            MUST be used for each link target for which the relationship with 
+                            the link context (value of the encompassing anchor member) applies. The name 
+                            of this member expresses the relation type of the link as follows:</t>
+                            <t><list style="symbols">
+                                <t>For registered relation types <xref target="RFC8288"/>, 
+                                    the name of this member is the registered name of the relation type.</t>
+                                <t>For extension relation types <xref target="RFC8288"/>, 
+                                    the name of this member is the URI that uniquely represents the relation type.</t>
+                            </list></t>
+                        <t>Even if there is only one link target object, it MUST be wrapped in an array. 
+                            Members other than link target objects MUST NOT be included 
+                            in this array.</t> 
                     </list></t>
-                    <t>The following example of a JSON-serialized link set represents one link 
-                        with the core components of a link: link context, link relation type, and 
-                        link target.</t>
-                    <figure>
-                        <artwork align="left" type="JSON"><![CDATA[
-[ { "href"   : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel"    : [ "next" ] } ]]]>
-                        </artwork> 
-                    </figure>
-                    <t>The following example of a JSON-serialized link set represents two links 
-                        with the core components of a link: link context, link relation type, and 
-                        link target. The syntax of this example takes advantage of the fact that multiple relation types can be used 
-                        in one link object to represent multiple links that 
-                        have the same link context and link target.</t>
-                    <figure>
-                        <artwork align="left" type="JSON"><![CDATA[
-[ { "href"   : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel"    : [ "next" , "http://example.net/linkrel" ] } ]]]>
-                        </artwork> 
-                    </figure>
-                    <t>The previous example is equivalent to the following one, which does not use the syntax shortcut and therefore represents the two links individually.</t>
-                    <figure>
-                        <artwork align="left" type="JSON"><![CDATA[
-[ { "href"   : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel"    : [ "next" ] },
-  { "href"   : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel"    : [ "http://example.net/linkrel" ] } ]]]>
-                        </artwork> 
-                    </figure>
                 </section>
-                <section title="Link Target Attributes" anchor="linkset-json-link-target">
-                    <t>In many cases, a link is further qualified by target attributes, 
+                
+                <section title="Link Target Object" anchor="linkset-json-link-target-object">
+                    <t>In the JSON representation, a link target is represented by a JSON object, the link target object. 
+                        A link target object adheres to the following rules:</t>
+                    <t><list style="symbols">
+                        <t>Each link target object MUST have an "href" member with a value that represents 
+                            the link target. This value MUST be an absolute URI  
+                            as defined in Section 4.3 of <xref target="RFC3986"/>.</t>
+                    <t>In many cases, a link target is further qualified by attributes, 
                         either defined by the serialization of <xref target="RFC8288"/> 
-                        or extension attributes defined and used by communities.</t>
-                    <section title="JSON Representation of RFC 8288 Target Attributes" anchor="json-target-attributes-existing">
+                        or extension attributes defined and used by communities. 
+                        These attributes are conveyed as additional members of the link target object, 
+                        as detailed in <xref target="json-target-attributes-existing"/>,  
+                        <xref target="linkset-json-i18n-link-parameter"/>, and <xref target="json-target-attributes-extension"/>.</t>
+                    </list></t>
+                        
+                    <t>Note that the JSON representation does not use the &quot;rel&quot; or 
+                        &quot;rev&quot; constructs used by <xref target="RFC8288"/> and the above 
+                        specified HTTP Link document format. Rather:</t> 
+                    <t><list style="symbols">
+                        <t>A link that uses the &quot;rel&quot; construct 
+                            in those approaches is conveyed using the URI of the link context as the value for &quot;anchor&quot; 
+                            and the URI of the link target as the value for &quot;href&quot;.</t>
+                        <t>A link that uses the &quot;rev&quot; construct 
+                            in those approaches is conveyed using the URI of the link target as the value for &quot;anchor&quot; 
+                            and the URI of the link context as the value for &quot;href&quot;.</t>
+                    </list></t>
+  
+                    <t>The following example of a JSON-serialized link set represents one
+                        link with its core components: link context, link relation
+                        type, and link target.</t>
+  
+                    <figure>
+                        <artwork align="left" type="JSON"><![CDATA[                          
+{
+  "linkset":
+    [ 
+      { "anchor":"http://example.net/bar", 
+        "next": [
+              {"href": "http://example.com/foo"}
+        ]
+      } 
+    ]
+}]]>
+                        </artwork> 
+                    </figure>
+                    
+                    <t>The following example of a JSON-serialized link set represents two links 
+                        that share link context and relation type but have different link targets.
+                     </t>
+                    
+                    <figure>
+                        <artwork align="left" type="JSON"><![CDATA[
+{
+  "linkset":
+    [ 
+      { "anchor":"http://example.net/bar", 
+        "item": [
+              {"href": "http://example.com/foo1"},
+              {"href": "http://example.com/foo2"}
+        ]
+      } 
+    ]
+}]]>                          
+
+                        </artwork> 
+                    </figure>
+                    
+                    <t>The following example shows a link set that represents two links, each with 
+                    a different link context, link target, and relation type. 
+                    One relation type is registered, the other 
+                    is an extension relation type.</t>
+                    <figure>
+                        <artwork align="left" type="JSON"><![CDATA[
+{
+  "linkset":
+    [ 
+      { "anchor":"http://example.net/bar", 
+        "next": [
+              {"href": "http://example.com/foo1"}
+        ]
+      },
+      { "anchor":"http://example.net/boo",
+        "http://example.com/relations/baz" : [
+              {"href": "http://example.com/foo2"}
+        ]
+      } 
+    ]
+}]]>  
+                        </artwork> 
+                    </figure>
+                        
+                </section>
+                
+                <section title="Link Target Attributes" anchor="json-target-attributes">              
+                        
+                    <t>In many cases, a link is further qualified by target attributes,
+                        either defined by the serialization of <xref target="RFC8288"/> or extension
+                        attributes defined and used by communities.</t>
+                        
+                    <section title="Target Attributes Defined by RFC 8288" anchor="json-target-attributes-existing">
                         <t>RFC 8288 defines the following target attributes that may be used to annotate links: 
-                            "hreflang", "media", "title", "title*", and "type". 
-                            These target attributes follow different occurrence and value patterns 
-                            and MUST be handled in the JSON representation as follows:</t>
+                            "hreflang", "media", "title", "title*", and "type";  
+                            these target attributes follow different occurrence and value patterns.  
+                            In the JSON representation, these attributes MUST be conveyed as additional 
+                            members of the link target object as follows:</t>
                         <t><list style="symbols">
                             <t>"hreflang": The optional and repeatable "hreflang" target attribute 
                                 MUST be represented by an array (even if there only is one value to be represented), 
                                 and each value in that array MUST be a string - representing one value 
-                                of the "hreflang" target attributes for a link - which follows the same 
+                                of the "hreflang" target attribute for a link - which follows the same 
                                 model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"media": The optional and not repeatable "media" target attribute MUST be 
                                 represented by a "media" member 
-                                in the link object, and its value MUST be a string that follows the 
+                                in the link target object, and its value MUST be a string that follows the 
                                 same model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"type": The optional and not repeatable "type" target attribute MUST be represented by a "type" member 
-                                in the link object, and its value MUST be a string that follows the 
+                                in the link target object, and its value MUST be a string that follows the 
                                 same model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"title": The optional and not repeatable "title" target attribute MUST be represented by a "title" 
-                                member in the link object, and its value MUST be a string that follows 
+                                member in the link target object, and its value MUST be a string that follows 
                                 the same model as in the <xref target="RFC8288"/> syntax.</t>
                             <t>"title*": The optional and not repeatable "title*" target attribute 
                                 is motivated by character encoding 
                                 and language issues and follows the model defined in <xref target="RFC8187"/>. 
                                 The details of the JSON 
-                                representation that applies to title* are described in <xref target="linkset-json-i18n-link-parameter"/>. 
+                                representation that applies to title* are described in 
+                                <xref target="linkset-json-i18n-link-parameter"/>. 
                             </t>
                         </list></t>
-                        
+                    
+
+                    
+ 
+                    
+                    
                         <t>The following example illustrates how the repeatable "hreflang" and the 
-                            not repeatable "type" target attributes are represented in a link object.</t>
+                            not repeatable "type" target attributes are represented in a link target object.</t>
                         <figure>
-                            <artwork align="left" type="JSON"><![CDATA[
-[ { "href"     : "http://example.com/foo", 
-    "anchor"   : "http://example.net/bar", 
-    "rel"      : [ "next" ], 
-    "hreflang" : [ "en" , "de" ], 
-    "type"     : "text/html" } ]]]>
+                            <artwork align="left" type="JSON"><![CDATA[                              
+{
+  "linkset":
+    [ 
+      { "anchor":"http://example.net/bar", 
+        "next": [
+              {"href": "http://example.com/foo",
+               "type"     : "text/html",
+               "hreflang" : [ "en" , "de" ]
+              }
+        ]
+      } 
+    ]
+}]]>
                             </artwork> 
                         </figure>
                         
                     </section>
-                    <section title="Internationalized Target Attributes for a Link" anchor="linkset-json-i18n-link-parameter">
-                        <t>In addition to the target attributes described in <xref target="linkset-json-link-target"/>,  
+                    <section title="Internationalized Target Attributes" anchor="linkset-json-i18n-link-parameter">
+                        <t>In addition to the target attributes described in <xref target="json-target-attributes-existing"/>,  
                             <xref target="RFC8288"/> also supports 
                             attributes that follow the content model of <xref target="RFC8187"/>. 
                             In <xref target="RFC8288"/>, these target 
@@ -295,31 +394,49 @@
                             The content model of <xref target="RFC8187"/> uses a string-based microsyntax 
                             that represents the character encoding, an optional language tag,
                             and the escaped attribute value encoded according to the specified character encoding.</t>
-                            <t>The JSON serialization for these attributes is 
+                        <t>The JSON serialization for these target attributes MUST be  
                             as follows:</t>
                         <t><list style="symbols">    
-                            <t>Internationalized target attributes use the attribute name (including the *) as their 
-                                name.</t>
+                            <t>An internationalized target attribute is represented as a member of the link context object with 
+                                the same name (including the *) of the attribute.</t>
                             <t>The character encoding information   
-                                as prescribed by <xref target="RFC8187"/> is not preserved; instead, the attribute value is represented in the character encoding used for the JSON link set.</t>
-                                <t>The attribute value is an array that contains one or more 
-                                    arrays. In each of these arrays, 
-                                    the first value is a string representing the attribute value (in its unescaped version), and the optional second array value is a 
-                                    language tag <xref target="RFC5646"/> associated with that attribute value.</t>
+                                as prescribed by <xref target="RFC8187"/> is not preserved; instead, the 
+                                content of the internationalized attribute is represented in the character encoding used for the JSON link set.</t>
+                            <t>The value of the internationalized target attribute is an 
+                                array that contains one or more JSON objects.The name of the first member 
+                                of such JSON object is "value" 
+                                and its value is the actual content (in its unescaped version) of the internationalized target attribute, i.e. the 
+                                value of the attribute from which 
+                                the encoding and language information are removed. 
+                                The name of the optional second member of such JSON object is "language" and 
+                                its value is the language tag <xref target="RFC5646"/> 
+                                for the language in which the attribute content is conveyed.
+                            </t>
                         </list></t>
                         <t>The following example illustrates how the "title*" target attribute 
-                            defined by <xref target="RFC8288"/> is represented in a link object.</t>
+                            defined by <xref target="RFC8288"/> is represented in a link target object.</t>
                         <figure>
                             <artwork align="left" type="JSON"><![CDATA[
-[ { "href"   : "http://example.com/foo", 
-    "anchor" : "http://example.net/bar", 
-    "rel"    : [ "next" ], 
-    "title*" : [ [ "nachstes Kapitel", "de" ] ] } ]]]>
+{
+  "linkset":
+    [ 
+      { "anchor":"http://example.net/bar", 
+        "next": [
+              {"href": "http://example.com/foo",
+               "type"     : "text/html",
+               "hreflang" : [ "en" , "de" ],
+               "title" : "Next chapter",
+               "title*" : [ { "value": "nachstes Kapitel" , "language" : "de" } ]
+              }
+        ]
+      } 
+    ]
+}]]>                                
                             </artwork> 
                         </figure>
-                        <t>The above example assumes that the german title contains an umlaut character (which in the native syntax would be encoded as title*=UTF-8'de'n%c3%a4chstes%20Kapitel), which gets encoded in its unescaped form (but not shown here due to the limitations of RFC publication) in the JSON representation. Implementations MUST properly decode/encode RFC 8187 style target attributes when transcoding between the native and the JSON syntax.</t>
+                        <t>The above example assumes that the German title contains an umlaut character (which in the native syntax would be encoded as title*=UTF-8'de'n%c3%a4chstes%20Kapitel), which gets encoded in its unescaped form (but not shown here due to the limitations of RFC publication) in the JSON representation. Implementations MUST properly decode/encode internationalized target attributes that follow the model of <xref target="RFC8187"/> when transcoding between the native and the JSON syntax.</t>
                     </section>
-                </section>
+               
                 <section title="Extension Target Attributes" anchor="json-target-attributes-extension">
                     <t>Extension target attributes are attributes that are not defined by RFC 8288 
                         (as listed in <xref target="json-target-attributes-existing"/>), but are nevertheless 
@@ -329,33 +446,45 @@
                         However, lacking standardization, there is no interoperable 
                         understanding of these extension attributes. One important consequence is that 
                         their cardinality is unknown to generic applications. Therefore, in the JSON serialization, 
-                        all extension target attributes are treated as repeatable:</t>
+                        all extension target attributes are treated as repeatable.</t>
+                    <t>The JSON serialization for these target attributes MUST be  
+                        as follows:</t>
                     <t><list style="symbols"> 
-                        <t>Extension target attributes use the attribute name (including the *, if applicable) as their 
-                            name.</t>
-                        <t>The value of an extension attribute MUST be represented by an array 
-                            (even if there only is one value to be represented).</t>
-                        <t>If the extension attribute does not have a name with a trailing asterisk,  
+                        <t>An extension target attribute is represented as a member of the link context object with the same name (including the *, if applicable) of the attribute.</t>
+                        <t>The value of an extension attribute MUST be represented by an array, even if there only is one value to be represented.</t>
+                        <t>If the extension target attribute does not have a name with a trailing asterisk,  
                             then each value in that array MUST be a string that represents one value 
-                            of the extension target attribute.</t>
+                            of the attribute.</t>
                         <t>If the extension attribute has a name with a trailing asterisk 
                             (it follows the content model of <xref target="RFC8187"/>),  
-                            then each value in that array MUST be an array. The value of each array 
+                            then each value in that array MUST be a JSON object. The value of each such JSON object  
                             MUST be structured as described in <xref target="linkset-json-i18n-link-parameter"/>.</t>
                     </list></t>
+                    
+                    <t>The example shows a link target object with three extension target attributes. The value for each extension target attribute is an array. The two first are regular extension target attributes, with the first one ("foo") having only one value and the second one ("bar") having two.
+                        The last extension target attribute ("baz*") follows the naming rule of <xref target="RFC8187"/> and therefore is encoded according to the serialization described in  <xref target="linkset-json-i18n-link-parameter"/>. </t>
+        
                     <figure>
                         <artwork align="left" type="JSON"><![CDATA[
-[ { "href"   : "http://example.com/foo",
-    "anchor" : "http://example.net/bar",
-    "rel"    : [ "next" ],
-    "foo"    : [ "foovalue" ],
-    "bar"    : [ "barone", "bartwo" ],
-    "baz*"   : [ [ "bazvalue", "en" ] ] } ]]]>
+{
+  "linkset":
+    [ 
+      { "anchor":"http://example.net/bar", 
+        "next": [
+              {"href": "http://example.com/foo",
+               "type"     : "text/html",
+               "foo" : [ "foovalue" ],
+               "bar" : [ "barone", "bartwo" ], 
+               "baz*" : [ { "value": "bazvalue" , "language" : "en" } ]
+              }
+        ]
+      } 
+    ]
+}]]>                               
                         </artwork> 
                     </figure>
-                    <t>The example shows a link object with three extension target attributes. Every extension target attribute is represented by an array. The two first ones are regular extension target attributes, with the first one ("foo") having only one value, while the second one ("bar") appeared twice and thus there are two values to represent.</t>
-                    <t>The last extension target attribute ("baz" follows the naming rule of RFC 8187 and therefore is encoded according to the rules described in Section <xref target="linkset-json-i18n-link-parameter"/>. Specifically, the array representing the extension target attribute contains arrays, each of which represents the value itself, and the language tag (if one is specified).</t>
                 </section>
+            </section>
             </section>
         </section>
         
@@ -376,10 +505,12 @@
                 in which it participates.</t>
             <t>The link set resource MAY provide the links that pertain to the origin resource 
                  in its HTTP response header and/or body.</t> 
+            <!--
             <t>In common scenarios (the origin resource is distinct from the 
                 link set resource), it is essential for link set representations to 
                 make the URI of the origin resource explicit for those links in 
                 which the origin resource acts as link context.</t>
+                -->
             <t>A user agent that follows a "linkset" link from an origin resource 
                 MUST be aware that the link set resource can provide links in which the 
                 origin resource does not participate and MAY decide to ignore those links.</t>
@@ -447,8 +578,8 @@ Connection: close
                 </artwork> 
               </figure>
                <t>While in this example the URI of the link set resource uses a pattern that represents the URI
-                   of the origin resource, this is opaque to the client, which simply follows target URI 
-                   to retrieving the link set resource.</t>
+                   of the origin resource, this is opaque to the client, which simply uses the target URI 
+                   to access the link set resource.</t>
                 <t><xref target="Request2"/> shows the client issuing an HTTP GET 
                     request against the link set resource provided in <xref target="Response1.1"/>. 
                 </t>
@@ -463,9 +594,10 @@ Connection: close
                <t><xref target="Response2.1"/> shows the response headers to the HTTP GET request of <xref target="Request2"/>. 
                    The links pertaining to the origin resource are provided in the Link response header of the 
                    link set resource. 
-                   As can be seen, in order to support an unambiguous determination of the link context of 
-                   each link, the "anchor" attribute is always provided. 
-                   Note that most, but not all, links have the origin resource as link context (anchor).
+                   As required by the serialization rules provided in <xref target="linkset-native"/>, 
+                   the link context is always provided (anchor attribute), and the URI references for both 
+                   link context and link target are absolute URIs. 
+                   Note that most, but not all, links have the origin resource as link context.
                    </t>
                 <figure title="Response to HTTP GET against the Link Set Resource" align="center" anchor="Response2.1">
                     <artwork align="left"><![CDATA[
@@ -488,10 +620,9 @@ Link: <http://authors.example.net/johndoe>
    ; rel="item"
    ; type="text/html"
    ; anchor="http://example.org/resource1",
- <http://example.net/resource41/>
-   ; rel="related"
-   ; type="application/pdf"
-   ; anchor="http://example.org/resource1/items/AF48EF.pdf"
+ <http://example.org/resource1>
+   ; rel="latest-version"
+   ; anchor="http://example.org/resource41/"
 Content-Type: text/html
 Content-Length: 3018
 ]]></artwork> 
@@ -501,11 +632,11 @@ Content-Length: 3018
                  Link Set Serialized as application/linkset+json" anchor="linkset-link-json-format">
                  <t><xref target="Request3"/> is an example of a client issuing an 
                      HTTP head request against origin resource 
-                      http://example.org/article?id=10.1371/journal.pone.0167475</t>
+                     http://example.org/article/view/7507</t>
                  
                  <figure title="Client HTTP HEAD Request" align="center" anchor="Request3">
                      <artwork align="left"><![CDATA[
-HEAD article?id=10.1371/journal.pone.0167475 HTTP/1.1
+HEAD article/view/7507 HTTP/1.1
 Host: example.org
 Connection: close
 ]]>
@@ -515,7 +646,7 @@ Connection: close
                      <xref target="Request3"/>. The response contains a Link header with  
                      a link that has the "linkset" relation type. It indicates that links pertaining to the 
                      origin resource are provided 
-                     by link set resource http://example.com/links/10.1371/journal.pone.0167475, which 
+                     by link set resource http://example.com/links/article/7507, which 
                      provides a representation with media type application/linkset+json.
                  </t>
                  <figure title="Response to HTTP HEAD on Origin Resource" align="center" anchor="Response3.1">
@@ -523,7 +654,7 @@ Connection: close
 HTTP/1.1 200 OK
 Date: Mon, 28 Nov 2016 14:37:51 GMT
 Server: Apache-Coyote/1.1
-Link: <http://example.com/links/10.1371/journal.pone.0167475>
+Link: <http://example.com/links/article/7507>
       ; rel="linkset"
       ; type="application/linkset+json"
 Content-Length: 236
@@ -543,7 +674,7 @@ Connection: close
                  </t>
                  <figure title="Client HTTP GET against the Link Set Resource" align="center" anchor="Request4">
                      <artwork align="left"><![CDATA[
-GET /links/10.1371/journal.pone.0167475 HTTP/1.1
+GET links/article/7507 HTTP/1.1
 Host: example.com
 Accept: application/linkset+json
 Connection: close
@@ -559,31 +690,54 @@ HTTP/1.1 200 OK
 Date: Mon, 28 Nov 2016 14:40:02 GMT
 Server: Apache-Coyote/1.1
 Content-Type: application/linkset+json
-Content-Length: 794
+Content-Length: 735
 
-[{"href":"http://authors.example.net/johndoe",
-  "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":["author"],"type":"application/rdf+xml"},
- {"href":"http://authors.example.net/janedoe",
-  "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":["author"],"type":"application/rdf+xml"},
- {"href":"http://example.org/resource1/items/AF48EF.pdf",
-  "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":["item"],"type":"text/html"},
- {"href":"http://example.org/resource1/items/CB63DA.html",
-  "anchor":"http://example.org/article?id=10.1371/journal.pone.0167475",
-  "rel":"[item"],"type":"application/pdf"},
- {"href":"http://example.net/resource41/",
-  "anchor":"http://example.org/resource1/items/AF48EF.pdf",
-  "rel":["related"],"type":"application/pdf"}]
-]]></artwork> 
+{
+  "linkset": [
+    {
+      "anchor": "https://example.org/article/view/7507",
+      "author": [
+        {
+          "href": "https://orcid.org/0000-0002-4311-0897",
+          "type": "rdf/xml"
+        }
+      ],
+      "item": [
+        {
+          "href": "https://example.org/article/7507/item/1",
+          "type": "application/pdf"
+        },
+        {
+          "href": "https://example.org/article/7507/item/2",
+          "type": "text/csv"
+        }
+      ],
+      "cite-as": [
+        {
+          "href": "https://doi.org/10.841/zk2557"
+        }
+      ]
+    },
+    {
+      "anchor": "https://example.com/links",
+      "alternate": [
+        {
+          "href": "https://mirror.example.com/links"
+        }
+      ]
+    }
+  ]
+}]]> 
+</artwork> 
                  </figure>
+                 <!--
                  <t>If <xref target="Response3.1"/> would have provided a link to 
                  a link set with media type application/linkset, and if the client would have 
                  requested that link set, then the body of the response would have been 
                  similar to <xref target="Response4.1"/>. But it would have had application/linkset as 
                      Content-Type, the payload of the HTTP Link header of <xref target="Response2.1"/> as body, 
                      and an accordingly adjusted value for Content-Length.</t>
+                     -->
             </section>
         </section>
         <section title="Implementation Status" anchor="implementation-status">
@@ -674,7 +828,6 @@ Content-Length: 794
         <references title="Normative References">
 &RFC2119; 
 &RFC8174; 
-&RFC6690;
 &RFC8259;
 &RFC7231;
 &RFC8288;
@@ -683,6 +836,8 @@ Content-Length: 794
 &RFC6838;
 &RFC5646;
 &RFC6982;
+            
+            <!--
             <reference anchor="W3C.REC-html401-19991224">
                 <front>
                     <title abbrev="Media Queries">Media Queries</title>
@@ -691,7 +846,7 @@ Content-Length: 794
                 </front>
                 <seriesInfo name="World Wide Web Consortium" value="Recommendation REC-css3-mediaqueries-20120619"/>
             </reference>
-
+-->
             <!--
             <reference anchor="RFC6690">
                 <front>
@@ -707,10 +862,49 @@ Content-Length: 794
       <references title="Informative References">
       </references>
  -->     
-             <!--
+
       <section title="Acknowledgements">
-         <t>Thanks for comments and suggestions provided by Mark Nottingham, ...</t>
+         <t>Thanks for comments and suggestions provided by Mark Nottingham, Stian Soiland-Reyes, Sarven Capadisli, ...</t>
       </section>
--->
+        
+        <section title="JSON-LD Context" anchor="appendix-1">
+            <t>When adding the below context to the representation of a link set rendered according to the 
+                JSON serialization defined in <xref target="linkset-json"/>, it can be interpreted as RDF.</t>
+            
+            <figure title="Context for JSON-LD that could be used with the JSON serialization" anchor="json-context">
+                <artwork align="left"><![CDATA[
+{
+  "@context": [
+    {
+      "@vocab": "https://www.iana.org/assignments/link-relations/",
+      "anchor": "@id",
+      "href": "@id",
+      "dct": "http://purl.org/dc/terms/",
+      "link": "https://www.iana.org/assignments/link-relations#",
+      "title": {
+        "@id": "http://purl.org/dc/terms/title"
+      },
+      "title*": {
+        "@id": "http://purl.org/dc/terms/title"
+      },
+      "type": {
+        "@id": "dct:format",
+        "@type": "@vocab"
+      }
+    },
+    {
+      "language": "@language",
+      "value": "@value",
+      "hreflang": {
+        "@id": "https://www.w3.org/ns/activitystreams#hreflang",
+        "@container": "@set"
+      }
+    }
+  ]
+}]]> 
+                </artwork> 
+            </figure>
+        </section>
+
     </back>
 </rfc>
