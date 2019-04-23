@@ -3,9 +3,9 @@
 
 
 Network Working Group                                           E. Wilde
-Internet-Draft                                         February 21, 2016
+Internet-Draft                                            April 23, 2019
 Intended status: Informational
-Expires: August 24, 2016
+Expires: October 25, 2019
 
 
                          The Use of Registries
@@ -13,23 +13,22 @@ Expires: August 24, 2016
 
 Abstract
 
-   Registries on the Internet and the Web fulfill a wide range of tasks,
-   ranging from low-level networking aspects such as packet type
-   identifiers, all the way to application-level protocols and
-   standards.  This document summarizes some of the reasons of why and
-   how to use registries, and how some of them are operated.  It serves
-   as a informative reference for specification writers considering
-   whether to create and manage a registry, allowing them to better
-   understand some of the issues associated with certain design
-   discussions.
+   Registries for Internet and Web protocols fulfill a wide range of
+   tasks, ranging from low-level networking aspects such as packet type
+   identifiers, all the way up to application-level protocols and
+   standards.  This document summarizes some of the reasons of why,
+   when, and how to use registries.  It serves as an informative
+   reference for specification writers considering whether to create and
+   manage a registry, allowing them to better understand some of the
+   issues associated with certain design and operational decisions.
 
 Note to Readers
 
-   Please discuss this draft on the apps-discuss mailing list
-   <https://www.ietf.org/mailman/listinfo/apps-discuss>.
+   Please discuss this draft on the ART mailing list
+   (<https://www.ietf.org/mailman/listinfo/art>).
 
    Online access to all versions and files is available on GitHub
-   <https://github.com/dret/I-D/tree/master/registries>.
+   (<https://github.com/dret/I-D/tree/master/registries>).
 
 Status of This Memo
 
@@ -39,33 +38,34 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on August 24, 2016.
+   This Internet-Draft will expire on October 25, 2019.
 
 
 
 
 
 
-Wilde                    Expires August 24, 2016                [Page 1]
+
+Wilde                   Expires October 25, 2019                [Page 1]
 
-Internet-Draft                 Registries                  February 2016
+Internet-Draft                 Registries                     April 2019
 
 
 Copyright Notice
 
-   Copyright (c) 2016 IETF Trust and the persons identified as the
+   Copyright (c) 2019 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -76,30 +76,30 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   2.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
      2.1.  TCP/UDP Port Numbers  . . . . . . . . . . . . . . . . . .   4
-     2.2.  Language Tags . . . . . . . . . . . . . . . . . . . . . .   4
+     2.2.  Language Tags . . . . . . . . . . . . . . . . . . . . . .   5
      2.3.  Web Linking . . . . . . . . . . . . . . . . . . . . . . .   5
      2.4.  Domain Name System (DNS)  . . . . . . . . . . . . . . . .   6
      2.5.  non-IANA/DNS example  . . . . . . . . . . . . . . . . . .   6
-   3.  Why to use Registries . . . . . . . . . . . . . . . . . . . .   6
-     3.1.  Openness and Extensibility  . . . . . . . . . . . . . . .   6
+   3.  Why use Registries  . . . . . . . . . . . . . . . . . . . . .   6
+     3.1.  Openness and Extensibility  . . . . . . . . . . . . . . .   7
      3.2.  Limited Namespaces  . . . . . . . . . . . . . . . . . . .   7
-     3.3.  Design/Usage Review . . . . . . . . . . . . . . . . . . .   7
+     3.3.  Design/Usage Review . . . . . . . . . . . . . . . . . . .   8
      3.4.  Identifier Design . . . . . . . . . . . . . . . . . . . .   8
-     3.5.  Identifier Lifecycle  . . . . . . . . . . . . . . . . . .   8
+     3.5.  Identifier Lifecycle  . . . . . . . . . . . . . . . . . .   9
      3.6.  Documentation Requirements  . . . . . . . . . . . . . . .   9
      3.7.  Centralized Lookup  . . . . . . . . . . . . . . . . . . .  10
    4.  When to use Registries  . . . . . . . . . . . . . . . . . . .  10
    5.  Barrier to Entry Issues . . . . . . . . . . . . . . . . . . .  11
      5.1.  Non-Semantic/Reserved Entries . . . . . . . . . . . . . .  11
-     5.2.  Entry Levels  . . . . . . . . . . . . . . . . . . . . . .  11
+     5.2.  Entry Levels  . . . . . . . . . . . . . . . . . . . . . .  12
      5.3.  Separation by Value Syntax  . . . . . . . . . . . . . . .  12
    6.  How to use Registries . . . . . . . . . . . . . . . . . . . .  13
-     6.1.  Registry Operations . . . . . . . . . . . . . . . . . . .  13
+     6.1.  Registry Operations . . . . . . . . . . . . . . . . . . .  14
      6.2.  Registry Creation . . . . . . . . . . . . . . . . . . . .  15
      6.3.  Registry Interaction  . . . . . . . . . . . . . . . . . .  15
-     6.4.  Implementation Support  . . . . . . . . . . . . . . . . .  15
+     6.4.  Implementation Support  . . . . . . . . . . . . . . . . .  16
      6.5.  Registry Stability  . . . . . . . . . . . . . . . . . . .  16
      6.6.  Registry History  . . . . . . . . . . . . . . . . . . . .  16
      6.7.  Registry Access . . . . . . . . . . . . . . . . . . . . .  17
@@ -109,13 +109,13 @@ Table of Contents
 
 
 
-Wilde                    Expires August 24, 2016                [Page 2]
+Wilde                   Expires October 25, 2019                [Page 2]
 
-Internet-Draft                 Registries                  February 2016
+Internet-Draft                 Registries                     April 2019
 
 
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  19
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  19
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  20
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -123,22 +123,23 @@ Internet-Draft                 Registries                  February 2016
    have long used the concept of a "Registry" as a place where well-
    known information is available and managed.  In most case, the main
    reason to use a registry is to create a specification that has stable
-   parts (the specification itself), as well as some parts that are
-   supposed to evolve while the specification itself remains stable and
-   unchanged.
+   parts (the specification itself), as well as some parts of it that
+   are supposed to evolve while the specification itself remains stable
+   and unchanged.
 
-   A registry essentially is a pattern of how to separate those two
+   In essence, a registry is a pattern of how to separate those two
    aspects of a specification, allowing the specification to remain
-   stable, while the parts of it referencing the registry can evolve
-   over time by changing the registry contents.  For specification
-   writers, this has proven to be a useful and successful pattern.  The
-   "Protocol Registries" maintained by the "Internet Assigned Numbers
-   Authority (IANA)" have steadily increased in number.  At the time of
-   writing (early 2016), the IANA Protocol Registry [13] contains 1903
-   individual registries.  This number indicates that registries as a
-   "protocol specification pattern" are quite popular and successful.
+   stable, while the parts of it managed in the registry can evolve over
+   time by updating the registry contents.  For specification writers,
+   this has proven to be a useful and successful pattern.  The "Protocol
+   Registries" maintained by the "Internet Assigned Numbers Authority
+   (IANA)" have steadily increased in number.  At the time of writing
+   (early 2016), the IANA Protocol Registry [IANA-Protocol-Registry]
+   contains 1903 individual registries.  This number indicates that
+   registries as a "protocol specification pattern" are quite popular
+   and successful.
 
-   Deciding if a specification should use a registry is not an easy
+   Deciding whether a specification should use a registry is not an easy
    task.  It involves identifying those parts that should be kept stable
    (in the specification itself), and those that should be managed in
    one or more registries for ongoing management and evolution.  Even
@@ -152,8 +153,28 @@ Internet-Draft                 Registries                  February 2016
    developers in terms of why, when, and how to use registries.  It is
    not meant to provide definitive guidance, but mostly intended as a
    reference to consider the different ways in which the general
-   "registry pattern" can be used, and what the possible side-effects on
+   "registry pattern" can be used, and what the possible side-effects of
    some of these solutions may be.
+
+   This document also has to tackle a difficult question: Registries as
+   a pattern can be managed and hosted in a large variety of ways.  On
+   the other hand, the IANA Protocol Registry mentioned above provides a
+   simple and hosted place for specifications to run their registries.
+   As all existing platforms, the IANA Protocol Registry comes with
+   certain constraints in terms of how a registry can be defined,
+
+
+
+Wilde                   Expires October 25, 2019                [Page 3]
+
+Internet-Draft                 Registries                     April 2019
+
+
+   managed, and run.  This document acknowledges the existence and
+   popularity of the IANA Protocol Registry, but also tries to be open
+   enough so that if specification writer choose to do so for whatever
+   reason, they should also be able to use registries other than one in
+   the IANA Protocol Registry
 
 2.  Examples
 
@@ -162,105 +183,105 @@ Internet-Draft                 Registries                  February 2016
    and how they are managed.  This list is not intended to highlight
    these registries in any special way other than explaining some of the
    specifics of the managed namespaces.  As mentioned above, the list of
-
-
-
-Wilde                    Expires August 24, 2016                [Page 3]
-
-Internet-Draft                 Registries                  February 2016
-
-
    IANA-managed registries is long (around 2000 individual registries),
-   and the examples listed here have been selected somewhat randomly to
-   illustrate certain points.
+   and the examples listed here have been selected somewhat randomly
+   just to illustrate certain points.
 
    In order to highlight the fact that IANA-managed registries are only
    one way of how to establish and run a registry, Section 2.4 briefly
    talks about DNS as an example for the same basic function (providing
    a managed namespace of identifiers), but one that is based on
-   different constraints and results in a very different operational
+   different constraints and thus results in a different operational
    model and implementation.
 
 2.1.  TCP/UDP Port Numbers
 
-   The registry for TCP/UDP port numbers [7] is one of the oldest well-
-   known registries on the Internet.  Because of its core importance for
-   how the Internet functions, it has been around for a long time, there
-   is a long history about managing and running it, and thus the most
-   up-to-date document about it is relatively new (RFC 6335 [7] from
-   August 2011).
+   The registry for TCP/UDP port numbers [RFC6335] is one of the oldest
+   well-known registries on the Internet.  Because of its core
+   importance for how the Internet functions, it has been around for a
+   long time, there is a long history about managing and running it, and
+   thus the most up-to-date document about it is relatively new (RFC
+   6335 [RFC6335] from August 2011).
 
-   The namespace of ports is a very limited one.  Port numbers in TCP
-   and UDP are 16-bit numbers, yielding a namespace of 65'536 port
-   numbers.  The port numbers are subdivided into three ranges of system
-   ports (0-1023), user ports (1024-49151), and dynamic ports
-   (49152-65535).  IANA only treats system and user port numbers as
-   assignable, whereas dynamic port numbers cannot be assigned at all.
+   The namespace of ports is limited.  Port numbers in TCP and UDP are
+   16-bit numbers, yielding a namespace of 65'536 port numbers.  The
+   port numbers are subdivided into three ranges of system ports
+   (0-1023), user ports (1024-49151), and dynamic ports (49152-65535).
+   RFC 6335 only treats system and user port numbers as assignable,
+   whereas dynamic port numbers cannot be assigned at all.
 
-   The TCP/UDP port number registry is a good example for a very limited
-   and very popular namespace, and thus managing this registry follows a
-   very disciplined review process.  RFC 6335 [7] specifies very
-   specific guidance about assignment, de-assignment, reuse, revocation,
-   and transfer of numbers.  This level of detail may not be required
-   for all registries, but it is a good demonstration of what may be
+   The TCP/UDP port number registry is a good example for a limited and
+   popular namespace, and thus managing this registry follows a
+   disciplined review process.  RFC 6335 [RFC6335] defines specific
+   guidance about assignment, de-assignment, reuse, revocation, and
+   transfer of numbers.  This level of detail may not be required for
+   all registries, but it is a good demonstration of what may be
    necessary in case of constrained and popular namespaces.
+
+
+
+
+Wilde                   Expires October 25, 2019                [Page 4]
+
+Internet-Draft                 Registries                     April 2019
+
 
 2.2.  Language Tags
 
    The ability to identify human languages is important for many
-   scenarios and applications on the Internet, and thus RFC 5646 [5]
-   defines how to do this.  The specification uses a registry to manage
-   the actual language identifiers, because this list is constantly
-   evolving and thus better separated from the specification defining
-   the language tag format itself.
+   scenarios and applications on the Internet, and thus RFC 5646
+   [RFC5646] defines how to do this.  The specification uses a registry
+   to manage the actual language identifiers, because this list is
+   constantly evolving and thus better separated from the specification
+   defining the language tag format itself.
 
    Apart from the primary language subtag (identifying for example the
    English language with the identifier "en"), the language tag format
    supports additional subtags for extended languages, scripts, regions,
    variants, extensions, and private use.  The primary language subtag
-
-
-
-Wilde                    Expires August 24, 2016                [Page 4]
-
-Internet-Draft                 Registries                  February 2016
-
-
-   uses 2- and 3-letter identifiers that are taken from ISO 639 [12].
-   There is a provision for longer identifiers to exist (and be directly
-   registered with IANA), but the goal is to manage actual registration
-   through ISO 639, and use the namespace and identifiers established by
-   this standard.
+   uses 2- and 3-letter identifiers that are taken from ISO 639
+   [ISO.639.1988].  There is a provision for longer identifiers to exist
+   (and be directly registered with IANA), but the goal is to manage
+   actual registration through ISO 639, and use the namespace and
+   identifiers established by this standard.
 
    While the namespace of the primary language subtags is rather
    restricted (2- and 3-letter identifiers), IANA's registry itself does
    not need to be directly concerned with its use and management, as
    this is handled by ISO through their ISO 639 process.
 
-   Without going into the details of how all the other subtags
-   namespaces are defined and registered, it should suffice to mention
-   that one of the main goals of RFC 5646 [5] is to ensure that the
-   language registry of ISO 639 (as well as some others, such as the
-   script registry of ISO 15924) and language tags as used on the
-   Internet stay in sync.  Thus, the management of the namespaces
-   created for language tags by RFC 5646 [5] is mostly delegated to ISO,
-   instead of being managed by IANA itself.
+   Without going into the details of how the other subtag namespaces are
+   defined and registered, it should suffice to mention that one of the
+   main goals of RFC 5646 is to ensure that the language registry of ISO
+   639 (as well as some others, such as the script registry of ISO
+   15924) and language tags as used on the Internet stay in sync.  Thus,
+   the management of the namespaces created for language tags by RFC
+   5646 [RFC5646] is mostly delegated to ISO, instead of being managed
+   by IANA itself.
 
-   Nevertheless, RFC 5646 [5] does make provisions about the stability
-   of entries in the various namespaces, so that the meaning of language
-   tags remains stable over time.  This includes provisions that
-   existing values are not going to be changed, and that even values
-   withdrawn by ISO remain valid and will simply be marked as
+   Nevertheless, RFC 5646 [RFC5646] does make provisions about the
+   stability of entries in the various namespaces, so that the meaning
+   of language tags remains stable over time.  This includes provisions
+   that existing values are not going to be changed, and that even
+   values withdrawn by ISO remain valid and will simply be marked as
    "deprecated" in the respective IANA registry.
 
 2.3.  Web Linking
 
-   Web links can be typed by link relation types, and RFC 5988 [6]
+   Web links can be typed by link relation types, and RFC 8288 [RFC8288]
    defines a model for how this can be done, and a registry for well-
    known values.  One interesting aspect of the model is that the value
    space is divided: On the one had there are well-known and registered
    values identified by strings, and on the other hand it is possible to
    use URIs, in which case no registration is required.  This means that
+
+
+
+Wilde                   Expires October 25, 2019                [Page 5]
+
+Internet-Draft                 Registries                     April 2019
+
+
    the namespace for the link relation type registry is that of strings,
    meaning that it is not highly constrained.
 
@@ -270,37 +291,29 @@ Internet-Draft                 Registries                  February 2016
    requested entries, and referring to a document that contains their
    definition and some context.
 
-   In addition, RFC 5988 [6] does define some constraints for how
+   In addition, RFC 8288 [RFC8288] does define some constraints for how
    registered link relation types have to be defined.  A submission
    process and reviews by designated experts are used to make sure that
-
-
-
-
-Wilde                    Expires August 24, 2016                [Page 5]
-
-Internet-Draft                 Registries                  February 2016
-
-
    these constraints are met when new entries are submitted for
    inclusion in the registry.
 
 2.4.  Domain Name System (DNS)
 
-   The Domain Name System (DNS), specified in RFC 1034 [1] and RFC 1035
-   [2], is a distributed infrastructure for hosting a variety of entry
-   types.  In the context of the DNS, the entry types are defined by
-   various Resource Record (RR) types.  However, since the DNS is used
-   for specific purposes, it is not a generic key/value store.  Instead,
-   the assumption is that the key always is a DNS name, whereas the
-   value then is determined by the RR available for that domain.
+   The Domain Name System (DNS) specified in RFCs 1034 [RFC1034] and
+   1035 [RFC1035] is a distributed infrastructure for hosting a variety
+   of entry types.  In the context of the DNS, the entry types are
+   defined by various Resource Record (RR) types.  However, since the
+   DNS is used for specific purposes, it is not a generic key/value
+   store.  Instead, the assumption is that the key always is a DNS name,
+   whereas the value then is determined by the RR(s) available for that
+   domain.
 
-   It could be argued that the DNS is not a typical registry system
-   because its design reflects the fact that entries are updated rather
-   frequently, that entries therefore are not stable, and that registry
-   access is a runtime issue Section 6.8.  Because of these differences,
-   it may be a bit of a stretch to call the DNS a "registry", but it is
-   a well-know and well-established key/value lookup mechanism for IETF
+   It could be argued that the DNS is not a typical registry because its
+   design reflects the fact that entries are updated rather frequently,
+   that entries therefore are not stable, and that registry access is a
+   runtime issue Section 6.8.  Because of these differences, it may be a
+   bit of a stretch to call the DNS a "registry", but it is a well-know
+   and well-established key/value lookup mechanism for IETF
    specifications, and therefore deserves mention in this document.
 
 2.5.  non-IANA/DNS example
@@ -309,19 +322,28 @@ Internet-Draft                 Registries                  February 2016
    by an IETF spec and that is neither managed by IANA, nor part of DNS
    Section 2.4.  If you have a suggestion, please let me know. ))
 
-3.  Why to use Registries
+3.  Why use Registries
 
    Establishing and using a registry can be done for a number of
    reasons.  The following sections list some of these reasons, and in
    many cases, registries are used for at least some of the reasons
    described here.
 
+
+
+
+
+Wilde                   Expires October 25, 2019                [Page 6]
+
+Internet-Draft                 Registries                     April 2019
+
+
    The list of reasons why to establish a registry may seem long, and in
    some cases it may feel as if these reasons are valid reasons for
-   established long-term values, but that having a registry seems like a
-   potential barrier to entry for short-term experimentation and other
-   not-quite-permanent scenarios.  Section 5 discusses this issue and
-   how specifications can deal with it.
+   managing established long-term values, but that having a registry
+   seems like a potential barrier to entry for short-term
+   experimentation and other not-quite-permanent scenarios.  Section 5
+   discusses this issue and how specifications can deal with it.
 
 3.1.  Openness and Extensibility
 
@@ -329,15 +351,6 @@ Internet-Draft                 Registries                  February 2016
    represented by the specification itself, and a dynamic part that is
    represented by one or more registries that are established by the
    specification.  This pattern allows a specification to remain stable,
-
-
-
-
-Wilde                    Expires August 24, 2016                [Page 6]
-
-Internet-Draft                 Registries                  February 2016
-
-
    while still having well-defined parts that are allowed to evolve over
    time.
 
@@ -358,23 +371,34 @@ Internet-Draft                 Registries                  February 2016
    a URI in which case it is not supposed to be a registered value.
    This strategy works when it is possible to clearly separate the
    namespace of the place where values are expected into ones that are
-   considered to be registered, and those that are not.
+   considered to be registered, and those that are not.  This can be
+   done lexically, or by having some kind of flag that indicates whether
+   a value is supposed to be well-known, or an unregistered extension.
 
 3.2.  Limited Namespaces
 
-   Historically, registries started managing the very limited namespace
-   of identifier fields in protocol packets or other low-level
-   mechanisms such as the port numbers described in Section 2.1, often
-   limited to a small number of bits or bytes.  Carefully managing this
-   very limited set of available identifiers was important, as was a way
-   to allow new values to be added without having to update the protocol
+   Historically, registries started managing the limited namespace of
+   identifier fields in protocol packets or other low-level mechanisms
+   such as the port numbers described in Section 2.1, often limited to a
+   small number of bits or bytes.  Carefully managing this limited set
+   of available identifiers was important, as was a way to allow new
+   values to be added without having to update the protocol
    specification itself.
 
+
+
+
+
+Wilde                   Expires October 25, 2019                [Page 7]
+
+Internet-Draft                 Registries                     April 2019
+
+
    The higher the level is on which registries are used, the more likely
-   it is that namespaces at least on the technical level are not very
+   it is that namespaces at least on the technical level are not overly
    constrained.  For example, the link relation types described in
    Section 2.3 are using strings as identifiers without imposing a
-   length limitations, meaning that the set of possible identifiers is
+   length limitation, meaning that the set of possible identifiers is
    virtually inexhaustible.  However, even in this case, the set of
    helpful and meaningful identifiers (i.e., names that are human-
    readable and partly self-describing) is limited, and thus even in
@@ -386,15 +410,7 @@ Internet-Draft                 Registries                  February 2016
    Registries are established in the context of a given specification,
    and provide a mechanism to make this specification extensible by
    allowing the registry to evolve over time.  However, the context of
-
-
-
-Wilde                    Expires August 24, 2016                [Page 7]
-
-Internet-Draft                 Registries                  February 2016
-
-
-   the specification very often has a clear design rationale for why a
+   the specification often has a clear design rationale for why a
    registry is established for a certain set of values.  Any value added
    or changed in the registry should fit into this context, and having a
    registry provides an opportunity to have design and usage reviews
@@ -427,6 +443,13 @@ Internet-Draft                 Registries                  February 2016
    and provides some feedback about whether these values follow the
    guidelines or not.
 
+
+
+Wilde                   Expires October 25, 2019                [Page 8]
+
+Internet-Draft                 Registries                     April 2019
+
+
 3.5.  Identifier Lifecycle
 
    The main reason for registries to exist in contrast to just including
@@ -442,13 +465,6 @@ Internet-Draft                 Registries                  February 2016
    but simply implement some default behavior when encountering
    unsupported values.  This pattern ensures that the namespace can
    evolve separately from the landscape of implementations.
-
-
-
-Wilde                    Expires August 24, 2016                [Page 8]
-
-Internet-Draft                 Registries                  February 2016
-
 
    However, adding identifiers is the easiest aspects of registry
    updates.  Things get more complicated when it comes to updating and
@@ -481,9 +497,17 @@ Internet-Draft                 Registries                  February 2016
    Registering a value means that people encountering this value should
    be able to learn about what it represents.  This means that there
    should be documentation associated with it that can be used to learn
-   more about the value's meaning.  Many registries at the very least
-   require a very short explanation to be submitted with a registration
-   request, so that the registry itself can list those texts as helpful
+   more about the value's meaning.  Many registries at least require a
+
+
+
+Wilde                   Expires October 25, 2019                [Page 9]
+
+Internet-Draft                 Registries                     April 2019
+
+
+   short explanation to be submitted with a registration request, so
+   that the registry itself can list those texts as helpful
    explanations.
 
    Going further, many registries also require links to more detailed
@@ -495,26 +519,15 @@ Internet-Draft                 Registries                  February 2016
    it must be publicly available information, so that anybody looking
    for it can openly access it.
 
-
-
-
-
-
-
-Wilde                    Expires August 24, 2016                [Page 9]
-
-Internet-Draft                 Registries                  February 2016
-
-
 3.7.  Centralized Lookup
 
    With a registry containing all current values (and possibly listing
    changed/deprecated ones as well) along with some registration
    metadata, they provide valuable information for anybody looking for
    information about registered values in the registry namespace.  All
-   IANA protocol registries [13] are openly accessible on the Web,
-   allowing everybody to lookup the current state of all these
-   registries.
+   IANA protocol registries [IANA-Protocol-Registry] are openly
+   accessible on the Web, allowing everybody to lookup the current state
+   of all these registries.
 
    Even though centralized lookup is an important aspect of openness and
    extensibility Section 3.1, the usual usage model of these lookup
@@ -540,6 +553,15 @@ Internet-Draft                 Registries                  February 2016
    specification clearly describes which reasons were most important
    when deciding to establish one or more registries.  This is even more
    true for developers who are looking to update the registry, because
+
+
+
+
+Wilde                   Expires October 25, 2019               [Page 10]
+
+Internet-Draft                 Registries                     April 2019
+
+
    they should be aware of the reasons that were considered when the
    registry was created.
 
@@ -553,15 +575,6 @@ Internet-Draft                 Registries                  February 2016
       What are the management policies for the registry?  Depending on a
       variety of factors such as namespace size, expected frequency of
       updated, level of review before acceptance, required level of
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 10]
-
-Internet-Draft                 Registries                  February 2016
-
-
       documentation, and possibly others, management can be rather
       lightweight or a carefully managed process.
 
@@ -597,6 +610,14 @@ Internet-Draft                 Registries                  February 2016
    usually the exact mechanism is outside of the scope of the
    specification.
 
+
+
+
+Wilde                   Expires October 25, 2019               [Page 11]
+
+Internet-Draft                 Registries                     April 2019
+
+
    One example for this method is the TCP/UDP port example given in
    Section 2.1.  The namespace for port numbers is two bytes and thus
    numbers from 0 to 65535.  However, numbers in the range 49152-65535
@@ -609,15 +630,6 @@ Internet-Draft                 Registries                  February 2016
    "levels" that values can be registered for.  This effectively
    partitions the registry into different classes, which sometime follow
    certain naming conventions, sometimes not.  In the latter case, when
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 11]
-
-Internet-Draft                 Registries                  February 2016
-
-
    encountering a value, it is necessary to consult the registry to
    understand which level a value is associated with.
 
@@ -629,15 +641,15 @@ Internet-Draft                 Registries                  February 2016
    defining those levels and specifying what they represent and how they
    affect value semantics and registration procedures.
 
-   As one example, media types [9] establish a "standards tree" and as
-   well as other trees ("vendor" and "personal").  Entries in these
-   trees are distinguished by prefix or lack thereof.  The general idea
-   is that the non-standard trees contain entries that are not quite at
-   the same level, significance-wise, as the standards tree.
+   As one example, media types [RFC6838] establish a "standards tree"
+   and as well as other trees ("vendor" and "personal").  Entries in
+   these trees are distinguished by prefix or lack thereof.  The general
+   idea is that the non-standard trees contain entries that are not
+   quite at the same level, significance-wise, as the standards tree.
 
-   As another example, URI schemes [11] differentiate registrations into
-   "permanent" and "provisional" schemes.  In addition, URI schemes can
-   also be registered as being "historical".  A "provisional"
+   As another example, URI schemes [RFC7595] differentiate registrations
+   into "permanent" and "provisional" schemes.  In addition, URI schemes
+   can also be registered as being "historical".  A "provisional"
    registration is intended to be used in cases where URI deployment is
    likely to happen outside of a private environment, but still
    controlled by a private party.  It is also possible to update a
@@ -645,15 +657,23 @@ Internet-Draft                 Registries                  February 2016
    protocol has become stable or more widely deployed.
 
    The classification of registry entries into "permanent" and
-   "provisional" is a pattern being followed by other IETF
-   specifications and registries as well, for example by the
-   registration procedures for message header fields [3].
+   "provisional" is a pattern being followed by some IETF specifications
+   and registries as well, for example by the registration procedures
+   for message header fields [RFC3864].
 
 5.3.  Separation by Value Syntax
 
    While the examples given in Section 5.2 sometimes use ways to
    differentiate entry levels by name, this is just a convenience so
    that it is possible to determine a value's level by value syntax.  In
+
+
+
+Wilde                   Expires October 25, 2019               [Page 12]
+
+Internet-Draft                 Registries                     April 2019
+
+
    this case, the value syntax is enforced by registration policy,
    meaning that during the registration process it is ensured that when
    a registration request for a certain level is made, the registered
@@ -666,14 +686,6 @@ Internet-Draft                 Registries                  February 2016
    strings and URIs as values.  For strings, it is expected that any
    used values are registered.  For URIs, however, no such registration
    is required or even possible.  This means that "private link relation
-
-
-
-Wilde                    Expires August 24, 2016               [Page 12]
-
-Internet-Draft                 Registries                  February 2016
-
-
    types" can be safely identified by URI values, and since it is
    possible to make these dereferencable, it is also possible to make
    these values self-documenting and/or self-describing by making human-
@@ -683,11 +695,11 @@ Internet-Draft                 Registries                  February 2016
    to note that by design, any approach that reflects value
    classification through value syntax automatically means that values
    cannot moved between categories.  Renaming established and deployed
-   values is a very expensive thing to do, which means that the approach
-   of separation by value syntax should be carefully considered, in
+   values is an expensive thing to do, which means that the approach of
+   separation by value syntax should be carefully considered, in
    particular in light of the fact that it makes it impossible for
    values to be moved between categories.  This may be acceptable for
-   some scenarios, but may be undesirable in other.  RFC 6648 [8]
+   some scenarios, but may be undesirable in other.  RFC 6648 [RFC6648]
    discusses this problem starting from prefix-based value syntax
    approaches (the famous "X-" for extension values), but is not limited
    to discussing this prefix-based approach alone.
@@ -708,6 +720,16 @@ Internet-Draft                 Registries                  February 2016
    as how to design the submission and update process, and how to
    provide access to registry contents.
 
+
+
+
+
+
+Wilde                   Expires October 25, 2019               [Page 13]
+
+Internet-Draft                 Registries                     April 2019
+
+
 6.1.  Registry Operations
 
    A registry is an abstract idea, mostly consisting of a separation of
@@ -722,14 +744,6 @@ Internet-Draft                 Registries                  February 2016
    solutions that satisfy those issues.  For an organization like the
    IETF, with a substantial stream of technical specifications, it makes
    a lot of sense to establish both a common workflow, and a common
-
-
-
-Wilde                    Expires August 24, 2016               [Page 13]
-
-Internet-Draft                 Registries                  February 2016
-
-
    implementation, so that specifications can rely on this
    infrastructure, instead of having to re-invent registry operations
    every time they want to establish a registry.
@@ -739,8 +753,8 @@ Internet-Draft                 Registries                  February 2016
    Since there is a large number of registries, and they should be
    maintained in a coherent, systematic, and efficient way, there is a
    set of "Principles for Operation of Internet Assigned Numbers
-   Authority (IANA) Registries" which are described in RFC 7500 [10].
-   The key principles are defined as follows:
+   Authority (IANA) Registries" which are described in RFC 7500
+   [RFC7500].  The key principles are defined as follows:
 
       Ensure Uniqueness: The same protocol identifier must not be used
       for more than one purpose.
@@ -764,6 +778,14 @@ Internet-Draft                 Registries                  February 2016
       Accountable: Registry policy development and registry operations
       need to be accountable to the affected community.
 
+
+
+
+Wilde                   Expires October 25, 2019               [Page 14]
+
+Internet-Draft                 Registries                     April 2019
+
+
    The way RFC 7500 currently defines operational principles leaves some
    possible issues open.  For example, the principle of the identifiers
    being "public" is described as the identifiers being "freely
@@ -778,14 +800,6 @@ Internet-Draft                 Registries                  February 2016
    registry (see Section 6.2), there are hard limitations based on the
    current implementation which is hosted by IANA.  It is possible that
    a different model may be implemented at a later time, but the current
-
-
-
-Wilde                    Expires August 24, 2016               [Page 14]
-
-Internet-Draft                 Registries                  February 2016
-
-
    model is biased towards email-based workflows and human-readable
    registry access.  If specification authors feel that IANA's
    implementation will not fit their needs, then it is (at least
@@ -795,15 +809,16 @@ Internet-Draft                 Registries                  February 2016
 
 6.2.  Registry Creation
 
-   If a specification creates one or more registries, then RFC 5226 [4]
-   sets some guidelines for the setup process and the substance of each
-   registry.  Without repeating those guidelines here, it should suffice
-   to mention that those revolve around possible status labels for
-   assigned values (private use, experimental, unassigned, reserved),
-   and a number of predefined policies that define how a registry is
-   managed.  RFC 5226 also mentions the fact that a registry's
-   management policy can change, in which case a new specification is
-   required that updates the definition of the registry.
+   If a specification creates one or more registries, then RFC 5226
+   [RFC5226] sets some guidelines for the setup process and the
+   substance of each registry.  Without repeating those guidelines here,
+   it should suffice to mention that those revolve around possible
+   status labels for assigned values (private use, experimental,
+   unassigned, reserved), and a number of predefined policies that
+   define how a registry is managed.  RFC 5226 also mentions the fact
+   that a registry's management policy can change, in which case a new
+   specification is required that updates the definition of the
+   registry.
 
 6.3.  Registry Interaction
 
@@ -813,11 +828,20 @@ Internet-Draft                 Registries                  February 2016
    applicants to prepare and submit update requests.  It is up to the
    registry to define how detailed this template is, whether applicants
    are required to use it, and whether submission is implemented based
-   on that template.  RFC 5226 [4] provides guidelines for specification
-   writers how to include any registry interactions in their documents.
+   on that template.  RFC 5226 [RFC5226] provides guidelines for
+   specification writers how to include any registry interactions in
+   their documents.
 
    Following some structure in the interaction process help with keeping
    a better record of requested and performed updates of a registry,
+
+
+
+Wilde                   Expires October 25, 2019               [Page 15]
+
+Internet-Draft                 Registries                     April 2019
+
+
    which can be helpful when it comes to maintaining and providing a
    registry history Section 6.6.
 
@@ -832,16 +856,6 @@ Internet-Draft                 Registries                  February 2016
    those implementations, unless there is a strong policy to only allow
    backwards-compatible changes to identifier semantics.
 
-
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 15]
-
-Internet-Draft                 Registries                  February 2016
-
-
 6.5.  Registry Stability
 
    Since implementations often use registries based on snapshots
@@ -852,11 +866,11 @@ Internet-Draft                 Registries                  February 2016
    more complicated when it comes to updates of existing entries, or
    removal of exiting entries.
 
-   When it comes to updating entries, then very often the goal is to
-   avoid breaking changes.  This means that entries can only be updated
-   in a way that the updated semantics are backwards-compatible with the
-   old semantics.  This way, implementations based on the old semantics
-   can safely use those and will not conflict when encountering data or
+   When it comes to updating entries, then often the goal is to avoid
+   breaking changes.  This means that entries can only be updated in a
+   way that the updated semantics are backwards-compatible with the old
+   semantics.  This way, implementations based on the old semantics can
+   safely use those and will not conflict when encountering data or
    implementations assuming the updated semantics.
 
    In terms of removal, it also is important to consider whether removed
@@ -876,9 +890,17 @@ Internet-Draft                 Registries                  February 2016
    that changed the registry, and to reconstruct the state of the
    registry at any point in time.
 
+
+
+
+Wilde                   Expires October 25, 2019               [Page 16]
+
+Internet-Draft                 Registries                     April 2019
+
+
    Some registries have mailing lists associated with them which can be
-   regarded as some sort of history.  However, this is a very weak form
-   of history since reconstructing the registry history and its state
+   regarded as some sort of history.  However, this is a weak form of
+   history since reconstructing the registry history and its state
    requires to read all the emails, and infer the resulting registry
    actions.  Having access to the actual actions in machine-readable
    form can make it much easier to access and recreate registry history.
@@ -890,23 +912,15 @@ Internet-Draft                 Registries                  February 2016
    applicant, expert, links to email archives, and similar ways to
    contextualize the entry update).
 
-
-
-
-Wilde                    Expires August 24, 2016               [Page 16]
-
-Internet-Draft                 Registries                  February 2016
-
-
 6.7.  Registry Access
 
    Depending on the intended use of a registry, an important question is
    how developers and/or implementations can access the registry.  While
    the current IANA registries can be accessed via HTTP, they are
-   clearly intended and designed to be used as HTML pages for
-   developers.  Alternative or complementary models could provide API-
-   based access, with documented and stable ways how to provide machine-
-   based access to registry contents.
+   clearly intended and designed to be used as human-readable HTML pages
+   for developers.  Alternative or complementary models could provide
+   API-based access, with documented and stable ways how to provide
+   machine-based access to registry contents.
 
    However, if an API is considered and provided, then an important
    question is whether it is intended for accessing registry contents
@@ -931,6 +945,15 @@ Internet-Draft                 Registries                  February 2016
    Most implementations use registry snapshots (complete or partial) for
    using a registry's contents Section 6.4.  If a registry provides API
    access, then it would be possible to author implementations that use
+
+
+
+
+Wilde                   Expires October 25, 2019               [Page 17]
+
+Internet-Draft                 Registries                     April 2019
+
+
    registry contents at runtime.  However, there are two important
    concerns about this possibility:
 
@@ -946,14 +969,6 @@ Internet-Draft                 Registries                  February 2016
       If the model of the registry allows meaningful implementation
       behavior by runtime updates, then this can result in this registry
       becoming overwhelmed by the number of accesses.  After all,
-
-
-
-Wilde                    Expires August 24, 2016               [Page 17]
-
-Internet-Draft                 Registries                  February 2016
-
-
       dynamic implementation behavior then may be preferable over the
       more traditional snapshot implementation pattern, which then
       results in the majority of implementations converging to the
@@ -972,77 +987,84 @@ Internet-Draft                 Registries                  February 2016
 
 8.  References
 
-   [1]        Mockapetris, P., "Domain names - concepts and facilities",
+   [IANA-Protocol-Registry]
+              "IANA Protocol Registry", <http://www.iana.org/protocols>.
+
+   [ISO.639.1988]
+              International Organization for Standardization, "Code for
+              the representation of names of languages, 1st edition",
+              ISO Standard 639, 1988.
+
+   [RFC1034]  Mockapetris, P., "Domain names - concepts and facilities",
               STD 13, RFC 1034, DOI 10.17487/RFC1034, November 1987,
               <http://www.rfc-editor.org/info/rfc1034>.
 
-   [2]        Mockapetris, P., "Domain names - implementation and
+   [RFC1035]  Mockapetris, P., "Domain names - implementation and
               specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
               November 1987, <http://www.rfc-editor.org/info/rfc1035>.
 
-   [3]        Klyne, G., Nottingham, M., and J. Mogul, "Registration
+
+
+Wilde                   Expires October 25, 2019               [Page 18]
+
+Internet-Draft                 Registries                     April 2019
+
+
+   [RFC3864]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               DOI 10.17487/RFC3864, September 2004,
               <http://www.rfc-editor.org/info/rfc3864>.
 
-   [4]        Narten, T. and H. Alvestrand, "Guidelines for Writing an
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
               IANA Considerations Section in RFCs", BCP 26, RFC 5226,
               DOI 10.17487/RFC5226, May 2008,
               <http://www.rfc-editor.org/info/rfc5226>.
 
-   [5]        Phillips, A., Ed. and M. Davis, Ed., "Tags for Identifying
+   [RFC5646]  Phillips, A., Ed. and M. Davis, Ed., "Tags for Identifying
               Languages", BCP 47, RFC 5646, DOI 10.17487/RFC5646,
               September 2009, <http://www.rfc-editor.org/info/rfc5646>.
 
-   [6]        Nottingham, M., "Web Linking", RFC 5988,
-              DOI 10.17487/RFC5988, October 2010,
-              <http://www.rfc-editor.org/info/rfc5988>.
-
-
-
-
-
-
-
-
-Wilde                    Expires August 24, 2016               [Page 18]
-
-Internet-Draft                 Registries                  February 2016
-
-
-   [7]        Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S.
+   [RFC6335]  Cotton, M., Eggert, L., Touch, J., Westerlund, M., and S.
               Cheshire, "Internet Assigned Numbers Authority (IANA)
               Procedures for the Management of the Service Name and
               Transport Protocol Port Number Registry", BCP 165,
               RFC 6335, DOI 10.17487/RFC6335, August 2011,
               <http://www.rfc-editor.org/info/rfc6335>.
 
-   [8]        Saint-Andre, P., Crocker, D., and M. Nottingham,
+   [RFC6648]  Saint-Andre, P., Crocker, D., and M. Nottingham,
               "Deprecating the "X-" Prefix and Similar Constructs in
               Application Protocols", BCP 178, RFC 6648,
               DOI 10.17487/RFC6648, June 2012,
               <http://www.rfc-editor.org/info/rfc6648>.
 
-   [9]        Freed, N., Klensin, J., and T. Hansen, "Media Type
+   [RFC6838]  Freed, N., Klensin, J., and T. Hansen, "Media Type
               Specifications and Registration Procedures", BCP 13,
               RFC 6838, DOI 10.17487/RFC6838, January 2013,
               <http://www.rfc-editor.org/info/rfc6838>.
 
-   [10]       Housley, R., Ed. and O. Kolkman, Ed., "Principles for
+   [RFC7500]  Housley, R., Ed. and O. Kolkman, Ed., "Principles for
               Operation of Internet Assigned Numbers Authority (IANA)
               Registries", RFC 7500, DOI 10.17487/RFC7500, April 2015,
               <http://www.rfc-editor.org/info/rfc7500>.
 
-   [11]       Thaler, D., Ed., Hansen, T., and T. Hardie, "Guidelines
+   [RFC7595]  Thaler, D., Ed., Hansen, T., and T. Hardie, "Guidelines
               and Registration Procedures for URI Schemes", BCP 35,
               RFC 7595, DOI 10.17487/RFC7595, June 2015,
               <http://www.rfc-editor.org/info/rfc7595>.
 
-   [12]       International Organization for Standardization, "Code for
-              the representation of names of languages, 1st edition",
-              ISO Standard 639, 1988.
+   [RFC8288]  Nottingham, M., "Web Linking", RFC 8288,
+              DOI 10.17487/RFC8288, October 2017,
+              <https://www.rfc-editor.org/info/rfc8288>.
 
-   [13]       "IANA Protocol Registry", <http://www.iana.org/protocols>.
+
+
+
+
+
+Wilde                   Expires October 25, 2019               [Page 19]
+
+Internet-Draft                 Registries                     April 2019
+
 
 Appendix A.  Acknowledgements
 
@@ -1061,4 +1083,38 @@ Author's Address
 
 
 
-Wilde                    Expires August 24, 2016               [Page 19]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Wilde                   Expires October 25, 2019               [Page 20]
