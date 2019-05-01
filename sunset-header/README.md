@@ -1,3 +1,1 @@
-# The Sunset HTTP Header Field
-
-This specification defines the Sunset HTTP response header field, which indicates that a URI is likely to become unresponsive at a specified point in the future. It also defines a sunset link relation type that allows linking to resources providing information about an upcoming resource or service sunset.
+Published as [RFC 8594: "The Sunset HTTP Header Field"](http://tools.ietf.org/html/rfc8594) (May 2019)
