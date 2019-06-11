@@ -1,0 +1,817 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
+  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+
+  <title>The Deprecation HTTP Header Field</title>
+
+  <style type="text/css" title="Xml2Rfc (sans serif)">
+  /*<![CDATA[*/
+	  a {
+	  text-decoration: none;
+	  }
+      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
+      a.info {
+          /* This is the key. */
+          position: relative;
+          z-index: 24;
+          text-decoration: none;
+      }
+      a.info:hover {
+          z-index: 25;
+          color: #FFF; background-color: #900;
+      }
+      a.info span { display: none; }
+      a.info:hover span.info {
+          /* The span will display just on :hover state. */
+          display: block;
+          position: absolute;
+          font-size: smaller;
+          top: 2em; left: -5em; width: 15em;
+          padding: 2px; border: 1px solid #333;
+          color: #900; background-color: #EEE;
+          text-align: left;
+      }
+	  a.smpl {
+	  color: black;
+	  }
+	  a:hover {
+	  text-decoration: underline;
+	  }
+	  a:active {
+	  text-decoration: underline;
+	  }
+	  address {
+	  margin-top: 1em;
+	  margin-left: 2em;
+	  font-style: normal;
+	  }
+	  body {
+	  color: black;
+	  font-family: verdana, helvetica, arial, sans-serif;
+	  font-size: 10pt;
+	  max-width: 55em;
+	  
+	  }
+	  cite {
+	  font-style: normal;
+	  }
+	  dd {
+	  margin-right: 2em;
+	  }
+	  dl {
+	  margin-left: 2em;
+	  }
+	
+	  ul.empty {
+	  list-style-type: none;
+	  }
+	  ul.empty li {
+	  margin-top: .5em;
+	  }
+	  dl p {
+	  margin-left: 0em;
+	  }
+	  dt {
+	  margin-top: .5em;
+	  }
+	  h1 {
+	  font-size: 14pt;
+	  line-height: 21pt;
+	  page-break-after: avoid;
+	  }
+	  h1.np {
+	  page-break-before: always;
+	  }
+	  h1 a {
+	  color: #333333;
+	  }
+	  h2 {
+	  font-size: 12pt;
+	  line-height: 15pt;
+	  page-break-after: avoid;
+	  }
+	  h3, h4, h5, h6 {
+	  font-size: 10pt;
+	  page-break-after: avoid;
+	  }
+	  h2 a, h3 a, h4 a, h5 a, h6 a {
+	  color: black;
+	  }
+	  img {
+	  margin-left: 3em;
+	  }
+	  li {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  ol p {
+	  margin-left: 0em;
+	  }
+	  p {
+	  margin-left: 2em;
+	  margin-right: 2em;
+	  }
+	  pre {
+	  margin-left: 3em;
+	  background-color: lightyellow;
+	  padding: .25em;
+	  }
+	  pre.text2 {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f0f0f0;
+	  width: 69em;
+	  }
+	  pre.inline {
+	  background-color: white;
+	  padding: 0em;
+	  }
+	  pre.text {
+	  border-style: dotted;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  width: 69em;
+	  }
+	  pre.drawing {
+	  border-style: solid;
+	  border-width: 1px;
+	  background-color: #f8f8f8;
+	  padding: 2em;
+	  }
+	  table {
+	  margin-left: 2em;
+	  }
+	  table.tt {
+	  vertical-align: top;
+	  }
+	  table.full {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.headers {
+	  border-style: outset;
+	  border-width: 1px;
+	  }
+	  table.tt td {
+	  vertical-align: top;
+	  }
+	  table.full td {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.tt th {
+	  vertical-align: top;
+	  }
+	  table.full th {
+	  border-style: inset;
+	  border-width: 1px;
+	  }
+	  table.headers th {
+	  border-style: none none inset none;
+	  border-width: 1px;
+	  }
+	  table.left {
+	  margin-right: auto;
+	  }
+	  table.right {
+	  margin-left: auto;
+	  }
+	  table.center {
+	  margin-left: auto;
+	  margin-right: auto;
+	  }
+	  caption {
+	  caption-side: bottom;
+	  font-weight: bold;
+	  font-size: 9pt;
+	  margin-top: .5em;
+	  }
+	
+	  table.header {
+	  border-spacing: 1px;
+	  width: 95%;
+	  font-size: 10pt;
+	  color: white;
+	  }
+	  td.top {
+	  vertical-align: top;
+	  }
+	  td.topnowrap {
+	  vertical-align: top;
+	  white-space: nowrap; 
+	  }
+	  table.header td {
+	  background-color: gray;
+	  width: 50%;
+	  }
+	  table.header a {
+	  color: white;
+	  }
+	  td.reference {
+	  vertical-align: top;
+	  white-space: nowrap;
+	  padding-right: 1em;
+	  }
+	  thead {
+	  display:table-header-group;
+	  }
+	  ul.toc, ul.toc ul {
+	  list-style: none;
+	  margin-left: 1.5em;
+	  margin-right: 0em;
+	  padding-left: 0em;
+	  }
+	  ul.toc li {
+	  line-height: 150%;
+	  font-weight: bold;
+	  font-size: 10pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  ul.toc li li {
+	  line-height: normal;
+	  font-weight: normal;
+	  font-size: 9pt;
+	  margin-left: 0em;
+	  margin-right: 0em;
+	  }
+	  li.excluded {
+	  font-size: 0pt;
+	  }
+	  ul p {
+	  margin-left: 0em;
+	  }
+	
+	  .comment {
+	  background-color: yellow;
+	  }
+	  .center {
+	  text-align: center;
+	  }
+	  .error {
+	  color: red;
+	  font-style: italic;
+	  font-weight: bold;
+	  }
+	  .figure {
+	  font-weight: bold;
+	  text-align: center;
+	  font-size: 9pt;
+	  }
+	  .filename {
+	  color: #333333;
+	  font-weight: bold;
+	  font-size: 12pt;
+	  line-height: 21pt;
+	  text-align: center;
+	  }
+	  .fn {
+	  font-weight: bold;
+	  }
+	  .hidden {
+	  display: none;
+	  }
+	  .left {
+	  text-align: left;
+	  }
+	  .right {
+	  text-align: right;
+	  }
+	  .title {
+	  color: #990000;
+	  font-size: 18pt;
+	  line-height: 18pt;
+	  font-weight: bold;
+	  text-align: center;
+	  margin-top: 36pt;
+	  }
+	  .vcardline {
+	  display: block;
+	  }
+	  .warning {
+	  font-size: 14pt;
+	  background-color: yellow;
+	  }
+	
+	
+	  @media print {
+	  .noprint {
+		display: none;
+	  }
+	
+	  a {
+		color: black;
+		text-decoration: none;
+	  }
+	
+	  table.header {
+		width: 90%;
+	  }
+	
+	  td.header {
+		width: 50%;
+		color: black;
+		background-color: white;
+		vertical-align: top;
+		font-size: 12pt;
+	  }
+	
+	  ul.toc a::after {
+		content: leader('.') target-counter(attr(href), page);
+	  }
+	
+	  ul.ind li li a {
+		content: target-counter(attr(href), page);
+	  }
+	
+	  .print2col {
+		column-count: 2;
+		-moz-column-count: 2;
+		column-fill: auto;
+	  }
+	  }
+	
+	  @page {
+	  @top-left {
+		   content: "Internet-Draft"; 
+	  } 
+	  @top-right {
+		   content: "December 2010"; 
+	  } 
+	  @top-center {
+		   content: "Abbreviated Title";
+	  } 
+	  @bottom-left {
+		   content: "Doe"; 
+	  } 
+	  @bottom-center {
+		   content: "Expires June 2011"; 
+	  } 
+	  @bottom-right {
+		   content: "[Page " counter(page) "]"; 
+	  } 
+	  }
+	
+	  @page:first { 
+		@top-left {
+		  content: normal;
+		}
+		@top-right {
+		  content: normal;
+		}
+		@top-center {
+		  content: normal;
+		}
+	  }
+  /*]]>*/
+  </style>
+
+  <link href="#rfc.toc" rel="Contents">
+<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
+<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Notational Conventions">
+<link href="#rfc.section.2" rel="Chapter" title="2 The Deprecation HTTP Response Header Field">
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Syntax">
+<link href="#rfc.section.3" rel="Chapter" title="3 The Deprecation Link Relation Type">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Documentation">
+<link href="#rfc.section.4" rel="Chapter" title="4 Recommend Replacement">
+<link href="#rfc.section.5" rel="Chapter" title="5 Sunset">
+<link href="#rfc.section.6" rel="Chapter" title="6 Resource Behavior">
+<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 The Deprecation Response Header Field">
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 The Deprecation Link Relation Type">
+<link href="#rfc.section.8" rel="Chapter" title="8 Implementation Status">
+<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations">
+<link href="#rfc.section.10" rel="Chapter" title="10 Examples">
+<link href="#rfc.references" rel="Chapter" title="11 References">
+<link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgments">
+<link href="#rfc.authors" rel="Chapter">
+
+
+  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
+  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
+
+  <meta name="dct.creator" content="Dalal, S. and E. Wilde" />
+  <meta name="dct.identifier" content="urn:ietf:id:draft-dalal-deprecation-header-01" />
+  <meta name="dct.issued" scheme="ISO8601" content="2019-05-30" />
+  <meta name="dct.abstract" content="The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource." />
+  <meta name="description" content="The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource." />
+
+</head>
+
+<body>
+
+  <table class="header">
+    <tbody>
+    
+    	<tr>
+<td class="left">Network Working Group</td>
+<td class="right">S. Dalal</td>
+</tr>
+<tr>
+<td class="left">Internet-Draft</td>
+<td class="right"></td>
+</tr>
+<tr>
+<td class="left">Intended status: Standards Track</td>
+<td class="right">E. Wilde</td>
+</tr>
+<tr>
+<td class="left">Expires: December 1, 2019</td>
+<td class="right">May 30, 2019</td>
+</tr>
+
+    	
+    </tbody>
+  </table>
+
+  <p class="title">The Deprecation HTTP Header Field<br />
+  <span class="filename">draft-dalal-deprecation-header-01</span></p>
+  
+  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
+<p>The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource.</p>
+<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
+<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
+<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
+<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
+<p>This Internet-Draft will expire on December 1, 2019.</p>
+<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
+<p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
+
+  
+  <hr class="noprint" />
+  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
+  <ul class="toc">
+
+  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+</li>
+<ul><li>1.1.   <a href="#rfc.section.1.1">Notational Conventions</a>
+</li>
+</ul><li>2.   <a href="#rfc.section.2">The Deprecation HTTP Response Header Field</a>
+</li>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Syntax</a>
+</li>
+</ul><li>3.   <a href="#rfc.section.3">The Deprecation Link Relation Type</a>
+</li>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Documentation</a>
+</li>
+</ul><li>4.   <a href="#rfc.section.4">Recommend Replacement</a>
+</li>
+<li>5.   <a href="#rfc.section.5">Sunset</a>
+</li>
+<li>6.   <a href="#rfc.section.6">Resource Behavior</a>
+</li>
+<li>7.   <a href="#rfc.section.7">IANA Considerations</a>
+</li>
+<ul><li>7.1.   <a href="#rfc.section.7.1">The Deprecation Response Header Field</a>
+</li>
+<li>7.2.   <a href="#rfc.section.7.2">The Deprecation Link Relation Type</a>
+</li>
+</ul><li>8.   <a href="#rfc.section.8">Implementation Status</a>
+</li>
+<li>9.   <a href="#rfc.section.9">Security Considerations</a>
+</li>
+<li>10.   <a href="#rfc.section.10">Examples</a>
+</li>
+<li>11.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>11.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>11.2.   <a href="#rfc.references.2">Informative References</a>
+</li>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgments</a>
+</li>
+<li><a href="#rfc.authors">Authors' Addresses</a>
+</li>
+
+
+  </ul>
+
+  <h1 id="rfc.section.1">
+<a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
+</h1>
+<p id="rfc.section.1.p.1">Deprecation of a URI-identified resource is a technique to communicate information about the lifecycle of a resource. It encourages applications to migrate away from the resource, discourages applications from forming new dependencies on the resource, and informs applications about the risk of continuing dependence upon the resource.</p>
+<p id="rfc.section.1.p.2">The act of deprecation does not change any behavior of the resource. It just informs client of the fact that a resource is deprecated. The Deprecation HTTP response header field MAY be used to convey this fact at runtime to clients. The header field can carry information indicating since when the deprecation is in effect.</p>
+<p id="rfc.section.1.p.3">In addition to the Deprecation header field the resource provider can use other header fields to convey additional information related to deprecation. For example, information such as where to find documentation related to the deprecation or what should be used as an alternate and when the deprecated resource would be unreachable, etc. Alternates of a resource can be similar resource(s) or a newer version of the same resource.</p>
+<h1 id="rfc.section.1.1">
+<a href="#rfc.section.1.1">1.1.</a> <a href="#notational-conventions" id="notational-conventions">Notational Conventions</a>
+</h1>
+<p id="rfc.section.1.1.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;NOT RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
+<p id="rfc.section.1.1.p.2">This specification uses the Augmented Backus-Naur Form (ABNF) notation of <a href="#RFC5234" class="xref">[RFC5234]</a> and includes, by reference, the HTTP-date rule as defined within Sections 3.2.6 and 7 of <a href="#RFC7230" class="xref">[RFC7230]</a> and Section 7.1.1 of <a href="#RFC7231" class="xref">[RFC7231]</a>.</p>
+<h1 id="rfc.section.2">
+<a href="#rfc.section.2">2.</a> <a href="#the-deprecation-http-response-header-field" id="the-deprecation-http-response-header-field">The Deprecation HTTP Response Header Field</a>
+</h1>
+<p id="rfc.section.2.p.1">The <samp>Deprecation</samp> HTTP response header field allows a server to communicate to a client that the URI-identified resource in context of the message is or will be deprecated.</p>
+<h1 id="rfc.section.2.1">
+<a href="#rfc.section.2.1">2.1.</a> <a href="#syntax" id="syntax">Syntax</a>
+</h1>
+<p id="rfc.section.2.1.p.1">The <samp>Deprecation</samp> response header field describes the deprecation. It either shows the deprecation date, which may be in the future (the resource context will be deprecated at that date) or in the past (the resource context has been deprecated at that date), or it simply flags the resource context as being deprecated:</p>
+<pre>
+Deprecation = HTTP-date / "true"
+</pre>
+<p id="rfc.section.2.1.p.2">Servers MUST NOT include more than one <samp>Deprecation</samp> header field in the same response.</p>
+<p id="rfc.section.2.1.p.3">The date, if present, is the date when the resource context was or will be deprecated. It is in the form of an HTTP-date timestamp, as defined in Section 7.1.1.1 of <a href="#RFC7231" class="xref">[RFC7231]</a>.</p>
+<p id="rfc.section.2.1.p.4">The following example shows that the resource context has been deprecated on Friday, November 11, 2018 at 23:59:59 GMT:</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+</pre>
+<p id="rfc.section.2.1.p.5">The deprecation date can be in the future. If the value of <samp>date</samp> is in the future, it means that the resource will be deprecated at the given date in future.</p>
+<p id="rfc.section.2.1.p.6">If the deprecation date is not known, the header field can carry the simple string &#8220;true&#8221;, indicating that the resource context is deprecated, without indicating when that happened:</p>
+<pre>
+    Deprecation: true
+</pre>
+<h1 id="rfc.section.3">
+<a href="#rfc.section.3">3.</a> <a href="#the-deprecation-link-relation-type" id="the-deprecation-link-relation-type">The Deprecation Link Relation Type</a>
+</h1>
+<p id="rfc.section.3.p.1">In addition to the Deprecation HTTP header field, the server can use links with the &#8220;deprecation&#8221; link relation type to communicate to the client where to find more information about deprecation of the context. This can happen before the actual deprecation, to make a deprecation policy discoverable, or after deprecation, when there may be documentation about the deprecation, and possibly documentation of how to manage it.</p>
+<p id="rfc.section.3.p.2">This specification places no restrictions on the representation of the interlinked deprecation policy. In particular, the deprecation policy may be available as human-readable documentation or as machine-readable description.</p>
+<h1 id="rfc.section.3.1">
+<a href="#rfc.section.3.1">3.1.</a> <a href="#documentation" id="documentation">Documentation</a>
+</h1>
+<p id="rfc.section.3.1.p.1">For a URI-identified resource, deprecation could involve one or more parts of request, response or both. These parts could be one or more of the following.</p>
+<p></p>
+
+<ul>
+<li>URI - deprecation of one ore more query parameter(s) or path element(s)</li>
+<li>method - HTTP method for the resource is deprecated</li>
+<li>request header - one or more HTTP request header(s) is deprecated</li>
+<li>response header - HTTP response header(s) is deprecated</li>
+<li>request body - request body contains one or more deprecated element(s)</li>
+<li>response body - response body contains one or more deprecated element(s)</li>
+</ul>
+<p id="rfc.section.3.1.p.3">The purpose of the <samp>Deprecation</samp> header is to provide just enough &#8220;hints&#8221; about the deprecation to the client application developer. It is safe to assume that on reception of the <samp>Deprecation</samp> header, the client developer would look up the resource&#8217;s documentation in order to find deprecation related semantics. The resource developer could provide a link to the resource documentation using a <samp>Link</samp> header with relation type <samp>deprecation</samp> as shown below.</p>
+<pre>
+Link: &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"; type="text/html"
+</pre>
+<p id="rfc.section.3.1.p.4">In this example, the interlinked content provides additional information about the deprecation of the resource context. In this example, there is no Deprecation header field in the response, and thus the resource is not deprecated. However, the resource already exposes a link where information is available how deprecation is managed for the context. This may be documentation explaining the use of the Deprecation header field, and also explaining under which circumstances and with which policies (announcement before deprecation; continued operation after deprecation) deprecation might be happening.</p>
+<p id="rfc.section.3.1.p.5">The following example uses the same link header, but also announces a deprecation date using a Deprecation header field.</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+Link: &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"; type="text/html"
+</pre>
+<p id="rfc.section.3.1.p.6">Given that the deprecation date is in the past, the linked resource may have been updated to include information about the deprecation, allowing clients to discover information about the deprecation that happened.</p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#recommend-replacement" id="recommend-replacement">Recommend Replacement</a>
+</h1>
+<p><samp>Link</samp> <a href="#RFC8288" class="xref">[RFC8288]</a> header could be used in addition to the <samp>Deprecation</samp> header to recommend the client application about available alternates to the deprecated resource. Following relation types as defined in <a href="#RFC8288" class="xref">[RFC8288]</a> are RECOMMENDED to use for the purpose.</p>
+<p></p>
+
+<ul>
+<li>
+<samp>successor-version</samp>: Points to a resource containing the successor version. <a href="#RFC5829" class="xref">[RFC5829]</a>
+</li>
+<li>
+<samp>latest-version</samp>: Points to a resource containing the latest (e.g., current) version. <a href="#RFC5829" class="xref">[RFC5829]</a>
+</li>
+<li>
+<samp>alternate</samp>: Designates a substitute. [W3C.REC-html401-19991224]</li>
+</ul>
+<p id="rfc.section.4.p.3">The following example provides link to the successor version of the requested resource that is deprecated.</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+Link: &lt;https://api.example.com/v2/customers&gt;; rel="successor-version"
+</pre>
+<p id="rfc.section.4.p.4">This example provides link to an alternate resource to the requested resource that is deprecated.</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+Link: &lt;https://api.example.com/v1/clients&gt;; rel="alternate"
+</pre>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#sunset" id="sunset">Sunset</a>
+</h1>
+<p id="rfc.section.5.p.1">In addition to the deprecation related information, if the resource provider wants to convey to the client application that the deprecated resource is expected to become unresponsive at a specific point in time, the <a href="#RFC8594" class="xref">[RFC8594]</a> header could be used in addition to the <samp>Deprecation</samp> header.</p>
+<p id="rfc.section.5.p.2">The following example shows that the resource in context has been deprecated since Friday, November 11, 2018 at 23:59:59 GMT and its sunset date is Friday, November 11, 2020 at 23:59:59 GMT.</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+Sunset: Wed, 11 Nov 2020 23:59:59 GMT
+</pre>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#resource-behavior" id="resource-behavior">Resource Behavior</a>
+</h1>
+<p id="rfc.section.6.p.1">The act of deprecation does not change any behavior of the resource. Deprecated resources SHOULD keep functioning as before, allowing consumers to still use the resources in the same way as they did before the resources were declared deprecated.</p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<h1 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#the-deprecation-response-header-field" id="the-deprecation-response-header-field">The Deprecation Response Header Field</a>
+</h1>
+<p id="rfc.section.7.1.p.1">The <samp>Deprecation</samp> response header should be added to the permanent registry of message header fields (see <a href="#RFC3864" class="xref">[RFC3864]</a>), taking into account the guidelines given by HTTP/1.1 <a href="#RFC7231" class="xref">[RFC7231]</a>.</p>
+<pre>
+Header Field Name: Deprecation
+
+Applicable Protocol: Hypertext Transfer Protocol (HTTP)
+
+Status: Standard
+
+Author: Sanjay Dalal &lt;sanjay.dalal@cal.berkeley.edu&gt;, 
+        Erik Wilde &lt;erik.wilde@dret.net&gt;
+
+Change controller: IETF
+
+Specification document: this specification, 
+            Section 2 "The Deprecation HTTP Response Header Field"
+</pre>
+<h1 id="rfc.section.7.2">
+<a href="#rfc.section.7.2">7.2.</a> <a href="#the-deprecation-link-relation-type-1" id="the-deprecation-link-relation-type-1">The Deprecation Link Relation Type</a>
+</h1>
+<p id="rfc.section.7.2.p.1">The <samp>deprecation</samp> link relation type should be added to the permanent registry of link relation types according to Section 4.2 of <a href="#RFC8288" class="xref">[RFC8288]</a>:</p>
+<pre>
+Relation Type: deprecation
+
+Applicable Protocol: Hypertext Transfer Protocol (HTTP)
+
+Status: Standard
+
+Author: Sanjay Dalal &lt;sanjay.dalal@cal.berkeley.edu&gt;, 
+        Erik Wilde &lt;erik.wilde@dret.net&gt;
+
+Change controller: IETF
+
+Specification document: this specification, 
+        Section 3 "The Deprecation Link Relation Type"
+</pre>
+<h1 id="rfc.section.8">
+<a href="#rfc.section.8">8.</a> <a href="#implementation-status" id="implementation-status">Implementation Status</a>
+</h1>
+<p id="rfc.section.8.p.1">Note to RFC Editor: Please remove this section before publication.</p>
+<p id="rfc.section.8.p.2">This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in <a href="#RFC7942" class="xref">[RFC7942]</a>.  The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs.  Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors.  This is not intended as, and must not be construed to be, a catalog of available implementations or their features.  Readers are advised to note that other implementations may exist.</p>
+<p id="rfc.section.8.p.3">According to RFC 7942, &#8220;this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit&#8221;.</p>
+<p id="rfc.section.8.p.4">Organization: Zapier</p>
+<p id="rfc.section.8.p.5">Description: Zapier uses two custom HTTP headers named <samp>X-API-Deprecation-Date</samp> and <samp>X-API-Deprecation-Info</samp></p>
+<p id="rfc.section.8.p.6">Reference:  https://zapier.com/engineering/api-geriatrics/</p>
+<p id="rfc.section.8.p.7">Organization: IBM</p>
+<p id="rfc.section.8.p.8">IBM uses a custom HTTP header named <samp>Deprecated</samp></p>
+<p id="rfc.section.8.p.9">Reference: https://www.ibm.com/support/knowledgecenter/en/SS42VS_7.3.1/com.ibm.qradar.doc/c_rest_api_getting_started.html</p>
+<p id="rfc.section.8.p.10">Organization: Ultipro</p>
+<p id="rfc.section.8.p.11">Description: Ultipro uses the HTTP <samp>Warning</samp> header as described in Section 5.5 of <a href="#RFC7234" class="xref">[RFC7234]</a> with code <samp>299</samp></p>
+<p id="rfc.section.8.p.12">Reference:  https://connect.ultipro.com/api-deprecation</p>
+<p id="rfc.section.8.p.13">Organization: Clearbit</p>
+<p id="rfc.section.8.p.14">Description: Clearbit uses a custom HTTP header named <samp>X-API-Warn</samp></p>
+<p id="rfc.section.8.p.15">Reference: https://blog.clearbit.com/dealing-with-deprecation/</p>
+<p id="rfc.section.8.p.16">Organization: PayPal</p>
+<p id="rfc.section.8.p.17">Description: PayPal uses a custom HTTP header named <samp>PayPal-Deprecated</samp></p>
+<p id="rfc.section.8.p.18">Reference: https://github.com/paypal/api-standards/blob/master/api-style-guide.md#runtime</p>
+<h1 id="rfc.section.9">
+<a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+</h1>
+<p id="rfc.section.9.p.1">The content of a <samp>Link</samp> header field is not secure, private or integrity-guaranteed, and due caution should be exercised when using it. Use of Transport Layer Security (TLS) with HTTP (<a href="#RFC7230" class="xref">[RFC7230]</a> is currently the only end-to-end way to provide such protection.</p>
+<p id="rfc.section.9.p.2">The suggested <samp>Link</samp> header fields make extensive use of IRIs and URIs. See <a href="#RFC3987" class="xref">[RFC3987]</a> for security considerations relating to IRIs. See <a href="#RFC3986" class="xref">[RFC3986]</a> for security considerations relating to URIs. See <a href="#RFC7230" class="xref">[RFC7230]</a> for security considerations relating to HTTP headers.</p>
+<p id="rfc.section.9.p.3">Applications that take advantage of typed links should consider the attack vectors opened by automatically following, trusting, or otherwise using links gathered from the HTTP headers. In particular, Link headers that use the <samp>successor-version</samp>, <samp>latest-version</samp> or <samp>alternate</samp> relation types should be treated with due caution. See <a href="#RFC5829" class="xref">[RFC5829]</a> for security considerations relating to these link relation types.</p>
+<h1 id="rfc.section.10">
+<a href="#rfc.section.10">10.</a> <a href="#examples" id="examples">Examples</a>
+</h1>
+<p id="rfc.section.10.p.1">The first example shows a deprecation header field without date information:</p>
+<pre>
+Deprecation: true
+</pre>
+<p id="rfc.section.10.p.2">The second example shows a deprecation header with date information and a link to the successor version:</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+Link: &lt;https://api.example.com/v2/customers&gt;; rel="successor-version"
+</pre>
+<p id="rfc.section.10.p.3">The third example shows a deprecation header field with links for the successor version and for the API&#8217;s deprecation policy. In addition, it shows the sunset date for the deprecated resource:</p>
+<pre>
+Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+Sunset: Wed, 11 Nov 2020 23:59:59 GMT
+Link: &lt;https://api.example.com/v2/customers&gt;; rel="successor-version", &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"
+</pre>
+<h1 id="rfc.references">
+<a href="#rfc.references">11.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="#rfc.references.1">11.1.</a> Normative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
+<td class="top">
+<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3864">[RFC3864]</b></td>
+<td class="top">
+<a>Klyne, G.</a>, <a>Nottingham, M.</a> and <a>J. Mogul</a>, "<a href="https://tools.ietf.org/html/rfc3864">Registration Procedures for Message Header Fields</a>", BCP 90, RFC 3864, DOI 10.17487/RFC3864, September 2004.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3986">[RFC3986]</b></td>
+<td class="top">
+<a>Berners-Lee, T.</a>, <a>Fielding, R.</a> and <a>L. Masinter</a>, "<a href="https://tools.ietf.org/html/rfc3986">Uniform Resource Identifier (URI): Generic Syntax</a>", STD 66, RFC 3986, DOI 10.17487/RFC3986, January 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC3987">[RFC3987]</b></td>
+<td class="top">
+<a>Duerst, M.</a> and <a>M. Suignard</a>, "<a href="https://tools.ietf.org/html/rfc3987">Internationalized Resource Identifiers (IRIs)</a>", RFC 3987, DOI 10.17487/RFC3987, January 2005.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC5234">[RFC5234]</b></td>
+<td class="top">
+<a>Crocker, D.</a> and <a>P. Overell</a>, "<a href="https://tools.ietf.org/html/rfc5234">Augmented BNF for Syntax Specifications: ABNF</a>", STD 68, RFC 5234, DOI 10.17487/RFC5234, January 2008.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7230">[RFC7230]</b></td>
+<td class="top">
+<a>Fielding, R.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc7230">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a>", RFC 7230, DOI 10.17487/RFC7230, June 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7231">[RFC7231]</b></td>
+<td class="top">
+<a>Fielding, R.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc7231">Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</a>", RFC 7231, DOI 10.17487/RFC7231, June 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7234">[RFC7234]</b></td>
+<td class="top">
+<a>Fielding, R.</a>, <a>Nottingham, M.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc7234">Hypertext Transfer Protocol (HTTP/1.1): Caching</a>", RFC 7234, DOI 10.17487/RFC7234, June 2014.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
+<td class="top">
+<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8288">[RFC8288]</b></td>
+<td class="top">
+<a>Nottingham, M.</a>, "<a href="https://tools.ietf.org/html/rfc8288">Web Linking</a>", RFC 8288, DOI 10.17487/RFC8288, October 2017.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.references.2">
+<a href="#rfc.references.2">11.2.</a> Informative References</h1>
+<table><tbody>
+<tr>
+<td class="reference"><b id="RFC5829">[RFC5829]</b></td>
+<td class="top">
+<a>Brown, A.</a>, <a>Clemm, G.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc5829">Link Relation Types for Simple Version Navigation between Web Resources</a>", RFC 5829, DOI 10.17487/RFC5829, April 2010.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC7942">[RFC7942]</b></td>
+<td class="top">
+<a>Sheffer, Y.</a> and <a>A. Farrel</a>, "<a href="https://tools.ietf.org/html/rfc7942">Improving Awareness of Running Code: The Implementation Status Section</a>", BCP 205, RFC 7942, DOI 10.17487/RFC7942, July 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8594">[RFC8594]</b></td>
+<td class="top">
+<a>Wilde, E.</a>, "<a href="https://tools.ietf.org/html/rfc8594">The Sunset HTTP Header Field</a>", RFC 8594, DOI 10.17487/RFC8594, May 2019.</td>
+</tr>
+</tbody></table>
+<h1 id="rfc.appendix.A">
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
+</h1>
+<p id="rfc.section.A.p.1">The authors would like to thank Mark Nottingham and Nikhil Kolekar for reviewing this specification.</p>
+<p id="rfc.section.A.p.2">The authors take all responsibility for errors and omissions.</p>
+<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
+<div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Sanjay Dalal</span> 
+	  <span class="n hidden">
+		<span class="family-name">Dalal</span>
+	  </span>
+	</span>
+	<span class="org vcardline"></span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:sanjay.dalal@cal.berkeley.edu">sanjay.dalal@cal.berkeley.edu</a></span>
+
+<span class="vcardline">URI: <a href="https://github.com/sdatspun2">https://github.com/sdatspun2</a></span>
+
+  </address>
+</div><div class="avoidbreak">
+  <address class="vcard">
+	<span class="vcardline">
+	  <span class="fn">Erik Wilde</span> 
+	  <span class="n hidden">
+		<span class="family-name">Wilde</span>
+	  </span>
+	</span>
+	<span class="org vcardline"></span>
+	<span class="adr">
+	  
+	  <span class="vcardline">
+		<span class="locality"></span> 
+		<span class="region"></span>
+		<span class="code"></span>
+	  </span>
+	  <span class="country-name vcardline"></span>
+	</span>
+	<span class="vcardline">EMail: <a href="mailto:erik.wilde@dret.net">erik.wilde@dret.net</a></span>
+
+<span class="vcardline">URI: <a href="http://dret.net/netdret">http://dret.net/netdret</a></span>
+
+  </address>
+</div>
+
+</body>
+</html>
