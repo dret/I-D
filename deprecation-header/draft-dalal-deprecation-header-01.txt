@@ -5,7 +5,7 @@
 Network Working Group                                           S. Dalal
 Internet-Draft
 Intended status: Standards Track                                E. Wilde
-Expires: December 1, 2019                                   May 30, 2019
+Expires: December 19, 2019                                 June 17, 2019
 
 
                    The Deprecation HTTP Header Field
@@ -35,7 +35,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 1, 2019.
+   This Internet-Draft will expire on December 19, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 1]
+Dalal & Wilde           Expires December 19, 2019               [Page 1]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -80,7 +80,7 @@ Table of Contents
    10. Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .   9
      11.1.  Normative References . . . . . . . . . . . . . . . . . .   9
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  10
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  11
    Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  11
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 2]
+Dalal & Wilde           Expires December 19, 2019               [Page 2]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
 1.1.  Notational Conventions
@@ -165,9 +165,9 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 3]
+Dalal & Wilde           Expires December 19, 2019               [Page 3]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
        Deprecation: true
@@ -221,9 +221,9 @@ Link: <https://developer.example.com/deprecation>; rel="deprecation"; type="text
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 4]
+Dalal & Wilde           Expires December 19, 2019               [Page 4]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
    In this example, the interlinked content provides additional
@@ -277,9 +277,9 @@ Link: <https://developer.example.com/deprecation>; rel="deprecation"; type="text
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 5]
+Dalal & Wilde           Expires December 19, 2019               [Page 5]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
 5.  Sunset
@@ -333,9 +333,9 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 6]
+Dalal & Wilde           Expires December 19, 2019               [Page 6]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
 7.2.  The Deprecation Link Relation Type
@@ -389,9 +389,9 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
 
 
 
-Dalal & Wilde           Expires December 1, 2019                [Page 7]
+Dalal & Wilde           Expires December 19, 2019               [Page 7]
 
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
 
 
    Reference: https://zapier.com/engineering/api-geriatrics/
@@ -427,10 +427,35 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
 
 9.  Security Considerations
 
-   The content of a "Link" header field is not secure, private or
+   The Deprecation header field SHOULD be treated as a hint, meaning
+   that the resource is indicating (and not guaranteeing with certainty)
+   that it is deprecated.  Applications consuming the resource SHOULD
+   check the resource documentation to verify authenticity and accuracy.
+   Resource documentation SHOULD provide additional information about
+   the deprecation including recommendation(s) for replacement.
+
+   In cases, where the Deprecation header field value is a date in
+   future, it can lead to information that otherwise might not be
+   available.  Therefore, applications consuming the resource SHOULD
+   verify the resource documentation and if possible, consult the
+   resource developer to discuss potential impact due to deprecation and
+   plan for possible transition to recommended resource.
+
+
+
+
+
+Dalal & Wilde           Expires December 19, 2019               [Page 8]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
+
+
+   In cases where "Link" header is used to provide more documentation
+   and/or recommendation for replacement, one should assume that the
+   content of the "Link" header field may not be secure, private or
    integrity-guaranteed, and due caution should be exercised when using
-   it.  Use of Transport Layer Security (TLS) with HTTP ([RFC7230] is
-   currently the only end-to-end way to provide such protection.
+   it.  Applications consuming the resource SHOULD check the referred
+   resource documentation to verify authenticity and accuracy.
 
    The suggested "Link" header fields make extensive use of IRIs and
    URIs.  See [RFC3987] for security considerations relating to IRIs.
@@ -442,14 +467,6 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
    otherwise using links gathered from the HTTP headers.  In particular,
    Link headers that use the "successor-version", "latest-version" or
    "alternate" relation types should be treated with due caution.  See
-
-
-
-Dalal & Wilde           Expires December 1, 2019                [Page 8]
-
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
-
-
    [RFC5829] for security considerations relating to these link relation
    types.
 
@@ -478,6 +495,17 @@ Link: <https://api.example.com/v2/customers>; rel="successor-version", <https://
 
 11.1.  Normative References
 
+
+
+
+
+
+
+Dalal & Wilde           Expires December 19, 2019               [Page 9]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -496,15 +524,6 @@ Link: <https://api.example.com/v2/customers>; rel="successor-version", <https://
    [RFC3987]  Duerst, M. and M. Suignard, "Internationalized Resource
               Identifiers (IRIs)", RFC 3987, DOI 10.17487/RFC3987,
               January 2005, <https://www.rfc-editor.org/info/rfc3987>.
-
-
-
-
-
-Dalal & Wilde           Expires December 1, 2019                [Page 9]
-
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
-
 
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
@@ -534,6 +553,15 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
               DOI 10.17487/RFC8288, October 2017,
               <https://www.rfc-editor.org/info/rfc8288>.
 
+
+
+
+
+Dalal & Wilde           Expires December 19, 2019              [Page 10]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2019
+
+
 11.2.  Informative References
 
    [RFC5829]  Brown, A., Clemm, G., and J. Reschke, Ed., "Link Relation
@@ -549,18 +577,6 @@ Internet-Draft      The Deprecation HTTP Header Field           May 2019
    [RFC8594]  Wilde, E., "The Sunset HTTP Header Field", RFC 8594,
               DOI 10.17487/RFC8594, May 2019,
               <https://www.rfc-editor.org/info/rfc8594>.
-
-
-
-
-
-
-
-
-Dalal & Wilde           Expires December 1, 2019               [Page 10]
-
-Internet-Draft      The Deprecation HTTP Header Field           May 2019
-
 
 Appendix A.  Acknowledgments
 
@@ -597,20 +613,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Dalal & Wilde           Expires December 1, 2019               [Page 11]
+Dalal & Wilde           Expires December 19, 2019              [Page 11]
