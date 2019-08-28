@@ -40,7 +40,7 @@
                 <uri>https://orcid.org/0000-0002-0715-6126</uri>
             </address>
         </author>
-        <date day="12" month="August" year="2019"/>
+        <date day="28" month="August" year="2019"/>
         <abstract>
             <t>This specification defines two media types and a link relation type for sets of links. 
                 The media types can be used to represents links in a standalone fashion, in one case in the native format as used in the HTTP Link header, and in the other case in a JSON-based format. The link relation type can be used by a resource to point at another resource that 
@@ -85,8 +85,9 @@
             -->
         </section>
         <section title="Scenarios" anchor="scenarios">
-            <t>The following sections outline scenarios in which providing links by reference is advantageous or necessary. 
-                It is important to keep in mind that, when providing links by reference, 
+            <t>The following sections outline scenarios in which providing links by means of a standalone document 
+                instead of via an HTTP Link header or via &lt;link&gt; elements in HTML is advantageous or necessary. 
+                It is important to keep in mind that, when providing links by means of a standalone, 
                 other links can still be provided by value.</t>
             <section title="Third-Party Links" anchor="third-party">
                 <t>In some cases, it is useful that links pertaining to a resource are provided 
@@ -96,30 +97,37 @@
                         also as link target.</t> 
                     <t>Providing links pertaining to the resource that the server hosting that 
                         resource is not aware of.</t>
-                    <t>External management of links pertaining to the origin resource in a special-purpose link
+                    <t>External management of links pertaining to the resource in a special-purpose link
                         management service.</t>
                 </list></t>
-                <t>In such cases, a third-party resource can provide a set of links pertaining to the origin resource. 
-                    This link set resource may be managed by the same custodian as the origin resource, or by a third party.</t>
-                <t>In order for the server hosting the origin resource to provide an up-to-date and complete set of links 
-                    in which the origin resource participates, 
-                    the server would need to obtain the links from the link set resource, 
-                    and embed them in the origin resource's 
+                <t>In such cases, a third-party resource can provide a set of links pertaining to the resource. 
+                    This third-party resource may be managed by the same or by another custodian as the resource. 
+                    For clients intent on consuming links pertaining to the resource, it would be beneficial if:</t>
+                <t><list style="symbols">
+                    <t>The resource would be able to unambiguously point at the third-party resource that provides the links using a registered 
+                    link relation type.</t>
+                    <t>The third-party resource would provide the links in a document that is compliant with a registered media type.</t>
+                </list></t>
+                    <!--
+                <t>In order for the server hosting the resource to provide an up-to-date and complete set of links 
+                    in which that resource participates, 
+                    the server would need to obtain the links from the third-party resource, 
+                    and embed them in the resource's 
                     representations prior to responding to a client. Doing so would increase latency and load, 
-                    which may be unnecessary if a client is not intent on consuming these links. Providing links by reference, 
-                    instead of by value, removes the server-to-server communication and resulting overhead required to obtain
-                    links. Instead, the consumer of the origin resource can decide if they need the additional links as context
-                    for the resource.</t>
+                    which may be unnecessary if a client is not intent on consuming these links. Providing links by means of a standalone document, 
+                    removes the server-to-server communication and resulting overhead required to obtain
+                    links. Instead, the consumer of the resource can decide if they need the additional links as context
+                    for the resource and only access the third-party resource that provides the links if they do.</t>
+                    -->
             </section>
             <section title="Challenges Writing to HTTP Link Header Field" anchor="header-writing">
                 <t>In some cases, it is not straightforward to write links to the HTTP Link header field
                     from an application. This can, for example, be the case because not all 
                     required link information is available to the application or because the 
                     application does not have the capability to directly write HTTP headers. 
-                    In such cases, providing links by reference can be a solution because 
-                    a link to a link set resource associated with an origin resource 
-                    can typically be added by means 
-                    of a web server rewrite rule that leverages the resource's URI.</t>
+                    In such cases, providing links by means of a standalone document can be a solution. 
+                    Making the third-party resource that provides these links discoverable can be achieved by means of an 
+                    unambiguously typed link, which can typically straightforwardly be added by means of a web server rewrite rule that leverages the resource's URI.</t>
             </section>
             <section title="Large Number of Links" anchor="link-volume">
                 <t>When conveying links in the HTTP "Link" header, it is possible for the size of the HTTP 
@@ -135,15 +143,13 @@
                     As a result, applications take counter measures aimed at controlling 
                     the size of the HTTP "Link" header, for example by limiting the links they provide to those 
                     with select relation types, thereby limiting the value of the HTTP "Link" header to clients. 
-                    Providing links by reference, instead of by value, overcomes challenges related to the unpredictable 
+                    Providing links by means of a standalone document overcomes challenges related to the unpredictable 
                     nature of the extent of HTTP "Link" headers.</t>
-                <t>In more extreme scenarios it is conceivable that the number of links pertaining to the 
-                    origin resource becomes so large that the response from the associated link set resource becomes too large. 
-                    This could be the case for highly popular origin resources, when the link set includes 
-                    links in which the origin resource participates as both link context and link target.
-                    In such cases, the link set resource 
-                    could deliver responses incrementally, for example, using a paged resource model that clients 
-                    can consume as required.</t>
+                <t>In more extreme scenarios it is conceivable that the number of links to be conveyed becomes so 
+                    large that even a standalone document would become too large. 
+                    This could be the case for highly popular resources, and when links are provided in which such 
+                    resources participates as both link context and link target.
+                    In such cases, the links could be delivered incrementally, for example, by means of a paged resource model that uses links with the "next" link relation type.</t>
             </section>
         </section>
         <section title="Document Formats for Sets of Links" anchor="linkset-formats">
@@ -539,7 +545,7 @@
         </section>
         
          <section title="Examples" anchor="linkset-link-examples">
-              <t>Sections <xref target="linkset-link-link-format"/> and <xref target="linkset-link-json-format"/>
+              <t><xref target="linkset-link-link-format"/> and <xref target="linkset-link-json-format"/>
               show examples whereby the set of links are provided as "application/linkset" and "application/linkset+json" documents, respectively.
               </t>
            <section title="Set of Links Provided By Value as application/linkset" anchor="linkset-link-link-format">
