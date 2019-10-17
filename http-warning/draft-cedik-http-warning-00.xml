@@ -56,6 +56,61 @@
             described in <xref target="RFC2119"/>.
          </t>
       </section>
+      <section anchor="api-response" title="API Response">
+         <t>
+            The proposed response format uses the JSON format described in
+            <xref target="RFC8259" />.
+         </t>
+         <t>
+            Current API responses return their data as attributes of the JSON root. Although it
+            might seem logical at first, differentiating between data that is meant to describe
+            the response of the API call (e.g. a resource created) and its errors or other meta
+            data, can get complicated when mixed. Therefore the actual response data SHOULD be
+            returned in a data attribute.
+         </t>
+         <section anchor="data" title="data">
+            <t>
+               data: (required) APIs MUST return the data that is tied to the resource of the
+               request in this field. This shields it from other / meta content and makes it easily
+               adressable.
+            </t>
+            <t>
+               This pattern is already being used by Twitter for getting
+               <eref target="https://developer.twitter.com/en/docs/labs/tweets-and-users/api-reference/get-tweets-v1">Tweets</eref>
+               and <eref target="https://developer.twitter.com/en/docs/labs/tweets-and-users/api-reference/get-users-v1">Users</eref>.
+               Twitter is also using it for <eref target="https://developer.twitter.com/en/docs/ads/campaign-management/api-reference/campaigns">handling campaigns</eref>.
+            </t>
+         </section>
+         <section anchor="request_id" title="request id">
+            <t>
+               request_id: (required) public id of the request within the API providers' system.
+               The request_id MUST be returned when errors or warnings have occured to make handling
+               of support cases easier.
+            </t>
+         </section>
+         <section anchor="errors" title="errors">
+            <t>
+               errors: (optional) When an error occured that makes it impossible to go any further
+               (HTTP response code is in the 4xx-5xx range), the errors array MUST be filled with an
+               object for each and every error that was thrown.
+            </t>
+            <t>
+               Entries follow the pattern described in <xref target="RFC7807" />.
+            </t>
+         </section>
+         <section anchor="warnings" title="warnings">
+            <t>
+               warnings: (optional) When an error occured that can not be defined as a "hard error"
+               (HTTP response code is in the 4xx-5xx range), but is more like an additional
+               information one should consider returning to the APIs user, the warnings array MUST
+               be filled with an object for each and every warning message that SHOULD be returned
+               to the user.
+            </t>
+            <t>
+               Entries follow the pattern described in <xref target="RFC7807" />.
+            </t>
+         </section>
+      </section>
    </middle>
    <back>
       <references title="Normative References">
@@ -123,6 +178,51 @@
             </front>
             <seriesInfo name='RFC' value='7231' />
             <seriesInfo name='DOI' value='10.17487/RFC7231' />
+         </reference>
+         <reference anchor="RFC7807" target="https://www.rfc-editor.org/info/rfc7807">
+            <front>
+               <title>Problem Details for HTTP APIs</title>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham">
+                     <organization />
+               </author>
+               <author initials="E." surname="Wilde" fullname="E. Wilde">
+                     <organization />
+               </author>
+               <date year="2016" month="March" />
+               <abstract>
+                     <t>
+                        This document defines a "problem detail" as a way to carry machine- readable details of errors in a HTTP
+                        response to avoid the need to define new error response formats for HTTP APIs.
+                     </t>
+               </abstract>
+            </front>
+            <seriesInfo name="RFC" value="7807" />
+            <seriesInfo name="DOI" value="10.17487/RFC7807" />
+         </reference>
+         <reference anchor="RFC8259" target="https://www.rfc-editor.org/info/rfc8259">
+            <front>
+               <title>
+                     The JavaScript Object Notation (JSON) Data Interchange Format
+               </title>
+               <author initials="T." surname="Bray" fullname="T. Bray" role="editor">
+                     <organization />
+               </author>
+               <date year="2017" month="December" />
+               <abstract>
+                     <t>
+                        JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data
+                        interchange format. It was derived from the ECMAScript Programming Language Standard. JSON
+                        defines a small set of formatting rules for the portable representation of structured data.
+                     </t>
+                     <t>
+                        This document removes inconsistencies with other specifications of JSON, repairs specification
+                        errors, and offers experience-based interoperability guidance.
+                     </t>
+               </abstract>
+            </front>
+            <seriesInfo name="STD" value="90" />
+            <seriesInfo name="RFC" value="8259" />
+            <seriesInfo name="DOI" value="10.17487/RFC8259" />
          </reference>
       </references>
       <section title="Acknowledgements" anchor="acknowledgements">

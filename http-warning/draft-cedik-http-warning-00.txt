@@ -69,9 +69,16 @@ Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   2
-   3.  Normative References  . . . . . . . . . . . . . . . . . . . .   2
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   3
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   3
+   3.  API Response  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     3.1.  data  . . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  request id  . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.3.  errors  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.4.  warnings  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   4.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   3
+     4.1.  Normative References  . . . . . . . . . . . . . . . . . .   3
+     4.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   4
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   4
 
 1.  Introduction
 
@@ -94,7 +101,74 @@ Table of Contents
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
    document are to be interpreted as described in [RFC2119].
 
-3.  Normative References
+3.  API Response
+
+   The proposed response format uses the JSON format described in
+   [RFC8259].
+
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 2]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+
+
+   Current API responses return their data as attributes of the JSON
+   root.  Although it might seem logical at first, differentiating
+   between data that is meant to describe the response of the API call
+   (e.g. a resource created) and its errors or other meta data, can get
+   complicated when mixed.  Therefore the actual response data SHOULD be
+   returned in a data attribute.
+
+3.1.  data
+
+   data: (required) APIs MUST return the data that is tied to the
+   resource of the request in this field.  This shields it from other /
+   meta content and makes it easily adressable.
+
+   This pattern is already being used by Twitter for getting Tweets [1]
+   and Users [2].  Twitter is also using it for handling campaigns [3].
+
+3.2.  request id
+
+   request_id: (required) public id of the request within the API
+   providers' system.  The request_id MUST be returned when errors or
+   warnings have occured to make handling of support cases easier.
+
+3.3.  errors
+
+   errors: (optional) When an error occured that makes it impossible to
+   go any further (HTTP response code is in the 4xx-5xx range), the
+   errors array MUST be filled with an object for each and every error
+   that was thrown.
+
+   Entries follow the pattern described in [RFC7807].
+
+3.4.  warnings
+
+   warnings: (optional) When an error occured that can not be defined as
+   a "hard error" (HTTP response code is in the 4xx-5xx range), but is
+   more like an additional information one should consider returning to
+   the APIs user, the warnings array MUST be filled with an object for
+   each and every warning message that SHOULD be returned to the user.
+
+   Entries follow the pattern described in [RFC7807].
+
+4.  References
+
+4.1.  Normative References
+
+
+
+
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 3]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -106,18 +180,30 @@ Table of Contents
               RFC 7230, DOI 10.17487/RFC7230, June 2014,
               <https://www.rfc-editor.org/info/rfc7230>.
 
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 2]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
-
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
               <https://www.rfc-editor.org/info/rfc7231>.
+
+   [RFC7807]  Nottingham, M. and E. Wilde, "Problem Details for HTTP
+              APIs", RFC 7807, DOI 10.17487/RFC7807, March 2016,
+              <https://www.rfc-editor.org/info/rfc7807>.
+
+   [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/info/rfc8259>.
+
+4.2.  URIs
+
+   [1] https://developer.twitter.com/en/docs/labs/tweets-and-users/api-
+       reference/get-tweets-v1
+
+   [2] https://developer.twitter.com/en/docs/labs/tweets-and-users/api-
+       reference/get-users-v1
+
+   [3] https://developer.twitter.com/en/docs/ads/campaign-management/
+       api-reference/campaigns
 
 Appendix A.  Acknowledgements
 
@@ -129,6 +215,15 @@ Authors' Addresses
    shipcloud GmbH
 
    Email: andre.cedik@googlemail.com
+
+
+
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 4]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
 
 
    Erik Wilde
@@ -165,4 +260,21 @@ Authors' Addresses
 
 
 
-Cedik & Wilde            Expires April 19, 2020                 [Page 3]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 5]
