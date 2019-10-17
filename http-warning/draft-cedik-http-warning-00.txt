@@ -1,0 +1,168 @@
+
+
+
+
+Network Working Group                                           A. Cedik
+Internet-Draft                                            shipcloud GmbH
+Intended status: Standards Track                                E. Wilde
+Expires: April 19, 2020                                            Axway
+                                                        October 17, 2019
+
+
+             Communicating Warning Information in HTTP APIs
+                      draft-cedik-http-warning-00
+
+Abstract
+
+   This document proposes a standard response format for HTTP API
+   warning information.
+
+Note to Readers
+
+   This draft should be discussed on the rfc-interest mailing list
+   (<https://www.rfc-editor.org/mailman/listinfo/rfc-interest>).
+
+   Online access to all versions and files is available on Github
+   (<https://github.com/dret/I-D/tree/master/http-warning>).
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on April 19, 2020.
+
+Copyright Notice
+
+   Copyright (c) 2019 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 1]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+
+
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Normative References  . . . . . . . . . . . . . . . . . . . .   2
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   2
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   3
+
+1.  Introduction
+
+   Lots of current APIs are using HTTP [RFC7230] as their protocol.
+   Their clients' response handling is based on the assumption, that
+   requests either are successful or they fail.  In both cases (success
+   and fail) a http response status code [RFC7231] is returned to convey
+   the fact.
+
+   But response handling isn't always black and white.  There are use
+   cases where a 3rd party system returns a response with data that
+   can't be defined as a clear error, but returning a http status code
+   of e.g. 200 OK without any additional information is also wrong.
+   This document tries to define a standard response format for HTTP API
+   warning information.
+
+2.  Normative References
+
+   [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Message Syntax and Routing",
+              RFC 7230, DOI 10.17487/RFC7230, June 2014,
+              <https://www.rfc-editor.org/info/rfc7230>.
+
+   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
+              DOI 10.17487/RFC7231, June 2014,
+              <https://www.rfc-editor.org/info/rfc7231>.
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by ...
+
+
+
+
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 2]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+
+
+Authors' Addresses
+
+   Andre Cedik
+   shipcloud GmbH
+
+   Email: andre.cedik@googlemail.com
+
+
+   Erik Wilde
+   Axway
+
+   Email: erik.wilde@dret.net
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 3]

@@ -9,7 +9,7 @@
    <front>
       <title>Communicating Warning Information in HTTP APIs</title>
       <author initials="A." surname="Cedik" fullname="Andre Cedik">
-         <organization/>
+         <organization>shipcloud GmbH</organization>
          <address>
             <email>andre.cedik@googlemail.com</email>
          </address>
@@ -23,7 +23,9 @@
       </author>
       <date day="17" month="October" year="2019"/>
       <abstract>
-         <t>...</t>
+         <t>
+            This document proposes a standard response format for HTTP API warning information.
+         </t>
       </abstract>
       <note title="Note to Readers">
          <t>This draft should be discussed on the rfc-interest mailing list (<eref target="https://www.rfc-editor.org/mailman/listinfo/rfc-interest"/>).</t>
@@ -32,13 +34,67 @@
    </front>
    <middle>
       <section title="Introduction" anchor="introduction">
-         <t>...</t>
+         <t>
+            Lots of current APIs are using HTTP
+            <xref target="RFC7230" /> as their protocol. Their
+            clients' response handling is based on the assumption, that requests either are
+            successful or they fail. In both cases (success and fail) a http response status code
+            <xref target="RFC7231" /> is returned to convey the fact.
+         </t>
+         <t>
+            But response handling isn't always black and white. There are use cases where a 3rd
+            party system returns a response with data that can't be defined as a clear error, but
+            returning a http status code of e.g. 200 OK without any additional information is also
+            wrong. This document tries to define a standard response format for HTTP API warning
+            information.
+         </t>
       </section>
    </middle>
    <back>
       <references title="Normative References">
-      </references>
-      <references title="Informative References">
+         <reference anchor="RFC7230" target='https://www.rfc-editor.org/info/rfc7230'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding' role='editor'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke' role='editor'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless application-level protocol for
+                     distributed, collaborative, hypertext information systems. This document provides an
+                     overview of HTTP architecture and its associated terminology, defines the &quot;http&quot;
+                     and &quot;https&quot; Uniform Resource Identifier (URI) schemes, defines the HTTP/1.1
+                     message syntax and parsing requirements, and describes related security concerns for
+                     implementations.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7230' />
+            <seriesInfo name='DOI' value='10.17487/RFC7230' />
+         </reference>
+         <reference anchor="RFC7231" target='https://www.rfc-editor.org/info/rfc7231'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding' role='editor'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke' role='editor'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless \%application- level protocol for
+                     distributed, collaborative, hypertext information systems. This document defines the semantics of
+                     HTTP/1.1 messages, as expressed by request methods, request header fields, response status codes,
+                     and response header fields, along with the payload of messages (metadata and body content) and
+                     mechanisms for content negotiation.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7231' />
+            <seriesInfo name='DOI' value='10.17487/RFC7231' />
+         </reference>
       </references>
       <section title="Acknowledgements" anchor="acknowledgements">
          <t>Thanks for comments and suggestions provided by ...</t>
