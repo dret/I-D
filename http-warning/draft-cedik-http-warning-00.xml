@@ -126,6 +126,111 @@
             </t>
          </section>
       </section>
+      <section anchor="correlation.between.errors.warnings.and.data" title="Correlation between errors, warnings and data">
+         <section anchor="hard.errors.with.warnings" title="Hard errors with warnings">
+            <t>
+               As described previously, errors are exception like occurences where processing of the
+               request stopped and the API consumer has to be informed of this "hard error" right away.
+            </t>
+            <t>
+               If warnings occured during the processing of the request, but before the processing
+               stopped, they MUST be returned alongside the errors.
+            </t>
+            <t>
+               Due to the fact that the original intent of the API consumer was not successful, an
+               empty data object MUST be returned.
+            </t>
+<figure><artwork><![CDATA[
+POST /v2/shipments HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 400 BAD REQUEST
+Content-Type: application/json
+Warning: 214 - "Transformation Applied" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "errors": [
+    {
+      "detail": "The format of pickup time earliest was wrong.",
+      "errorcode": "4F5G6H",
+      "status": "500",
+      "title": "Wrong format for pickup time",
+      "type": "https://github.com/example/errors/wrong_format"
+    }
+  ],
+  "warnings": [
+    {
+      "detail": "Street name too long. It has been shortened to fit",
+      "errorcode": "123456",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://github.com/example/errors/shortened_entry"
+    }
+  ],
+  "data": {}
+}
+]]></artwork></figure>
+         </section>
+         <section anchor="soft.errors.with.data" title="Soft errors with data">
+            <t>
+               Since warnings do not have an effect on the returned http response status code, the
+               response status code SHOULD be in the 2xx range, indicating that the intent of the
+               API client was successful.
+            </t>
+            <t>
+               Because of this a data object (<xref target="data"/>) MUST be returned containing the
+               data that was requested.
+            </t>
+            <t>
+               Also a warnings array MUST be returned.
+            </t>
+            <t>
+               Due to the fact that the original intent of the API consumer was successful, an
+               empty errors array MUST be returned.
+            </t>
+<figure><artwork><![CDATA[
+POST /v2/shipments HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Warning: 214 - "Transformation Applied" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "errors": [],
+  "warnings": [
+    {
+      "detail": "Street name was too long. It has been shortened to...",
+      "errorcode": "123456",
+      "instance": "https://example.com/shipments/3a186c51d4281acb",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://github.com/example/errors/shortened_entry"
+    },
+    {
+      "detail": "City for this zipcode unknown. Code for shipment...",
+      "errorcode": "987654",
+      "instance": "https://example.com/shipments/3a186c51d4281acb",
+      "status": "200",
+      "title": "City for zipcode unknown.",
+      "type": "https://github.com/example/errors/city_for_zip_unknown"
+    }
+  ],
+  "data": {
+    "id": "3a186c51d4281acb",
+    "carrier_tracking_no": "84168117830018",
+    "tracking_url": "http://example.com/3a186c51d",
+    "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+    "price": 3.4
+  }
+}
+]]></artwork></figure>
+         </section>
+      </section>
       <section anchor="security.considerations" title="Security Considerations">
          <t>
             API providers need to exercise care when reporting errors (<xref target="errors"/>) or

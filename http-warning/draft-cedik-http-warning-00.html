@@ -381,10 +381,13 @@
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 request id">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 errors">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 warnings">
-<link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations">
-<link href="#rfc.references" rel="Chapter" title="5 References">
-<link href="#rfc.references.1" rel="Chapter" title="5.1 Informative References">
-<link href="#rfc.references.2" rel="Chapter" title="5.2 Normative References">
+<link href="#rfc.section.4" rel="Chapter" title="4 Correlation between errors, warnings and data">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Hard errors with warnings">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Soft errors with data">
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations">
+<link href="#rfc.references" rel="Chapter" title="6 References">
+<link href="#rfc.references.1" rel="Chapter" title="6.1 Informative References">
+<link href="#rfc.references.2" rel="Chapter" title="6.2 Normative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements">
 <link href="#rfc.authors" rel="Chapter">
 
@@ -466,13 +469,19 @@
 </li>
 <li>3.4.   <a href="#rfc.section.3.4">warnings</a>
 </li>
-</ul><li>4.   <a href="#rfc.section.4">Security Considerations</a>
+</ul><li>4.   <a href="#rfc.section.4">Correlation between errors, warnings and data</a>
 </li>
-<li>5.   <a href="#rfc.references">References</a>
+<ul><li>4.1.   <a href="#rfc.section.4.1">Hard errors with warnings</a>
 </li>
-<ul><li>5.1.   <a href="#rfc.references.1">Informative References</a>
+<li>4.2.   <a href="#rfc.section.4.2">Soft errors with data</a>
 </li>
-<li>5.2.   <a href="#rfc.references.2">Normative References</a>
+</ul><li>5.   <a href="#rfc.section.5">Security Considerations</a>
+</li>
+<li>6.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>6.1.   <a href="#rfc.references.1">Informative References</a>
+</li>
+<li>6.2.   <a href="#rfc.references.2">Normative References</a>
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a>
 </li>
@@ -519,21 +528,108 @@
 <p id="rfc.section.3.4.p.2">Entries follow the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
 <p id="rfc.section.3.4.p.3">When warnings are present a warning header (as defined in Section 5.5 of <a href="#RFC7234" class="xref">[RFC7234]</a>) MUST be set to indicate that warnings will be returned.  This way a client will not have to parse the response body to find out if the warnings array has entries.  </p>
 <h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#security.considerations" id="security.considerations">Security Considerations</a>
+<a href="#rfc.section.4">4.</a> <a href="#correlation.between.errors.warnings.and.data" id="correlation.between.errors.warnings.and.data">Correlation between errors, warnings and data</a>
 </h1>
-<p id="rfc.section.4.p.1">API providers need to exercise care when reporting errors (<a href="#errors" class="xref">Section 3.3</a>) or warnings (<a href="#warnings" class="xref">Section 3.4</a>). Malicious actors could use this information for orchestrating attacks.  </p>
-<p id="rfc.section.4.p.2">Support teams at API providers need to be informed about the affects of social engineering when returning the request_id (<a href="#request_id" class="xref">Section 3.2</a>), because malicious actors could use this information to gain access to user specific data.  </p>
+<h1 id="rfc.section.4.1">
+<a href="#rfc.section.4.1">4.1.</a> <a href="#hard.errors.with.warnings" id="hard.errors.with.warnings">Hard errors with warnings</a>
+</h1>
+<p id="rfc.section.4.1.p.1">As described previously, errors are exception like occurences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.  </p>
+<p id="rfc.section.4.1.p.2">If warnings occured during the processing of the request, but before the processing stopped, they MUST be returned alongside the errors.  </p>
+<p id="rfc.section.4.1.p.3">Due to the fact that the original intent of the API consumer was not successful, an empty data object MUST be returned.  </p>
+<pre>
+POST /v2/shipments HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 400 BAD REQUEST
+Content-Type: application/json
+Warning: 214 - "Transformation Applied" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "errors": [
+    {
+      "detail": "The format of pickup time earliest was wrong.",
+      "errorcode": "4F5G6H",
+      "status": "500",
+      "title": "Wrong format for pickup time",
+      "type": "https://github.com/example/errors/wrong_format"
+    }
+  ],
+  "warnings": [
+    {
+      "detail": "Street name too long. It has been shortened to fit",
+      "errorcode": "123456",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://github.com/example/errors/shortened_entry"
+    }
+  ],
+  "data": {}
+}
+</pre>
+<h1 id="rfc.section.4.2">
+<a href="#rfc.section.4.2">4.2.</a> <a href="#soft.errors.with.data" id="soft.errors.with.data">Soft errors with data</a>
+</h1>
+<p id="rfc.section.4.2.p.1">Since warnings do not have an effect on the returned http response status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.  </p>
+<p id="rfc.section.4.2.p.2">Because of this a data object (<a href="#data" class="xref">Section 3.1</a>) MUST be returned containing the data that was requested.  </p>
+<p id="rfc.section.4.2.p.3">Also a warnings array MUST be returned.  </p>
+<p id="rfc.section.4.2.p.4">Due to the fact that the original intent of the API consumer was successful, an empty errors array MUST be returned.  </p>
+<pre>
+POST /v2/shipments HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Warning: 214 - "Transformation Applied" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "errors": [],
+  "warnings": [
+    {
+      "detail": "Street name was too long. It has been shortened to...",
+      "errorcode": "123456",
+      "instance": "https://example.com/shipments/3a186c51d4281acb",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://github.com/example/errors/shortened_entry"
+    },
+    {
+      "detail": "City for this zipcode unknown. Code for shipment...",
+      "errorcode": "987654",
+      "instance": "https://example.com/shipments/3a186c51d4281acb",
+      "status": "200",
+      "title": "City for zipcode unknown.",
+      "type": "https://github.com/example/errors/city_for_zip_unknown"
+    }
+  ],
+  "data": {
+    "id": "3a186c51d4281acb",
+    "carrier_tracking_no": "84168117830018",
+    "tracking_url": "http://example.com/3a186c51d",
+    "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+    "price": 3.4
+  }
+}
+</pre>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#security.considerations" id="security.considerations">Security Considerations</a>
+</h1>
+<p id="rfc.section.5.p.1">API providers need to exercise care when reporting errors (<a href="#errors" class="xref">Section 3.3</a>) or warnings (<a href="#warnings" class="xref">Section 3.4</a>). Malicious actors could use this information for orchestrating attacks.  </p>
+<p id="rfc.section.5.p.2">Support teams at API providers need to be informed about the affects of social engineering when returning the request_id (<a href="#request_id" class="xref">Section 3.2</a>), because malicious actors could use this information to gain access to user specific data.  </p>
 <h1 id="rfc.references">
-<a href="#rfc.references">5.</a> References</h1>
+<a href="#rfc.references">6.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">5.1.</a> Informative References</h1>
+<a href="#rfc.references.1">6.1.</a> Informative References</h1>
 <table><tbody><tr>
 <td class="reference"><b id="W3C.REC-webarch-20041215">[W3C.REC-webarch-20041215]</b></td>
 <td class="top">
 <a>Jacobs, I.</a> and <a>N. Walsh</a>, "<a href="http://www.w3.org/TR/2004/REC-webarch-20041215">Architecture of the World Wide Web, Volume One</a>", World Wide Web Consortium Recommendation REC-webarch-20041215, December 2004.</td>
 </tr></tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">5.2.</a> Normative References</h1>
+<a href="#rfc.references.2">6.2.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
