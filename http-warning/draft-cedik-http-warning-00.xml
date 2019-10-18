@@ -42,10 +42,20 @@
             <xref target="RFC7231" /> is returned to convey the fact.
          </t>
          <t>
-            But response handling isn't always black and white. There are use cases where a 3rd
-            party system returns a response with data that can't be defined as a clear error, but
-            returning a http status code of e.g. 200 OK without any additional information is also
-            wrong. This document tries to define a standard response format for HTTP API warning
+            But response handling isn't always black and white. There are use cases where e.g. a 3rd
+            party system returns a response with data that can't be defined as a clear error. API
+            provider who are intigrating such a 3rd party system into their service will have to
+            return a correct response nontheless, but returning a http status code of e.g. 200 OK
+            without any additional information is wrong in this case.
+         </t>
+         <t>
+            As defined in the principles of Web architecture
+            <xref target="W3C.REC-webarch-20041215" /> agents should not "recover from error by
+            making a choice without the user's consent are not acting on the user's behalf".
+            Therefore APIs should be able to communicate what has happened to their consumers.
+         </t>
+         <t>
+            This document tries to define a standard response format for HTTP API warning
             information.
          </t>
       </section>
@@ -101,18 +111,40 @@
          <section anchor="warnings" title="warnings">
             <t>
                warnings: (optional) When an error occured that can not be defined as a "hard error"
-               (HTTP response code is in the 4xx-5xx range), but is more like an additional
-               information one should consider returning to the APIs user, the warnings array MUST
-               be filled with an object for each and every warning message that SHOULD be returned
-               to the user.
+               (<xref target="errors" />), but is meant as additional information one should
+               consider returning to the APIs user, the warnings array MUST be filled with an object
+               for each and every warning message that SHOULD be returned to the user.
             </t>
             <t>
                Entries follow the pattern described in <xref target="RFC7807" />.
+            </t>
+            <t>
+               When warnings are present a warning header (as defined in Section 5.5 of
+               <xref target="RFC7234" />) MUST be set to indicate that warnings will be returned.
+               This way a client will not have to parse the response body to find out if the
+               warnings array has entries.
             </t>
          </section>
       </section>
    </middle>
    <back>
+      <references title="Informative References">
+         <reference anchor='W3C.REC-webarch-20041215'
+            target='http://www.w3.org/TR/2004/REC-webarch-20041215'>
+            <front>
+               <title>Architecture of the World Wide Web, Volume One</title>
+               <author initials='I.' surname='Jacobs' fullname='Ian Jacobs'>
+                  <organization />
+               </author>
+               <author initials='N.' surname='Walsh' fullname='Norman Walsh'>
+                  <organization />
+               </author>
+               <date month='December' day='15' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-webarch-20041215' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-webarch-20041215' />
+         </reference>
+      </references>
       <references title="Normative References">
          <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
             <front>
@@ -178,6 +210,30 @@
             </front>
             <seriesInfo name='RFC' value='7231' />
             <seriesInfo name='DOI' value='10.17487/RFC7231' />
+         </reference>
+         <reference anchor="RFC7234" target="https://www.rfc-editor.org/info/rfc7234">
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Caching</title>
+               <author initials="R." surname="Fielding" fullname="R. Fielding" role="editor">
+                     <organization />
+               </author>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham" role="editor">
+                     <organization />
+               </author>
+               <author initials="J." surname="Reschke" fullname="J. Reschke" role="editor">
+                     <organization />
+               </author>
+               <date year="2014" month="June" />
+               <abstract>
+                     <t>
+                        The Hypertext Transfer Protocol (HTTP) is a stateless \%application- level protocol for distributed,
+                        collaborative, hypertext information systems. This document defines HTTP caches and the associated
+                        header fields that control cache behavior or indicate cacheable response messages.
+                     </t>
+               </abstract>
+            </front>
+            <seriesInfo name="RFC" value="7234" />
+            <seriesInfo name="DOI" value="10.17487/RFC7234" />
          </reference>
          <reference anchor="RFC7807" target="https://www.rfc-editor.org/info/rfc7807">
             <front>
