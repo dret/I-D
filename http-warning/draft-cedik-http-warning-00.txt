@@ -74,10 +74,11 @@ Table of Contents
      3.2.  request id  . . . . . . . . . . . . . . . . . . . . . . .   3
      3.3.  errors  . . . . . . . . . . . . . . . . . . . . . . . . .   3
      3.4.  warnings  . . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.1.  Informative References  . . . . . . . . . . . . . . . . .   4
-     4.2.  Normative References  . . . . . . . . . . . . . . . . . .   4
-     4.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .   4
+   5.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     5.1.  Informative References  . . . . . . . . . . . . . . . . .   4
+     5.2.  Normative References  . . . . . . . . . . . . . . . . . .   4
+     5.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   5
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   5
 
@@ -104,7 +105,6 @@ Table of Contents
 
    This document tries to define a standard response format for HTTP API
    warning information.
-
 
 
 
@@ -180,9 +180,20 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    This way a client will not have to parse the response body to find
    out if the warnings array has entries.
 
-4.  References
+4.  Security Considerations
 
-4.1.  Informative References
+   API providers need to exercise care when reporting errors
+   (Section 3.3) or warnings (Section 3.4).  Malicious actors could use
+   this information for orchestrating attacks.
+
+   Support teams at API providers need to be informed about the affects
+   of social engineering when returning the request_id (Section 3.2),
+   because malicious actors could use this information to gain access to
+   user specific data.
+
+5.  References
+
+5.1.  Informative References
 
    [W3C.REC-webarch-20041215]
               Jacobs, I. and N. Walsh, "Architecture of the World Wide
@@ -190,7 +201,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
               Recommendation REC-webarch-20041215, December 2004,
               <http://www.w3.org/TR/2004/REC-webarch-20041215>.
 
-4.2.  Normative References
+5.2.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -207,6 +218,14 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
               DOI 10.17487/RFC7231, June 2014,
               <https://www.rfc-editor.org/info/rfc7231>.
 
+
+
+
+Cedik & Wilde            Expires April 19, 2020                 [Page 4]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+
+
    [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
               RFC 7234, DOI 10.17487/RFC7234, June 2014,
@@ -216,22 +235,12 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
               APIs", RFC 7807, DOI 10.17487/RFC7807, March 2016,
               <https://www.rfc-editor.org/info/rfc7807>.
 
-
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 4]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
-
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
 
-4.3.  URIs
+5.3.  URIs
 
    [1] https://developer.twitter.com/en/docs/labs/tweets-and-users/api-
        reference/get-tweets-v1
@@ -259,15 +268,6 @@ Authors' Addresses
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
-
-
-
-
-
-
-
-
-
 
 
 

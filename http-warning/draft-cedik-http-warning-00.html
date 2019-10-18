@@ -381,9 +381,10 @@
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 request id">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 errors">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 warnings">
-<link href="#rfc.references" rel="Chapter" title="4 References">
-<link href="#rfc.references.1" rel="Chapter" title="4.1 Informative References">
-<link href="#rfc.references.2" rel="Chapter" title="4.2 Normative References">
+<link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations">
+<link href="#rfc.references" rel="Chapter" title="5 References">
+<link href="#rfc.references.1" rel="Chapter" title="5.1 Informative References">
+<link href="#rfc.references.2" rel="Chapter" title="5.2 Normative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgements">
 <link href="#rfc.authors" rel="Chapter">
 
@@ -465,11 +466,13 @@
 </li>
 <li>3.4.   <a href="#rfc.section.3.4">warnings</a>
 </li>
-</ul><li>4.   <a href="#rfc.references">References</a>
+</ul><li>4.   <a href="#rfc.section.4">Security Considerations</a>
 </li>
-<ul><li>4.1.   <a href="#rfc.references.1">Informative References</a>
+<li>5.   <a href="#rfc.references">References</a>
 </li>
-<li>4.2.   <a href="#rfc.references.2">Normative References</a>
+<ul><li>5.1.   <a href="#rfc.references.1">Informative References</a>
+</li>
+<li>5.2.   <a href="#rfc.references.2">Normative References</a>
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgements</a>
 </li>
@@ -515,17 +518,22 @@
 <p id="rfc.section.3.4.p.1">warnings: (optional) When an error occured that can not be defined as a "hard error" (<a href="#errors" class="xref">Section 3.3</a>), but is meant as additional information one should consider returning to the APIs user, the warnings array MUST be filled with an object for each and every warning message that SHOULD be returned to the user.  </p>
 <p id="rfc.section.3.4.p.2">Entries follow the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
 <p id="rfc.section.3.4.p.3">When warnings are present a warning header (as defined in Section 5.5 of <a href="#RFC7234" class="xref">[RFC7234]</a>) MUST be set to indicate that warnings will be returned.  This way a client will not have to parse the response body to find out if the warnings array has entries.  </p>
+<h1 id="rfc.section.4">
+<a href="#rfc.section.4">4.</a> <a href="#security.considerations" id="security.considerations">Security Considerations</a>
+</h1>
+<p id="rfc.section.4.p.1">API providers need to exercise care when reporting errors (<a href="#errors" class="xref">Section 3.3</a>) or warnings (<a href="#warnings" class="xref">Section 3.4</a>). Malicious actors could use this information for orchestrating attacks.  </p>
+<p id="rfc.section.4.p.2">Support teams at API providers need to be informed about the affects of social engineering when returning the request_id (<a href="#request_id" class="xref">Section 3.2</a>), because malicious actors could use this information to gain access to user specific data.  </p>
 <h1 id="rfc.references">
-<a href="#rfc.references">4.</a> References</h1>
+<a href="#rfc.references">5.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">4.1.</a> Informative References</h1>
+<a href="#rfc.references.1">5.1.</a> Informative References</h1>
 <table><tbody><tr>
 <td class="reference"><b id="W3C.REC-webarch-20041215">[W3C.REC-webarch-20041215]</b></td>
 <td class="top">
 <a>Jacobs, I.</a> and <a>N. Walsh</a>, "<a href="http://www.w3.org/TR/2004/REC-webarch-20041215">Architecture of the World Wide Web, Volume One</a>", World Wide Web Consortium Recommendation REC-webarch-20041215, December 2004.</td>
 </tr></tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">4.2.</a> Normative References</h1>
+<a href="#rfc.references.2">5.2.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
