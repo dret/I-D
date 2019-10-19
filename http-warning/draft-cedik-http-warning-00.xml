@@ -29,7 +29,7 @@
       </abstract>
       <note title="Note to Readers">
          <t>This draft should be discussed on the rfc-interest mailing list (<eref target="https://www.rfc-editor.org/mailman/listinfo/rfc-interest"/>).</t>
-         <t>Online access to all versions and files is available on Github (<eref target="https://github.com/dret/I-D/tree/master/http-warning"/>).</t>
+         <t>Online access to all versions and files is available on GitHub (<eref target="https://github.com/dret/I-D/tree/master/http-warning"/>).</t>
       </note>
    </front>
    <middle>
@@ -44,8 +44,8 @@
          <t>
             But response handling isn't always black and white. There are use cases where e.g. a 3rd
             party system returns a response with data that can't be defined as a clear error. API
-            provider who are intigrating such a 3rd party system into their service will have to
-            return a correct response nontheless, but returning a http status code of e.g. 200 OK
+            provider who are integrating such a 3rd party system into their service will have to
+            return a correct response nonetheless, but returning a http status code of e.g. 200 OK
             without any additional information is wrong in this case.
          </t>
          <t>
@@ -82,7 +82,7 @@
             <t>
                data: (required) APIs MUST return the data that is tied to the resource of the
                request in this field. This shields it from other / meta content and makes it easily
-               adressable.
+               addressable.
             </t>
             <t>
                This pattern is already being used by Twitter for getting
@@ -94,13 +94,13 @@
          <section anchor="request_id" title="request id">
             <t>
                request_id: (required) public id of the request within the API providers' system.
-               The request_id MUST be returned when errors or warnings have occured to make handling
+               The request_id MUST be returned when errors or warnings have occurred to make handling
                of support cases easier.
             </t>
          </section>
          <section anchor="errors" title="errors">
             <t>
-               errors: (optional) When an error occured that makes it impossible to go any further
+               errors: (optional) When an error occurred that makes it impossible to go any further
                (HTTP response code is in the 4xx-5xx range), the errors array MUST be filled with an
                object for each and every error that was thrown.
             </t>
@@ -110,7 +110,7 @@
          </section>
          <section anchor="warnings" title="warnings">
             <t>
-               warnings: (optional) When an error occured that can not be defined as a "hard error"
+               warnings: (optional) When an error occurred that can not be defined as a "hard error"
                (<xref target="errors" />), but is meant as additional information one should
                consider returning to the APIs user, the warnings array MUST be filled with an object
                for each and every warning message that SHOULD be returned to the user.
@@ -129,11 +129,11 @@
       <section anchor="correlation.between.errors.warnings.and.data" title="Correlation between errors, warnings and data">
          <section anchor="hard.errors.with.warnings" title="Hard errors with warnings">
             <t>
-               As described previously, errors are exception like occurences where processing of the
+               As described previously, errors are exception like occurrences where processing of the
                request stopped and the API consumer has to be informed of this "hard error" right away.
             </t>
             <t>
-               If warnings occured during the processing of the request, but before the processing
+               If warnings occurred during the processing of the request, but before the processing
                stopped, they MUST be returned alongside the errors.
             </t>
             <t>
