@@ -24,7 +24,7 @@
       <date day="17" month="October" year="2019"/>
       <abstract>
          <t>
-            This document proposes a standard response format for HTTP API warning information.
+            This document defines a warning code and a standard response format for warning information in HTTP APIs.
          </t>
       </abstract>
       <note title="Note to Readers">
@@ -35,28 +35,28 @@
    <middle>
       <section title="Introduction" anchor="introduction">
          <t>
-            Lots of current APIs are using HTTP
-            <xref target="RFC7230" /> as their protocol. Their
-            clients' response handling is based on the assumption, that requests either are
-            successful or they fail. In both cases (success and fail) a http response status code
-            <xref target="RFC7231" /> is returned to convey the fact.
+            Many current APIs are based on HTTP
+            <xref target="RFC7230" /> as their underlying protocol. Their
+            response handling model is based on the assumption that requests either are
+            successful or they fail. In both cases (success and fail) an HTTP response status code
+            <xref target="RFC7231" /> is returned to convey either fact.
          </t>
          <t>
-            But response handling isn't always black and white. There are use cases where e.g. a 3rd
-            party system returns a response with data that can't be defined as a clear error. API
-            provider who are integrating such a 3rd party system into their service will have to
-            return a correct response nonetheless, but returning a http status code of e.g. 200 OK
-            without any additional information is wrong in this case.
+            But response handling is not always strictly either successful or fail. For example, there are cases where an underlying
+            system returns a response with data that cannot be defined as a clear error. API
+            providers who are integrating such a service will have to
+            return a correct response nonetheless, but returning a HTTP status code of e.g. 200 OK
+            without any additional information is not entirely correct in this case.
          </t>
          <t>
             As defined in the principles of Web architecture
-            <xref target="W3C.REC-webarch-20041215" /> agents should not "recover from error by
+            <xref target="W3C.REC-webarch-20041215" />, agents that "recover from errors by
             making a choice without the user's consent are not acting on the user's behalf".
             Therefore APIs should be able to communicate what has happened to their consumers.
          </t>
          <t>
-            This document tries to define a standard response format for HTTP API warning
-            information.
+            This document defines a warning code and a standard response format for warning
+            information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to be a non-failure, there is some warning information available that they might want to take into account.
          </t>
       </section>
       <section anchor="notational-conventions" title="Notational Conventions">
