@@ -36,7 +36,7 @@
       <section title="Introduction" anchor="introduction">
          <t>
             Many current APIs are based on HTTP
-            <xref target="RFC7230" /> as their underlying protocol. Their
+            <xref target="RFC7230" /> as their application protocol. Their
             response handling model is based on the assumption that requests either are
             successful or they fail. In both cases (success and fail) an HTTP response status code
             <xref target="RFC7231" /> is returned to convey either fact.
@@ -46,16 +46,16 @@
             system returns a response with data that cannot be defined as a clear error. API
             providers who are integrating such a service will have to
             return a correct response nonetheless, but returning a HTTP status code of e.g. 200 OK
-            without any additional information is not entirely correct in this case.
+            without any additional information is not the only possible approach in this case.
          </t>
          <t>
             As defined in the principles of Web architecture
             <xref target="W3C.REC-webarch-20041215" />, agents that "recover from errors by
             making a choice without the user's consent are not acting on the user's behalf".
-            Therefore APIs should be able to communicate what has happened to their consumers.
+            Therefore APIs should be able to communicate what has happened to their consumers, which then allows clients or users to make more informed decisions.
          </t>
          <t>
-            This document defines a warning code and a standard response format for warning
+            This document defines a warning code and a standard response structure for warning
             information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to be a non-failure, there is some warning information available that they might want to take into account.
          </t>
       </section>
