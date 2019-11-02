@@ -66,21 +66,24 @@
             described in <xref target="RFC2119"/>.
          </t>
       </section>
-      <section anchor="warning-header" title="Warning header">
+      <section anchor="warning-header" title="Warning Header">
          <t>
             As described in section 5.5 of <xref target="RFC7234"/> the Warning header field "is
             used to carry additional information about the status or transformation of a message
             that might not be reflected in the status code". The field itself consists of the
-            warn-code, a warn-agent, a warn-text and an optional warn-date.
+            warn-code, a warn-agent, a warn-text, and an optional warn-date.
          </t>
          <t>
-            As noted in the introduction (<xref target="introduction"/>), HTTP requests can be
-            successful or fail. Or they can have a state where the original intent was satisfied,
-            but a side effect got introduced that should be conveyed back to the client.
+            As mentioned in the introduction (<xref target="introduction"/>), HTTP requests can be
+            successful or they can fail. They can also result in a state where the original intent was satisfied,
+            but a side effect happened that should be conveyed back to the client.
          </t>
          <t>
             To make it easier for clients to handle such an event, a warning header using the
-            warn-code "XXX" and the warn-text "Embedded Warning" MUST be returned.
+            warn-code "XXX" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
+         </t>
+         <t>
+            The XXX warn code does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
          </t>
       </section>
       <section anchor="warning-format" title="JSON Warning Format">
