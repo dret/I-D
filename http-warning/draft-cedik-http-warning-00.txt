@@ -5,8 +5,8 @@
 Network Working Group                                           A. Cedik
 Internet-Draft                                            shipcloud GmbH
 Intended status: Standards Track                                E. Wilde
-Expires: April 19, 2020                                            Axway
-                                                        October 17, 2019
+Expires: May 7, 2020                                               Axway
+                                                        November 4, 2019
 
 
              Communicating Warning Information in HTTP APIs
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 19, 2020.
+   This Internet-Draft will expire on May 7, 2020.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Cedik & Wilde            Expires April 19, 2020                 [Page 1]
+Cedik & Wilde              Expires May 7, 2020                  [Page 1]
 
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
    publication of this document.  Please review these documents
@@ -70,23 +70,18 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   3
    3.  Warning Header  . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
-     4.1.  data  . . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.2.  request id  . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.3.  errors  . . . . . . . . . . . . . . . . . . . . . . . . .   4
-     4.4.  warnings  . . . . . . . . . . . . . . . . . . . . . . . .   4
-   5.  Correlation between errors, warnings and data . . . . . . . .   5
-     5.1.  Hard errors with warnings . . . . . . . . . . . . . . . .   5
-     5.2.  Soft errors with data . . . . . . . . . . . . . . . . . .   6
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
-     7.1.  HTTP Warn Code: 246 - Embedded Warning  . . . . . . . . .   8
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .   9
-     8.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+   4.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   3
+   5.  Correlation between errors, warnings and data . . . . . . . .   4
+     5.1.  Hard errors with warnings . . . . . . . . . . . . . . . .   4
+     5.2.  Soft errors with data . . . . . . . . . . . . . . . . . .   5
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+     7.1.  HTTP Warn Code: 246 - Embedded Warning  . . . . . . . . .   6
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -106,18 +101,18 @@ Table of Contents
 
    As defined in the principles of Web architecture
    [W3C.REC-webarch-20041215], agents that "recover from errors by
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 2]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
-
    making a choice without the user's consent are not acting on the
    user's behalf".  Therefore APIs should be able to communicate what
    has happened to their consumers, which then allows clients or users
    to make more informed decisions.
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 2]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
 
    This document defines a warning code and a standard response
    structure for warning information in HTTP APIs.  The goal is to allow
@@ -145,7 +140,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    the original intent was satisfied, but a side effect happened that
    should be conveyed back to the client.
 
-   To make it easier for clients to handle such an event, a warning
+   To make it easier for clients to handle such an event, a Warning
    header using the warn-code "246" and the warn-text "Embedded Warning"
    MAY be returned.  In this case, the client MAY either treat the
    response according to its HTTP status code, or the client MAY use the
@@ -159,17 +154,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    use this or other formats to represent the warning information they
    are embedding.
 
-
-
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 3]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
-
 4.  JSON Warning Format
 
    The proposed response format uses the JSON format described in
@@ -178,58 +162,31 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    In many current designs of JSON-based HTTP APIs, services represent
    response data as members of the returned JSON object.  Although it
    might seem logical at first, differentiating between data that is
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 3]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
    meant to describe the response of the API call (e.g. a resource
    created) and its errors or other meta data, can get complicated when
-   mixed.  Therefore the actual response data SHOULD be returned in a
-   data attribute.
+   mixed.  Therefore a "warnings" attribute MUST encapsulate the
+   warnings that will be returned to the client.
 
-4.1.  data
-
-   data: (required) APIs MUST return the data that is tied to the
-   resource of the request in this field.  This shields it from other /
-   meta content and makes it easily addressable.
-
-   This pattern is already being used by Twitter for getting Tweets [1]
-   and Users [2].  Twitter is also using it for handling campaigns [3].
-
-4.2.  request id
-
-   request_id: (required) public id of the request within the API
-   providers' system.  The request_id MUST be returned when errors or
-   warnings have occurred to make handling of support cases easier.
-
-4.3.  errors
-
-   errors: (optional) When an error occurred that makes it impossible to
-   go any further (HTTP status code is in the 4xx-5xx range), the errors
-   array MUST be filled with an object for each and every error that was
-   thrown.
+   When an error occurred that can not be defined as a "hard error", but
+   is meant as additional information one should consider returning this
+   information to the APIs user.  The warnings array MUST be filled with
+   one object for each and every warning message that SHOULD be returned
+   to the user.
 
    Entries follow the pattern described in [RFC7807].
 
-4.4.  warnings
-
-   warnings: (optional) When an error occurred that can not be defined
-   as a "hard error" (Section 4.3), but is meant as additional
-   information one should consider returning to the APIs user, the
-   warnings array MUST be filled with an object for each and every
-   warning message that SHOULD be returned to the user.
-
-   Entries follow the pattern described in [RFC7807].
-
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 4]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
-
-   When warnings are present a warning header (as defined in Section 3)
-   SHOULD be sent to indicate that warnings are being returned.  This
-   way a client will not have to parse the response body to find out
-   whether the warnings array has entries.
+   When warnings are present a Warning header (as defined in Section 3)
+   MUST be set to indicate that warnings will be returned.  This way a
+   client will not have to parse the response body to find out if the
+   warnings array has entries.
 
 5.  Correlation between errors, warnings and data
 
@@ -239,30 +196,50 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    processing of the request stopped and the API consumer has to be
    informed of this "hard error" right away.
 
-   If warnings occurred during the processing of the request, but before
-   the processing stopped, they MUST be returned alongside the errors.
+   To indicate this fact the content-type MAY be set to application/
+   problem+json and detailed information about the error will be
+   returned in the body following the pattern described in [RFC7807].
 
-   Due to the fact that the original intent of the API consumer was not
-   successful, an empty data object MUST be returned.
+   If warnings occurred during the processing of the request, but before
+   the processing stopped, they SHOULD be returned alongside the errors.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 4]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
 
    POST /example HTTP/1.1
    Host: example.com
    Accept: application/json
 
    HTTP/1.1 400 BAD REQUEST
-   Content-Type: application/json
+   Content-Type: application/problem+json
    Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
 
    {
      "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-     "errors": [
-       {
-         "detail": "The format of pickup time earliest was wrong.",
-         "status": "500",
-         "title": "Wrong format for pickup time",
-         "type": "https://github.com/example/errors/wrong_format"
-       }
-     ],
+     "detail": "The format of pickup time earliest was wrong.",
+     "status": "500",
+     "title": "Wrong format for pickup time",
+     "type": "https://github.com/example/errors/wrong_format"
      "warnings": [
        {
          "detail": "Street name too long. It has been shortened to fit",
@@ -270,17 +247,8 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
          "title": "Street name too long. It has been shortened.",
          "type": "https://github.com/example/errors/shortened_entry"
        }
-     ],
-     "data": {}
+     ]
    }
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 5]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
 
 5.2.  Soft errors with data
 
@@ -288,13 +256,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    status code, the response status code SHOULD be in the 2xx range,
    indicating that the intent of the API client was successful.
 
-   Because of this a data object (Section 4.1) MUST be returned
-   containing the data that was requested.
-
-   Also a warnings array MUST be returned.
-
-   Due to the fact that the original intent of the API consumer was
-   successful, an empty errors array MUST be returned.
 
 
 
@@ -316,26 +277,9 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 6]
+Cedik & Wilde              Expires May 7, 2020                  [Page 5]
 
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
    POST /example HTTP/1.1
@@ -348,7 +292,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
 
    {
      "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-     "errors": [],
      "warnings": [
        {
          "detail": "Street name was too long. It has been shortened...",
@@ -365,34 +308,18 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
          "type": "https://github.com/example/errors/city_unknown"
        }
      ],
-     "data": {
-       "id": "3a186c51d4281acb",
-       "carrier_tracking_no": "84168117830018",
-       "tracking_url": "http://example.com/3a186c51d",
-       "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
-       "price": 3.4
-     }
+     "id": "3a186c51d4281acb",
+     "carrier_tracking_no": "84168117830018",
+     "tracking_url": "http://example.com/3a186c51d",
+     "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+     "price": 3.4
    }
 
 6.  Security Considerations
 
-   API providers need to exercise care when reporting errors
-   (Section 4.3) or warnings (Section 4.4).  Malicious actors could use
-   this information for orchestrating attacks.
-
-   Support teams at API providers need to be informed about the affects
-   of social engineering when returning the request_id (Section 4.2),
-   because malicious actors could use this information to gain access to
-   user specific data.
-
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 7]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
+   API providers need to exercise care when reporting warnings
+   (Section 3).  Malicious actors could use this information for
+   orchestrating attacks.
 
 7.  IANA Considerations
 
@@ -402,6 +329,14 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
    of [RFC7234]:
 
       Warn Code: 246
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 6]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
 
       Short Description: Embedded Warning
 
@@ -440,16 +375,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
               DOI 10.17487/RFC8259, December 2017,
               <https://www.rfc-editor.org/info/rfc8259>.
 
-
-
-
-
-
-Cedik & Wilde            Expires April 19, 2020                 [Page 8]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
-
-
 8.2.  Informative References
 
    [W3C.REC-webarch-20041215]
@@ -458,16 +383,16 @@ Internet-DrafCommunicating Warning Information in HTTP APIs October 2019
               Recommendation REC-webarch-20041215, December 2004,
               <http://www.w3.org/TR/2004/REC-webarch-20041215>.
 
-8.3.  URIs
 
-   [1] https://developer.twitter.com/en/docs/labs/tweets-and-users/api-
-       reference/get-tweets-v1
 
-   [2] https://developer.twitter.com/en/docs/labs/tweets-and-users/api-
-       reference/get-users-v1
 
-   [3] https://developer.twitter.com/en/docs/ads/campaign-management/
-       api-reference/campaigns
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 7]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
 
 Appendix A.  Acknowledgements
 
@@ -501,4 +426,23 @@ Authors' Addresses
 
 
 
-Cedik & Wilde            Expires April 19, 2020                 [Page 9]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 8]
