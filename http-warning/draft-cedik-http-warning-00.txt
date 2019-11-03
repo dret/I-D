@@ -70,17 +70,17 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   3
    3.  Warning Header  . . . . . . . . . . . . . . . . . . . . . . .   3
-   4.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   3
+   4.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
    5.  Correlation between errors, warnings and data . . . . . . . .   4
-     5.1.  Hard errors with warnings . . . . . . . . . . . . . . . .   4
-     5.2.  Soft errors with data . . . . . . . . . . . . . . . . . .   5
+     5.1.  Soft errors with data . . . . . . . . . . . . . . . . . .   4
+     5.2.  Hard errors with warnings . . . . . . . . . . . . . . . .   5
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
      7.1.  HTTP Warn Code: 246 - Embedded Warning  . . . . . . . . .   6
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
@@ -88,13 +88,13 @@ Table of Contents
    Many current APIs are based on HTTP [RFC7230] as their application
    protocol.  Their response handling model is based on the assumption
    that requests either are successful or they fail.  In both cases
-   (success and fail) an HTTP response status code [RFC7231] is returned
-   to convey either fact.
+   (success and fail) an HTTP status code [RFC7231] is returned to
+   convey either fact.
 
    But response status is not always strictly either success or failure.
    For example, there are cases where an underlying system returns a
    response with data that cannot be defined as a clear error.  API
-   providers who are integrating such a service will have to return a
+   providers who are integrating such a service might want to return a
    correct response nonetheless, but returning a HTTP status code of
    e.g. 200 OK without any additional information is not the only
    possible approach in this case.
@@ -115,11 +115,16 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
    This document defines a warning code and a standard response
-   structure for warning information in HTTP APIs.  The goal is to allow
-   HTTP providers to have a standardized way of communicating to their
-   consumers that while the response can be considered to be a non-
-   failure, there is some warning information available that they might
-   want to take into account.
+   structure for communicating and representing warning information in
+   HTTP APIs.  The goal is to allow HTTP providers to have a
+   standardized way of communicating to their consumers that while the
+   response can be considered to be a non-failure, there is some warning
+   information available that they might want to take into account.
+
+   As a general guideline, warning information should be considered to
+   be any information that can be safely ignored (treating the response
+   as if it did not contain any warning information), but that might
+   help clients and users to make better decisions.
 
 2.  Notational Conventions
 
@@ -154,14 +159,9 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    use this or other formats to represent the warning information they
    are embedding.
 
-4.  JSON Warning Format
 
-   The proposed response format uses the JSON format described in
-   [RFC8259].
 
-   In many current designs of JSON-based HTTP APIs, services represent
-   response data as members of the returned JSON object.  Although it
-   might seem logical at first, differentiating between data that is
+
 
 
 
@@ -170,40 +170,40 @@ Cedik & Wilde              Expires May 7, 2020                  [Page 3]
 Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
-   meant to describe the response of the API call (e.g. a resource
-   created) and its errors or other meta data, can get complicated when
-   mixed.  Therefore a "warnings" attribute MUST encapsulate the
+4.  JSON Warning Format
+
+   The JSON warning format uses the JSON format described in [RFC8259].
+   It is intended to be used as a building block in the response schemas
+   of JSON-based APIs.
+
+   In many current designs of JSON-based HTTP APIs, services represent
+   response data as members of the returned JSON object.  In order to
+   make it easier for consumers to identify information about warnings,
+   a top-level member is defined that contains all warning information
+   in a representation.  A "warnings" member MUST encapsulate the
    warnings that will be returned to the client.
 
    When an error occurred that can not be defined as a "hard error", but
    is meant as additional information one should consider returning this
    information to the APIs user.  The warnings array MUST be filled with
-   one object for each and every warning message that SHOULD be returned
-   to the user.
+   one object for each and every warning message that is returned to the
+   client.
 
-   Entries follow the pattern described in [RFC7807].
+   Entries in these individual objects follow the pattern described in
+   [RFC7807].
 
    When warnings are present a Warning header (as defined in Section 3)
-   MUST be set to indicate that warnings will be returned.  This way a
+   SHOULD be set to indicate that warnings have be returned.  This way a
    client will not have to parse the response body to find out if the
    warnings array has entries.
 
 5.  Correlation between errors, warnings and data
 
-5.1.  Hard errors with warnings
+5.1.  Soft errors with data
 
-   As described previously, errors are exception like occurrences where
-   processing of the request stopped and the API consumer has to be
-   informed of this "hard error" right away.
-
-   To indicate this fact the content-type MAY be set to application/
-   problem+json and detailed information about the error will be
-   returned in the body following the pattern described in [RFC7807].
-
-   If warnings occurred during the processing of the request, but before
-   the processing stopped, they SHOULD be returned alongside the errors.
-
-
+   Since warnings do not have an effect on the returned HTTP status
+   code, the response status code SHOULD be in the 2xx range, indicating
+   that the intent of the API client was successful.
 
 
 
@@ -222,62 +222,6 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
 Cedik & Wilde              Expires May 7, 2020                  [Page 4]
-
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
-
-
-   POST /example HTTP/1.1
-   Host: example.com
-   Accept: application/json
-
-   HTTP/1.1 400 BAD REQUEST
-   Content-Type: application/problem+json
-   Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
-
-   {
-     "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-     "detail": "The format of pickup time earliest was wrong.",
-     "status": "500",
-     "title": "Wrong format for pickup time",
-     "type": "https://github.com/example/errors/wrong_format"
-     "warnings": [
-       {
-         "detail": "Street name too long. It has been shortened to fit",
-         "status": "200",
-         "title": "Street name too long. It has been shortened.",
-         "type": "https://github.com/example/errors/shortened_entry"
-       }
-     ]
-   }
-
-5.2.  Soft errors with data
-
-   Since warnings do not have an effect on the returned http response
-   status code, the response status code SHOULD be in the 2xx range,
-   indicating that the intent of the API client was successful.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Cedik & Wilde              Expires May 7, 2020                  [Page 5]
 
 Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
@@ -315,11 +259,59 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
      "price": 3.4
    }
 
+5.2.  Hard errors with warnings
+
+   As described previously, errors are exception like occurrences where
+   processing of the request stopped and the API consumer has to be
+   informed of this "hard error" right away.
+
+   To indicate this fact the content-type MAY be set to application/
+   problem+json and detailed information about the error will be
+   returned in the body following the pattern described in [RFC7807].
+
+   If warnings occurred during the processing of the request, but before
+   the processing stopped, they SHOULD be returned alongside the errors.
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 5]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   POST /example HTTP/1.1
+   Host: example.com
+   Accept: application/json
+
+   HTTP/1.1 400 BAD REQUEST
+   Content-Type: application/problem+json
+   Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+   {
+     "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+     "detail": "The format of pickup time earliest was wrong.",
+     "status": "500",
+     "title": "Wrong format for pickup time",
+     "type": "https://github.com/example/errors/wrong_format"
+     "warnings": [
+       {
+         "detail": "Street name too long. It has been shortened to fit",
+         "status": "200",
+         "title": "Street name too long. It has been shortened.",
+         "type": "https://github.com/example/errors/shortened_entry"
+       }
+     ]
+   }
+
 6.  Security Considerations
 
-   API providers need to exercise care when reporting warnings
-   (Section 3).  Malicious actors could use this information for
-   orchestrating attacks.
+   API providers need to exercise care when reporting warnings.
+   Malicious actors could use this information for orchestrating
+   attacks.  Social engineering can also be a factor when warning
+   information is returned by the API.
 
 7.  IANA Considerations
 
@@ -330,6 +322,14 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
       Warn Code: 246
 
+      Short Description: Embedded Warning
+
+      Reference: Section 3 of [[ this document ]]
+
+
+
+
+
 
 
 
@@ -337,10 +337,6 @@ Cedik & Wilde              Expires May 7, 2020                  [Page 6]
 
 Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
-
-      Short Description: Embedded Warning
-
-      Reference: Section 3 of [[ this document ]]
 
 8.  References
 
@@ -383,6 +379,10 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
               Recommendation REC-webarch-20041215, December 2004,
               <http://www.w3.org/TR/2004/REC-webarch-20041215>.
 
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by ...
+
 
 
 
@@ -393,10 +393,6 @@ Cedik & Wilde              Expires May 7, 2020                  [Page 7]
 
 Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
-
-Appendix A.  Acknowledgements
-
-   Thanks for comments and suggestions provided by ...
 
 Authors' Addresses
 
@@ -411,6 +407,10 @@ Authors' Addresses
 
    Email: erik.wilde@dret.net
    URI:   http://dret.net/netdret/
+
+
+
+
 
 
 

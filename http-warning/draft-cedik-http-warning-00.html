@@ -379,8 +379,8 @@
 <link href="#rfc.section.3" rel="Chapter" title="3 Warning Header">
 <link href="#rfc.section.4" rel="Chapter" title="4 JSON Warning Format">
 <link href="#rfc.section.5" rel="Chapter" title="5 Correlation between errors, warnings and data">
-<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Hard errors with warnings">
-<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Soft errors with data">
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Soft errors with data">
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Hard errors with warnings">
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
 <link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
 <link href="#rfc.section.7.1" rel="Chapter" title="7.1 HTTP Warn Code: 246 - Embedded Warning">
@@ -464,9 +464,9 @@
 </li>
 <li>5.   <a href="#rfc.section.5">Correlation between errors, warnings and data</a>
 </li>
-<ul><li>5.1.   <a href="#rfc.section.5.1">Hard errors with warnings</a>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Soft errors with data</a>
 </li>
-<li>5.2.   <a href="#rfc.section.5.2">Soft errors with data</a>
+<li>5.2.   <a href="#rfc.section.5.2">Hard errors with warnings</a>
 </li>
 </ul><li>6.   <a href="#rfc.section.6">Security Considerations</a>
 </li>
@@ -491,10 +491,11 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Many current APIs are based on HTTP <a href="#RFC7230" class="xref">[RFC7230]</a> as their application protocol. Their response handling model is based on the assumption that requests either are successful or they fail. In both cases (success and fail) an HTTP response status code <a href="#RFC7231" class="xref">[RFC7231]</a> is returned to convey either fact.  </p>
-<p id="rfc.section.1.p.2">But response status is not always strictly either success or failure. For example, there are cases where an underlying system returns a response with data that cannot be defined as a clear error. API providers who are integrating such a service will have to return a correct response nonetheless, but returning a HTTP status code of e.g. 200 OK without any additional information is not the only possible approach in this case.  </p>
+<p id="rfc.section.1.p.1">Many current APIs are based on HTTP <a href="#RFC7230" class="xref">[RFC7230]</a> as their application protocol. Their response handling model is based on the assumption that requests either are successful or they fail. In both cases (success and fail) an HTTP status code <a href="#RFC7231" class="xref">[RFC7231]</a> is returned to convey either fact.  </p>
+<p id="rfc.section.1.p.2">But response status is not always strictly either success or failure. For example, there are cases where an underlying system returns a response with data that cannot be defined as a clear error. API providers who are integrating such a service might want to return a correct response nonetheless, but returning a HTTP status code of e.g. 200 OK without any additional information is not the only possible approach in this case.  </p>
 <p id="rfc.section.1.p.3">As defined in the principles of Web architecture <a href="#W3C.REC-webarch-20041215" class="xref">[W3C.REC-webarch-20041215]</a>, agents that "recover from errors by making a choice without the user's consent are not acting on the user's behalf".  Therefore APIs should be able to communicate what has happened to their consumers, which then allows clients or users to make more informed decisions.  </p>
-<p id="rfc.section.1.p.4">This document defines a warning code and a standard response structure for warning information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to be a non-failure, there is some warning information available that they might want to take into account.  </p>
+<p id="rfc.section.1.p.4">This document defines a warning code and a standard response structure for communicating and representing warning information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to be a non-failure, there is some warning information available that they might want to take into account.  </p>
+<p id="rfc.section.1.p.5">As a general guideline, warning information should be considered to be any information that can be safely ignored (treating the response as if it did not contain any warning information), but that might help clients and users to make better decisions.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#notational-conventions" id="notational-conventions">Notational Conventions</a>
 </h1>
@@ -509,49 +510,18 @@
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#warning-format" id="warning-format">JSON Warning Format</a>
 </h1>
-<p id="rfc.section.4.p.1">The proposed response format uses the JSON format described in <a href="#RFC8259" class="xref">[RFC8259]</a>.  </p>
-<p id="rfc.section.4.p.2">In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. Although it might seem logical at first, differentiating between data that is meant to describe the response of the API call (e.g. a resource created) and its errors or other meta data, can get complicated when mixed. Therefore a "warnings" attribute MUST encapsulate the warnings that will be returned to the client.  </p>
-<p id="rfc.section.4.p.3">When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that SHOULD be returned to the user.  </p>
-<p id="rfc.section.4.p.4">Entries follow the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
-<p id="rfc.section.4.p.5">When warnings are present a Warning header (as defined in <a href="#warning-header" class="xref">Section 3</a>) MUST be set to indicate that warnings will be returned. This way a client will not have to parse the response body to find out if the warnings array has entries.  </p>
+<p id="rfc.section.4.p.1">The JSON warning format uses the JSON format described in <a href="#RFC8259" class="xref">[RFC8259]</a>. It is intended to be used as a building block in the response schemas of JSON-based APIs.  </p>
+<p id="rfc.section.4.p.2">In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. In order to make it easier for consumers to identify information about warnings, a top-level member is defined that contains all warning information in a representation. A "warnings" member MUST encapsulate the warnings that will be returned to the client.  </p>
+<p id="rfc.section.4.p.3">When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that is returned to the client.  </p>
+<p id="rfc.section.4.p.4">Entries in these individual objects follow the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
+<p id="rfc.section.4.p.5">When warnings are present a Warning header (as defined in <a href="#warning-header" class="xref">Section 3</a>) SHOULD be set to indicate that warnings have be returned. This way a client will not have to parse the response body to find out if the warnings array has entries.  </p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#correlation.between.errors.warnings.and.data" id="correlation.between.errors.warnings.and.data">Correlation between errors, warnings and data</a>
 </h1>
 <h1 id="rfc.section.5.1">
-<a href="#rfc.section.5.1">5.1.</a> <a href="#hard.errors.with.warnings" id="hard.errors.with.warnings">Hard errors with warnings</a>
+<a href="#rfc.section.5.1">5.1.</a> <a href="#soft.errors.with.data" id="soft.errors.with.data">Soft errors with data</a>
 </h1>
-<p id="rfc.section.5.1.p.1">As described previously, errors are exception like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.  </p>
-<p id="rfc.section.5.1.p.2">To indicate this fact the content-type MAY be set to application/problem+json and detailed information about the error will be returned in the body following the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
-<p id="rfc.section.5.1.p.3">If warnings occurred during the processing of the request, but before the processing stopped, they SHOULD be returned alongside the errors.  </p>
-<pre>
-POST /example HTTP/1.1
-Host: example.com
-Accept: application/json
-
-HTTP/1.1 400 BAD REQUEST
-Content-Type: application/problem+json
-Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
-
-{
-  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-  "detail": "The format of pickup time earliest was wrong.",
-  "status": "500",
-  "title": "Wrong format for pickup time",
-  "type": "https://github.com/example/errors/wrong_format"
-  "warnings": [
-    {
-      "detail": "Street name too long. It has been shortened to fit",
-      "status": "200",
-      "title": "Street name too long. It has been shortened.",
-      "type": "https://github.com/example/errors/shortened_entry"
-    }
-  ]
-}
-</pre>
-<h1 id="rfc.section.5.2">
-<a href="#rfc.section.5.2">5.2.</a> <a href="#soft.errors.with.data" id="soft.errors.with.data">Soft errors with data</a>
-</h1>
-<p id="rfc.section.5.2.p.1">Since warnings do not have an effect on the returned http response status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.  </p>
+<p id="rfc.section.5.1.p.1">Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.  </p>
 <pre>
 POST /example HTTP/1.1
 Host: example.com
@@ -586,10 +556,41 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
   "price": 3.4
 }
 </pre>
+<h1 id="rfc.section.5.2">
+<a href="#rfc.section.5.2">5.2.</a> <a href="#hard.errors.with.warnings" id="hard.errors.with.warnings">Hard errors with warnings</a>
+</h1>
+<p id="rfc.section.5.2.p.1">As described previously, errors are exception like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.  </p>
+<p id="rfc.section.5.2.p.2">To indicate this fact the content-type MAY be set to application/problem+json and detailed information about the error will be returned in the body following the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
+<p id="rfc.section.5.2.p.3">If warnings occurred during the processing of the request, but before the processing stopped, they SHOULD be returned alongside the errors.  </p>
+<pre>
+POST /example HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 400 BAD REQUEST
+Content-Type: application/problem+json
+Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "detail": "The format of pickup time earliest was wrong.",
+  "status": "500",
+  "title": "Wrong format for pickup time",
+  "type": "https://github.com/example/errors/wrong_format"
+  "warnings": [
+    {
+      "detail": "Street name too long. It has been shortened to fit",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://github.com/example/errors/shortened_entry"
+    }
+  ]
+}
+</pre>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#security.considerations" id="security.considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.6.p.1">API providers need to exercise care when reporting warnings (<a href="#warning-header" class="xref">Section 3</a>). Malicious actors could use this information for orchestrating attacks.  </p>
+<p id="rfc.section.6.p.1">API providers need to exercise care when reporting warnings. Malicious actors could use this information for orchestrating attacks. Social engineering can also be a factor when warning information is returned by the API.  </p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
