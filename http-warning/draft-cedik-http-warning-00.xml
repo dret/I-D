@@ -105,6 +105,45 @@
          </t>
       </section>
       <section anchor="correlation.between.errors.warnings.and.data" title="Correlation between errors, warnings and data">
+         <section anchor="soft.errors.with.data" title="Soft errors with data">
+            <t>
+               Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.
+            </t>
+<figure><artwork><![CDATA[
+POST /example HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "warnings": [
+    {
+      "detail": "Street name was too long. It has been shortened...",
+      "instance": "https://example.com/shipments/3a186c51d4281acb",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://github.com/example/errors/shortened_entry"
+    },
+    {
+      "detail": "City for this zipcode unknown. Code for shipment..",
+      "instance": "https://example.com/shipments/3a186c51d4281acb",
+      "status": "200",
+      "title": "City for zipcode unknown.",
+      "type": "https://github.com/example/errors/city_unknown"
+    }
+  ],
+  "id": "3a186c51d4281acb",
+  "carrier_tracking_no": "84168117830018",
+  "tracking_url": "http://example.com/3a186c51d",
+  "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+  "price": 3.4
+}
+]]></artwork></figure>
+         </section>
          <section anchor="hard.errors.with.warnings" title="Hard errors with warnings">
             <t>
                As described previously, errors are exception like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.
@@ -139,47 +178,6 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
       "type": "https://github.com/example/errors/shortened_entry"
     }
   ]
-}
-]]></artwork></figure>
-         </section>
-         <section anchor="soft.errors.with.data" title="Soft errors with data">
-            <t>
-               Since warnings do not have an effect on the returned http response status code, the
-               response status code SHOULD be in the 2xx range, indicating that the intent of the
-               API client was successful.
-            </t>
-<figure><artwork><![CDATA[
-POST /example HTTP/1.1
-Host: example.com
-Accept: application/json
-
-HTTP/1.1 200 OK
-Content-Type: application/json
-Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
-
-{
-  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-  "warnings": [
-    {
-      "detail": "Street name was too long. It has been shortened...",
-      "instance": "https://example.com/shipments/3a186c51d4281acb",
-      "status": "200",
-      "title": "Street name too long. It has been shortened.",
-      "type": "https://github.com/example/errors/shortened_entry"
-    },
-    {
-      "detail": "City for this zipcode unknown. Code for shipment..",
-      "instance": "https://example.com/shipments/3a186c51d4281acb",
-      "status": "200",
-      "title": "City for zipcode unknown.",
-      "type": "https://github.com/example/errors/city_unknown"
-    }
-  ],
-  "id": "3a186c51d4281acb",
-  "carrier_tracking_no": "84168117830018",
-  "tracking_url": "http://example.com/3a186c51d",
-  "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
-  "price": 3.4
 }
 ]]></artwork></figure>
          </section>
