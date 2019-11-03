@@ -74,13 +74,10 @@
             warn-code, a warn-agent, a warn-text, and an optional warn-date.
          </t>
          <t>
-            As mentioned in the introduction (<xref target="introduction"/>), HTTP requests can be
-            successful or they can fail. They can also result in a state where the original intent was satisfied,
-            but a side effect happened that should be conveyed back to the client.
+            As mentioned in the introduction (<xref target="introduction"/>), HTTP requests can be successful or they can fail. They can also result in a state where the original intent was satisfied, but a side effect happened that should be conveyed back to the client.
          </t>
          <t>
-            To make it easier for clients to handle such an event, a warning header using the
-            warn-code "246" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
+            To make it easier for clients to handle such an event, a Warning header using the warn-code "246" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
          </t>
          <t>
             The "246" warn code does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
@@ -92,72 +89,31 @@
             <xref target="RFC8259" />.
          </t>
          <t>
-            In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. Although it
-            might seem logical at first, differentiating between data that is meant to describe
-            the response of the API call (e.g. a resource created) and its errors or other meta
-            data, can get complicated when mixed. Therefore the actual response data SHOULD be
-            returned in a data attribute.
+            In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. Although it might seem logical at first, differentiating between data that is meant to describe the response of the API call (e.g. a resource created) and its errors or other meta data, can get complicated when mixed. Therefore a "warnings" attribute MUST encapsulate the warnings that will be returned to the client.
          </t>
-         <section anchor="data" title="data">
-            <t>
-               data: (required) APIs MUST return the data that is tied to the resource of the
-               request in this field. This shields it from other / meta content and makes it easily
-               addressable.
-            </t>
-            <t>
-               This pattern is already being used by Twitter for getting
-               <eref target="https://developer.twitter.com/en/docs/labs/tweets-and-users/api-reference/get-tweets-v1">Tweets</eref>
-               and <eref target="https://developer.twitter.com/en/docs/labs/tweets-and-users/api-reference/get-users-v1">Users</eref>.
-               Twitter is also using it for <eref target="https://developer.twitter.com/en/docs/ads/campaign-management/api-reference/campaigns">handling campaigns</eref>.
-            </t>
-         </section>
-         <section anchor="request_id" title="request id">
-            <t>
-               request_id: (required) public id of the request within the API providers' system.
-               The request_id MUST be returned when errors or warnings have occurred to make handling
-               of support cases easier.
-            </t>
-         </section>
-         <section anchor="errors" title="errors">
-            <t>
-               errors: (optional) When an error occurred that makes it impossible to go any further
-               (HTTP status code is in the 4xx-5xx range), the errors array MUST be filled with an
-               object for each and every error that was thrown.
-            </t>
-            <t>
-               Entries follow the pattern described in <xref target="RFC7807" />.
-            </t>
-         </section>
-         <section anchor="warnings" title="warnings">
-            <t>
-               warnings: (optional) When an error occurred that can not be defined as a "hard error"
-               (<xref target="errors" />), but is meant as additional information one should
-               consider returning to the APIs user, the warnings array MUST be filled with an object
-               for each and every warning message that SHOULD be returned to the user.
-            </t>
-            <t>
-               Entries follow the pattern described in <xref target="RFC7807" />.
-            </t>
-            <t>
-               When warnings are present a warning header (as defined in <xref target="warning-header" />)
-               SHOULD be sent to indicate that warnings are being returned. This way a client will not
-               have to parse the response body to find out whether the warnings array has entries.
-            </t>
-         </section>
+         <t>
+            warnings: (optional) When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that SHOULD be returned to the user.
+         </t>
+         <t>
+            Entries follow the pattern described in <xref target="RFC7807" />.
+         </t>
+         <t>
+            When warnings are present a Warning header (as defined in <xref target="warning-header" />)
+            MUST be set to indicate that warnings will be returned. This way a client will not
+            have to parse the response body to find out if the warnings array has entries.
+         </t>
       </section>
       <section anchor="correlation.between.errors.warnings.and.data" title="Correlation between errors, warnings and data">
          <section anchor="hard.errors.with.warnings" title="Hard errors with warnings">
             <t>
-               As described previously, errors are exception like occurrences where processing of the
-               request stopped and the API consumer has to be informed of this "hard error" right away.
+               As described previously, errors are exception like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.
+            </t>
+            <t>
+               To indicate this fact the content-type MAY be set to application/problem+json and detailed information about the error will be returned in the body following the pattern described in <xref target="RFC7807" />.
             </t>
             <t>
                If warnings occurred during the processing of the request, but before the processing
-               stopped, they MUST be returned alongside the errors.
-            </t>
-            <t>
-               Due to the fact that the original intent of the API consumer was not successful, an
-               empty data object MUST be returned.
+               stopped, they SHOULD be returned alongside the errors.
             </t>
 <figure><artwork><![CDATA[
 POST /example HTTP/1.1
@@ -165,19 +121,15 @@ Host: example.com
 Accept: application/json
 
 HTTP/1.1 400 BAD REQUEST
-Content-Type: application/json
+Content-Type: application/problem+json
 Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
 
 {
   "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-  "errors": [
-    {
-      "detail": "The format of pickup time earliest was wrong.",
-      "status": "500",
-      "title": "Wrong format for pickup time",
-      "type": "https://github.com/example/errors/wrong_format"
-    }
-  ],
+  "detail": "The format of pickup time earliest was wrong.",
+  "status": "500",
+  "title": "Wrong format for pickup time",
+  "type": "https://github.com/example/errors/wrong_format"
   "warnings": [
     {
       "detail": "Street name too long. It has been shortened to fit",
@@ -185,8 +137,7 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
       "title": "Street name too long. It has been shortened.",
       "type": "https://github.com/example/errors/shortened_entry"
     }
-  ],
-  "data": {}
+  ]
 }
 ]]></artwork></figure>
          </section>
@@ -195,17 +146,6 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
                Since warnings do not have an effect on the returned http response status code, the
                response status code SHOULD be in the 2xx range, indicating that the intent of the
                API client was successful.
-            </t>
-            <t>
-               Because of this a data object (<xref target="data"/>) MUST be returned containing the
-               data that was requested.
-            </t>
-            <t>
-               Also a warnings array MUST be returned.
-            </t>
-            <t>
-               Due to the fact that the original intent of the API consumer was successful, an
-               empty errors array MUST be returned.
             </t>
 <figure><artwork><![CDATA[
 POST /example HTTP/1.1
@@ -218,7 +158,6 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
 
 {
   "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-  "errors": [],
   "warnings": [
     {
       "detail": "Street name was too long. It has been shortened...",
@@ -235,27 +174,18 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
       "type": "https://github.com/example/errors/city_unknown"
     }
   ],
-  "data": {
-    "id": "3a186c51d4281acb",
-    "carrier_tracking_no": "84168117830018",
-    "tracking_url": "http://example.com/3a186c51d",
-    "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
-    "price": 3.4
-  }
+  "id": "3a186c51d4281acb",
+  "carrier_tracking_no": "84168117830018",
+  "tracking_url": "http://example.com/3a186c51d",
+  "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+  "price": 3.4
 }
 ]]></artwork></figure>
          </section>
       </section>
       <section anchor="security.considerations" title="Security Considerations">
          <t>
-            API providers need to exercise care when reporting errors (<xref target="errors"/>) or
-            warnings (<xref target="warnings"/>). Malicious actors could use this information for
-            orchestrating attacks.
-         </t>
-         <t>
-            Support teams at API providers need to be informed about the affects of social
-            engineering when returning the request_id (<xref target="request_id"/>), because
-            malicious actors could use this information to gain access to user specific data.
+            API providers need to exercise care when reporting warnings (<xref target="warning-header"/>). Malicious actors could use this information for orchestrating attacks.
          </t>
       </section>
       <section title="IANA Considerations" anchor="iana-considerations">
