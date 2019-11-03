@@ -86,21 +86,21 @@
       </section>
       <section anchor="warning-format" title="JSON Warning Format">
          <t>
-            The proposed response format uses the JSON format described in
-            <xref target="RFC8259" />.
+            The JSON warning format uses the JSON format described in
+            <xref target="RFC8259" />. It is intended to be used as a building block in the response schemas of JSON-based APIs.
          </t>
          <t>
-            In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. Although it might seem logical at first, differentiating between data that is meant to describe the response of the API call (e.g. a resource created) and its errors or other meta data, can get complicated when mixed. Therefore a "warnings" attribute MUST encapsulate the warnings that will be returned to the client.
+            In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. In order to make it easier for consumers to identify information about warnings, a top-level member is defined that contains all warning information in a representation. A "warnings" member MUST encapsulate the warnings that will be returned to the client.
          </t>
          <t>
-            When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that SHOULD be returned to the user.
+            When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that is returned to the client.
          </t>
          <t>
-            Entries follow the pattern described in <xref target="RFC7807" />.
+            Entries in these individual objects follow the pattern described in <xref target="RFC7807" />.
          </t>
          <t>
             When warnings are present a Warning header (as defined in <xref target="warning-header" />)
-            MUST be set to indicate that warnings will be returned. This way a client will not
+            SHOULD be set to indicate that warnings have be returned. This way a client will not
             have to parse the response body to find out if the warnings array has entries.
          </t>
       </section>
