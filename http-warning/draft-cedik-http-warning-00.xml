@@ -80,7 +80,7 @@
          </t>
          <t>
             To make it easier for clients to handle such an event, a warning header using the
-            warn-code "XXX" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
+            warn-code "246" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
          </t>
          <t>
             The XXX warn code does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
@@ -166,14 +166,13 @@ Accept: application/json
 
 HTTP/1.1 400 BAD REQUEST
 Content-Type: application/json
-Warning: xxx - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
 
 {
   "request_id": "2326b087-d64e-43bd-a557-42171155084f",
   "errors": [
     {
       "detail": "The format of pickup time earliest was wrong.",
-      "errorcode": "4F5G6H",
       "status": "500",
       "title": "Wrong format for pickup time",
       "type": "https://github.com/example/errors/wrong_format"
@@ -182,7 +181,6 @@ Warning: xxx - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
   "warnings": [
     {
       "detail": "Street name too long. It has been shortened to fit",
-      "errorcode": "123456",
       "status": "200",
       "title": "Street name too long. It has been shortened.",
       "type": "https://github.com/example/errors/shortened_entry"
@@ -216,7 +214,7 @@ Accept: application/json
 
 HTTP/1.1 200 OK
 Content-Type: application/json
-Warning: xxx - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
 
 {
   "request_id": "2326b087-d64e-43bd-a557-42171155084f",
@@ -224,7 +222,6 @@ Warning: xxx - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
   "warnings": [
     {
       "detail": "Street name was too long. It has been shortened...",
-      "errorcode": "123456",
       "instance": "https://example.com/shipments/3a186c51d4281acb",
       "status": "200",
       "title": "Street name too long. It has been shortened.",
@@ -232,7 +229,6 @@ Warning: xxx - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
     },
     {
       "detail": "City for this zipcode unknown. Code for shipment..",
-      "errorcode": "987654",
       "instance": "https://example.com/shipments/3a186c51d4281acb",
       "status": "200",
       "title": "City for zipcode unknown.",
@@ -263,11 +259,11 @@ Warning: xxx - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
          </t>
       </section>
       <section title="IANA Considerations" anchor="iana-considerations">
-         <section title="HTTP Warn Code: xxx - Embedded Warning">
+         <section title="HTTP Warn Code: 246 - Embedded Warning">
             <t>The HTTP warn code below has been registered by IANA per Section 7.2 of <xref target="RFC7234"/>:</t>
             <t>
                <list>
-                  <t>Warn Code: xxx</t>
+                  <t>Warn Code: 246</t>
                   <t>Short Description: Embedded Warning</t>
                   <t>Reference: <xref target="warning-header"/> of [[ this document ]]</t>
                </list>
