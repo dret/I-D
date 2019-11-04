@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc category="std" ipr="trust200902" docName="draft-cedik-http-warning-01">
+   <front>
+      <title>Communicating Warning Information in HTTP APIs</title>
+      <author initials="A." surname="Cedik" fullname="Andre Cedik">
+         <organization>shipcloud GmbH</organization>
+         <address>
+            <email>andre.cedik@googlemail.com</email>
+         </address>
+      </author>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>Axway</organization>
+         <address>
+            <email>erik.wilde@dret.net</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="4" month="November" year="2019"/>
+      <abstract>
+         <t>
+            This document defines a warning code and a standard response format for warning information in HTTP APIs.
+         </t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>This draft should be discussed on the rfc-interest mailing list (<eref target="https://www.rfc-editor.org/mailman/listinfo/rfc-interest"/>).</t>
+         <t>Online access to all versions and files is available on GitHub (<eref target="https://github.com/dret/I-D/tree/master/http-warning"/>).</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction" anchor="introduction">
+         <t>
+            Many current APIs are based on HTTP
+            <xref target="RFC7230" /> as their application protocol. Their
+            response handling model is based on the assumption that requests either are
+            successful or they fail. In both cases (success and fail) an HTTP status code
+            <xref target="RFC7231" /> is returned to convey either fact.
+         </t>
+         <t>
+            But response status is not always strictly either success or failure. For example, there are cases where an underlying
+            system returns a response with data that cannot be defined as a clear error. API
+            providers who are integrating such a service might want to
+            return a correct response nonetheless, but returning a HTTP status code of e.g. 200 OK
+            without any additional information is not the only possible approach in this case.
+         </t>
+         <t>
+            As defined in the principles of Web architecture
+            <xref target="W3C.REC-webarch-20041215" />, agents that "recover from errors by
+            making a choice without the user's consent are not acting on the user's behalf".
+            Therefore APIs should be able to communicate what has happened to their consumers, which then allows clients or users to make more informed decisions.
+         </t>
+         <t>
+            This document defines a warning code and a standard response structure for communicating and representing warning
+            information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to be a non-failure, there is some warning information available that they might want to take into account.
+         </t>
+         <t>As a general guideline, warning information should be considered to be any information that can be safely ignored (treating the response as if it did not contain any warning information), but that might help clients and users to make better decisions.</t>
+      </section>
+      <section anchor="notational-conventions" title="Notational Conventions">
+         <t>
+            The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD
+            NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
+            described in <xref target="RFC2119"/>.
+         </t>
+      </section>
+      <section anchor="warning-header" title="Warning Header">
+         <t>
+            As described in section 5.5 of <xref target="RFC7234"/> the Warning header field "is
+            used to carry additional information about the status or transformation of a message
+            that might not be reflected in the status code". The field itself consists of the
+            warn-code, a warn-agent, a warn-text, and an optional warn-date.
+         </t>
+         <t>
+            As mentioned in the introduction (<xref target="introduction"/>), HTTP requests can be successful or they can fail. They can also result in a state where the original intent was satisfied, but a side effect happened that should be conveyed back to the client.
+         </t>
+         <t>
+            To make it easier for clients to handle such an event, a Warning header using the warn-code "246" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
+         </t>
+         <t>
+            The "246" warn code does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
+         </t>
+      </section>
+      <section anchor="warning-format" title="JSON Warning Format">
+         <t>
+            The JSON warning format uses the JSON format described in
+            <xref target="RFC8259" />. It is intended to be used as a building block in the response schemas of JSON-based APIs.
+         </t>
+         <t>
+            In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. In order to make it easier for consumers to identify information about warnings, a top-level member is defined that contains all warning information in a representation. A "warnings" member MUST encapsulate the warnings that will be returned to the client.
+         </t>
+         <t>
+            When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that is returned to the client.
+         </t>
+         <t>
+            Entries in these individual objects follow the pattern described in <xref target="RFC7807" />.
+         </t>
+         <t>
+            When warnings are present a Warning header (as defined in <xref target="warning-header" />)
+            SHOULD be set to indicate that warnings have be returned. This way a client will not
+            have to parse the response body to find out if the warnings array has entries.
+         </t>
+      </section>
+      <section anchor="correlation.between.errors.warnings.and.data" title="Correlation between errors, warnings and data">
+         <section anchor="soft.errors.with.data" title="Soft errors with data">
+            <t>
+               Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.
+            </t>
+<figure><artwork><![CDATA[
+POST /example HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "warnings": [
+    {
+      "detail": "Street name was too long. It has been shortened...",
+      "instance": "https://example.com/shipments/3a186c51/msgs/c94d",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://example.com/errors/shortened_entry"
+    },
+    {
+      "detail": "City for this zipcode unknown. Code for shipment..",
+      "instance": "https://example.com/shipments/3a186c51/msgs/5927",
+      "status": "200",
+      "title": "City for zipcode unknown.",
+      "type": "https://example.com/errors/city_unknown"
+    }
+  ],
+  "id": "3a186c51d4281acb",
+  "carrier_tracking_no": "84168117830018",
+  "tracking_url": "http://example.com/3a186c51d",
+  "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+  "price": 3.4
+}
+]]></artwork></figure>
+         </section>
+         <section anchor="hard.errors.with.warnings" title="Hard errors with warnings">
+            <t>
+               As described previously, errors are exception like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.
+            </t>
+            <t>
+               To indicate this fact the content-type MAY be set to application/problem+json and detailed information about the error will be returned in the body following the pattern described in <xref target="RFC7807" />.
+            </t>
+            <t>
+               If warnings occurred during the processing of the request, but before the processing
+               stopped, they SHOULD be returned alongside the errors.
+            </t>
+<figure><artwork><![CDATA[
+POST /example HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 400 BAD REQUEST
+Content-Type: application/problem+json
+Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "detail": "The format of pickup time earliest was wrong.",
+  "status": "500",
+  "title": "Wrong format for pickup time",
+  "type": "https://example.com/errors/wrong_format"
+  "warnings": [
+    {
+      "detail": "Street name too long. It has been shortened to fit",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://example.com/errors/shortened_entry"
+    }
+  ]
+}
+]]></artwork></figure>
+         </section>
+      </section>
+      <section anchor="security.considerations" title="Security Considerations">
+         <t>
+            API providers need to exercise care when reporting warnings. Malicious actors could use this information for orchestrating attacks. Social engineering can also be a factor when warning information is returned by the API.
+         </t>
+      </section>
+      <section title="IANA Considerations" anchor="iana-considerations">
+         <section title="HTTP Warn Code: 246 - Embedded Warning">
+            <t>The HTTP warn code below has been registered by IANA per Section 7.2 of <xref target="RFC7234"/>:</t>
+            <t>
+               <list>
+                  <t>Warn Code: 246</t>
+                  <t>Short Description: Embedded Warning</t>
+                  <t>Reference: <xref target="warning-header"/> of [[ this document ]]</t>
+               </list>
+            </t>
+         </section>
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
+            <front>
+               <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+               <author initials="S." surname="Bradner" fullname="S. Bradner">
+                  <organization/>
+               </author>
+               <date year="1997" month="March"/>
+               <abstract>
+                  <t>
+                     In many standards track documents several words are used to signify the requirements in the
+                     specification. These words are often capitalized. This document defines these words as they should be
+                     interpreted in IETF documents. This document specifies an Internet Best Current Practices for the
+                     Internet Community, and requests discussion and suggestions for improvements.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="BCP" value="14"/>
+            <seriesInfo name="RFC" value="2119"/>
+            <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+         </reference>
+         <reference anchor="RFC7230" target='https://www.rfc-editor.org/info/rfc7230'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding' role='editor'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke' role='editor'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless application-level protocol for
+                     distributed, collaborative, hypertext information systems. This document provides an
+                     overview of HTTP architecture and its associated terminology, defines the &quot;http&quot;
+                     and &quot;https&quot; Uniform Resource Identifier (URI) schemes, defines the HTTP/1.1
+                     message syntax and parsing requirements, and describes related security concerns for
+                     implementations.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7230' />
+            <seriesInfo name='DOI' value='10.17487/RFC7230' />
+         </reference>
+         <reference anchor="RFC7231" target='https://www.rfc-editor.org/info/rfc7231'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding' role='editor'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke' role='editor'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless \%application- level protocol for
+                     distributed, collaborative, hypertext information systems. This document defines the semantics of
+                     HTTP/1.1 messages, as expressed by request methods, request header fields, response status codes,
+                     and response header fields, along with the payload of messages (metadata and body content) and
+                     mechanisms for content negotiation.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7231' />
+            <seriesInfo name='DOI' value='10.17487/RFC7231' />
+         </reference>
+         <reference anchor="RFC7234" target="https://www.rfc-editor.org/info/rfc7234">
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Caching</title>
+               <author initials="R." surname="Fielding" fullname="R. Fielding" role="editor">
+                  <organization />
+               </author>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham" role="editor">
+                  <organization />
+               </author>
+               <author initials="J." surname="Reschke" fullname="J. Reschke" role="editor">
+                  <organization />
+               </author>
+               <date year="2014" month="June" />
+               <abstract>
+                  <t>
+                     The Hypertext Transfer Protocol (HTTP) is a stateless \%application- level protocol for distributed,
+                     collaborative, hypertext information systems. This document defines HTTP caches and the associated
+                     header fields that control cache behavior or indicate cacheable response messages.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="RFC" value="7234" />
+            <seriesInfo name="DOI" value="10.17487/RFC7234" />
+         </reference>
+         <reference anchor="RFC7807" target="https://www.rfc-editor.org/info/rfc7807">
+            <front>
+               <title>Problem Details for HTTP APIs</title>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham">
+                  <organization />
+               </author>
+               <author initials="E." surname="Wilde" fullname="E. Wilde">
+                  <organization />
+               </author>
+               <date year="2016" month="March" />
+               <abstract>
+                  <t>
+                     This document defines a "problem detail" as a way to carry machine- readable details of errors in a HTTP
+                     response to avoid the need to define new error response formats for HTTP APIs.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="RFC" value="7807" />
+            <seriesInfo name="DOI" value="10.17487/RFC7807" />
+         </reference>
+         <reference anchor="RFC8259" target="https://www.rfc-editor.org/info/rfc8259">
+            <front>
+               <title>The JavaScript Object Notation (JSON) Data Interchange Format</title>
+               <author initials="T." surname="Bray" fullname="T. Bray" role="editor">
+                  <organization />
+               </author>
+               <date year="2017" month="December" />
+               <abstract>
+                  <t>
+                     JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data
+                     interchange format. It was derived from the ECMAScript Programming Language Standard. JSON
+                     defines a small set of formatting rules for the portable representation of structured data.
+                  </t>
+                  <t>
+                     This document removes inconsistencies with other specifications of JSON, repairs specification
+                     errors, and offers experience-based interoperability guidance.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="STD" value="90" />
+            <seriesInfo name="RFC" value="8259" />
+            <seriesInfo name="DOI" value="10.17487/RFC8259" />
+         </reference>
+      </references>
+      <references title="Informative References">
+         <reference anchor='W3C.REC-webarch-20041215'
+            target='http://www.w3.org/TR/2004/REC-webarch-20041215'>
+            <front>
+               <title>Architecture of the World Wide Web, Volume One</title>
+               <author initials='I.' surname='Jacobs' fullname='Ian Jacobs'>
+                  <organization />
+               </author>
+               <author initials='N.' surname='Walsh' fullname='Norman Walsh'>
+                  <organization />
+               </author>
+               <date month='December' day='15' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-webarch-20041215' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-webarch-20041215' />
+         </reference>
+      </references>
+      <section title="Acknowledgements" anchor="acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+   </back>
+</rfc>
