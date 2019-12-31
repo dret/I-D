@@ -225,7 +225,7 @@
                             the link context. This value SHOULD be an absolute URI  
                             as defined in Section 4.3 of <xref target="RFC3986"/>. Cases whereby no value is to be provided 
                         for the "anchor" member (i.e. the resource providing the set of links is the link context for each link 
-                        in the link context object) MUST be handled by providing an "anchor" member with null value ("anchor":"").</t>
+                        in the link context object) MUST be handled by providing an "anchor" member with null value ("anchor": "").</t>
                         <t>For each distinct relation type that the link context has with link targets 
                             a link context object MUST have an additional member. 
                             This member is an array in which a distinct JSON object 
@@ -253,7 +253,7 @@
                             the link target. This value SHOULD be an absolute URI  
                             as defined in Section 4.3 of <xref target="RFC3986"/>. Cases whereby no value is to be provided 
                             for the "href" member (i.e. the resource providing the set of links is the target of the link 
-                            in the link target object) MUST be handled by providing an "href" member with null value ("href":"").</t>
+                            in the link target object) MUST be handled by providing an "href" member with null value ("href": "").</t>
                     <t>In many cases, a link target is further qualified by attributes, 
                         either defined by the serialization of Web Linking <xref target="RFC8288"/> 
                         or extension attributes defined and used by communities. 
@@ -283,9 +283,9 @@
 {
   "linkset":
     [ 
-      { "anchor":"http://example.net/bar", 
+      { "anchor": "http://example.net/bar", 
         "next": [
-              {"href":"http://example.com/foo"}
+              {"href": "http://example.com/foo"}
         ]
       } 
     ]
@@ -302,10 +302,10 @@
 {
   "linkset":
     [ 
-      { "anchor":"http://example.net/bar", 
+      { "anchor": "http://example.net/bar", 
         "item": [
-              {"href":"http://example.com/foo1"},
-              {"href":"http://example.com/foo2"}
+              {"href": "http://example.com/foo1"},
+              {"href": "http://example.com/foo2"}
         ]
       } 
     ]
@@ -322,12 +322,12 @@
 {
   "linkset":
     [ 
-      { "anchor":"http://example.net/bar", 
+      { "anchor": "http://example.net/bar", 
         "next": [
-              {"href":"http://example.com/foo1"}
+              {"href": "http://example.com/foo1"}
         ]
       },
-      { "anchor":"http://example.net/boo",
+      { "anchor": "http://example.net/boo",
         "http://example.com/relations/baz" : [
               {"href": "http://example.com/foo2"}
         ]
@@ -383,10 +383,10 @@
 {
   "linkset":
     [ 
-      { "anchor":"http://example.net/bar", 
+      { "anchor": "http://example.net/bar", 
         "next": [
-              {"href":"http://example.com/foo",
-               "type":"text/html",
+              {"href":     "http://example.com/foo",
+               "type":     "text/html",
                "hreflang": [ "en" , "de" ]
               }
         ]
@@ -433,13 +433,13 @@
 {
   "linkset":
     [ 
-      { "anchor":"http://example.net/bar", 
+      { "anchor": "http://example.net/bar", 
         "next": [
-              {"href":"http://example.com/foo",
-               "type":"text/html",
+              {"href":     "http://example.com/foo",
+               "type":     "text/html",
                "hreflang": [ "en" , "de" ],
-               "title":"Next chapter",
-               "title*": [ { "value": "nachstes Kapitel" , "language" : "de" } ]
+               "title":    "Next chapter",
+               "title*":   [ { "value": "nachstes Kapitel" , "language" : "de" } ]
               }
         ]
       } 
@@ -484,13 +484,13 @@
 {
   "linkset":
     [ 
-      { "anchor":"http://example.net/bar", 
+      { "anchor": "http://example.net/bar", 
         "next": [
-              {"href":"http://example.com/foo",
-               "type":"text/html",
-               "foo": [ "foovalue" ],
-               "bar": [ "barone", "bartwo" ], 
-               "baz*": [ { "value": "bazvalue" , "language" : "en" } ]
+              { "href": "http://example.com/foo",
+                "type": "text/html",
+                "foo":  [ "foovalue" ],
+                "bar":  [ "barone", "bartwo" ], 
+                "baz*": [ { "value": "bazvalue" , "language" : "en" } ]
               }
         ]
       } 
