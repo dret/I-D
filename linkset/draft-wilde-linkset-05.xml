@@ -42,7 +42,7 @@
         </author>
         <date day="28" month="August" year="2019"/>
         <abstract>
-            <t>This specification defines two media types and a link relation type for referring to sets of links. The media types can be used to represents links in a standalone fashion, in one case in the native format as used in the HTTP Link header, and in the other case in a JSON-based format. The link relation type can be used by a resource to point at another resource that provides a set of links, including but not limited to links in which the former resource participates. One typical scenario is when the number of links to put in an HTTP Link header becomes too big, and thus these links should be provided in another way.</t>
+            <t>This specification defines two media types and a link relation type for referring to sets of links. The media types can be used to represents links in a standalone fashion, in one case in the native format as used in the HTTP "Link" header field, and in the other case in a JSON-based format. The link relation type can be used by a resource to point at another resource that provides a set of links, including but not limited to links in which the former resource participates. One typical scenario is when the number of links to put in an HTTP "Link" header field becomes too big, and thus these links should be provided in another way.</t>
         </abstract>
         <note title="Note to Readers">
             <t>Please discuss this draft on the ART mailing list (<eref target="https://www.ietf.org/mailman/listinfo/art"/>).</t>
@@ -84,7 +84,7 @@
         </section>
         <section title="Scenarios" anchor="scenarios">
             <t>The following sections outline scenarios in which providing links by means of a standalone document 
-                instead of in an HTTP Link header field or as links embedded in the resource representation is advantageous or necessary. 
+                instead of in an HTTP "Link" header field or as links embedded in the resource representation is advantageous or necessary. 
                 It is important to keep in mind that, when providing links by means of a standalone representation, 
                 other links can still be provided by value (i.e., it is possible combine various mechanisms of how links are conveyed).</t>
             <section title="Third-Party Links" anchor="third-party">
@@ -119,7 +119,7 @@
                     -->
             </section>
             <section title="Challenges Writing to HTTP Link Header Field" anchor="header-writing">
-                <t>In some cases, it is not straightforward to write links to the HTTP Link header field
+                <t>In some cases, it is not straightforward to write links to the HTTP "Link" header field
                     from an application. This can, for example, be the case because not all 
                     required link information is available to the application or because the 
                     application does not have the capability to directly write HTTP headers. 
@@ -147,7 +147,7 @@
                     large that even a standalone document would become too large. 
                     This could be the case for highly popular resources, and when links are provided in which such 
                     resources participates as both link context and link target.
-                    In such cases, the links could be delivered incrementally, for example, by means of a paged resource model.</t>
+                    In such cases, the links could be delivered incrementally, for example, by means of a paged resource model  .</t>
             </section>
         </section>
         <section title="Document Formats for Sets of Links" anchor="linkset-formats">
@@ -158,13 +158,13 @@
                 that defines a link as consisting of a "link context", a "link relation type", a "link target", 
                 and optional "target attributes".</t>
                 <t>The format defined in <xref target="linkset-native"/> is identical to the payload 
-                    of the HTTP Link header as specified in <xref target="RFC8288"/>.</t>
+                    of the HTTP "Link" header field as specified in <xref target="RFC8288"/>.</t>
                 <t>The format defined in <xref target="linkset-json"/> is based on JSON and thus
                 does not have the character encoding limitations of HTTP header fields.</t>
             
             <section title="HTTP Link Document Format: application/linkset" anchor="linkset-native">
                 <t>This document format is identical to the payload of the 
-                    HTTP Link header as defined in Section 3 of 
+                    HTTP "Link" header field as defined in Section 3 of 
                     <xref target="RFC8288"/>, more specifically by  
                     its ABNF production rule for &quot;Link&quot; and subsequent ones.</t> 
                 
@@ -264,7 +264,7 @@
                         
                     <t>Note that the JSON representation does not use the &quot;rel&quot; or 
                         &quot;rev&quot; constructs used by <xref target="RFC8288"/> and the above 
-                        specified HTTP Link document format. Rather:</t> 
+                        specified HTTP "Link" document format. Rather:</t> 
                     <t><list style="symbols">
                         <t>A link that uses the &quot;rel&quot; construct 
                             in those approaches is conveyed using the URI of the link context as the value for &quot;anchor&quot; 
