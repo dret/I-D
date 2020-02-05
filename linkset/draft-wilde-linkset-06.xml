@@ -797,7 +797,15 @@ Content-Length: 802
             </section>
         </section>
         <section title="Security Considerations" anchor="security-considerations">
-            <t>...</t>
+            <t>The security considerations of Web Linking <xref target="RFC8288"/> apply, as long as they are not specifically discussing the risks of exposing information in HTTP header fields.</t>
+            <t>In general, links may cause information leakage when they expose information (such as URIs) that can be sensitive or private. Links may expose "hidden URIs" that are not supposed to be openly shared, and may not be sufficiently protected. Ideally, none of the URIs exposed in links should be supposed to be "hidden"; instead, if these URIs are supposed to be limited to certain users, then technical measures should be put in place so that accidentally exposing them does not cause any harm.</t>
+            <t>For the specific mechanisms defined in this specification, two security considerations should be taken into account:</t>
+            <t>
+                <list>
+                    <t>The original model of Web Linking always has an "implicit context", which is the resource of the HTTP interaction. This context can be lost or can change when using self-contained link representations. Changing the context can change the interpretation of links when they have no explicit anchor, or when they use relative URIs. Applications may choose to ignore links that have no explicit anchor or that use relative URIs when these are exchanged in stand-alone resources.</t>
+                    <t>The model introduced in this specification supports "3rd party links", where one party can provide links that have another party's resource as an anchor. Depending on the link semantics and the application context, it is important to verify that there is sufficient trust in that 3rd party to allow it to provide these links. Applications may choose to treat 3rd party links differently than cases where a resource and the links for that resource are provided by the same party.</t>
+                </list>
+            </t>
         </section>
     </middle>
     <back>
