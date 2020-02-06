@@ -42,7 +42,7 @@
         </author>
         <date day="31" month="December" year="2019"/>
         <abstract>
-            <t>This specification defines two media types for representing sets of links and a link relation type for referring to sets of links. The media types can be used to represents links in a standalone fashion, in one case in the native format as used in the HTTP "Link" header field, and in the other case in a JSON-based format. The link relation type can be used to point at a resource that provides a set of links.</t>
+           <t>This specification defines two document formats and respective media types for representing sets of links as stand-alone resources. One format is JSON-based, the other aligned with the format for representing links in the HTTP "Link" header field. This specification also introduces a link relation type to support discovery of sets of links.</t>
         </abstract>
         <note title="Note to Readers">
             <t>Please discuss this draft on the ART mailing list (<eref target="https://www.ietf.org/mailman/listinfo/art"/>).</t>
@@ -51,14 +51,8 @@
     </front>
     <middle>
         <section title="Introduction" anchor="introduction">
-            <t>Resources on the Web often use typed Web Links <xref target="RFC8288"/>, either 
-               as an embedded part of resource representations, for example using the &lt;link&gt; 
-               element for HTML representations, or by using the HTTP "Link" header field  
-               for representations using any media type. In some cases, however, 
-               providing links in this manner is impractical or impossible.</t> 
-            <t>To that end, this specification defines two document formats and associated media types 
-               to represent sets of links. It also defines the "linkset" relation type that can be used
-               to support discovery of a resource that conveys links.</t>
+            <t>Resources on the Web often use typed Web Links <xref target="RFC8288"/>, either embedded in resource representations, for example using the &lt;link&gt; element for HTML documents, or conveyed in the HTTP "Link" header for documents of any media type. In some cases, however, providing links in this manner is impractical or impossible and delivering a set of links as a stand-alone document is preferable.</t> 
+            <t>Therefor, this specification defines two document formats and associated media types to represent sets of links. It also defines the "linkset" relation type that supports discovery of any resource that conveys a set of links as a stand-alone document.</t>
         </section>
         <section title="Terminology" anchor="terminology">
             <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
@@ -82,10 +76,9 @@
             -->
         </section>
         <section title="Scenarios" anchor="scenarios">
-            <t>The following sections outline scenarios in which providing links by means of a standalone document 
-                instead of in an HTTP "Link" header field or as links embedded in the resource representation is advantageous or necessary. 
-                It is important to keep in mind that when providing links by means of a standalone representation and possibly linking to it, 
-                other links can still be provided by value (i.e., it is possible combine various mechanisms of how links are conveyed).</t>
+            <t>The following sections outline scenarios in which providing links by means of a standalone document instead of in an HTTP "Link" header field or as links embedded in the resource representation is advantageous or necessary.</t>
+            <t>For all scenarios, links could be provided by means of a stand-alone document that is formatted according to the JSON-based serialization, the serialization aligned with the HTTP "Link" header format, or both. The former serialization is motivated by the widespread use of JSON and related tools, which suggests that handling sets of links expressed as JSON documents should be attractive to developers. The latter serialization is provided for compatibility with the existing serialization used in the HTTP "Link" header and to allow reuse of tools created to handle it.</t>
+            <t>It is important to keep in mind that when providing links by means of a standalone representation, other links can still be provided using other approaches, i.e. it is possible combine various mechanisms to convey links.</t>
             <section title="Third-Party Links" anchor="third-party">
                 <t>In some cases it is useful that links pertaining to a resource are provided 
                     by a server other than the one that hosts the resource. For example, this allows:</t>
@@ -541,13 +534,13 @@
                 resource. This means that linkset relations are not transitive, and it is up to a client
                 to decide whether they follow chains of "linkset" links or not.</t>
                 -->          
-        </section>
-        
+        </section>       
          <section title="Examples" anchor="linkset-link-examples">
               <t><xref target="linkset-link-link-format"/> and <xref target="linkset-link-json-format"/>
               show examples whereby the set of links are provided as "application/linkset" and "application/linkset+json" documents, respectively.
+                  <xref target="linkset-rel-example"/> illustrates the use of the "linkset" link relation type to support discovery of sets of links.
               </t>
-           <section title="Set of Links Provided By Value as application/linkset" anchor="linkset-link-link-format">
+           <section title="Set of Links Provided as application/linkset" anchor="linkset-link-link-format">
                <t><xref target="Request1"/> shows a client issuing an 
                    HTTP GET request against resource http://example.org/resource1.</t>
                
@@ -562,8 +555,8 @@ Connection: close
                
                <t><xref target="Response1.1"/> shows the response to the GET request of 
              <xref target="Request1"/>. The response contains a Content-Type header 
-             specifying application/linkset. A set of links, including links that pertain 
-             to the responding resource, is provided in the body of the response.
+             specifying that the media type of the response is "application/linkset". A set of links, including links that pertain 
+             to the responding resource, is provided in the response body.
              </t>
               <figure title="Response to HTTP GET includes a set of links" align="center" anchor="Response1.1">
                 <artwork align="left"><![CDATA[
@@ -600,53 +593,14 @@ Connection: close
                 </artwork> 
               </figure>
             </section>
-             <section title="Set of Links Provided By Reference as application/linkset+json" anchor="linkset-link-json-format">
-                 <t><xref target="Request3"/> shows a client issuing an 
-                     HTTP HEAD request against resource 
-                     http://example.org/article/view/7507</t>
-                 
-                 <figure title="Client HTTP HEAD request" align="center" anchor="Request3">
-                     <artwork align="left"><![CDATA[
-HEAD article/view/7507 HTTP/1.1
-Host: example.org
-Connection: close
-]]>
-                     </artwork> 
-                 </figure>
-                 <t><xref target="Response3.1"/> shows the response to the HEAD request of 
-                     <xref target="Request3"/>. The response contains a Link header with  
-                     a link that has the "linkset" relation type. It indicates that a set of links is provided 
-                     by resource http://example.com/links/article/7507, which 
-                     provides a representation with media type application/linkset+json.
-                 </t>
-                 <figure title="Response to HTTP HEAD request" align="center" anchor="Response3.1">
-                     <artwork align="left"><![CDATA[
-HTTP/1.1 200 OK
-Date: Mon, 12 Aug 2019 10:45:54 GMT
-Server: Apache-Coyote/1.1
-Link: <http://example.com/links/article/7507>
-      ; rel="linkset"
-      ; type="application/linkset+json"
-Content-Length: 236
-Content-Type: text/html;charset=utf-8
-Connection: close
-]]>
-                     </artwork> 
-                 </figure>
-                 <!--
-                 <t>In this example, the URI of the linkset resource does not directly represent the URI of
-                     the origin resource anymore. There still is an association possible through the use of a 
-                     URI pattern
-                     that is includes identifying information. But as in the example above, the URI of the 
-                     link set resource is opaque
-                     to the client that simply accesses the URI to retrieve the link set resource.</t>
-                     -->
+             <section title="Set of Links Provided as application/linkset+json" anchor="linkset-link-json-format">
+                
                  <t><xref target="Request4"/> shows the client issuing an HTTP GET 
-                     request against the target IRI of the "linkset" link provided in <xref target="Response3.1"/>. 
-                     In the request, the client uses an Accept header to indicate it requests a response in  
+                     request against http://example.com/links/article/7507. 
+                     In the request, the client uses an Accept header to indicate it prefers a response in  
                      "application/linkset+json" format.
                  </t>
-                 <figure title="Client issues HTTP GET to obtain set of links" align="center" anchor="Request4">
+                 <figure title="Client HTTP GET request expressing preference for &quot;application/linkset+json&quot; response" align="center" anchor="Request4">
                      <artwork align="left"><![CDATA[
 GET links/article/7507 HTTP/1.1
 Host: example.com
@@ -655,9 +609,7 @@ Connection: close
 ]]></artwork> 
                  </figure>
                  <t><xref target="Response4.1"/> shows the response to the HTTP GET request of <xref target="Request4"/>. 
-                     The set of links is serialized according to the media type "application/linkset+json" and includes 
-                     links in which the Context IRI of the "linkset" link of <xref target="Response3.1"/> participates. 
-                     It also includes a link in which it does not.
+                     The set of links is serialized according to the media type "application/linkset+json".
                  </t>
                  <figure title="Response to the client's request for the set of links" align="center" anchor="Response4.1">
                      <artwork align="left"><![CDATA[
@@ -706,15 +658,43 @@ Content-Length: 802
 }]]> 
 </artwork> 
                  </figure>
-                 <!--
-                 <t>If <xref target="Response3.1"/> would have provided a link to 
-                 a link set with media type application/linkset, and if the client would have 
-                 requested that link set, then the body of the response would have been 
-                 similar to <xref target="Response4.1"/>. But it would have had "application/linkset" as 
-                     Content-Type, the payload of the HTTP Link header of <xref target="Response2.1"/> as body, 
-                     and an accordingly adjusted value for Content-Length.</t>
-                     -->
             </section>
+             <section title="Discovering a Link Set via the &quot;linkset&quot; Link Relation Type" anchor="linkset-rel-example">
+                 <t><xref target="Request3"/> shows a client issuing an 
+                     HTTP HEAD request against resource 
+                     http://example.org/article/view/7507</t>
+                 
+                 <figure title="Client HTTP HEAD request" align="center" anchor="Request3">
+                     <artwork align="left"><![CDATA[
+HEAD article/view/7507 HTTP/1.1
+Host: example.org
+Connection: close
+]]>
+                     </artwork> 
+                 </figure>
+                 <t><xref target="Response3.1"/> shows the response to the HEAD request of 
+                     <xref target="Request3"/>. The response contains a Link header with  
+                     a link that has the "linkset" relation type. It indicates that a set of links is provided 
+                     by resource http://example.com/links/article/7507, which 
+                     provides a representation with media type application/linkset+json.
+                 </t>
+                 <figure title="Response to HTTP HEAD request" align="center" anchor="Response3.1">
+                     <artwork align="left"><![CDATA[
+HTTP/1.1 200 OK
+Date: Mon, 12 Aug 2019 10:45:54 GMT
+Server: Apache-Coyote/1.1
+Link: <http://example.com/links/article/7507>
+      ; rel="linkset"
+      ; type="application/linkset+json"
+Content-Length: 236
+Content-Type: text/html;charset=utf-8
+Connection: close
+]]>
+                     </artwork> 
+                 </figure>
+                 <t><xref target="linkset-link-json-format"/> shows a client obtaining a set of links by issuing an HTTP GET on the 
+                     target IRI of the link with the "linkset" relation type, http://example.com/links/article/7507.</t>
+             </section>
         </section>
         <section title="Implementation Status" anchor="implementation-status">
             <t>Note to RFC Editor: Please remove this section before publication.</t>
