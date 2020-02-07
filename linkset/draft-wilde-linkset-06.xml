@@ -16,6 +16,7 @@
 <!ENTITY RFC8288 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8288.xml">
 <!ENTITY RFC6982 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6982.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
+<!ENTITY W3CJSONLD SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-json-ld-20140116.xml">
 ]>
 
 <?rfc compact="yes" ?>
@@ -64,13 +65,13 @@
             <t>Additionally, this specification uses the following terms for types of resources involved 
                 in providing links by reference:</t> 
             <t><list style="symbols">
-                <t>A "link set resource" is a resource that conveys a set of links. <xref target="linkset-formats"/> 
+                <t>A "linkset resource" is a resource that conveys a set of links. <xref target="linkset-formats"/> 
                    defines two representations for a set of links, based on the abstract link model defined in 
                     <xref target="RFC8288"/>.</t>
                 <t>An "origin resource" is a resource that participates in one or more links provided 
-                   by a link set resource. An origin resource can support discovery of an associated 
-                   link set resource by using the relation type defined in <xref target="linkset-link-relation"/>.
-                   As such, from the perspective of the origin resource, the links conveyed by the link set resource 
+                   by a linkset resource. An origin resource can support discovery of an associated 
+                   linkset resource by using the relation type defined in <xref target="linkset-link-relation"/>.
+                   As such, from the perspective of the origin resource, the links conveyed by the linkset resource 
                    are provided by reference.</t>
             </list></t>
             -->
@@ -522,15 +523,15 @@
             <t>There is no constraint on the target URI of a link with the "linkset" relation type;
                 designing and using these URIs is left to the discretion of implementers.</t>          
             <t>In common scenarios (the origin resource is distinct from the 
-                link set resource), it is essential for link set representations to 
+                linkset resource), it is essential for linkset representations to 
                 make the URI of the origin resource explicit for those links in 
                 which the origin resource acts as link context.</t>
                 -->
             <!--
-             <t>If an origin resource provides a "linkset" link pointing at a link set resource, 
-                and that link set resource provides a "linkset" link in turn, 
-                then this latter link points at links pertaining to the link set resource. 
-                This means that in the context of the latter link, the link set resource is an origin
+             <t>If an origin resource provides a "linkset" link pointing at a linkset resource, 
+                and that linkset resource provides a "linkset" link in turn, 
+                then this latter link points at links pertaining to the linkset resource. 
+                This means that in the context of the latter link, the linkset resource is an origin
                 resource. This means that linkset relations are not transitive, and it is up to a client
                 to decide whether they follow chains of "linkset" links or not.</t>
                 -->          
@@ -625,8 +626,7 @@ Content-Length: 802
       "anchor": "https://example.org/article/view/7507",
       "author": [
         {
-          "href": "https://orcid.org/0000-0002-4311-0897",
-          "type": "rdf/xml"
+          "href": "https://orcid.org/0000-0002-1825-0097",
         }
       ],
       "item": [
@@ -641,7 +641,8 @@ Content-Length: 802
       ],
       "cite-as": [
         {
-          "href": "https://doi.org/10.841/zk2557"
+          "href": "https://doi.org/10.5555/12345680",
+          "title": "A Methodology for the Emulation of Architecture"
         }
       ]
     },
@@ -719,7 +720,7 @@ Connection: close
             </section>
             <section title="Media Type: application/linkset">
                 <section title="IANA Considerations" anchor="iana">
-                    <t>The Internet media type <xref target="RFC6838"/> for a natively encoded link set is application/linkset.</t>
+                    <t>The Internet media type <xref target="RFC6838"/> for a natively encoded linkset is application/linkset.</t>
                     <t>
                         <list>
                             <t>Type name: application</t>
@@ -748,7 +749,7 @@ Connection: close
                 </section>
             </section>
             <section title="Media Type: application/linkset+json">
-                <t>The Internet media type <xref target="RFC6838"/> for a JSON-encoded link set is application/linkset+json.</t>
+                <t>The Internet media type <xref target="RFC6838"/> for a JSON-encoded linkset is application/linkset+json.</t>
                 <t>
                     <list>
                         <t>Type name: application</t>
@@ -823,38 +824,52 @@ Connection: close
             </reference>
 -->
         </references>
-<!--
       <references title="Informative References">
+&W3CJSONLD;
+
       </references>
- -->     
 
       <section title="Acknowledgements">
          <t>Thanks for comments and suggestions provided by Mark Nottingham, Stian Soiland-Reyes, Sarven Capadisli, ...</t>
       </section>
         
         <section title="JSON-LD Context" anchor="appendix-1">
-            <t>When adding the below JSON-LD context to the representation of a link set rendered according to the 
-                JSON serialization defined in <xref target="linkset-json"/>, it can be interpreted as RDF.</t>
-            
-            <figure title="Context for JSON-LD that could be used with the JSON serialization" anchor="json-context">
+            <t>A linkset rendered according to the 
+               JSON serialization defined in <xref target="linkset-json"/> can be interpreted 
+               as RDF triples by adding a <spanx style="emph">JSON-LD context</spanx>
+               <xref target="W3C.REC-json-ld-20140116"/>,
+               which map the JSON keys to corresponding Linked Data terms.</t>
+            <t>Below is a context that can map JSON linkset representations to Dublin Core Terms, 
+               with the link relations interpreted as properties with 
+               absolute URIs corresponding to <xref target="RFC8288"/> 
+               <eref target="https://tools.ietf.org/html/rfc8288#appendix-A.2">appendix A.2</eref>.
+            </t>
+
+            <figure title="JSON-LD Context mapping to schema.org and IANA assignments" anchor="jsonld-context">
                 <artwork align="left"><![CDATA[
+GET https://example.org/contexts/linkset.jsonld HTTP/1.1
+Connection: close
+
+HTTP/1.1 200 OK
+Content-Type: application/ld+json
+Content-Length: 612
+
 {
   "@context": [
     {
-      "@vocab": "https://www.iana.org/assignments/link-relations/",
-      "anchor": "@id",
-      "href":   "@id",
-      "dct":    "http://purl.org/dc/terms/",
-      "link":   "https://www.iana.org/assignments/link-relations#",
-      "title":  {
+      "@vocab":  "http://www.iana.org/assignments/relation/",
+      "anchor":  "@id",
+      "href":    "@id",
+      "linkset": "@graph",
+      "_linkset": "@graph",
+      "title":   {
         "@id":    "http://purl.org/dc/terms/title"
       },
-      "title*": {
+      "title*":  {
         "@id":    "http://purl.org/dc/terms/title"
       },
-      "type":   {
-        "@id":    "dct:format",
-        "@type":  "@vocab"
+      "type":    {
+        "@id":    "http://purl.org/dc/terms/format"
       }
     },
     {
@@ -869,6 +884,136 @@ Connection: close
 }]]> 
                 </artwork> 
             </figure>
+
+            <t>HTTP servers can indicate that a JSON Linkset can be interpreted as RDF
+            by providing a link to a JSON-LD context using the
+            link relation <spanx style="verb">http://www.w3.org/ns/json-ld#context</spanx>
+            according to <xref target="W3C.REC-json-ld-20140116"/> 
+            <eref target="https://www.w3.org/TR/2014/REC-json-ld-20140116/#interpreting-json-as-json-ld">section 6.8</eref>
+            as shown below:
+            </t>
+        <figure title="JSON-LD link relation" anchor="jsonld-link">
+            <artwork align="left"><![CDATA[
+HTTP/1.1 200 OK
+Date: Mon, 12 Aug 2019 10:48:22 GMT
+Server: Apache-Coyote/1.1
+Content-Type: application/linkset+json
+Link: <https://example.org/contexts/linkset.jsonld>;
+        rel="http://www.w3.org/ns/json-ld#context";
+        type="application/ld+json"
+Content-Length: 848
+
+{
+  "linkset": [
+    {
+      "anchor": "https://example.org/article/view/7507",
+      "author": [
+        {
+          "href": "https://orcid.org/0000-0002-1825-0097"
+        }
+      ],
+      "item": [
+        {
+          "href": "https://example.org/article/7507/item/1",
+          "type": "application/pdf"
+        },
+        {
+          "href": "https://example.org/article/7507/item/2",
+          "type": "text/csv"
+        }
+      ],
+      "cite-as": [
+        {
+          "href": "https://doi.org/10.5555/12345680",
+          "title": "A Methodology for the Emulation of Architecture"
+        }
+      ]
+    },
+    {
+      "anchor": "https://example.com/links/article/7507",
+      "alternate": [
+        {
+          "href": "https://mirror.example.com/links/article/7507",
+          "type": "application/linkset"
+        }
+      ]
+    }
+  ]
+}]]>
+                </artwork> 
+            </figure>
+
+        <t>An application consuming Linkset JSON documents can apply their own context, 
+        either through a JSON-LD Processor or by merging the <spanx style="verb">"@context"</spanx> 
+        key into the Linkset JSON root object to transform the
+        <spanx style="verb">application/linkset+json</spanx> document to 
+        a <spanx style="verb">application/ld+json</spanx> document.
+        </t>
+        <t>
+        The example below shows how a content-negotiation HTTP server could
+        dynamically render linksets as RDF formats showing the interpreted 
+        triples from <xref target="jsonld-link" />.
+        </t>        
+        <figure title="Triples returned by applying JSON-LD context" anchor="triples">
+            <artwork align="left"><![CDATA[
+GET https://example.com/links/article/7507 HTTP/1.1
+Accept: text/turtle
+Connection: close
+
+HTTP/1.1 200 OK
+Date: Mon, 12 Aug 2019 10:49:22 GMT
+Server: Apache-Coyote/1.1
+Content-Type: text/turtle
+Content-Length: 1164
+
+<https://example.org/article/view/7507>
+    <http://www.iana.org/assignments/relation/author>
+    <https://orcid.org/0000-0002-1825-0097> .
+
+
+<https://example.org/article/view/7507>
+    <http://www.iana.org/assignments/relation/item>
+    <https://example.org/article/7507/item/1> .
+
+<https://example.org/article/7507/item/1>
+    <http://purl.org/dc/terms/format>
+    "application/pdf" .
+
+
+<https://example.org/article/view/7507>
+    <http://www.iana.org/assignments/relation/item>
+    <https://example.org/article/7507/item/2> .
+
+<https://example.org/article/7507/item/2>
+    <http://purl.org/dc/terms/format>
+    "text/csv" .
+
+
+<https://example.org/article/view/7507>
+    <http://www.iana.org/assignments/relation/cite-as>
+    <https://doi.org/10.5555/12345680> .
+
+<https://doi.org/10.5555/12345680>
+    <http://purl.org/dc/terms/title>
+    "A Methodology for the Emulation of Architecture" .
+
+
+<https://example.com/links/article/7507>
+    <http://www.iana.org/assignments/relation/alternate>
+    <https://mirror.example.com/links/article/7507> .
+
+<https://mirror.example.com/links/article/7507>
+    <http://purl.org/dc/terms/format>
+    "application/linkset" .
+]]>
+                </artwork> 
+            </figure>
+
+        <t>Note that the context in <xref target="jsonld-context"/> does not handle 
+         (meta)link relations of type <spanx style="verb">"linkset"</spanx> as they are 
+         in conflict with the top-level key. A workaround is to rename the top-level key
+         to <spanx style="verb">"_linkset"</spanx> in the
+         Linkset JSON before JSON-LD Processing.</t>
         </section>
 
     </back>
