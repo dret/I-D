@@ -24,7 +24,7 @@
       <date day="4" month="November" year="2019"/>
       <abstract>
          <t>
-            This document defines a warning code and a standard response format for warning information in HTTP APIs.
+            This document defines a new header Content-Warning and a standard response format for warning information in HTTP APIs.
          </t>
       </abstract>
       <note title="Note to Readers">
@@ -67,22 +67,60 @@
             described in <xref target="RFC2119"/>.
          </t>
       </section>
-      <section anchor="warning-header" title="Warning Header">
+      <section anchor="content-warning-header" title="Content-Warning Header">
          <t>
-            As described in section 5.5 of <xref target="RFC7234"/> the Warning header field "is
-            used to carry additional information about the status or transformation of a message
-            that might not be reflected in the status code". The field itself consists of the
-            warn-code, a warn-agent, a warn-text, and an optional warn-date.
+            The Content-Warning header introduces the possibility to return different kinds of warning information via http. It is defined as a Structured Header List <xref target="I-D.ietf-httpbis-header-structure"/>. Its ABNF is:
+         </t>
+         <t>
+            Content-Warning = sh-list
+         </t>
+         <t>
+            Each member of the list is a structured headers dictionary (sh-dictionary) with the following entries:
+         </t>
+<figure><artwork type="abnf"><![CDATA[
+type = sh-token
+date = sh-date
+]]></artwork></figure>
+         <section anchor="the-type-parameter" title="The type parameter">
+            <t>
+               The "type" defines a specific handling for the corresponding warning use case. Based on it a client MAY handle the warning differently.
+            </t>
+            <t>
+               With the introduction of the Content-Warning Header it can have the following value:
+            </t>
+            <t>
+               <list style="symbols">
+                  <t>
+                     embedded-warning - Details about the warning are embedded into the response' body (see <xref target="embedded-warning" />).
+                  </t>
+               </list>
+            </t>
+         </section>
+         <section anchor="the-date-parameter" title="The date parameter">
+            <t>
+               The date parameter defines the last occurrence of this warning as a structured headers date (e.g. "1581410465").
+            </t>
+         </section>
+      </section>
+      <section anchor="embedded-warning" title="Embedded Warning">
+         <t>
+            This document introduces the Content-Warning Type "Embedded Warning".
          </t>
          <t>
             As mentioned in the introduction (<xref target="introduction"/>), HTTP requests can be successful or they can fail. They can also result in a state where the original intent was satisfied, but a side effect happened that should be conveyed back to the client.
          </t>
          <t>
-            To make it easier for clients to handle such an event, a Warning header using the warn-code "246" and the warn-text "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
+            To make it easier for clients to handle such an event, the Content-Warning type "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.
          </t>
          <t>
-            The "246" warn code does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
+            The "Embedded Warning" type does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
          </t>
+         <t>
+            An examplary Content-Warning header would look like this:
+         </t>
+<figure><artwork><![CDATA[
+Content-Warning: "Embedded Warning", 1590190500
+]]></artwork></figure>
       </section>
       <section anchor="warning-format" title="JSON Warning Format">
          <t>
@@ -99,7 +137,7 @@
             Entries in these individual objects follow the pattern described in <xref target="RFC7807" />.
          </t>
          <t>
-            When warnings are present a Warning header (as defined in <xref target="warning-header" />)
+            When warnings are present the Content-Warning header (as defined in <xref target="content-warning-header" />)
             SHOULD be set to indicate that warnings have be returned. This way a client will not
             have to parse the response body to find out if the warnings array has entries.
          </t>
@@ -116,7 +154,7 @@ Accept: application/json
 
 HTTP/1.1 200 OK
 Content-Type: application/json
-Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+Content-Warning: "Embedded Warning", "1590190500"
 
 {
   "request_id": "2326b087-d64e-43bd-a557-42171155084f",
@@ -162,7 +200,7 @@ Accept: application/json
 
 HTTP/1.1 400 BAD REQUEST
 Content-Type: application/problem+json
-Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
+Content-Warning: "Embedded Warning", "1590190500"
 
 {
   "request_id": "2326b087-d64e-43bd-a557-42171155084f",
@@ -188,15 +226,53 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
          </t>
       </section>
       <section title="IANA Considerations" anchor="iana-considerations">
-         <section title="HTTP Warn Code: 246 - Embedded Warning">
-            <t>The HTTP warn code below has been registered by IANA per Section 7.2 of <xref target="RFC7234"/>:</t>
+         <t>
+            This specification registers the following entry in the Permanent Message Header Field Names registry established by <xref target="RFC3864"/>:
+         </t>
+         <t>
+            <list style="symbols">
+               <t>Header field name: Content-Warning</t>
+               <t>Applicable protocol: http</t>
+               <t>Status: standard</t>
+               <t>Author/Change Controller: IETF</t>
+               <t>Specification document(s): [this document]</t>
+               <t>Related information:</t>
+            </list>
+         </t>
+         <section title="Content-Warning Type Registry" anchor="content-warning-type-registry">
             <t>
-               <list>
-                  <t>Warn Code: 246</t>
-                  <t>Short Description: Embedded Warning</t>
-                  <t>Reference: <xref target="warning-header"/> of [[ this document ]]</t>
+               The "Content-Warning Type Registry" defines the namespace for new Content-Warning types.
+            </t>
+         </section>
+         <section title="Procedure" anchor="procedure">
+            <t>
+               A registration MUST include the following fields:
+            </t>
+            <t>
+               <list style="symbols">
+                  <t>
+                     Content-Warning Type Name
+                  </t>
+                  <t>
+                     Pointer to a specification text
+                  </t>
                </list>
             </t>
+            <t>
+               Values to be added to this namespace require IETF Review (see <xref target="RFC5226" />, Section 4.1).
+            </t>
+         </section>
+         <section title="Registrations" anchor="registrations">
+            <t>
+               The registry has been populated with the registrations below:
+            </t>
+<figure><artwork><![CDATA[
++------------------------+----------------------------------+
+| Content-Warning Type   | Reference                        |
++------------------------+----------------------------------+
+| embedded-warning       | Section 4                        |
++------------------------+----------------------------------+
+]]></artwork></figure>
          </section>
       </section>
    </middle>
@@ -221,6 +297,53 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
             <seriesInfo name="BCP" value="14"/>
             <seriesInfo name="RFC" value="2119"/>
             <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+         </reference>
+
+         <reference anchor="RFC3864" target="https://www.rfc-editor.org/info/rfc3864">
+            <front>
+               <title>Registration Procedures for Message Header Fields</title>
+               <author initials="G." surname="Klyne" fullname="G. Klyne">
+                  <organization/>
+               </author>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham">
+                  <organization/>
+               </author>
+               <author initials="J." surname="Mogul" fullname="J. Mogul">
+                  <organization/>
+               </author>
+               <date year="2004" month="September"/>
+               <abstract>
+                  <t>
+                     This specification defines registration procedures for the message header fields used by Internet mail, HTTP, Netnews and other applications. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="BCP" value="90"/>
+            <seriesInfo name="RFC" value="3864"/>
+            <seriesInfo name="DOI" value="10.17487/RFC3864"/>
+         </reference>
+
+         <reference  anchor='RFC5226' target='https://www.rfc-editor.org/info/rfc5226'>
+            <front>
+               <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
+               <author initials='T.' surname='Narten' fullname='T. Narten'>
+                  <organization />
+               </author>
+               <author initials='H.' surname='Alvestrand' fullname='H. Alvestrand'>
+                  <organization />
+               </author>
+               <date year='2008' month='May' />
+               <abstract>
+                  <t>
+                     Many protocols make use of identifiers consisting of constants and other well-known values.  Even after a protocol has been defined and deployment has begun, new values may need to be assigned (e.g., for a new option type in DHCP, or a new encryption or authentication transform for IPsec).  To ensure that such quantities have consistent values and interpretations across all implementations, their assignment must be administered by a central authority.  For IETF protocols, that role is provided by the Internet Assigned Numbers Authority (IANA).
+                  </t>
+                  <t>
+                     In order for IANA to manage a given namespace prudently, it needs guidelines describing the conditions under which new values can be assigned or when modifications to existing values can be made.  If IANA is expected to play a role in the management of a namespace, IANA must be given clear and concise instructions describing that role.  This document discusses issues that should be considered in formulating a policy for assigning values to a namespace and provides guidelines for authors on the specific text that must be included in documents that place demands on IANA.</t><t>This document obsoletes RFC 2434.  This document specifies an Internet Best  Current Practices for the Internet Community, and requests discussion and  suggestions for improvements.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='5226'/>
+            <seriesInfo name='DOI' value='10.17487/RFC5226'/>
          </reference>
          <reference anchor="RFC7230" target='https://www.rfc-editor.org/info/rfc7230'>
             <front>
@@ -331,6 +454,26 @@ Warning: 246 - "Embedded Warning" "Fri, 04 Oct 2019 09:59:45 GMT"
             <seriesInfo name="STD" value="90" />
             <seriesInfo name="RFC" value="8259" />
             <seriesInfo name="DOI" value="10.17487/RFC8259" />
+         </reference>
+         <reference anchor="I-D.ietf-httpbis-header-structure">
+            <front>
+               <title>Structured Headers for HTTP</title>
+               <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+                  <organization />
+               </author>
+               <author initials='P' surname='Kamp' fullname='Poul-Henning Kamp'>
+                  <organization />
+               </author>
+               <date month='October' day='31' year='2019' />
+               <abstract>
+               <t>
+                  This document describes a set of data types and associated algorithms that are intended to make it easier and safer to define and handle HTTP header fields.  It is intended for use by specifications of new HTTP header fields that wish to use a common syntax that is more restrictive than traditional HTTP field values.
+               </t>
+            </abstract>
+            </front>
+            <seriesInfo name='Internet-Draft' value='draft-ietf-httpbis-header-structure-14' />
+            <format type='TXT'
+                  target='http://www.ietf.org/internet-drafts/draft-ietf-httpbis-header-structure-14.txt' />
          </reference>
       </references>
       <references title="Informative References">
