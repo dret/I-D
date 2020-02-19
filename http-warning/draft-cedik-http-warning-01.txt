@@ -1,0 +1,560 @@
+
+
+
+
+Network Working Group                                           A. Cedik
+Internet-Draft                                            shipcloud GmbH
+Intended status: Standards Track                                E. Wilde
+Expires: May 7, 2020                                               Axway
+                                                        November 4, 2019
+
+
+             Communicating Warning Information in HTTP APIs
+                      draft-cedik-http-warning-01
+
+Abstract
+
+   This document defines a new header Content-Warning and a standard
+   response format for warning information in HTTP APIs.
+
+Note to Readers
+
+   This draft should be discussed on the rfc-interest mailing list
+   (<https://lists.w3.org/Archives/Public/ietf-http-wg/>).
+
+   Online access to all versions and files is available on GitHub
+   (<https://github.com/dret/I-D/tree/master/http-warning>).
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on May 7, 2020.
+
+Copyright Notice
+
+   Copyright (c) 2019 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 1]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   3
+   3.  Content-Warning Header  . . . . . . . . . . . . . . . . . . .   3
+     3.1.  The type parameter  . . . . . . . . . . . . . . . . . . .   3
+     3.2.  The date parameter  . . . . . . . . . . . . . . . . . . .   4
+   4.  Embedded Warning  . . . . . . . . . . . . . . . . . . . . . .   4
+   5.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
+   6.  Correlation between errors, warnings and data . . . . . . . .   5
+     6.1.  Soft errors with data . . . . . . . . . . . . . . . . . .   5
+     6.2.  Hard errors with warnings . . . . . . . . . . . . . . . .   6
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Content-Warning Type Registry . . . . . . . . . . . . . .   8
+     8.2.  Procedure . . . . . . . . . . . . . . . . . . . . . . . .   8
+     8.3.  Registrations . . . . . . . . . . . . . . . . . . . . . .   8
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   9
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+
+1.  Introduction
+
+   Many current APIs are based on HTTP [RFC7230] as their application
+   protocol.  Their response handling model is based on the assumption
+   that requests either are successful or they fail.  In both cases
+   (success and fail) an HTTP status code [RFC7231] is returned to
+   convey either fact.
+
+   But response status is not always strictly either success or failure.
+   For example, there are cases where an underlying system returns a
+   response with data that cannot be defined as a clear error.  API
+   providers who are integrating such a service might want to return a
+   correct response nonetheless, but returning a HTTP status code of
+   e.g. 200 OK without any additional information is not the only
+   possible approach in this case.
+
+   As defined in the principles of Web architecture
+   [W3C.REC-webarch-20041215], agents that "recover from errors by
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 2]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   making a choice without the user's consent are not acting on the
+   user's behalf".  Therefore APIs should be able to communicate what
+   has happened to their consumers, which then allows clients or users
+   to make more informed decisions.
+
+   This document defines a warning code and a standard response
+   structure for communicating and representing warning information in
+   HTTP APIs.  The goal is to allow HTTP providers to have a
+   standardized way of communicating to their consumers that while the
+   response can be considered to be a non-failure, there is some warning
+   information available that they might want to take into account.
+
+   As a general guideline, warning information should be considered to
+   be any information that can be safely ignored (treating the response
+   as if it did not contain any warning information), but that might
+   help clients and users to make better decisions.
+
+2.  Notational Conventions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in [RFC2119].
+
+3.  Content-Warning Header
+
+   The Content-Warning header introduces the possibility to return
+   different kinds of warning information via http.  It is defined as a
+   Structured Header List [I-D.ietf-httpbis-header-structure].  Its ABNF
+   is:
+
+   Content-Warning = sh-list
+
+   Each member of the list is a structured headers dictionary (sh-
+   dictionary) with the following entries:
+
+   type = sh-token
+   date = sh-date
+
+3.1.  The type parameter
+
+   The "type" defines a specific handling for the corresponding warning
+   use case.  Based on it a client MAY handle the warning differently.
+
+   With the introduction of the Content-Warning Header it can have the
+   following value:
+
+   o  embedded-warning - Details about the warning are embedded into the
+      response' body (see Section 4).
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 3]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+3.2.  The date parameter
+
+   The date parameter defines the last occurrence of this warning as a
+   structured headers date (e.g. "1581410465").
+
+4.  Embedded Warning
+
+   This document introduces the Content-Warning Type "Embedded Warning".
+
+   As mentioned in the introduction (Section 1), HTTP requests can be
+   successful or they can fail.  They can also result in a state where
+   the original intent was satisfied, but a side effect happened that
+   should be conveyed back to the client.
+
+   To make it easier for clients to handle such an event, the Content-
+   Warning type "Embedded Warning" MAY be returned.  In this case, the
+   client MAY either treat the response according to its HTTP status
+   code, or the client MAY use the embedded warning information to
+   understand the nature of the warning.
+
+   The "Embedded Warning" type does not prescribe the way in which
+   warnings are represented, but the assumption is that the response
+   will have embedded information that allows the client to learn about
+   the nature of the warning.  The following section describes a JSON
+   structure that MAY be used to represent the warning.  HTTP services
+   are free to use this or other formats to represent the warning
+   information they are embedding.
+
+   An examplary Content-Warning header would look like this:
+
+   Content-Warning: "Embedded Warning", 1590190500
+
+5.  JSON Warning Format
+
+   The JSON warning format uses the JSON format described in [RFC8259].
+   It is intended to be used as a building block in the response schemas
+   of JSON-based APIs.
+
+   In many current designs of JSON-based HTTP APIs, services represent
+   response data as members of the returned JSON object.  In order to
+   make it easier for consumers to identify information about warnings,
+   a top-level member is defined that contains all warning information
+   in a representation.  A "warnings" member MUST encapsulate the
+   warnings that will be returned to the client.
+
+   When an error occurred that can not be defined as a "hard error", but
+   is meant as additional information one should consider returning this
+   information to the APIs user.  The warnings array MUST be filled with
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 4]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   one object for each and every warning message that is returned to the
+   client.
+
+   Entries in these individual objects follow the pattern described in
+   [RFC7807].
+
+   When warnings are present the Content-Warning header (as defined in
+   Section 3) SHOULD be set to indicate that warnings have be returned.
+   This way a client will not have to parse the response body to find
+   out if the warnings array has entries.
+
+6.  Correlation between errors, warnings and data
+
+6.1.  Soft errors with data
+
+   Since warnings do not have an effect on the returned HTTP status
+   code, the response status code SHOULD be in the 2xx range, indicating
+   that the intent of the API client was successful.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 5]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   POST /example HTTP/1.1
+   Host: example.com
+   Accept: application/json
+
+   HTTP/1.1 200 OK
+   Content-Type: application/json
+   Content-Warning: "Embedded Warning", "1590190500"
+
+   {
+     "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+     "warnings": [
+       {
+         "detail": "Street name was too long. It has been shortened...",
+         "instance": "https://example.com/shipments/3a186c51/msgs/c94d",
+         "status": "200",
+         "title": "Street name too long. It has been shortened.",
+         "type": "https://example.com/errors/shortened_entry"
+       },
+       {
+         "detail": "City for this zipcode unknown. Code for shipment..",
+         "instance": "https://example.com/shipments/3a186c51/msgs/5927",
+         "status": "200",
+         "title": "City for zipcode unknown.",
+         "type": "https://example.com/errors/city_unknown"
+       }
+     ],
+     "id": "3a186c51d4281acb",
+     "carrier_tracking_no": "84168117830018",
+     "tracking_url": "http://example.com/3a186c51d",
+     "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+     "price": 3.4
+   }
+
+6.2.  Hard errors with warnings
+
+   As described previously, errors are exception like occurrences where
+   processing of the request stopped and the API consumer has to be
+   informed of this "hard error" right away.
+
+   To indicate this fact the content-type MAY be set to application/
+   problem+json and detailed information about the error will be
+   returned in the body following the pattern described in [RFC7807].
+
+   If warnings occurred during the processing of the request, but before
+   the processing stopped, they SHOULD be returned alongside the errors.
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 6]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   POST /example HTTP/1.1
+   Host: example.com
+   Accept: application/json
+
+   HTTP/1.1 400 BAD REQUEST
+   Content-Type: application/problem+json
+   Content-Warning: "Embedded Warning", "1590190500"
+
+   {
+     "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+     "detail": "The format of pickup time earliest was wrong.",
+     "status": "500",
+     "title": "Wrong format for pickup time",
+     "type": "https://example.com/errors/wrong_format"
+     "warnings": [
+       {
+         "detail": "Street name too long. It has been shortened to fit",
+         "status": "200",
+         "title": "Street name too long. It has been shortened.",
+         "type": "https://example.com/errors/shortened_entry"
+       }
+     ]
+   }
+
+7.  Security Considerations
+
+   API providers need to exercise care when reporting warnings.
+   Malicious actors could use this information for orchestrating
+   attacks.  Social engineering can also be a factor when warning
+   information is returned by the API.
+
+8.  IANA Considerations
+
+   This specification registers the following entry in the Permanent
+   Message Header Field Names registry established by [RFC3864]:
+
+   o  Header field name: Content-Warning
+
+   o  Applicable protocol: http
+
+   o  Status: standard
+
+   o  Author/Change Controller: IETF
+
+   o  Specification document(s): [this document]
+
+   o  Related information:
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 7]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+8.1.  Content-Warning Type Registry
+
+   The "Content-Warning Type Registry" defines the namespace for new
+   Content-Warning types.
+
+8.2.  Procedure
+
+   A registration MUST include the following fields:
+
+   o  Content-Warning Type Name
+
+   o  Pointer to a specification text
+
+   Values to be added to this namespace require IETF Review (see
+   [RFC5226], Section 4.1).
+
+8.3.  Registrations
+
+   The registry has been populated with the registrations below:
+
+   +------------------------+----------------------------------+
+   | Content-Warning Type   | Reference                        |
+   +------------------------+----------------------------------+
+   | embedded-warning       | Section 4                        |
+   +------------------------+----------------------------------+
+
+9.  References
+
+9.1.  Normative References
+
+   [I-D.ietf-httpbis-header-structure]
+              Nottingham, M. and P. Kamp, "Structured Headers for HTTP",
+              draft-ietf-httpbis-header-structure-14 (work in progress),
+              October 2019.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC3864]  Klyne, G., Nottingham, M., and J. Mogul, "Registration
+              Procedures for Message Header Fields", BCP 90, RFC 3864,
+              DOI 10.17487/RFC3864, September 2004,
+              <https://www.rfc-editor.org/info/rfc3864>.
+
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 8]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
+              IANA Considerations Section in RFCs", RFC 5226,
+              DOI 10.17487/RFC5226, May 2008,
+              <https://www.rfc-editor.org/info/rfc5226>.
+
+   [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Message Syntax and Routing",
+              RFC 7230, DOI 10.17487/RFC7230, June 2014,
+              <https://www.rfc-editor.org/info/rfc7230>.
+
+   [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
+              Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
+              DOI 10.17487/RFC7231, June 2014,
+              <https://www.rfc-editor.org/info/rfc7231>.
+
+   [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
+              Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
+              RFC 7234, DOI 10.17487/RFC7234, June 2014,
+              <https://www.rfc-editor.org/info/rfc7234>.
+
+   [RFC7807]  Nottingham, M. and E. Wilde, "Problem Details for HTTP
+              APIs", RFC 7807, DOI 10.17487/RFC7807, March 2016,
+              <https://www.rfc-editor.org/info/rfc7807>.
+
+   [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
+              Interchange Format", STD 90, RFC 8259,
+              DOI 10.17487/RFC8259, December 2017,
+              <https://www.rfc-editor.org/info/rfc8259>.
+
+9.2.  Informative References
+
+   [W3C.REC-webarch-20041215]
+              Jacobs, I. and N. Walsh, "Architecture of the World Wide
+              Web, Volume One", World Wide Web Consortium
+              Recommendation REC-webarch-20041215, December 2004,
+              <http://www.w3.org/TR/2004/REC-webarch-20041215>.
+
+Appendix A.  Acknowledgements
+
+   Thanks for comments and suggestions provided by ...
+
+Authors' Addresses
+
+   Andre Cedik
+   shipcloud GmbH
+
+   Email: andre.cedik@googlemail.com
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                  [Page 9]
+
+Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+
+
+   Erik Wilde
+   Axway
+
+   Email: erik.wilde@dret.net
+   URI:   http://dret.net/netdret/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Cedik & Wilde              Expires May 7, 2020                 [Page 10]
