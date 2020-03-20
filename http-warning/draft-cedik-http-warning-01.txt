@@ -5,8 +5,8 @@
 Network Working Group                                           A. Cedik
 Internet-Draft                                            shipcloud GmbH
 Intended status: Standards Track                                E. Wilde
-Expires: May 7, 2020                                               Axway
-                                                        November 4, 2019
+Expires: September 21, 2020                                        Axway
+                                                          March 20, 2020
 
 
              Communicating Warning Information in HTTP APIs
@@ -15,7 +15,7 @@ Expires: May 7, 2020                                               Axway
 Abstract
 
    This document defines a new header Content-Warning and a standard
-   response format for warning information in HTTP APIs.
+   response format for representing warning information in HTTP APIs.
 
 Note to Readers
 
@@ -40,11 +40,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 7, 2020.
+   This Internet-Draft will expire on September 21, 2020.
 
 Copyright Notice
 
-   Copyright (c) 2019 IETF Trust and the persons identified as the
+   Copyright (c) 2020 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Cedik & Wilde              Expires May 7, 2020                  [Page 1]
+Cedik & Wilde          Expires September 21, 2020               [Page 1]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
    publication of this document.  Please review these documents
@@ -70,13 +70,13 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   3
    3.  Content-Warning Header  . . . . . . . . . . . . . . . . . . .   3
-     3.1.  The type parameter  . . . . . . . . . . . . . . . . . . .   3
-     3.2.  The date parameter  . . . . . . . . . . . . . . . . . . .   4
+     3.1.  The Type Parameter  . . . . . . . . . . . . . . . . . . .   3
+     3.2.  The Date Parameter  . . . . . . . . . . . . . . . . . . .   4
    4.  Embedded Warning  . . . . . . . . . . . . . . . . . . . . . .   4
    5.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
-   6.  Correlation between errors, warnings and data . . . . . . . .   5
-     6.1.  Soft errors with data . . . . . . . . . . . . . . . . . .   5
-     6.2.  Hard errors with warnings . . . . . . . . . . . . . . . .   6
+   6.  Correlation between Errors, Warnings and Data . . . . . . . .   5
+     6.1.  Soft Errors with Data . . . . . . . . . . . . . . . . . .   5
+     6.2.  Hard Errors with Warnings . . . . . . . . . . . . . . . .   6
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
      8.1.  Content-Warning Type Registry . . . . . . . . . . . . . .   8
@@ -93,14 +93,14 @@ Table of Contents
    Many current APIs are based on HTTP [RFC7230] as their application
    protocol.  Their response handling model is based on the assumption
    that requests either are successful or they fail.  In both cases
-   (success and fail) an HTTP status code [RFC7231] is returned to
+   (success and failure) an HTTP status code [RFC7231] is returned to
    convey either fact.
 
    But response status is not always strictly either success or failure.
    For example, there are cases where an underlying system returns a
    response with data that cannot be defined as a clear error.  API
    providers who are integrating such a service might want to return a
-   correct response nonetheless, but returning a HTTP status code of
+   success response nonetheless, but returning a HTTP status code of
    e.g. 200 OK without any additional information is not the only
    possible approach in this case.
 
@@ -109,21 +109,25 @@ Table of Contents
 
 
 
-Cedik & Wilde              Expires May 7, 2020                  [Page 2]
+Cedik & Wilde          Expires September 21, 2020               [Page 2]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
    making a choice without the user's consent are not acting on the
    user's behalf".  Therefore APIs should be able to communicate what
    has happened to their consumers, which then allows clients or users
-   to make more informed decisions.
+   to make more informed decisions.  Note that this specification
+   specifically targets warnings and not errors, meaning that while it
+   may be useful for clients to understand the warning condition and act
+   on it, they also may choose to ignore it and treat the response as a
+   successful one.
 
    This document defines a warning code and a standard response
    structure for communicating and representing warning information in
    HTTP APIs.  The goal is to allow HTTP providers to have a
    standardized way of communicating to their consumers that while the
-   response can be considered to be a non-failure, there is some warning
+   response can be considered to represent successful, there is warning
    information available that they might want to take into account.
 
    As a general guideline, warning information should be considered to
@@ -140,7 +144,7 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 3.  Content-Warning Header
 
    The Content-Warning header introduces the possibility to return
-   different kinds of warning information via http.  It is defined as a
+   different kinds of warning information via HTTP.  It is defined as a
    Structured Header List [I-D.ietf-httpbis-header-structure].  Its ABNF
    is:
 
@@ -152,25 +156,27 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    type = sh-token
    date = sh-date
 
-3.1.  The type parameter
+3.1.  The Type Parameter
 
    The "type" defines a specific handling for the corresponding warning
    use case.  Based on it a client MAY handle the warning differently.
+
+
+
+
+
+Cedik & Wilde          Expires September 21, 2020               [Page 3]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
 
    With the introduction of the Content-Warning Header it can have the
    following value:
 
    o  embedded-warning - Details about the warning are embedded into the
-      response' body (see Section 4).
+      response body (see Section 4).
 
-
-
-Cedik & Wilde              Expires May 7, 2020                  [Page 3]
-
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
-
-
-3.2.  The date parameter
+3.2.  The Date Parameter
 
    The date parameter defines the last occurrence of this warning as a
    structured headers date (e.g. "1581410465").
@@ -191,14 +197,14 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    understand the nature of the warning.
 
    The "Embedded Warning" type does not prescribe the way in which
-   warnings are represented, but the assumption is that the response
-   will have embedded information that allows the client to learn about
-   the nature of the warning.  The following section describes a JSON
+   warnings are represented.  The assumption is that the response will
+   have embedded information that allows the client to learn about the
+   nature of the warning.  The following section describes a JSON
    structure that MAY be used to represent the warning.  HTTP services
    are free to use this or other formats to represent the warning
    information they are embedding.
 
-   An examplary Content-Warning header would look like this:
+   An exemplary Content-Warning header looks like this:
 
    Content-Warning: "Embedded Warning", 1590190500
 
@@ -212,22 +218,23 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    response data as members of the returned JSON object.  In order to
    make it easier for consumers to identify information about warnings,
    a top-level member is defined that contains all warning information
+
+
+
+Cedik & Wilde          Expires September 21, 2020               [Page 4]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
+
    in a representation.  A "warnings" member MUST encapsulate the
    warnings that will be returned to the client.
 
-   When an error occurred that can not be defined as a "hard error", but
-   is meant as additional information one should consider returning this
-   information to the APIs user.  The warnings array MUST be filled with
-
-
-
-Cedik & Wilde              Expires May 7, 2020                  [Page 4]
-
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
-
-
-   one object for each and every warning message that is returned to the
-   client.
+   When an condition occurs that can not be defined as a "hard error"
+   (i.e., that allows clients to continue treating the resulting
+   response as a success), additional information about this condition
+   can be returned to the API client.  The "warnings" member MUST be an
+   array that is structured with one object for each and every warning
+   message that is returned to the client.
 
    Entries in these individual objects follow the pattern described in
    [RFC7807].
@@ -235,11 +242,11 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    When warnings are present the Content-Warning header (as defined in
    Section 3) SHOULD be set to indicate that warnings have be returned.
    This way a client will not have to parse the response body to find
-   out if the warnings array has entries.
+   out whether a warnings member is present.
 
-6.  Correlation between errors, warnings and data
+6.  Correlation between Errors, Warnings and Data
 
-6.1.  Soft errors with data
+6.1.  Soft Errors with Data
 
    Since warnings do not have an effect on the returned HTTP status
    code, the response status code SHOULD be in the 2xx range, indicating
@@ -270,16 +277,9 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
 
-
-
-
-
-
-
-
-Cedik & Wilde              Expires May 7, 2020                  [Page 5]
+Cedik & Wilde          Expires September 21, 2020               [Page 5]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
    POST /example HTTP/1.1
@@ -315,9 +315,9 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
      "price": 3.4
    }
 
-6.2.  Hard errors with warnings
+6.2.  Hard Errors with Warnings
 
-   As described previously, errors are exception like occurrences where
+   As described previously, errors are exceptions like occurrences where
    processing of the request stopped and the API consumer has to be
    informed of this "hard error" right away.
 
@@ -333,9 +333,9 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
 
-Cedik & Wilde              Expires May 7, 2020                  [Page 6]
+Cedik & Wilde          Expires September 21, 2020               [Page 6]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
    POST /example HTTP/1.1
@@ -376,7 +376,7 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
    o  Header field name: Content-Warning
 
-   o  Applicable protocol: http
+   o  Applicable protocol: HTTP
 
    o  Status: standard
 
@@ -389,9 +389,9 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
 
-Cedik & Wilde              Expires May 7, 2020                  [Page 7]
+Cedik & Wilde          Expires September 21, 2020               [Page 7]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 8.1.  Content-Warning Type Registry
@@ -408,7 +408,7 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    o  Pointer to a specification text
 
    Values to be added to this namespace require IETF Review (see
-   [RFC5226], Section 4.1).
+   [RFC8126], Section 4.1).
 
 8.3.  Registrations
 
@@ -445,15 +445,10 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
 
-Cedik & Wilde              Expires May 7, 2020                  [Page 8]
+Cedik & Wilde          Expires September 21, 2020               [Page 8]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
-
-   [RFC5226]  Narten, T. and H. Alvestrand, "Guidelines for Writing an
-              IANA Considerations Section in RFCs", RFC 5226,
-              DOI 10.17487/RFC5226, May 2008,
-              <https://www.rfc-editor.org/info/rfc5226>.
 
    [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Message Syntax and Routing",
@@ -473,6 +468,11 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
    [RFC7807]  Nottingham, M. and E. Wilde, "Problem Details for HTTP
               APIs", RFC 7807, DOI 10.17487/RFC7807, March 2016,
               <https://www.rfc-editor.org/info/rfc7807>.
+
+   [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
+              Writing an IANA Considerations Section in RFCs", BCP 26,
+              RFC 8126, DOI 10.17487/RFC8126, June 2017,
+              <https://www.rfc-editor.org/info/rfc8126>.
 
    [RFC8259]  Bray, T., Ed., "The JavaScript Object Notation (JSON) Data
               Interchange Format", STD 90, RFC 8259,
@@ -501,9 +501,9 @@ Authors' Addresses
 
 
 
-Cedik & Wilde              Expires May 7, 2020                  [Page 9]
+Cedik & Wilde          Expires September 21, 2020               [Page 9]
 
-Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
    Erik Wilde
@@ -557,4 +557,4 @@ Internet-DraftCommunicating Warning Information in HTTP APINovember 2019
 
 
 
-Cedik & Wilde              Expires May 7, 2020                 [Page 10]
+Cedik & Wilde          Expires September 21, 2020              [Page 10]

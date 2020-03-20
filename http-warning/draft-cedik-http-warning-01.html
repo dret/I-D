@@ -377,13 +377,13 @@
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Notational Conventions">
 <link href="#rfc.section.3" rel="Chapter" title="3 Content-Warning Header">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 The type parameter">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 The date parameter">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 The Type Parameter">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 The Date Parameter">
 <link href="#rfc.section.4" rel="Chapter" title="4 Embedded Warning">
 <link href="#rfc.section.5" rel="Chapter" title="5 JSON Warning Format">
-<link href="#rfc.section.6" rel="Chapter" title="6 Correlation between errors, warnings and data">
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Soft errors with data">
-<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Hard errors with warnings">
+<link href="#rfc.section.6" rel="Chapter" title="6 Correlation between Errors, Warnings and Data">
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Soft Errors with Data">
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Hard Errors with Warnings">
 <link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
 <link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 Content-Warning Type Registry">
@@ -396,14 +396,14 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.40.0 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.40.1 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Cedik, A. and E. Wilde" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-cedik-http-warning-01" />
-  <meta name="dct.issued" scheme="ISO8601" content="2019-11-04" />
-  <meta name="dct.abstract" content="This document defines a new header Content-Warning and a standard response format for warning information in HTTP APIs.   " />
-  <meta name="description" content="This document defines a new header Content-Warning and a standard response format for warning information in HTTP APIs.   " />
+  <meta name="dct.issued" scheme="ISO8601" content="2020-03-20" />
+  <meta name="dct.abstract" content="This document defines a new header Content-Warning and a standard response format for representing warning information in HTTP APIs.   " />
+  <meta name="description" content="This document defines a new header Content-Warning and a standard response format for representing warning information in HTTP APIs.   " />
 
 </head>
 
@@ -425,12 +425,12 @@
 <td class="right">E. Wilde</td>
 </tr>
 <tr>
-<td class="left">Expires: May 7, 2020</td>
+<td class="left">Expires: September 21, 2020</td>
 <td class="right">Axway</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">November 4, 2019</td>
+<td class="right">March 20, 2020</td>
 </tr>
 
     	
@@ -441,7 +441,7 @@
   <span class="filename">draft-cedik-http-warning-01</span></p>
   
   <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>This document defines a new header Content-Warning and a standard response format for warning information in HTTP APIs.  </p>
+<p>This document defines a new header Content-Warning and a standard response format for representing warning information in HTTP APIs.  </p>
 <h1><a>Note to Readers</a></h1>
 <p>This draft should be discussed on the rfc-interest mailing list (<span>&lt;</span><a href="https://lists.w3.org/Archives/Public/ietf-http-wg/">https://lists.w3.org/Archives/Public/ietf-http-wg/</a><span>&gt;</span>).</p>
 <p>Online access to all versions and files is available on GitHub (<span>&lt;</span><a href="https://github.com/dret/I-D/tree/master/http-warning">https://github.com/dret/I-D/tree/master/http-warning</a><span>&gt;</span>).</p>
@@ -449,9 +449,9 @@
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on May 7, 2020.</p>
+<p>This Internet-Draft will expire on September 21, 2020.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
-<p>Copyright (c) 2019 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
+<p>Copyright (c) 2020 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
 
   
@@ -465,19 +465,19 @@
 </li>
 <li>3.   <a href="#rfc.section.3">Content-Warning Header</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">The type parameter</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">The Type Parameter</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">The date parameter</a>
+<li>3.2.   <a href="#rfc.section.3.2">The Date Parameter</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Embedded Warning</a>
 </li>
 <li>5.   <a href="#rfc.section.5">JSON Warning Format</a>
 </li>
-<li>6.   <a href="#rfc.section.6">Correlation between errors, warnings and data</a>
+<li>6.   <a href="#rfc.section.6">Correlation between Errors, Warnings and Data</a>
 </li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">Soft errors with data</a>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Soft Errors with Data</a>
 </li>
-<li>6.2.   <a href="#rfc.section.6.2">Hard errors with warnings</a>
+<li>6.2.   <a href="#rfc.section.6.2">Hard Errors with Warnings</a>
 </li>
 </ul><li>7.   <a href="#rfc.section.7">Security Considerations</a>
 </li>
@@ -506,10 +506,10 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Many current APIs are based on HTTP <a href="#RFC7230" class="xref">[RFC7230]</a> as their application protocol. Their response handling model is based on the assumption that requests either are successful or they fail. In both cases (success and fail) an HTTP status code <a href="#RFC7231" class="xref">[RFC7231]</a> is returned to convey either fact.  </p>
-<p id="rfc.section.1.p.2">But response status is not always strictly either success or failure. For example, there are cases where an underlying system returns a response with data that cannot be defined as a clear error. API providers who are integrating such a service might want to return a correct response nonetheless, but returning a HTTP status code of e.g. 200 OK without any additional information is not the only possible approach in this case.  </p>
-<p id="rfc.section.1.p.3">As defined in the principles of Web architecture <a href="#W3C.REC-webarch-20041215" class="xref">[W3C.REC-webarch-20041215]</a>, agents that "recover from errors by making a choice without the user's consent are not acting on the user's behalf".  Therefore APIs should be able to communicate what has happened to their consumers, which then allows clients or users to make more informed decisions.  </p>
-<p id="rfc.section.1.p.4">This document defines a warning code and a standard response structure for communicating and representing warning information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to be a non-failure, there is some warning information available that they might want to take into account.  </p>
+<p id="rfc.section.1.p.1">Many current APIs are based on HTTP <a href="#RFC7230" class="xref">[RFC7230]</a> as their application protocol. Their response handling model is based on the assumption that requests either are successful or they fail. In both cases (success and failure) an HTTP status code <a href="#RFC7231" class="xref">[RFC7231]</a> is returned to convey either fact.  </p>
+<p id="rfc.section.1.p.2">But response status is not always strictly either success or failure. For example, there are cases where an underlying system returns a response with data that cannot be defined as a clear error. API providers who are integrating such a service might want to return a success response nonetheless, but returning a HTTP status code of e.g. 200 OK without any additional information is not the only possible approach in this case.  </p>
+<p id="rfc.section.1.p.3">As defined in the principles of Web architecture <a href="#W3C.REC-webarch-20041215" class="xref">[W3C.REC-webarch-20041215]</a>, agents that "recover from errors by making a choice without the user's consent are not acting on the user's behalf".  Therefore APIs should be able to communicate what has happened to their consumers, which then allows clients or users to make more informed decisions.  Note that this specification specifically targets warnings and not errors, meaning that while it may be useful for clients to understand the warning condition and act on it, they also may choose to ignore it and treat the response as a successful one.  </p>
+<p id="rfc.section.1.p.4">This document defines a warning code and a standard response structure for communicating and representing warning information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to represent successful, there is warning information available that they might want to take into account.  </p>
 <p id="rfc.section.1.p.5">As a general guideline, warning information should be considered to be any information that can be safely ignored (treating the response as if it did not contain any warning information), but that might help clients and users to make better decisions.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#notational-conventions" id="notational-conventions">Notational Conventions</a>
@@ -518,7 +518,7 @@
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#content-warning-header" id="content-warning-header">Content-Warning Header</a>
 </h1>
-<p id="rfc.section.3.p.1">The Content-Warning header introduces the possibility to return different kinds of warning information via http. It is defined as a Structured Header List <a href="#I-D.ietf-httpbis-header-structure" class="xref">[I-D.ietf-httpbis-header-structure]</a>. Its ABNF is: </p>
+<p id="rfc.section.3.p.1">The Content-Warning header introduces the possibility to return different kinds of warning information via HTTP. It is defined as a Structured Header List <a href="#I-D.ietf-httpbis-header-structure" class="xref">[I-D.ietf-httpbis-header-structure]</a>. Its ABNF is: </p>
 <p id="rfc.section.3.p.2">Content-Warning = sh-list </p>
 <p id="rfc.section.3.p.3">Each member of the list is a structured headers dictionary (sh-dictionary) with the following entries: </p>
 <pre>
@@ -526,17 +526,17 @@ type = sh-token
 date = sh-date
 </pre>
 <h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#the-type-parameter" id="the-type-parameter">The type parameter</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#the-type-parameter" id="the-type-parameter">The Type Parameter</a>
 </h1>
 <p id="rfc.section.3.1.p.1">The "type" defines a specific handling for the corresponding warning use case. Based on it a client MAY handle the warning differently.  </p>
 <p id="rfc.section.3.1.p.2">With the introduction of the Content-Warning Header it can have the following value: </p>
 <p></p>
 
-<ul><li>embedded-warning - Details about the warning are embedded into the response' body (see <a href="#embedded-warning" class="xref">Section 4</a>).  </li></ul>
+<ul><li>embedded-warning - Details about the warning are embedded into the response body (see <a href="#embedded-warning" class="xref">Section 4</a>).  </li></ul>
 
 <p> </p>
 <h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#the-date-parameter" id="the-date-parameter">The date parameter</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#the-date-parameter" id="the-date-parameter">The Date Parameter</a>
 </h1>
 <p id="rfc.section.3.2.p.1">The date parameter defines the last occurrence of this warning as a structured headers date (e.g. "1581410465").  </p>
 <h1 id="rfc.section.4">
@@ -545,8 +545,8 @@ date = sh-date
 <p id="rfc.section.4.p.1">This document introduces the Content-Warning Type "Embedded Warning".  </p>
 <p id="rfc.section.4.p.2">As mentioned in the introduction (<a href="#introduction" class="xref">Section 1</a>), HTTP requests can be successful or they can fail. They can also result in a state where the original intent was satisfied, but a side effect happened that should be conveyed back to the client.  </p>
 <p id="rfc.section.4.p.3">To make it easier for clients to handle such an event, the Content-Warning type "Embedded Warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or the client MAY use the embedded warning information to understand the nature of the warning.  </p>
-<p id="rfc.section.4.p.4">The "Embedded Warning" type does not prescribe the way in which warnings are represented, but the assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.  </p>
-<p id="rfc.section.4.p.5">An examplary Content-Warning header would look like this: </p>
+<p id="rfc.section.4.p.4">The "Embedded Warning" type does not prescribe the way in which warnings are represented. The assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.  </p>
+<p id="rfc.section.4.p.5">An exemplary Content-Warning header looks like this: </p>
 <pre>
 Content-Warning: "Embedded Warning", 1590190500
 </pre>
@@ -555,14 +555,14 @@ Content-Warning: "Embedded Warning", 1590190500
 </h1>
 <p id="rfc.section.5.p.1">The JSON warning format uses the JSON format described in <a href="#RFC8259" class="xref">[RFC8259]</a>. It is intended to be used as a building block in the response schemas of JSON-based APIs.  </p>
 <p id="rfc.section.5.p.2">In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. In order to make it easier for consumers to identify information about warnings, a top-level member is defined that contains all warning information in a representation. A "warnings" member MUST encapsulate the warnings that will be returned to the client.  </p>
-<p id="rfc.section.5.p.3">When an error occurred that can not be defined as a "hard error", but is meant as additional information one should consider returning this information to the APIs user. The warnings array MUST be filled with one object for each and every warning message that is returned to the client.  </p>
+<p id="rfc.section.5.p.3">When an condition occurs that can not be defined as a "hard error" (i.e., that allows clients to continue treating the resulting response as a success), additional information about this condition can be returned to the API client. The "warnings" member MUST be an array that is structured with one object for each and every warning message that is returned to the client.  </p>
 <p id="rfc.section.5.p.4">Entries in these individual objects follow the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
-<p id="rfc.section.5.p.5">When warnings are present the Content-Warning header (as defined in <a href="#content-warning-header" class="xref">Section 3</a>) SHOULD be set to indicate that warnings have be returned. This way a client will not have to parse the response body to find out if the warnings array has entries.  </p>
+<p id="rfc.section.5.p.5">When warnings are present the Content-Warning header (as defined in <a href="#content-warning-header" class="xref">Section 3</a>) SHOULD be set to indicate that warnings have be returned. This way a client will not have to parse the response body to find out whether a warnings member is present.  </p>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#correlation.between.errors.warnings.and.data" id="correlation.between.errors.warnings.and.data">Correlation between errors, warnings and data</a>
+<a href="#rfc.section.6">6.</a> <a href="#correlation.between.errors.warnings.and.data" id="correlation.between.errors.warnings.and.data">Correlation between Errors, Warnings and Data</a>
 </h1>
 <h1 id="rfc.section.6.1">
-<a href="#rfc.section.6.1">6.1.</a> <a href="#soft.errors.with.data" id="soft.errors.with.data">Soft errors with data</a>
+<a href="#rfc.section.6.1">6.1.</a> <a href="#soft.errors.with.data" id="soft.errors.with.data">Soft Errors with Data</a>
 </h1>
 <p id="rfc.section.6.1.p.1">Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.  </p>
 <pre>
@@ -600,9 +600,9 @@ Content-Warning: "Embedded Warning", "1590190500"
 }
 </pre>
 <h1 id="rfc.section.6.2">
-<a href="#rfc.section.6.2">6.2.</a> <a href="#hard.errors.with.warnings" id="hard.errors.with.warnings">Hard errors with warnings</a>
+<a href="#rfc.section.6.2">6.2.</a> <a href="#hard.errors.with.warnings" id="hard.errors.with.warnings">Hard Errors with Warnings</a>
 </h1>
-<p id="rfc.section.6.2.p.1">As described previously, errors are exception like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.  </p>
+<p id="rfc.section.6.2.p.1">As described previously, errors are exceptions like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.  </p>
 <p id="rfc.section.6.2.p.2">To indicate this fact the content-type MAY be set to application/problem+json and detailed information about the error will be returned in the body following the pattern described in <a href="#RFC7807" class="xref">[RFC7807]</a>.  </p>
 <p id="rfc.section.6.2.p.3">If warnings occurred during the processing of the request, but before the processing stopped, they SHOULD be returned alongside the errors.  </p>
 <pre>
@@ -642,7 +642,7 @@ Content-Warning: "Embedded Warning", "1590190500"
 
 <ul>
 <li>Header field name: Content-Warning</li>
-<li>Applicable protocol: http</li>
+<li>Applicable protocol: HTTP</li>
 <li>Status: standard</li>
 <li>Author/Change Controller: IETF</li>
 <li>Specification document(s): [this document]</li>
@@ -666,7 +666,7 @@ Content-Warning: "Embedded Warning", "1590190500"
 </ul>
 
 <p> </p>
-<p id="rfc.section.8.2.p.3">Values to be added to this namespace require IETF Review (see <a href="#RFC5226" class="xref">[RFC5226]</a>, Section 4.1).  </p>
+<p id="rfc.section.8.2.p.3">Values to be added to this namespace require IETF Review (see <a href="#RFC8126" class="xref">[RFC8126]</a>, Section 4.1).  </p>
 <h1 id="rfc.section.8.3">
 <a href="#rfc.section.8.3">8.3.</a> <a href="#registrations" id="registrations">Registrations</a>
 </h1>
@@ -699,11 +699,6 @@ Content-Warning: "Embedded Warning", "1590190500"
 <a>Klyne, G.</a>, <a>Nottingham, M.</a> and <a>J. Mogul</a>, "<a href="https://tools.ietf.org/html/rfc3864">Registration Procedures for Message Header Fields</a>", BCP 90, RFC 3864, DOI 10.17487/RFC3864, September 2004.</td>
 </tr>
 <tr>
-<td class="reference"><b id="RFC5226">[RFC5226]</b></td>
-<td class="top">
-<a>Narten, T.</a> and <a>H. Alvestrand</a>, "<a href="https://tools.ietf.org/html/rfc5226">Guidelines for Writing an IANA Considerations Section in RFCs</a>", RFC 5226, DOI 10.17487/RFC5226, May 2008.</td>
-</tr>
-<tr>
 <td class="reference"><b id="RFC7230">[RFC7230]</b></td>
 <td class="top">
 <a>Fielding, R.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc7230">Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</a>", RFC 7230, DOI 10.17487/RFC7230, June 2014.</td>
@@ -722,6 +717,11 @@ Content-Warning: "Embedded Warning", "1590190500"
 <td class="reference"><b id="RFC7807">[RFC7807]</b></td>
 <td class="top">
 <a>Nottingham, M.</a> and <a>E. Wilde</a>, "<a href="https://tools.ietf.org/html/rfc7807">Problem Details for HTTP APIs</a>", RFC 7807, DOI 10.17487/RFC7807, March 2016.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8126">[RFC8126]</b></td>
+<td class="top">
+<a>Cotton, M.</a>, <a>Leiba, B.</a> and <a>T. Narten</a>, "<a href="https://tools.ietf.org/html/rfc8126">Guidelines for Writing an IANA Considerations Section in RFCs</a>", BCP 26, RFC 8126, DOI 10.17487/RFC8126, June 2017.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC8259">[RFC8259]</b></td>
