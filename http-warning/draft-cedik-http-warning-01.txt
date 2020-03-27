@@ -5,8 +5,8 @@
 Network Working Group                                           A. Cedik
 Internet-Draft                                            shipcloud GmbH
 Intended status: Standards Track                                E. Wilde
-Expires: September 21, 2020                                        Axway
-                                                          March 20, 2020
+Expires: September 28, 2020                                        Axway
+                                                          March 27, 2020
 
 
              Communicating Warning Information in HTTP APIs
@@ -40,7 +40,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 21, 2020.
+   This Internet-Draft will expire on September 28, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Cedik & Wilde          Expires September 21, 2020               [Page 1]
+Cedik & Wilde          Expires September 28, 2020               [Page 1]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -76,15 +76,15 @@ Table of Contents
    5.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
    6.  Correlation between Errors, Warnings and Data . . . . . . . .   5
      6.1.  Soft Errors with Data . . . . . . . . . . . . . . . . . .   5
-     6.2.  Hard Errors with Warnings . . . . . . . . . . . . . . . .   6
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   7
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
-     8.1.  Content-Warning Type Registry . . . . . . . . . . . . . .   8
-     8.2.  Procedure . . . . . . . . . . . . . . . . . . . . . . . .   8
-     8.3.  Registrations . . . . . . . . . . . . . . . . . . . . . .   8
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .   9
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
+     8.1.  Message Header Field Content-Warning  . . . . . . . . . .   6
+     8.2.  Content-Warning Type Registry . . . . . . . . . . . . . .   7
+       8.2.1.  Procedure . . . . . . . . . . . . . . . . . . . . . .   7
+       8.2.2.  Registrations . . . . . . . . . . . . . . . . . . . .   7
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .   8
    Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   9
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Cedik & Wilde          Expires September 21, 2020               [Page 2]
+Cedik & Wilde          Expires September 28, 2020               [Page 2]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -143,10 +143,9 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 3.  Content-Warning Header
 
-   The Content-Warning header introduces the possibility to return
-   different kinds of warning information via HTTP.  It is defined as a
-   Structured Header List [I-D.ietf-httpbis-header-structure].  Its ABNF
-   is:
+   The Content-Warning header allows to return different kinds of
+   warning information via HTTP.  It is defined as a Structured Header
+   List [I-D.ietf-httpbis-header-structure].  Its ABNF is:
 
    Content-Warning = sh-list
 
@@ -161,17 +160,15 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    The "type" defines a specific handling for the corresponding warning
    use case.  Based on it a client MAY handle the warning differently.
 
+   With the introduction of the Content-Warning Header it can have the
+   following value:
 
 
 
-
-Cedik & Wilde          Expires September 21, 2020               [Page 3]
+Cedik & Wilde          Expires September 28, 2020               [Page 3]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
-
-   With the introduction of the Content-Warning Header it can have the
-   following value:
 
    o  embedded-warning - Details about the warning are embedded into the
       response body (see Section 4).
@@ -218,16 +215,16 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    response data as members of the returned JSON object.  In order to
    make it easier for consumers to identify information about warnings,
    a top-level member is defined that contains all warning information
+   in a representation.  A "warnings" member MUST encapsulate the
+   warnings that will be returned to the client.
 
 
 
-Cedik & Wilde          Expires September 21, 2020               [Page 4]
+
+Cedik & Wilde          Expires September 28, 2020               [Page 4]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
-
-   in a representation.  A "warnings" member MUST encapsulate the
-   warnings that will be returned to the client.
 
    When an condition occurs that can not be defined as a "hard error"
    (i.e., that allows clients to continue treating the resulting
@@ -277,7 +274,10 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 21, 2020               [Page 5]
+
+
+
+Cedik & Wilde          Expires September 28, 2020               [Page 5]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -315,53 +315,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
      "price": 3.4
    }
 
-6.2.  Hard Errors with Warnings
-
-   As described previously, errors are exceptions like occurrences where
-   processing of the request stopped and the API consumer has to be
-   informed of this "hard error" right away.
-
-   To indicate this fact the content-type MAY be set to application/
-   problem+json and detailed information about the error will be
-   returned in the body following the pattern described in [RFC7807].
-
-   If warnings occurred during the processing of the request, but before
-   the processing stopped, they SHOULD be returned alongside the errors.
-
-
-
-
-
-
-Cedik & Wilde          Expires September 21, 2020               [Page 6]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
-
-   POST /example HTTP/1.1
-   Host: example.com
-   Accept: application/json
-
-   HTTP/1.1 400 BAD REQUEST
-   Content-Type: application/problem+json
-   Content-Warning: "Embedded Warning", "1590190500"
-
-   {
-     "request_id": "2326b087-d64e-43bd-a557-42171155084f",
-     "detail": "The format of pickup time earliest was wrong.",
-     "status": "500",
-     "title": "Wrong format for pickup time",
-     "type": "https://example.com/errors/wrong_format"
-     "warnings": [
-       {
-         "detail": "Street name too long. It has been shortened to fit",
-         "status": "200",
-         "title": "Street name too long. It has been shortened.",
-         "type": "https://example.com/errors/shortened_entry"
-       }
-     ]
-   }
-
 7.  Security Considerations
 
    API providers need to exercise care when reporting warnings.
@@ -371,10 +324,19 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 8.  IANA Considerations
 
+8.1.  Message Header Field Content-Warning
+
    This specification registers the following entry in the Permanent
    Message Header Field Names registry established by [RFC3864]:
 
    o  Header field name: Content-Warning
+
+
+
+Cedik & Wilde          Expires September 28, 2020               [Page 6]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
 
    o  Applicable protocol: HTTP
 
@@ -386,20 +348,12 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
    o  Related information:
 
-
-
-
-Cedik & Wilde          Expires September 21, 2020               [Page 7]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
-
-8.1.  Content-Warning Type Registry
+8.2.  Content-Warning Type Registry
 
    The "Content-Warning Type Registry" defines the namespace for new
    Content-Warning types.
 
-8.2.  Procedure
+8.2.1.  Procedure
 
    A registration MUST include the following fields:
 
@@ -410,7 +364,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    Values to be added to this namespace require IETF Review (see
    [RFC8126], Section 4.1).
 
-8.3.  Registrations
+8.2.2.  Registrations
 
    The registry has been populated with the registrations below:
 
@@ -429,6 +383,17 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
               draft-ietf-httpbis-header-structure-14 (work in progress),
               October 2019.
 
+
+
+
+
+
+
+Cedik & Wilde          Expires September 28, 2020               [Page 7]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -438,17 +403,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
               Procedures for Message Header Fields", BCP 90, RFC 3864,
               DOI 10.17487/RFC3864, September 2004,
               <https://www.rfc-editor.org/info/rfc3864>.
-
-
-
-
-
-
-
-Cedik & Wilde          Expires September 21, 2020               [Page 8]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
 
    [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Message Syntax and Routing",
@@ -487,6 +441,15 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
               Recommendation REC-webarch-20041215, December 2004,
               <http://www.w3.org/TR/2004/REC-webarch-20041215>.
 
+
+
+
+
+Cedik & Wilde          Expires September 28, 2020               [Page 8]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
+
 Appendix A.  Acknowledgements
 
    Thanks for comments and suggestions provided by ...
@@ -497,13 +460,6 @@ Authors' Addresses
    shipcloud GmbH
 
    Email: andre.cedik@googlemail.com
-
-
-
-
-Cedik & Wilde          Expires September 21, 2020               [Page 9]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
    Erik Wilde
@@ -545,16 +501,4 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-Cedik & Wilde          Expires September 21, 2020              [Page 10]
+Cedik & Wilde          Expires September 28, 2020               [Page 9]
