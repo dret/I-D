@@ -5,8 +5,8 @@
 Network Working Group                                           A. Cedik
 Internet-Draft                                            shipcloud GmbH
 Intended status: Standards Track                                E. Wilde
-Expires: September 28, 2020                                        Axway
-                                                          March 27, 2020
+Expires: October 1, 2020                                           Axway
+                                                          March 30, 2020
 
 
              Communicating Warning Information in HTTP APIs
@@ -41,7 +41,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 28, 2020.
+   This Internet-Draft will expire on October 1, 2020.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 1]
+Cedik & Wilde            Expires October 1, 2020                [Page 1]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -73,7 +73,7 @@ Table of Contents
    3.  Content-Warning Header Field  . . . . . . . . . . . . . . . .   3
      3.1.  The Type Parameter  . . . . . . . . . . . . . . . . . . .   3
      3.2.  The Date Parameter  . . . . . . . . . . . . . . . . . . .   4
-   4.  Embedded Warning  . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  embedded-warning  . . . . . . . . . . . . . . . . . . . . . .   4
    5.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
    6.  Correlation between Errors, Warnings and Data . . . . . . . .   5
      6.1.  Soft Errors with Data . . . . . . . . . . . . . . . . . .   5
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 2]
+Cedik & Wilde            Expires October 1, 2020                [Page 2]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -151,8 +151,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
    Content-Warning = sh-list
 
-   Each member of the list is a structured headers dictionary (sh-
-   dictionary) with the following entries:
+   Each member of the list has two items:
 
    type = sh-token
    date = sh-date
@@ -165,7 +164,8 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 3]
+
+Cedik & Wilde            Expires October 1, 2020                [Page 3]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -181,9 +181,9 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    The "date" parameter defines the last occurrence of this warning as a
    structured headers date (e.g. "1581410465").
 
-4.  Embedded Warning
+4.  embedded-warning
 
-   This document introduces the Content-Warning Type "Embedded Warning".
+   This document introduces the Content-Warning Type "embedded-warning".
 
    As mentioned in the introduction (Section 1), HTTP requests can be
    successful or they can fail.  They can also result in a state where
@@ -191,12 +191,12 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    should be conveyed back to the client.
 
    To make it easier for clients to handle such an event, the Content-
-   Warning type "Embedded Warning" MAY be returned.  In this case, the
+   Warning type "embedded-warning" MAY be returned.  In this case, the
    client MAY either treat the response according to its HTTP status
    code, or in addition the client MAY use the embedded warning
    information to understand the nature of the warning.
 
-   The "Embedded Warning" type does not prescribe the way in which
+   The "embedded-warning" type does not prescribe the way in which
    warnings are represented.  The assumption is that the response will
    have embedded information that allows the client to learn about the
    nature of the warning.  The following section describes a JSON
@@ -206,7 +206,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
    An exemplary Content-Warning header field looks like this:
 
-   Content-Warning: "Embedded Warning", 1590190500
+   Content-Warning: "embedded-warning"; 1590190500
 
 5.  JSON Warning Format
 
@@ -221,7 +221,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 4]
+Cedik & Wilde            Expires October 1, 2020                [Page 4]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -277,7 +277,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 5]
+Cedik & Wilde            Expires October 1, 2020                [Page 5]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -288,7 +288,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
    HTTP/1.1 200 OK
    Content-Type: application/json
-   Content-Warning: "Embedded Warning", "1590190500"
+   Content-Warning: "embedded-warning"; 1590190500
 
    {
      "request_id": "2326b087-d64e-43bd-a557-42171155084f",
@@ -333,7 +333,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 6]
+Cedik & Wilde            Expires October 1, 2020                [Page 6]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -389,7 +389,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 7]
+Cedik & Wilde            Expires October 1, 2020                [Page 7]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -445,7 +445,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 8]
+Cedik & Wilde            Expires October 1, 2020                [Page 8]
 
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
@@ -501,4 +501,4 @@ Authors' Addresses
 
 
 
-Cedik & Wilde          Expires September 28, 2020               [Page 9]
+Cedik & Wilde            Expires October 1, 2020                [Page 9]
