@@ -79,20 +79,16 @@
 Content-Warning = sh-list
 ]]></artwork></figure>
          <t>
-            Each member of the list MUST have exactly two items:
+            Each member of the list MUST have exactly the two parameters "type" and "date".
          </t>
-<figure><artwork type="abnf"><![CDATA[
-type = sh-token
-date = sh-date
-]]></artwork></figure>
          <section anchor="the-type-parameter" title="The Type Parameter">
             <t>
-               The "type" parameter represents the warning that is being signaled. Its value SHOULD be a type that is registered in the Content-Warning type registry <xref target="content-warning-type-registry"/>. Clients SHOULD ignore Content-Warning types that they do not know.
+               The "type" parameter represents the warning that is being signaled. Its value is defined as a sh-token and SHOULD be a type that is registered in the Content-Warning type registry <xref target="content-warning-type-registry"/>. Clients SHOULD ignore Content-Warning types that they do not know.
             </t>
          </section>
          <section anchor="the-date-parameter" title="The Date Parameter">
             <t>
-               The "date" parameter defines the last occurrence of this warning as a structured headers date (e.g. "1581410465").
+               The "date" parameter defines the last occurrence of this warning as a structured headers date as defined in <xref target="I-D.ietf-binary-structured-headers"/> (e.g. "1581410465").
             </t>
          </section>
       </section>
@@ -462,6 +458,23 @@ Content-Warning: "embedded-warning"; 1590190500
             <seriesInfo name='Internet-Draft' value='draft-ietf-httpbis-header-structure-14' />
             <format type='TXT'
                   target='http://www.ietf.org/internet-drafts/draft-ietf-httpbis-header-structure-14.txt' />
+         </reference>
+         <reference anchor="I-D.ietf-binary-structured-headers">
+            <front>
+               <title>Binary Structured HTTP Headers</title>
+               <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+                  <organization />
+               </author>
+               <date month='March' day='04' year='2020' />
+               <abstract>
+               <t>
+                  This document describes a set of data types and associated algorithms that are intended to make it easier and safer to define and handle HTTP header fields.  It is intended for use by specifications of new HTTP header fields that wish to use a common syntax that is more restrictive than traditional HTTP field values.
+               </t>
+            </abstract>
+            </front>
+            <seriesInfo name='Internet-Draft' value='draft-nottingham-binary-structured-headers-02' />
+            <format type='TXT'
+                  target='http://www.ietf.org/internet-drafts/draft-nottingham-binary-structured-headers-02.txt' />
          </reference>
       </references>
       <references title="Informative References">
