@@ -71,23 +71,21 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   3
    3.  Content-Warning Header Field  . . . . . . . . . . . . . . . .   3
-     3.1.  The Type Parameter  . . . . . . . . . . . . . . . . . . .   3
-     3.2.  The Date Parameter  . . . . . . . . . . . . . . . . . . .   4
-   4.  embedded-warning  . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  The "embedded-warning" Content-Warning Type . . . . . . . . .   4
    5.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
    6.  Correlation between Errors, Warnings and Data . . . . . . . .   5
      6.1.  Soft Errors with Data . . . . . . . . . . . . . . . . . .   5
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
      8.1.  HTTP Header Field Content-Warning . . . . . . . . . . . .   6
-     8.2.  Content-Warning Type Registry . . . . . . . . . . . . . .   7
-       8.2.1.  Registration Procedure  . . . . . . . . . . . . . . .   7
+     8.2.  Content-Warning Type Registry . . . . . . . . . . . . . .   6
+       8.2.1.  Registration Procedure  . . . . . . . . . . . . . . .   6
        8.2.2.  Initial Registry Content  . . . . . . . . . . . . . .   7
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
      9.2.  Informative References  . . . . . . . . . . . . . . . . .   8
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   9
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   9
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
@@ -105,7 +103,9 @@ Table of Contents
    e.g. 200 OK without any additional information is not the only
    possible approach in this case.
 
-
+   As defined in the principles of Web architecture
+   [W3C.REC-webarch-20041215], agents that "recover from errors by
+   making a choice without the user's consent are not acting on the
 
 
 
@@ -114,9 +114,6 @@ Cedik & Wilde            Expires October 1, 2020                [Page 2]
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
-   As defined in the principles of Web architecture
-   [W3C.REC-webarch-20041215], agents that "recover from errors by
-   making a choice without the user's consent are not acting on the
    user's behalf".  Therefore APIs should be able to communicate what
    has happened to their consumers, which then allows clients or users
    to make more informed decisions.  Note that this specification
@@ -151,16 +148,19 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
    Content-Warning = sh-list
 
-   Each member of the list has two items:
+   Each member of the list MUST have exactly the two parameters "type"
+   and "date".
 
-   type = sh-token
-   date = sh-date
+      The "type" parameter represents the warning that is being
+      signaled.  Its value is defined as a sh-token and SHOULD be a type
+      that is registered in the Content-Warning type registry
+      Section 8.2.  Clients SHOULD ignore Content-Warning types that
+      they do not know.
 
-3.1.  The Type Parameter
+      The "date" parameter defines the last occurrence of this warning
+      as a structured headers date as defined in
+      [I-D.ietf-binary-structured-headers] (e.g. "1581410465").
 
-   The "type" parameter defines a specific handling for the
-   corresponding warning use case.  Based on it a client MAY handle the
-   warning differently.
 
 
 
@@ -170,18 +170,7 @@ Cedik & Wilde            Expires October 1, 2020                [Page 3]
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
-   With the introduction of the Content-Warning Header it can have the
-   following value:
-
-   o  embedded-warning - Details about the warning are embedded into the
-      response body (see Section 4).
-
-3.2.  The Date Parameter
-
-   The "date" parameter defines the last occurrence of this warning as a
-   structured headers date (e.g. "1581410465").
-
-4.  embedded-warning
+4.  The "embedded-warning" Content-Warning Type
 
    This document introduces the Content-Warning Type "embedded-warning".
 
@@ -218,14 +207,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    response data as members of the returned JSON object.  In order to
    make it easier for consumers to identify information about warnings,
    a top-level member is defined that contains all warning information
-
-
-
-Cedik & Wilde            Expires October 1, 2020                [Page 4]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
-
    in a representation.  A "warnings" member MUST encapsulate the
    warnings that will be returned to the client.
 
@@ -235,6 +216,15 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    can be returned to the API client.  The "warnings" member MUST be an
    array that is structured with one object for each and every warning
    message that is returned to the client.
+
+
+
+
+
+Cedik & Wilde            Expires October 1, 2020                [Page 4]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
 
    Entries in these individual objects follow the pattern described in
    [RFC7807].
@@ -251,36 +241,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    Since warnings do not have an effect on the returned HTTP status
    code, the response status code SHOULD be in the 2xx range, indicating
    that the intent of the API client was successful.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Cedik & Wilde            Expires October 1, 2020                [Page 5]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
 
    POST /example HTTP/1.1
    Host: example.com
@@ -315,6 +275,13 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
      "price": 3.4
    }
 
+
+
+Cedik & Wilde            Expires October 1, 2020                [Page 5]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
+
 7.  Security Considerations
 
    API providers need to exercise care when reporting warnings.
@@ -330,13 +297,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    Message Header Field Names registry established by [RFC3864]:
 
    o  Header field name: Content-Warning
-
-
-
-Cedik & Wilde            Expires October 1, 2020                [Page 6]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
 
    o  Applicable protocol: HTTP
 
@@ -367,6 +327,17 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    as defined by [RFC8126], Section 4.6.  They MUST follow the "sh-
    token" syntax defined by [I-D.ietf-httpbis-header-structure].
 
+
+
+
+
+
+
+Cedik & Wilde            Expires October 1, 2020                [Page 6]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
+
 8.2.2.  Initial Registry Content
 
    The registry has been populated with the registered values shown
@@ -382,17 +353,15 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 9.1.  Normative References
 
+   [I-D.ietf-binary-structured-headers]
+              Nottingham, M., "Binary Structured HTTP Headers", draft-
+              nottingham-binary-structured-headers-02 (work in
+              progress), March 2020.
+
    [I-D.ietf-httpbis-header-structure]
               Nottingham, M. and P. Kamp, "Structured Headers for HTTP",
               draft-ietf-httpbis-header-structure-14 (work in progress),
               October 2019.
-
-
-
-Cedik & Wilde            Expires October 1, 2020                [Page 7]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -413,6 +382,17 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
               <https://www.rfc-editor.org/info/rfc7231>.
+
+
+
+
+
+
+
+Cedik & Wilde            Expires October 1, 2020                [Page 7]
+
+Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
+
 
    [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
@@ -441,15 +421,6 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
               Recommendation REC-webarch-20041215, December 2004,
               <http://www.w3.org/TR/2004/REC-webarch-20041215>.
 
-
-
-
-
-Cedik & Wilde            Expires October 1, 2020                [Page 8]
-
-Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
-
-
 Appendix A.  Acknowledgements
 
    Thanks for comments and suggestions provided by ...
@@ -474,31 +445,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Cedik & Wilde            Expires October 1, 2020                [Page 9]
+Cedik & Wilde            Expires October 1, 2020                [Page 8]

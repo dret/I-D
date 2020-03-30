@@ -377,9 +377,7 @@
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.2" rel="Chapter" title="2 Notational Conventions">
 <link href="#rfc.section.3" rel="Chapter" title="3 Content-Warning Header Field">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 The Type Parameter">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 The Date Parameter">
-<link href="#rfc.section.4" rel="Chapter" title="4 embedded-warning">
+<link href="#rfc.section.4" rel="Chapter" title='4 The "embedded-warning" Content-Warning Type'>
 <link href="#rfc.section.5" rel="Chapter" title="5 JSON Warning Format">
 <link href="#rfc.section.6" rel="Chapter" title="6 Correlation between Errors, Warnings and Data">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Soft Errors with Data">
@@ -465,11 +463,7 @@
 </li>
 <li>3.   <a href="#rfc.section.3">Content-Warning Header Field</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">The Type Parameter</a>
-</li>
-<li>3.2.   <a href="#rfc.section.3.2">The Date Parameter</a>
-</li>
-</ul><li>4.   <a href="#rfc.section.4">embedded-warning</a>
+<li>4.   <a href="#rfc.section.4">The "embedded-warning" Content-Warning Type</a>
 </li>
 <li>5.   <a href="#rfc.section.5">JSON Warning Format</a>
 </li>
@@ -522,27 +516,17 @@
 <pre>
 Content-Warning = sh-list
 </pre>
-<p id="rfc.section.3.p.2">Each member of the list has two items: </p>
-<pre>
-type = sh-token
-date = sh-date
-</pre>
-<h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#the-type-parameter" id="the-type-parameter">The Type Parameter</a>
-</h1>
-<p id="rfc.section.3.1.p.1">The "type" parameter defines a specific handling for the corresponding warning use case. Based on it a client MAY handle the warning differently.  </p>
-<p id="rfc.section.3.1.p.2">With the introduction of the Content-Warning Header it can have the following value: </p>
+<p id="rfc.section.3.p.2">Each member of the list MUST have exactly the two parameters "type" and "date".  </p>
 <p></p>
 
-<ul><li>embedded-warning - Details about the warning are embedded into the response body (see <a href="#embedded-warning" class="xref">Section 4</a>).  </li></ul>
+<ul class="empty">
+<li>The "type" parameter represents the warning that is being signaled. Its value is defined as a sh-token and SHOULD be a type that is registered in the Content-Warning type registry <a href="#content-warning-type-registry" class="xref">Section 8.2</a>. Clients SHOULD ignore Content-Warning types that they do not know.</li>
+<li>The "date" parameter defines the last occurrence of this warning as a structured headers date as defined in <a href="#I-D.ietf-binary-structured-headers" class="xref">[I-D.ietf-binary-structured-headers]</a> (e.g. "1581410465").</li>
+</ul>
 
 <p> </p>
-<h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#the-date-parameter" id="the-date-parameter">The Date Parameter</a>
-</h1>
-<p id="rfc.section.3.2.p.1">The "date" parameter defines the last occurrence of this warning as a structured headers date (e.g. "1581410465").  </p>
 <h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#embedded-warning" id="embedded-warning">embedded-warning</a>
+<a href="#rfc.section.4">4.</a> <a href="#embedded-warning" id="embedded-warning">The "embedded-warning" Content-Warning Type</a>
 </h1>
 <p id="rfc.section.4.p.1">This document introduces the Content-Warning Type "embedded-warning".  </p>
 <p id="rfc.section.4.p.2">As mentioned in the introduction (<a href="#introduction" class="xref">Section 1</a>), HTTP requests can be successful or they can fail. They can also result in a state where the original intent was satisfied, but a side effect happened that should be conveyed back to the client.  </p>
@@ -635,8 +619,8 @@ Content-Warning: "embedded-warning"; 1590190500
 <p></p>
 
 <ul>
-<li>Content-Warning Type: Name of the Content-Warning Type </li>
-<li>Reference: Pointer to a specification text </li>
+<li>Content-Warning Type: Name of the Content-Warning Type</li>
+<li>Reference: Pointer to a specification text</li>
 </ul>
 
 <p> </p>
@@ -657,6 +641,11 @@ Content-Warning: "embedded-warning"; 1590190500
 <h1 id="rfc.references.1">
 <a href="#rfc.references.1">9.1.</a> Normative References</h1>
 <table><tbody>
+<tr>
+<td class="reference"><b id="I-D.ietf-binary-structured-headers">[I-D.ietf-binary-structured-headers]</b></td>
+<td class="top">
+<a>Nottingham, M.</a>, "<a href="https://tools.ietf.org/html/draft-nottingham-binary-structured-headers-02">Binary Structured HTTP Headers</a>", Internet-Draft draft-nottingham-binary-structured-headers-02, March 2020.</td>
+</tr>
 <tr>
 <td class="reference"><b id="I-D.ietf-httpbis-header-structure">[I-D.ietf-httpbis-header-structure]</b></td>
 <td class="top">
