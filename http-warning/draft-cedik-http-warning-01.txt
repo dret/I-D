@@ -73,8 +73,7 @@ Table of Contents
    3.  Content-Warning Header Field  . . . . . . . . . . . . . . . .   3
    4.  The "embedded-warning" Content-Warning Type . . . . . . . . .   4
    5.  JSON Warning Format . . . . . . . . . . . . . . . . . . . . .   4
-   6.  Correlation between Errors, Warnings and Data . . . . . . . .   5
-     6.1.  Soft Errors with Data . . . . . . . . . . . . . . . . . .   5
+   6.  Example with HTTP Header Field and Embedded Warning . . . . .   5
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .   6
    8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   6
      8.1.  HTTP Header Field Content-Warning . . . . . . . . . . . .   6
@@ -106,6 +105,7 @@ Table of Contents
    As defined in the principles of Web architecture
    [W3C.REC-webarch-20041215], agents that "recover from errors by
    making a choice without the user's consent are not acting on the
+   user's behalf".  Therefore APIs should be able to communicate what
 
 
 
@@ -114,7 +114,6 @@ Cedik & Wilde            Expires October 1, 2020                [Page 2]
 Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
 
 
-   user's behalf".  Therefore APIs should be able to communicate what
    has happened to their consumers, which then allows clients or users
    to make more informed decisions.  Note that this specification
    specifically targets warnings and not errors, meaning that while it
@@ -160,6 +159,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
       The "date" parameter defines the last occurrence of this warning
       as a structured headers date as defined in
       [I-D.ietf-binary-structured-headers] (e.g. "1581410465").
+
 
 
 
@@ -234,9 +234,7 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
    returned.  This way a client will not have to parse the response body
    to find out whether a warnings member is present.
 
-6.  Correlation between Errors, Warnings and Data
-
-6.1.  Soft Errors with Data
+6.  Example with HTTP Header Field and Embedded Warning
 
    Since warnings do not have an effect on the returned HTTP status
    code, the response status code SHOULD be in the 2xx range, indicating
@@ -274,6 +272,8 @@ Internet-DrafCommunicating Warning Information in HTTP APIs   March 2020
      "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
      "price": 3.4
    }
+
+
 
 
 
