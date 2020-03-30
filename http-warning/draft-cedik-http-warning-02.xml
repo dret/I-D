@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+<?rfc toc="yes" ?>
+<?rfc sortrefs="yes" ?>
+<?rfc symrefs="yes" ?>
+<rfc category="std" ipr="trust200902" docName="draft-cedik-http-warning-02">
+   <front>
+      <title>Communicating Warning Information in HTTP APIs</title>
+      <author initials="A." surname="Cedik" fullname="Andre Cedik">
+         <organization>shipcloud GmbH</organization>
+         <address>
+            <email>andre.cedik@googlemail.com</email>
+         </address>
+      </author>
+      <author initials="E." surname="Wilde" fullname="Erik Wilde">
+         <organization>Axway</organization>
+         <address>
+            <email>erik.wilde@dret.net</email>
+            <uri>http://dret.net/netdret/</uri>
+         </address>
+      </author>
+      <date day="30" month="March" year="2020"/>
+      <abstract>
+         <t>
+            This document defines a new HTTP header field Content-Warning and a standard response format for representing warning information in HTTP APIs.
+         </t>
+      </abstract>
+      <note title="Note to Readers">
+         <t>This draft should be discussed on the rfc-interest mailing list (<eref target="https://lists.w3.org/Archives/Public/ietf-http-wg/"/>).</t>
+         <t>Online access to all versions and files is available on GitHub (<eref target="https://github.com/dret/I-D/tree/master/http-warning"/>).</t>
+      </note>
+   </front>
+   <middle>
+      <section title="Introduction" anchor="introduction">
+         <t>
+            Many current APIs are based on HTTP
+            <xref target="RFC7230" /> as their application protocol. Their
+            response handling model is based on the assumption that requests either are
+            successful or they fail. In both cases (success and failure) an HTTP status code
+            <xref target="RFC7231" /> is returned to convey either fact.
+         </t>
+         <t>
+            But response status is not always strictly either success or failure. For example, there are cases where an underlying
+            system returns a response with data that cannot be defined as a clear error. API
+            providers who are integrating such a service might want to
+            return a success response nonetheless, but returning a HTTP status code of e.g. 200 OK
+            without any additional information is not the only possible approach in this case.
+         </t>
+         <t>
+            As defined in the principles of Web architecture
+            <xref target="W3C.REC-webarch-20041215" />, agents that "recover from errors by
+            making a choice without the user's consent are not acting on the user's behalf".
+            Therefore APIs should be able to communicate what has happened to their consumers, which then allows clients or users to make more informed decisions.
+            Note that this specification specifically targets warnings and not errors, meaning
+            that while it may be useful for clients to understand the warning condition and
+            act on it, they also may choose to ignore it and treat the response as a successful 
+            one.
+         </t>
+         <t>
+            This document defines a warning code and a standard response structure for communicating and representing warning
+            information in HTTP APIs. The goal is to allow HTTP providers to have a standardized way of communicating to their consumers that while the response can be considered to represent success, there is warning information available that they might want to take into account.
+         </t>
+         <t>As a general guideline, warning information should be considered to be any information that can be safely ignored (treating the response as if it did not communicate or embed any warning information), but that might help clients and users to make better decisions.</t>
+      </section>
+      <section anchor="notational-conventions" title="Notational Conventions">
+         <t>
+            The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD
+            NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as
+            described in <xref target="RFC2119"/>.
+         </t>
+      </section>
+      <section anchor="content-warning-header" title="Content-Warning Header Field">
+         <t>
+            The Content-Warning header field allows to represent different kinds of warning information via HTTP. It is defined as a Structured Header List <xref target="I-D.ietf-httpbis-header-structure"/>. Its ABNF is:
+         </t>
+<figure><artwork type="abnf"><![CDATA[
+Content-Warning = sh-list
+]]></artwork></figure>
+         <t>
+            Each member of the list MUST have exactly the two parameters "type" and "date".
+         </t>
+         <t>
+            <list>
+               <t>The "type" parameter represents the warning that is being signaled. Its value is defined as a sh-token and SHOULD be a type that is registered in the Content-Warning type registry <xref target="content-warning-type-registry"/>. Clients SHOULD ignore Content-Warning types that they do not know.</t>
+               <t>The "date" parameter defines the last occurrence of this warning as a structured headers date as defined in <xref target="I-D.ietf-binary-structured-headers"/> (e.g. "1581410465").</t>
+            </list>
+         </t>
+      </section>
+      <section anchor="embedded-warning" title='The "embedded-warning" Content-Warning Type'>
+         <t>
+            This document introduces the Content-Warning Type "embedded-warning".
+         </t>
+         <t>
+            As mentioned in the introduction (<xref target="introduction"/>), HTTP requests can be successful or they can fail. They can also result in a state where the original intent was satisfied, but a side effect happened that should be conveyed back to the client.
+         </t>
+         <t>
+            To make it easier for clients to handle such an event, the Content-Warning type "embedded-warning" MAY be returned. In this case, the client MAY either treat the response according to its HTTP status code, or in addition the client MAY use the embedded warning information to understand the nature of the warning.
+         </t>
+         <t>
+            The "embedded-warning" type does not prescribe the way in which warnings are represented. The assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
+         </t>
+         <t>
+            An exemplary Content-Warning header field looks like this:
+         </t>
+<figure><artwork><![CDATA[
+Content-Warning: "embedded-warning"; 1590190500
+]]></artwork></figure>
+      </section>
+      <section anchor="warning-format" title="JSON Warning Format">
+         <t>
+            The JSON warning format uses the JSON format described in
+            <xref target="RFC8259" />. It is intended to be used as a building block in the response schemas of JSON-based APIs.
+         </t>
+         <t>
+            In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. In order to make it easier for consumers to identify information about warnings, a top-level member is defined that contains all warning information in a representation. A "warnings" member MUST encapsulate the warnings that will be returned to the client.
+         </t>
+         <t>
+            When an condition occurs that can not be defined as a "hard error" (i.e., that allows clients to continue treating the resulting response as a success), additional information about this condition can be returned to the API client. The "warnings" member MUST be an array that is structured with one object for each and every warning message that is returned to the client.
+         </t>
+         <t>
+            Entries in these individual objects follow the pattern described in <xref target="RFC7807" />.
+         </t>
+         <t>
+            When warnings are present the Content-Warning header field (as defined in <xref target="content-warning-header" />)
+            SHOULD be set to indicate that warnings have be returned. This way a client will not
+            have to parse the response body to find out whether a warnings member is present.
+         </t>
+      </section>
+      <section anchor="example" title="Example with HTTP Header Field and Embedded Warning">
+         <t>
+            Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.
+         </t>
+<figure><artwork><![CDATA[
+POST /example HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Warning: "embedded-warning"; 1590190500
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "warnings": [
+    {
+      "detail": "Street name was too long. It has been shortened...",
+      "instance": "https://example.com/shipments/3a186c51/msgs/c94d",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://example.com/errors/shortened_entry"
+    },
+    {
+      "detail": "City for this zipcode unknown. Code for shipment..",
+      "instance": "https://example.com/shipments/3a186c51/msgs/5927",
+      "status": "200",
+      "title": "City for zipcode unknown.",
+      "type": "https://example.com/errors/city_unknown"
+    }
+  ],
+  "id": "3a186c51d4281acb",
+  "carrier_tracking_no": "84168117830018",
+  "tracking_url": "http://example.com/3a186c51d",
+  "label_url": "http://example.com/shipping_label_3a186c51d.pdf",
+  "price": 3.4
+}
+]]></artwork></figure>
+<!--
+         <section anchor="hard.errors.with.warnings" title="Hard Errors with Warnings">
+            <t>
+               As described previously, errors are exceptions like occurrences where processing of the request stopped and the API consumer has to be informed of this "hard error" right away.
+            </t>
+            <t>
+               To indicate this fact the content-type MAY be set to application/problem+json and detailed information about the error will be returned in the body following the pattern described in <xref target="RFC7807" />.
+            </t>
+            <t>
+               If warnings occurred during the processing of the request, but before the processing
+               stopped, they SHOULD be returned alongside the errors.
+            </t>
+<figure><artwork><![CDATA[
+POST /example HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 400 BAD REQUEST
+Content-Type: application/problem+json
+Content-Warning: "embedded-warning"; 1590190500
+
+{
+  "request_id": "2326b087-d64e-43bd-a557-42171155084f",
+  "detail": "The format of pickup time earliest was wrong.",
+  "status": "500",
+  "title": "Wrong format for pickup time",
+  "type": "https://example.com/errors/wrong_format"
+  "warnings": [
+    {
+      "detail": "Street name too long. It has been shortened to fit",
+      "status": "200",
+      "title": "Street name too long. It has been shortened.",
+      "type": "https://example.com/errors/shortened_entry"
+    }
+  ]
+}
+]]></artwork></figure>
+         </section>
+-->
+      </section>
+      <section anchor="security.considerations" title="Security Considerations">
+         <t>
+            API providers need to exercise care when reporting warnings. Malicious actors could use this information for orchestrating attacks. Social engineering can also be a factor when warning information is returned by the API.
+         </t>
+      </section>
+      <section title="IANA Considerations" anchor="iana-considerations">
+         <section title="HTTP Header Field Content-Warning" anchor="header-field-registration">
+            <t>
+               This specification registers the following entry in the Permanent Message Header Field Names registry established by <xref target="RFC3864"/>:
+            </t>
+            <t>
+               <list style="symbols">
+                  <t>Header field name: Content-Warning</t>
+                  <t>Applicable protocol: HTTP</t>
+                  <t>Status: standard</t>
+                  <t>Author/Change Controller: IETF</t>
+                  <t>Specification document(s): [this document]</t>
+                  <t>Related information:</t>
+               </list>
+            </t>
+         </section>
+         <section title="Content-Warning Type Registry" anchor="content-warning-type-registry">
+            <t>
+               The "Content-Warning Type Registry" defines the namespace for new Content-Warning types. This specification establishes a new registry according to the guidelines given in <xref target="RFC8126" />. This new registry should not be included in an existing group of registries.
+            </t>
+            <section title="Registration Procedure" anchor="procedure">
+               <t>
+                  A registration MUST include the following fields:
+               </t>
+               <t>
+                  <list style="symbols">
+                     <t>Content-Warning Type: Name of the Content-Warning Type</t>
+                     <t>Reference: Pointer to a specification text</t>
+                  </list>
+               </t>
+               <t>
+                  The registration policy for this registry is "Specification Required" as defined by <xref target="RFC8126" />, Section 4.6. They MUST follow the "sh-token" syntax defined by <xref target="I-D.ietf-httpbis-header-structure"/>.
+               </t>
+            </section>
+            <section title="Initial Registry Content" anchor="initial-registry">
+               <t>
+                  The registry has been populated with the registered values shown below:
+               </t>
+               <figure><artwork><![CDATA[
++------------------------+----------------------------------+
+| Content-Warning Type   | Reference                        |
++------------------------+----------------------------------+
+| embedded-warning       | this RFC, Section 4              |
++------------------------+----------------------------------+
+]]></artwork></figure>
+            </section>
+         </section>
+      </section>
+   </middle>
+   <back>
+      <references title="Normative References">
+         <reference anchor="RFC2119" target="https://www.rfc-editor.org/info/rfc2119">
+            <front>
+               <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+               <author initials="S." surname="Bradner" fullname="S. Bradner">
+                  <organization/>
+               </author>
+               <date year="1997" month="March"/>
+               <abstract>
+                  <t>
+                     In many standards track documents several words are used to signify the requirements in the
+                     specification. These words are often capitalized. This document defines these words as they should be
+                     interpreted in IETF documents. This document specifies an Internet Best Current Practices for the
+                     Internet Community, and requests discussion and suggestions for improvements.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="BCP" value="14"/>
+            <seriesInfo name="RFC" value="2119"/>
+            <seriesInfo name="DOI" value="10.17487/RFC2119"/>
+         </reference>
+
+         <reference anchor="RFC3864" target="https://www.rfc-editor.org/info/rfc3864">
+            <front>
+               <title>Registration Procedures for Message Header Fields</title>
+               <author initials="G." surname="Klyne" fullname="G. Klyne">
+                  <organization/>
+               </author>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham">
+                  <organization/>
+               </author>
+               <author initials="J." surname="Mogul" fullname="J. Mogul">
+                  <organization/>
+               </author>
+               <date year="2004" month="September"/>
+               <abstract>
+                  <t>
+                     This specification defines registration procedures for the message header fields used by Internet mail, HTTP, Netnews and other applications. This document specifies an Internet Best Current Practices for the Internet Community, and requests discussion and suggestions for improvements.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="BCP" value="90"/>
+            <seriesInfo name="RFC" value="3864"/>
+            <seriesInfo name="DOI" value="10.17487/RFC3864"/>
+         </reference>
+         <reference anchor="RFC7230" target='https://www.rfc-editor.org/info/rfc7230'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding' role='editor'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke' role='editor'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless application-level protocol for
+                     distributed, collaborative, hypertext information systems. This document provides an
+                     overview of HTTP architecture and its associated terminology, defines the &quot;http&quot;
+                     and &quot;https&quot; Uniform Resource Identifier (URI) schemes, defines the HTTP/1.1
+                     message syntax and parsing requirements, and describes related security concerns for
+                     implementations.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7230' />
+            <seriesInfo name='DOI' value='10.17487/RFC7230' />
+         </reference>
+         <reference anchor="RFC7231" target='https://www.rfc-editor.org/info/rfc7231'>
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content</title>
+               <author initials='R.' surname='Fielding' fullname='R. Fielding' role='editor'>
+                  <organization />
+               </author>
+               <author initials='J.' surname='Reschke' fullname='J. Reschke' role='editor'>
+                  <organization />
+               </author>
+               <date year='2014' month='June' />
+               <abstract>
+                  <t>The Hypertext Transfer Protocol (HTTP) is a stateless \%application- level protocol for
+                     distributed, collaborative, hypertext information systems. This document defines the semantics of
+                     HTTP/1.1 messages, as expressed by request methods, request header fields, response status codes,
+                     and response header fields, along with the payload of messages (metadata and body content) and
+                     mechanisms for content negotiation.</t>
+               </abstract>
+            </front>
+            <seriesInfo name='RFC' value='7231' />
+            <seriesInfo name='DOI' value='10.17487/RFC7231' />
+         </reference>
+         <reference anchor="RFC7234" target="https://www.rfc-editor.org/info/rfc7234">
+            <front>
+               <title>Hypertext Transfer Protocol (HTTP/1.1): Caching</title>
+               <author initials="R." surname="Fielding" fullname="R. Fielding" role="editor">
+                  <organization />
+               </author>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham" role="editor">
+                  <organization />
+               </author>
+               <author initials="J." surname="Reschke" fullname="J. Reschke" role="editor">
+                  <organization />
+               </author>
+               <date year="2014" month="June" />
+               <abstract>
+                  <t>
+                     The Hypertext Transfer Protocol (HTTP) is a stateless \%application- level protocol for distributed,
+                     collaborative, hypertext information systems. This document defines HTTP caches and the associated
+                     header fields that control cache behavior or indicate cacheable response messages.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="RFC" value="7234" />
+            <seriesInfo name="DOI" value="10.17487/RFC7234" />
+         </reference>
+         <reference anchor="RFC7807" target="https://www.rfc-editor.org/info/rfc7807">
+            <front>
+               <title>Problem Details for HTTP APIs</title>
+               <author initials="M." surname="Nottingham" fullname="M. Nottingham">
+                  <organization />
+               </author>
+               <author initials="E." surname="Wilde" fullname="E. Wilde">
+                  <organization />
+               </author>
+               <date year="2016" month="March" />
+               <abstract>
+                  <t>
+                     This document defines a "problem detail" as a way to carry machine- readable details of errors in a HTTP
+                     response to avoid the need to define new error response formats for HTTP APIs.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="RFC" value="7807" />
+            <seriesInfo name="DOI" value="10.17487/RFC7807" />
+         </reference>
+         <reference  anchor='RFC8126' target='https://www.rfc-editor.org/info/rfc8126'>
+            <front>
+               <title>Guidelines for Writing an IANA Considerations Section in RFCs</title>
+               <author initials='M.' surname='Cotton' fullname='M. Cotton'><organization /></author>
+               <author initials='B.' surname='Leiba' fullname='B. Leiba'><organization /></author>
+               <author initials='T.' surname='Narten' fullname='T. Narten'><organization /></author>
+               <date year='2017' month='June' />
+               <abstract><t>Many protocols make use of points of extensibility that use constants to identify various protocol parameters.  To ensure that the values in these fields do not have conflicting uses and to promote interoperability, their allocations are often coordinated by a central record keeper.  For IETF protocols, that role is filled by the Internet Assigned Numbers Authority (IANA).</t><t>To make assignments in a given registry prudently, guidance describing the conditions under which new values should be assigned, as well as when and how modifications to existing values can be made, is needed.  This document defines a framework for the documentation of these guidelines by specification authors, in order to assure that the provided guidance for the IANA Considerations is clear and addresses the various issues that are likely in the operation of a registry.</t><t>This is the third edition of this document; it obsoletes RFC 5226.</t></abstract>
+            </front>
+            <seriesInfo name='BCP' value='26'/>
+            <seriesInfo name='RFC' value='8126'/>
+            <seriesInfo name='DOI' value='10.17487/RFC8126'/>
+         </reference>
+         <reference anchor="RFC8259" target="https://www.rfc-editor.org/info/rfc8259">
+            <front>
+               <title>The JavaScript Object Notation (JSON) Data Interchange Format</title>
+               <author initials="T." surname="Bray" fullname="T. Bray" role="editor">
+                  <organization />
+               </author>
+               <date year="2017" month="December" />
+               <abstract>
+                  <t>
+                     JavaScript Object Notation (JSON) is a lightweight, text-based, language-independent data
+                     interchange format. It was derived from the ECMAScript Programming Language Standard. JSON
+                     defines a small set of formatting rules for the portable representation of structured data.
+                  </t>
+                  <t>
+                     This document removes inconsistencies with other specifications of JSON, repairs specification
+                     errors, and offers experience-based interoperability guidance.
+                  </t>
+               </abstract>
+            </front>
+            <seriesInfo name="STD" value="90" />
+            <seriesInfo name="RFC" value="8259" />
+            <seriesInfo name="DOI" value="10.17487/RFC8259" />
+         </reference>
+         <reference anchor="I-D.ietf-httpbis-header-structure">
+            <front>
+               <title>Structured Headers for HTTP</title>
+               <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+                  <organization />
+               </author>
+               <author initials='P' surname='Kamp' fullname='Poul-Henning Kamp'>
+                  <organization />
+               </author>
+               <date month='October' day='31' year='2019' />
+               <abstract>
+               <t>
+                  This document describes a set of data types and associated algorithms that are intended to make it easier and safer to define and handle HTTP header fields.  It is intended for use by specifications of new HTTP header fields that wish to use a common syntax that is more restrictive than traditional HTTP field values.
+               </t>
+            </abstract>
+            </front>
+            <seriesInfo name='Internet-Draft' value='draft-ietf-httpbis-header-structure-14' />
+            <format type='TXT'
+                  target='http://www.ietf.org/internet-drafts/draft-ietf-httpbis-header-structure-14.txt' />
+         </reference>
+         <reference anchor="I-D.ietf-binary-structured-headers">
+            <front>
+               <title>Binary Structured HTTP Headers</title>
+               <author initials='M' surname='Nottingham' fullname='Mark Nottingham'>
+                  <organization />
+               </author>
+               <date month='March' day='04' year='2020' />
+               <abstract>
+               <t>
+                  This document describes a set of data types and associated algorithms that are intended to make it easier and safer to define and handle HTTP header fields.  It is intended for use by specifications of new HTTP header fields that wish to use a common syntax that is more restrictive than traditional HTTP field values.
+               </t>
+            </abstract>
+            </front>
+            <seriesInfo name='Internet-Draft' value='draft-nottingham-binary-structured-headers-02' />
+            <format type='TXT'
+                  target='http://www.ietf.org/internet-drafts/draft-nottingham-binary-structured-headers-02.txt' />
+         </reference>
+      </references>
+      <references title="Informative References">
+         <reference anchor='W3C.REC-webarch-20041215'
+            target='http://www.w3.org/TR/2004/REC-webarch-20041215'>
+            <front>
+               <title>Architecture of the World Wide Web, Volume One</title>
+               <author initials='I.' surname='Jacobs' fullname='Ian Jacobs'>
+                  <organization />
+               </author>
+               <author initials='N.' surname='Walsh' fullname='Norman Walsh'>
+                  <organization />
+               </author>
+               <date month='December' day='15' year='2004' />
+            </front>
+            <seriesInfo name='World Wide Web Consortium Recommendation' value='REC-webarch-20041215' />
+            <format type='HTML' target='http://www.w3.org/TR/2004/REC-webarch-20041215' />
+         </reference>
+      </references>
+      <section title="Acknowledgements" anchor="acknowledgements">
+         <t>Thanks for comments and suggestions provided by ...</t>
+      </section>
+   </back>
+</rfc>
