@@ -117,7 +117,7 @@ Content-Warning: "embedded-warning"; 1590190500
             In many current designs of JSON-based HTTP APIs, services represent response data as members of the returned JSON object. In order to make it easier for consumers to identify information about warnings, a top-level member is defined that contains all warning information in a representation. A "warnings" member MUST encapsulate the warnings that will be returned to the client.
          </t>
          <t>
-            When an condition occurs that can not be defined as a "hard error" (i.e., that allows clients to continue treating the resulting response as a success), additional information about this condition can be returned to the API client. The "warnings" member MUST be an array that is structured with one object for each and every warning message that is returned to the client.
+            When an condition occurs that can not be defined as a "hard error" (i.e., that allows clients to continue treating the resulting response as a success), additional information about this condition can be returned to the User Agent. The "warnings" member MUST be an array that is structured with one object for each and every warning message that is returned to the client.
          </t>
          <t>
             Entries in these individual objects follow the pattern described in <xref target="RFC7807" />.
@@ -130,7 +130,7 @@ Content-Warning: "embedded-warning"; 1590190500
       </section>
       <section anchor="example" title="Example with HTTP Header Field and Embedded Warning">
          <t>
-            Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the API client was successful.
+            Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the User Agent was successful.
          </t>
 <figure><artwork><![CDATA[
 POST /example HTTP/1.1
