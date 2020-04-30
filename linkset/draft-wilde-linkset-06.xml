@@ -5,9 +5,11 @@
      An alternate method (rfc include) is described in the references. -->
 
 <!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml"> 
+<!ENTITY RFC4287 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4287.xml">
 <!ENTITY RFC8174 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8174.xml"> 
 <!ENTITY RFC6690 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6690.xml">
 <!ENTITY RFC8259 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8259.xml">
+<!ENTITY RFC7230 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7230.xml">
 <!ENTITY RFC7231 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.7231.xml">
 <!ENTITY RFC8187 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.8187.xml">
 <!ENTITY RFC3986 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3986.xml">
@@ -17,6 +19,7 @@
 <!ENTITY RFC6982 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.6982.xml">
 <!ENTITY RFC5988 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.5988.xml">
 <!ENTITY W3CJSONLD SYSTEM "http://xml.resource.org/public/rfc/bibxml4/reference.W3C.REC-json-ld-20140116.xml">
+<!ENTITY I-D.nottingham-link-hint SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.nottingham-link-hint.xml">
 ]>
 
 <?rfc compact="yes" ?>
@@ -41,7 +44,7 @@
                 <uri>https://orcid.org/0000-0002-0715-6126</uri>
             </address>
         </author>
-        <date day="31" month="December" year="2019"/>
+        <date day="30" month="April" year="2020"/>
         <abstract>
            <t>This specification defines two document formats and respective media types for representing sets of links as stand-alone resources. One format is JSON-based, the other aligned with the format for representing links in the HTTP "Link" header field. This specification also introduces a link relation type to support discovery of sets of links.</t>
         </abstract>
@@ -59,8 +62,11 @@
             <t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <xref target="RFC2119"/> <xref target="RFC8174"/> when, and only when, they appear in all capitals, as shown here.</t>
             <t>This specification uses the terms "link context" and "link target" as defined in 
                 <xref target="RFC8288"/>. 
-                These terms respectively correspond with "Context IRI" and "Target IRI" as used in RFC 5988
-                <xref target="RFC5988"/>. Although defined as IRIs, in common scenarios they are also URIs.</t> 
+                These terms respectively correspond with "Context IRI" and "Target IRI" as used in <xref target="RFC5988"/>. Although defined as IRIs, in common scenarios they are also URIs.</t> 
+            <t>In the examples provided in this document, links in the HTTP "Link" header are shown on separate lines in order to improve readability. 
+                Note, however, that as per Section 3.2 of <xref target="RFC7230"/>, line breaks are not allowed in values for HTTP headers; only whitespaces and 
+                tabs are supported as seperators.
+            </t>
             <!--
             <t>Additionally, this specification uses the following terms for types of resources involved 
                 in providing links by reference:</t> 
@@ -91,15 +97,15 @@
                     <t>External management of links pertaining to the resource in a special-purpose link
                         management service.</t>
                 </list></t>
-                <t>In such cases, a specific resource can provide a set of links pertaining to a resource. 
-                    This specific resource may be managed by the same or by another custodian as the linked resource. 
-                    For clients intent on consuming links pertaining to the resource, it would be beneficial if the following conditions were met:</t>
+                <t>In such cases, links pertaining to a resource can be provided by another, specific resource. 
+                    That specific resource may be managed by the same or by another custodian as the resource to which the links pertain. 
+                    For clients intent on consuming links provided in that manner, it would be beneficial if the following conditions were met:</t>
                 <t><list style="symbols">
-                    <t>The resource is able to link to the specific resource that provides (additional) links using a well-known 
+                    <t>Links are provided in a document that uses a well-defined media type.</t>
+                    <t>The resource to which the provided links pertain is able to link to the resource that provides these links using a well-known 
                     link relation type.</t>
-                    <t>The link resource provides the links in a document that uses a well-defined media type.</t>
                 </list></t>
-                <t>These two needs (linking to a resource that represents a set of links, and providing media types for representing sets of links) are addressed in this specification through the link relation type and the two defined media types.</t>
+                <t>These requirements are addressed in this specification through the definition of two media types and a link relation type, respectively.</t>
                     <!--
                 <t>In order for the server hosting the resource to provide an up-to-date and complete set of links 
                     in which that resource participates, 
@@ -145,15 +151,20 @@
             </section>
         </section>
         <section title="Document Formats for Sets of Links" anchor="linkset-formats">
-            <t>A set of links can be represented by serializations that support 
-                conveying both link contexts and link targets. 
-                This section specifies two document formats based on the abstract model  
+            <t>This section specifies two document formats to convey a set of links. Both are based on the abstract model  
                 specified in Section 2 of Web Linking <xref target="RFC8288"/> 
                 that defines a link as consisting of a "link context", a "link relation type", a "link target", 
-                and optional "target attributes".</t>
+                and optional "target attributes":</t>
+            <t><list style="symbols">
                 <t>The format defined in <xref target="linkset-native"/> is identical to the payload 
                     of the HTTP "Link" header field as specified in Web Linking <xref target="RFC8288"/>.</t>
-            <t>The format defined in <xref target="linkset-json"/> is based on JSON but encodes the same abstract model as defined in Web Linking <xref target="RFC8288"/>.</t>
+                <t>The format defined in <xref target="linkset-json"/> is based on <xref target="RFC8259">JSON</xref>.</t>
+            </list></t>
+            
+            <t>Note that <xref target="RFC8288"/> deprecates the "rev" construct that was provided by <xref target="RFC5988"/> 
+                as a means to express links with a directionality that is the inverse of direct links that use the "rel" construct. In both serializations for 
+                link sets defined here, inverse links are handled as direct links by switching the position of the resources involved 
+                in the link.</t>
             
             <section title="HTTP Link Document Format: application/linkset" anchor="linkset-native">
                 <t>This document format is identical to the payload of the 
@@ -173,7 +184,8 @@
                         ("href" attribute), use absolute URIs (as defined in Section 4.3 of <xref target="RFC3986"/>). 
                         </t>
                 </list></t>
-                <t>If these recommendations are not followed, interpretation of "application/linkset" will depend on the which URI is used as context URI.</t>
+                <t>If these recommendations are not followed, interpretation of links in "application/linkset" documents will depend on 
+                    which URI is used as context.</t>
             </section>
             <section title="JSON Document Format: application/linkset+json" anchor="linkset-json">
                 <t>This document format uses JSON <xref target="RFC8259"/> as the syntax to represent 
@@ -190,10 +202,10 @@
                     <t>For link context ("anchor" member) and link target 
                         ("href" member), use absolute URIs (as defined in Section 4.3 of <xref target="RFC3986"/>).</t>
                 </list></t>                
-                <t>If these recommendations are not followed, interpretation of "application/linkset+json" will depend on the which URI is used as context URI.</t>
+                <t>If these recommendations are not followed, interpretation of "application/linkset+json" will depend on which URI is used as context URI.</t>
                 <t>The "application/linkset+json" serialization is designed such that it can directly be used as the 
                     content of a JSON-LD serialization by adding an appropriate context. 
-                    <xref target="appendix-1"/> shows an example of a possible context that, when added to the 
+                    <xref target="appendix-1"/> shows an example of a possible context that, when added to  
                     a JSON serialization, allows it to be interpreted as RDF.</t>
 
                 <section title="Set of Links" anchor="linkset-in-json">
@@ -212,7 +224,7 @@
                 </section>
                 
                 <section title="Link Context Object" anchor="linkset-json-link-context-object">
-                    <t>In the JSON representation, one or more links that have the same link context  
+                    <t>In the JSON representation one or more links that have the same link context  
                         are represented by a JSON object, the link context object. A link context object 
                         adheres to the following rules:</t>
                     <t><list style="symbols"> 
@@ -221,7 +233,7 @@
                             as defined in Section 4.3 of <xref target="RFC3986"/>. Cases whereby no value is to be provided 
                         for the "anchor" member (i.e. the resource providing the set of links is the link context for each link 
                         in the link context object) MUST be handled by providing an "anchor" member with null value ("anchor": "").</t>
-                        <t>For each distinct relation type that the link context has with link targets 
+                        <t>For each distinct relation type that the link context has with link targets,  
                             a link context object MUST have an additional member. 
                             This member is an array in which a distinct JSON object 
                             - the "link target object" (see <xref target="linkset-json-link-target-object"/>) - 
@@ -249,24 +261,9 @@
                             as defined in Section 4.3 of <xref target="RFC3986"/>. Cases whereby no value is to be provided 
                             for the "href" member (i.e. the resource providing the set of links is the target of the link 
                             in the link target object) MUST be handled by providing an "href" member with null value ("href": "").</t>
-                    <t>In many cases, a link target is further qualified by attributes, 
-                        either defined by the serialization of Web Linking <xref target="RFC8288"/> 
-                        or extension attributes defined and used by communities. 
-                        These attributes are conveyed as additional members of the link target object 
-                        as detailed in <xref target="json-target-attributes-existing"/>,  
-                        <xref target="linkset-json-i18n-link-parameter"/>, and <xref target="json-target-attributes-extension"/>.</t>
-                    </list></t>
-                        
-                    <t>Note that the JSON representation does not use the "rel" or 
-                        "rev" constructs used by Web Linking <xref target="RFC8288"/> and the above 
-                        specified HTTP "Link" document format. Rather:</t> 
-                    <t><list style="symbols">
-                        <t>A link that uses the "rel" construct 
-                            in those approaches is conveyed using the URI of the link context as the value for "anchor" 
-                            and the URI of the link target as the value for "href".</t>
-                        <t>A link that uses the "rev" construct 
-                            in those approaches is conveyed using the URI of the link target as the value for "anchor" 
-                            and the URI of the link context as the value for "href".</t>
+                    <t>In many cases, a link target is further qualified by target attributes. 
+                        Various types of attributes exist and they are conveyed as additional members of the link target object 
+                        as detailed in <xref target="json-target-attributes"/>.</t>
                     </list></t>
   
                     <t>The following example of a JSON-serialized set of links represents one
@@ -336,11 +333,17 @@
                 
                 <section title="Link Target Attributes" anchor="json-target-attributes">              
                         
-                    <t>A link may be further qualified by target attributes,
-                        either defined by the serialization of Web Linking <xref target="RFC8288"/> or extension
-                        attributes defined and used by communities.</t>
-                        
-                    <section title="Target Attributes Defined by RFC 8288" anchor="json-target-attributes-existing">
+                    <t>A link may be further qualified by target attributes. Four types of attributes exist:</t>
+                    <t><list style="symbols">
+                        <t>Attributes defined by the serialization of <xref target="RFC8288">Web Linking</xref>.</t>
+                        <t>Extension attributes defined and used by communities as allowed by  
+                            <xref target="RFC8288"/>.</t> 
+                        <t>Internationalized versions of the "title" attribute defined by <xref target="RFC8288"/> and of extension attributes
+                            allowed by <xref target="RFC8288"/>.</t>
+                        <t>Attributes defined by <xref target="I-D.nottingham-link-hint">Link Hints</xref> and the associated HTTP Link Hint Registry.</t>    
+                    </list></t>
+                    <t>The handling of these different types of attributes is described in the sections below.</t>
+                    <section title="Target Attributes Defined by Web Linking" anchor="json-target-attributes-existing">
                         <t>RFC 8288 defines the following target attributes that may be used to annotate links: 
                             "hreflang", "media", "title", "title*", and "type";  
                             these target attributes follow different occurrence and value patterns.  
@@ -494,6 +497,46 @@
                         </artwork> 
                     </figure>
                 </section>
+                    
+                    <section title="Target Attributes in the HTTP Link Hints Registry" anchor="json-target-attributes-hints">
+                        <t>In order to augment interoperability regarding target attributes, 
+                            <xref target="I-D.nottingham-link-hint">Link Hints</xref> defines a registration mechanism for 
+                            target attributes, an associated HTTP Link Hint Registry, and a set of attributes to initially populate that registry. 
+                            The initial registry, for example, includes the "allow" attribute that can be used to convey the HTTP methods that are supported 
+                            to interact with the target resource.</t>
+                        
+                        <t>The JSON serialization for these target attributes MUST be as follows:</t>
+                        <t><list style="symbols"> 
+                            <t>A Link Hint target attribute is represented as a member of the link context object with the same name of the attribute as registered in the HTTP Link Hint Registry.</t>
+                            <t>The value of a Link Hint target attribute MUST adhere to the content model specified for the attribute in the HTTP Link Hint Registry.</t>
+                            <t>Internationalization of Link Hint target attributes is not applicable.</t>
+                        </list></t>
+                        
+                        <t>The example shows a link target object with the "Type" attribute defined by <xref target="RFC8187"/> and the "allow" attribute that is registered in the HTTP Link Hint Registry. 
+                            The registry specifies the content model for this attribute as an array of strings. Therefor, that same content model is used in the "application/linkset+json" 
+                            serialization of sets of links.</t>
+                        
+                        <figure>
+                            <artwork align="left" type="JSON"><![CDATA[
+{
+  "linkset":
+    [ 
+      { "anchor": "http://example.net/bar", 
+        "next": [
+              { "href": "http://example.com/foo",
+                "type": "text/html",
+                "allow":  [ "GET", "POST" ]]
+              }
+        ]
+      } 
+    ]
+}]]>                               
+                            </artwork> 
+                        </figure>
+                        
+                        
+                    </section>
+                    
             </section>
             </section>
         </section>
@@ -543,7 +586,7 @@
               </t>
            <section title="Set of Links Provided as application/linkset" anchor="linkset-link-link-format">
                <t><xref target="Request1"/> shows a client issuing an 
-                   HTTP GET request against resource http://example.org/resource1.</t>
+                   HTTP GET request against resource &lt;http://example.org/resource1&gt;.</t>
                
                <figure title="Client HTTP GET request" align="center" anchor="Request1">
                    <artwork align="left"><![CDATA[
@@ -597,8 +640,8 @@ Connection: close
              <section title="Set of Links Provided as application/linkset+json" anchor="linkset-link-json-format">
                 
                  <t><xref target="Request4"/> shows the client issuing an HTTP GET 
-                     request against http://example.com/links/article/7507. 
-                     In the request, the client uses an Accept header to indicate it prefers a response in  
+                     request against &lt;http://example.com/links/article/7507&gt;. 
+                     In the request, the client uses an "Accept" header to indicate it prefers a response in  the 
                      "application/linkset+json" format.
                  </t>
                  <figure title="Client HTTP GET request expressing preference for &quot;application/linkset+json&quot; response" align="center" anchor="Request4">
@@ -663,7 +706,7 @@ Content-Length: 802
              <section title="Discovering a Link Set via the &quot;linkset&quot; Link Relation Type" anchor="linkset-rel-example">
                  <t><xref target="Request3"/> shows a client issuing an 
                      HTTP HEAD request against resource 
-                     http://example.org/article/view/7507</t>
+                     &lt;http://example.org/article/view/7507&gt;.</t>
                  
                  <figure title="Client HTTP HEAD request" align="center" anchor="Request3">
                      <artwork align="left"><![CDATA[
@@ -674,18 +717,18 @@ Connection: close
                      </artwork> 
                  </figure>
                  <t><xref target="Response3.1"/> shows the response to the HEAD request of 
-                     <xref target="Request3"/>. The response contains a Link header with  
+                     <xref target="Request3"/>. The response contains a "Link" header with  
                      a link that has the "linkset" relation type. It indicates that a set of links is provided 
-                     by resource http://example.com/links/article/7507, which 
-                     provides a representation with media type application/linkset+json.
+                     by resource &lt;http://example.com/links/article/7507&gt;, which 
+                     provides a representation with media type "application/linkset+json".
                  </t>
                  <figure title="Response to HTTP HEAD request" align="center" anchor="Response3.1">
                      <artwork align="left"><![CDATA[
 HTTP/1.1 200 OK
 Date: Mon, 12 Aug 2019 10:45:54 GMT
 Server: Apache-Coyote/1.1
-Link: <http://example.com/links/article/7507>
-      ; rel="linkset"
+Link: <http://example.com/links/article/7507> 
+      ; rel="linkset" 
       ; type="application/linkset+json"
 Content-Length: 236
 Content-Type: text/html;charset=utf-8
@@ -694,7 +737,7 @@ Connection: close
                      </artwork> 
                  </figure>
                  <t><xref target="linkset-link-json-format"/> shows a client obtaining a set of links by issuing an HTTP GET on the 
-                     target IRI of the link with the "linkset" relation type, http://example.com/links/article/7507.</t>
+                      target of the link with the "linkset" relation type, &lt;http://example.com/links/article/7507&gt;.</t>
              </section>
         </section>
         <section title="Implementation Status" anchor="implementation-status">
@@ -782,7 +825,7 @@ Connection: close
             <t>In general, links may cause information leakage when they expose information (such as URIs) that can be sensitive or private. Links may expose "hidden URIs" that are not supposed to be openly shared, and may not be sufficiently protected. Ideally, none of the URIs exposed in links should be supposed to be "hidden"; instead, if these URIs are supposed to be limited to certain users, then technical measures should be put in place so that accidentally exposing them does not cause any harm.</t>
             <t>For the specific mechanisms defined in this specification, two security considerations should be taken into account:</t>
             <t>
-                <list>
+                <list style="symbols">
                     <t>The original model of Web Linking always has an "implicit context", which is the resource of the HTTP interaction. This context can be lost or can change when using self-contained link representations. Changing the context can change the interpretation of links when they have no explicit anchor, or when they use relative URIs. Applications may choose to ignore links that have no explicit anchor or that use relative URIs when these are exchanged in stand-alone resources.</t>
                     <t>The model introduced in this specification supports "3rd party links", where one party can provide links that have another party's resource as an anchor. Depending on the link semantics and the application context, it is important to verify that there is sufficient trust in that 3rd party to allow it to provide these links. Applications may choose to treat 3rd party links differently than cases where a resource and the links for that resource are provided by the same party.</t>
                 </list>
@@ -794,6 +837,7 @@ Connection: close
 &RFC2119; 
 &RFC8174; 
 &RFC8259;
+&RFC7230;
 &RFC7231;
 &RFC8288;
 &RFC8187;
@@ -801,7 +845,7 @@ Connection: close
 &RFC6838;
 &RFC5646;
 &RFC6982;
-&RFC5988;
+&I-D.nottingham-link-hint;
             
             <!--
             <reference anchor="W3C.REC-html401-19991224">
@@ -826,7 +870,8 @@ Connection: close
         </references>
       <references title="Informative References">
 &W3CJSONLD;
-
+&RFC4287;
+&RFC5988;
       </references>
 
       <section title="Acknowledgements">
@@ -834,74 +879,28 @@ Connection: close
       </section>
         
         <section title="JSON-LD Context" anchor="appendix-1">
-            <t>A linkset rendered according to the 
+            <t>A set of links rendered according to the 
                JSON serialization defined in <xref target="linkset-json"/> can be interpreted 
-               as RDF triples by adding a <spanx style="emph">JSON-LD context</spanx>
-               <xref target="W3C.REC-json-ld-20140116"/>,
-               which map the JSON keys to corresponding Linked Data terms.</t>
-            <t>Below is a context that can map JSON linkset representations to Dublin Core Terms, 
-               with the link relations interpreted as properties with 
-               absolute URIs corresponding to <xref target="RFC8288"/> 
-               <eref target="https://tools.ietf.org/html/rfc8288#appendix-A.2">appendix A.2</eref>.
-            </t>
-
-            <figure title="JSON-LD Context mapping to schema.org and IANA assignments" anchor="jsonld-context">
+                as RDF triples by adding a <xref target="W3C.REC-json-ld-20140116">JSON-LD context</xref> that maps 
+                the JSON keys to corresponding Linked Data terms. And, as per <xref target="W3C.REC-json-ld-20140116"/> 
+                <eref target="https://www.w3.org/TR/2014/REC-json-ld-20140116/#interpreting-json-as-json-ld">section 6.8</eref>, 
+                when delivering a link set that is rendered according to the "application/linkset+json" media type to a user agent, 
+                a server can convey the availability of such a JSON-LD context by using a link with the relation type 
+                "http://www.w3.org/ns/json-ld#context" in the HTTP "Link" header.</t>
+            
+            <t>Using the latter approach to support discovery of a JSON-LD Context, the response to the GET request of 
+                <xref target="Request4"/> against the URI of a set of links would be as shown in <xref target="contextlinkrel"/>.</t>
+            
+            <figure title="Using a typed link to support discovery of a JSON-LD Context for a Set of Links" anchor="contextlinkrel">
                 <artwork align="left"><![CDATA[
-GET https://example.org/contexts/linkset.jsonld HTTP/1.1
-Connection: close
-
-HTTP/1.1 200 OK
-Content-Type: application/ld+json
-Content-Length: 612
-
-{
-  "@context": [
-    {
-      "@vocab":  "http://www.iana.org/assignments/relation/",
-      "anchor":  "@id",
-      "href":    "@id",
-      "linkset": "@graph",
-      "_linkset": "@graph",
-      "title":   {
-        "@id":    "http://purl.org/dc/terms/title"
-      },
-      "title*":  {
-        "@id":    "http://purl.org/dc/terms/title"
-      },
-      "type":    {
-        "@id":    "http://purl.org/dc/terms/format"
-      }
-    },
-    {
-      "language": "@language",
-      "value":    "@value",
-      "hreflang": {
-        "@id":        "https://www.w3.org/ns/activitystreams#hreflang",
-        "@container": "@set"
-      }
-    }
-  ]
-}]]> 
-                </artwork> 
-            </figure>
-
-            <t>HTTP servers can indicate that a JSON Linkset can be interpreted as RDF
-            by providing a link to a JSON-LD context using the
-            link relation <spanx style="verb">http://www.w3.org/ns/json-ld#context</spanx>
-            according to <xref target="W3C.REC-json-ld-20140116"/> 
-            <eref target="https://www.w3.org/TR/2014/REC-json-ld-20140116/#interpreting-json-as-json-ld">section 6.8</eref>
-            as shown below:
-            </t>
-        <figure title="JSON-LD link relation" anchor="jsonld-link">
-            <artwork align="left"><![CDATA[
 HTTP/1.1 200 OK
 Date: Mon, 12 Aug 2019 10:48:22 GMT
 Server: Apache-Coyote/1.1
 Content-Type: application/linkset+json
-Link: <https://example.org/contexts/linkset.jsonld>;
-        rel="http://www.w3.org/ns/json-ld#context";
-        type="application/ld+json"
-Content-Length: 848
+Link: <https://example.org/contexts/linkset.jsonld>
+      ; rel="http://www.w3.org/ns/json-ld#context"
+      ; type="application/ld+json"
+Content-Length: 846
 
 {
   "linkset": [
@@ -942,7 +941,57 @@ Content-Length: 848
 }]]>
                 </artwork> 
             </figure>
+            
+            <t>In order to obtain the JSON-LD Context conveyed by the server, the user agent issues an HTTP GET against the 
+                link target of the link with the "http://www.w3.org/ns/json-ld#context" relation type. The response to this GET is 
+                shown in <xref target="jsonld-context"/>. This particular JSON-LD context maps "application/linkset+json" representations of link sets 
+                to Dublin Core Terms. It also renders each link relation as an absolute URI, inspired by the same approach used for <xref target="RFC4287">Atom</xref> described in <xref target="RFC8288"/> 
+                <eref target="https://tools.ietf.org/html/rfc8288#appendix-A.2">appendix A.2</eref>. 
+            </t>
 
+            <figure title="JSON-LD Context mapping to schema.org and IANA assignments" anchor="jsonld-context">
+                <artwork align="left"><![CDATA[
+HTTP/1.1 200 OK
+Content-Type: application/ld+json
+Content-Length: 638
+
+{
+  "@context": [
+    {
+      "@vocab":  "http://www.iana.org/assignments/relation/",
+      "anchor":  "@id",
+      "href":    "@id",
+      "linkset": "@graph",
+      "_linkset": "@graph",
+      "title":   {
+        "@id":    "http://purl.org/dc/terms/title"
+      },
+      "title*":  {
+        "@id":    "http://purl.org/dc/terms/title"
+      },
+      "type":    {
+        "@id":    "http://purl.org/dc/terms/format"
+      }
+    },
+    {
+      "language": "@language",
+      "value":    "@value",
+      "hreflang": {
+        "@id":        "https://www.w3.org/ns/activitystreams#hreflang",
+        "@container": "@set"
+      }
+    }
+  ]
+}]]> 
+                </artwork> 
+            </figure>
+
+
+            <t>Applying the JSON-LD context of <xref target="jsonld-context"/> to the link set of <xref target="contextlinkrel"/> 
+                allows transforming the "application/linkset+json" link set to an RDF link set. <xref target="triples"/> shows 
+                the latter represented by means of the "text/turtle" RDF serialization.</t>
+            
+            <!--
         <t>An application consuming Linkset JSON documents can apply their own context, 
         either through a JSON-LD Processor or by merging the <spanx style="verb">"@context"</spanx> 
         key into the Linkset JSON root object to transform the
@@ -952,24 +1001,15 @@ Content-Length: 848
         <t>
         The example below shows how a content-negotiation HTTP server could
         dynamically render linksets as RDF formats showing the interpreted 
-        triples from <xref target="jsonld-link" />.
-        </t>        
-        <figure title="Triples returned by applying JSON-LD context" anchor="triples">
+        triples from <xref target="contextlinkrel" />.
+        </t>               
+        -->
+            
+        <figure title="RDF serialization of the link set resulting from applying the JSON-LD context" anchor="triples">
             <artwork align="left"><![CDATA[
-GET https://example.com/links/article/7507 HTTP/1.1
-Accept: text/turtle
-Connection: close
-
-HTTP/1.1 200 OK
-Date: Mon, 12 Aug 2019 10:49:22 GMT
-Server: Apache-Coyote/1.1
-Content-Type: text/turtle
-Content-Length: 1164
-
 <https://example.org/article/view/7507>
     <http://www.iana.org/assignments/relation/author>
     <https://orcid.org/0000-0002-1825-0097> .
-
 
 <https://example.org/article/view/7507>
     <http://www.iana.org/assignments/relation/item>
@@ -979,7 +1019,6 @@ Content-Length: 1164
     <http://purl.org/dc/terms/format>
     "application/pdf" .
 
-
 <https://example.org/article/view/7507>
     <http://www.iana.org/assignments/relation/item>
     <https://example.org/article/7507/item/2> .
@@ -988,7 +1027,6 @@ Content-Length: 1164
     <http://purl.org/dc/terms/format>
     "text/csv" .
 
-
 <https://example.org/article/view/7507>
     <http://www.iana.org/assignments/relation/cite-as>
     <https://doi.org/10.5555/12345680> .
@@ -996,7 +1034,6 @@ Content-Length: 1164
 <https://doi.org/10.5555/12345680>
     <http://purl.org/dc/terms/title>
     "A Methodology for the Emulation of Architecture" .
-
 
 <https://example.com/links/article/7507>
     <http://www.iana.org/assignments/relation/alternate>
@@ -1009,12 +1046,13 @@ Content-Length: 1164
                 </artwork> 
             </figure>
 
-        <t>Note that the context in <xref target="jsonld-context"/> does not handle 
+        <t>Note that the JSON-LD context of <xref target="jsonld-context"/> does not handle 
          (meta)link relations of type <spanx style="verb">"linkset"</spanx> as they are 
-         in conflict with the top-level key. A workaround is to rename the top-level key
+         in conflict with the top-level JSON key. A workaround is to rename the top-level key
          to <spanx style="verb">"_linkset"</spanx> in the
-         Linkset JSON before JSON-LD Processing.</t>
+         "application/linkset+json" before transforming a link set to JSON-LD.</t>
         </section>
 
     </back>
 </rfc>
+
