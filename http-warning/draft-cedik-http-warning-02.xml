@@ -24,7 +24,7 @@
       <date day="30" month="March" year="2020"/>
       <abstract>
          <t>
-            This document defines a new HTTP header field Content-Warning and a standard response format for representing warning information in HTTP APIs.
+            This document defines a new HTTP field Content-Warning and a standard response format for representing warning information in HTTP APIs.
          </t>
       </abstract>
       <note title="Note to Readers">
@@ -71,9 +71,9 @@
             described in <xref target="RFC2119"/>.
          </t>
       </section>
-      <section anchor="content-warning-header" title="Content-Warning Header Field">
+      <section anchor="content-warning-field" title="Content-Warning Field">
          <t>
-            The Content-Warning header field can be found in http responses and allows to represent different kinds of warning information via HTTP. It is defined as a Structured Header List <xref target="I-D.ietf-httpbis-header-structure"/>. Its ABNF is:
+            The Content-Warning field can be found in the header or trailer section (see Section 4.6 of <xref target="I-D.ietf-httpbis-semantics" />) of http responses and allows to represent different kinds of warning information via HTTP. It is defined as a Structured Header List <xref target="I-D.ietf-httpbis-header-structure" />. Its ABNF is:
          </t>
 <figure><artwork type="abnf"><![CDATA[
 Content-Warning = sh-list
@@ -88,7 +88,7 @@ Content-Warning = sh-list
             </list>
          </t>
          <t>
-            Intermediaries of a response are not allowed to modify existing Content-Warning header fields, but can add additional entries if warnings are produced while they are handling a response.
+            Intermediaries of a response are not allowed to modify existing Content-Warning fields, but can add additional entries if warnings are produced while they are handling a response.
          </t>
       </section>
       <section anchor="embedded-warning" title='The "embedded-warning" Content-Warning Type'>
@@ -105,7 +105,7 @@ Content-Warning = sh-list
             The "embedded-warning" type does not prescribe the way in which warnings are represented. The assumption is that the response will have embedded information that allows the client to learn about the nature of the warning. The following section describes a JSON structure that MAY be used to represent the warning. HTTP services are free to use this or other formats to represent the warning information they are embedding.
          </t>
          <t>
-            An exemplary Content-Warning header field looks like this:
+            An exemplary Content-Warning field looks like this:
          </t>
 <figure><artwork><![CDATA[
 Content-Warning: "embedded-warning"; 1590190500
@@ -126,12 +126,12 @@ Content-Warning: "embedded-warning"; 1590190500
             Entries in these individual objects follow the pattern described in <xref target="RFC7807" />.
          </t>
          <t>
-            When warnings are present the Content-Warning header field (as defined in <xref target="content-warning-header" />)
+            When warnings are present the Content-Warning field (as defined in <xref target="content-warning-field" />)
             SHOULD be set to indicate that warnings have be returned. This way a client will not
             have to parse the response body to find out whether a warnings member is present.
          </t>
       </section>
-      <section anchor="example" title="Example with HTTP Header Field and Embedded Warning">
+      <section anchor="example" title="Example with HTTP Field and Embedded Warning">
          <t>
             Since warnings do not have an effect on the returned HTTP status code, the response status code SHOULD be in the 2xx range, indicating that the intent of the client was successful.
          </t>
@@ -224,13 +224,13 @@ Content-Warning: "embedded-warning"; 1590190500
          </t>
       </section>
       <section title="IANA Considerations" anchor="iana-considerations">
-         <section title="HTTP Header Field Content-Warning" anchor="header-field-registration">
+         <section title="HTTP Field Content-Warning" anchor="http-field-registration">
             <t>
-               This specification registers the following entry in the Permanent Message Header Field Names registry established by <xref target="RFC3864"/>:
+               This specification registers the following entry in the Permanent Message Field Names registry established by <xref target="RFC3864"/>:
             </t>
             <t>
                <list style="symbols">
-                  <t>Header field name: Content-Warning</t>
+                  <t>Field name: Content-Warning</t>
                   <t>Applicable protocol: HTTP</t>
                   <t>Status: standard</t>
                   <t>Author/Change Controller: IETF</t>
@@ -477,6 +477,47 @@ Content-Warning: "embedded-warning"; 1590190500
             <seriesInfo name='Internet-Draft' value='draft-nottingham-binary-structured-headers-02' />
             <format type='TXT'
                   target='http://www.ietf.org/internet-drafts/draft-nottingham-binary-structured-headers-02.txt' />
+         </reference>
+
+         <reference anchor="I-D.ietf-httpbis-semantics">
+            <front>
+               <title>HTTP Semantics</title>
+               <author fullname="Roy T. Fielding" initials="R." surname="Fielding" role="editor">
+                  <organization>Adobe</organization>
+                  <address>
+                     <postal>
+                        <street>345 Park Ave</street>
+                        <city>San Jose</city>
+                        <region>CA</region>
+                        <code>95110</code>
+                        <country>United States of America</country>
+                     </postal>
+                     <email>fielding@gbiv.com</email>
+                     <uri>https://roy.gbiv.com/</uri>
+                  </address>
+               </author>
+               <author fullname="Mark Nottingham" initials="M." surname="Nottingham" role="editor">
+                  <organization>Fastly</organization>
+                  <address>
+                     <email>mnot@mnot.net</email>
+                     <uri>https://www.mnot.net/</uri>
+                  </address>
+               </author>
+               <author fullname="Julian F. Reschke" initials="J. F." surname="Reschke" role="editor">
+                  <organization abbrev="greenbytes">greenbytes GmbH</organization>
+                  <address>
+                     <postal>
+                        <street>Hafenweg 16</street>
+                        <city>Muenster</city><code>48155</code>
+                        <country>Germany</country>
+                     </postal>
+                     <email>julian.reschke@greenbytes.de</email>
+                     <uri>https://greenbytes.de/tech/webdav/</uri>
+                  </address>
+               </author>
+               <date year="2020" month="March" day="7"/>
+            </front>
+            <seriesInfo name="Internet-Draft" value="draft-ietf-httpbis-semantics-07"/>
          </reference>
       </references>
       <references title="Informative References">
