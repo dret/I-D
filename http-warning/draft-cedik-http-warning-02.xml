@@ -222,6 +222,9 @@ Content-Warning: "embedded-warning"; 1590190500
          <t>
             API providers need to exercise care when reporting warnings. Malicious actors could use this information for orchestrating attacks. Social engineering can also be a factor when warning information is returned by the API.
          </t>
+         <t>
+            Clients processing warning information SHOULD make sure the right type of content was transmitted by checking the content-type header as well as the content-warning field. Content in the bodys warnings object SHOULD be processed accordingly. If no content-warning field was provided, clients are advised to ignore the content provided in the bodys warnings object.
+         </t>
       </section>
       <section title="IANA Considerations" anchor="iana-considerations">
          <section title="HTTP Field Content-Warning" anchor="http-field-registration">
