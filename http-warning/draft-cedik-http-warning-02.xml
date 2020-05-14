@@ -90,6 +90,11 @@ Content-Warning = sh-list
          <t>
             Intermediaries of a response are not allowed to modify existing Content-Warning fields, but can add additional entries if warnings are produced while they are handling a response.
          </t>
+         <section anchor="http-request-methods" title="HTTP request methods">
+            <t>
+               The Content-Warning Field is not tied to any specific HTTP request method, although specific values MAY only be used with a single or a subset of methods. The information as to which HTTP request methods are support for a single Content-Warning Type MUST be defined in the definition of the Content-Warning Type.
+            </t>
+         </section>
       </section>
       <section anchor="embedded-warning" title='The "embedded-warning" Content-Warning Type'>
          <t>
@@ -110,6 +115,17 @@ Content-Warning = sh-list
 <figure><artwork><![CDATA[
 Content-Warning: "embedded-warning"; 1590190500
 ]]></artwork></figure>
+         <section anchor="allowed-http-request-methods-for-embedded-warning" title="Allowed HTTP request methods for embedded-warning">
+            <t>
+               The embedded-warning Content-Warning Type infers, that there is more information in the responses body. Therefore all HTTP request methods that MAY have content in their body MAY also return embedded warnings.
+            </t>
+            <t>
+               HTTP request methods that do not return a body in their response SHOULD NOT return the embedded-warning Content-Warning Type.
+            </t>
+            <t>
+               The HTTP request method HEAD is an exception since it is allowed to return headers that are meant for being returned when sending a GET request. Therefore it MAY return the embedded-warning Content-Warning Type, although the body will be empty.
+            </t>
+         </section>
       </section>
       <section anchor="warning-format" title="JSON Warning Format">
          <t>
