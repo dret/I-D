@@ -398,14 +398,14 @@
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.45.3 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Dalal, S. and E. Wilde" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-dalal-deprecation-header-03" />
   <meta name="dct.issued" scheme="ISO8601" content="2020-06-13" />
-  <meta name="dct.abstract" content="The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource. " />
-  <meta name="description" content="The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource. " />
+  <meta name="dct.abstract" content="The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource." />
+  <meta name="description" content="The HTTP Deprecation response header field can be used to signal to consumers of a URI-identified resource that the resource has been deprecated. Additionally, the deprecation link relation can be used to link to a resource that provides additional context for the deprecation, and possibly ways in which clients can find a replacement for the deprecated resource." />
 
 </head>
 
@@ -505,7 +505,7 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Deprecation of a URI-identified resource is a technique to communicate information about the lifecycle of a resource. It encourages applications to migrate away from the resource, discourages applications from forming new dependencies on the resource, and informs applications about the risk of continuing dependence upon the resource.</p>
+<p id="rfc.section.1.p.1">Deprecation of an HTTP resource as defined in Section 2 of <a href="#RFC7231" class="xref">[RFC7231]</a> is a technique to communicate information about the lifecycle of a resource. It encourages applications to migrate away from the resource, discourages applications from forming new dependencies on the resource, and informs applications about the risk of continuing dependence upon the resource.</p>
 <p id="rfc.section.1.p.2">The act of deprecation does not change any behavior of the resource. It just informs client of the fact that a resource is deprecated. The Deprecation HTTP response header field MAY be used to convey this fact at runtime to clients. The header field can carry information indicating since when the deprecation is in effect.</p>
 <p id="rfc.section.1.p.3">In addition to the Deprecation header field the resource provider can use other header fields to convey additional information related to deprecation. For example, information such as where to find documentation related to the deprecation or what should be used as an alternate and when the deprecated resource would be unreachable, etc. Alternates of a resource can be similar resource(s) or a newer version of the same resource.</p>
 <h1 id="rfc.section.1.1">
@@ -513,10 +513,11 @@
 </h1>
 <p id="rfc.section.1.1.p.1">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;NOT RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a> <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
 <p id="rfc.section.1.1.p.2">This specification uses the Augmented Backus-Naur Form (ABNF) notation of <a href="#RFC5234" class="xref">[RFC5234]</a> and includes, by reference, the IMF-fixdate rule as defined in Section 7.1.1.1 of <a href="#RFC7231" class="xref">[RFC7231]</a>.</p>
+<p id="rfc.section.1.1.p.3">The term &#8220;resource&#8221; is to be interpreted as defined in Section 2 of <a href="#RFC7231" class="xref">[RFC7231]</a>, that is identified by an URI.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#the-deprecation-http-response-header-field" id="the-deprecation-http-response-header-field">The Deprecation HTTP Response Header Field</a>
 </h1>
-<p id="rfc.section.2.p.1">The <samp>Deprecation</samp> HTTP response header field allows a server to communicate to a client that the URI-identified resource in context of the message is or will be deprecated.</p>
+<p id="rfc.section.2.p.1">The <samp>Deprecation</samp> HTTP response header field allows a server to communicate to a client that the resource in context of the message is or will be deprecated.</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#syntax" id="syntax">Syntax</a>
 </h1>
@@ -543,7 +544,7 @@ Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#documentation" id="documentation">Documentation</a>
 </h1>
-<p id="rfc.section.3.1.p.1">For a URI-identified resource, deprecation could involve one or more parts of request, response or both. These parts could be one or more of the following.</p>
+<p id="rfc.section.3.1.p.1">For a resource, deprecation could involve one or more parts of request, response or both. These parts could be one or more of the following.</p>
 <p></p>
 
 <ul>
@@ -556,13 +557,15 @@ Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
 </ul>
 <p id="rfc.section.3.1.p.3">The purpose of the <samp>Deprecation</samp> header is to provide just enough &#8220;hints&#8221; about the deprecation to the client application developer. It is safe to assume that on reception of the <samp>Deprecation</samp> header, the client developer would look up the resource&#8217;s documentation in order to find deprecation related semantics. The resource developer could provide a link to the resource documentation using a <samp>Link</samp> header with relation type <samp>deprecation</samp> as shown below.</p>
 <pre>
-Link: &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"; type="text/html"
+Link: &lt;https://developer.example.com/deprecation&gt;; 
+      rel="deprecation"; type="text/html"
 </pre>
 <p id="rfc.section.3.1.p.4">In this example the interlinked content provides additional information about the deprecation of the resource context. There is no Deprecation header field in the response, and thus the resource is not deprecated. However, the resource already exposes a link where information is available how deprecation is managed for the context. This may be documentation explaining the use of the Deprecation header field, and also explaining under which circumstances and with which policies (announcement before deprecation; continued operation after deprecation) deprecation might be happening.</p>
 <p id="rfc.section.3.1.p.5">The following example uses the same link header, but also announces a deprecation date using a Deprecation header field.</p>
 <pre>
 Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
-Link: &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"; type="text/html"
+Link: &lt;https://developer.example.com/deprecation&gt;; 
+      rel="deprecation"; type="text/html"
 </pre>
 <p id="rfc.section.3.1.p.6">Given that the deprecation date is in the past, the linked resource may have been updated to include information about the deprecation, allowing clients to discover information about the deprecation that happened.</p>
 <h1 id="rfc.section.4">
@@ -656,16 +659,99 @@ Specification document: this specification,
 <a href="#rfc.section.8.1">8.1.</a> <a href="#implementing-the-deprecation-header-field" id="implementing-the-deprecation-header-field">Implementing the Deprecation Header Field</a>
 </h1>
 <p id="rfc.section.8.1.p.1">This is a list of implementations that implement the deprecation header field:</p>
-<p id="rfc.section.8.1.p.2">Organization: Apollo - Description: Deprecation header is returned when deprecated functionality (as declared in the GraphQL schema) is accessed - Reference: https://www.npmjs.com/package/apollo-server-tools</p>
+<p id="rfc.section.8.1.p.2">Organization: Apollo</p>
+<p></p>
+
+<ul>
+<li>Description: Deprecation header is returned when deprecated functionality (as declared in the GraphQL schema) is accessed</li>
+<li>Reference: https://www.npmjs.com/package/apollo-server-tools</li>
+</ul>
+<p id="rfc.section.8.1.p.4">Organization: Zalando</p>
+<p></p>
+
+<ul>
+<li>Description: Deprecation header is recommended as the preferred way to communicate API deprecation in Zalando API designs.</li>
+<li>Reference: https://opensource.zalando.com/restful-api-guidelines/#deprecation</li>
+</ul>
+<p id="rfc.section.8.1.p.6">Organization: Palantir Technologies</p>
+<p></p>
+
+<ul>
+<li>Description: Deprecation header is incorporated in code generated by conjure-java, a CLI to generate Java POJOs and interfaces from Conjure API definitions</li>
+<li>Reference: https://github.com/palantir/conjure-java</li>
+</ul>
+<p id="rfc.section.8.1.p.8">Organization: IETF Internet Draft, Registration Protocols Extensions</p>
+<p></p>
+
+<ul>
+<li>Description: Deprecation link relation is returned in Registration Data Access Protocol (RDAP) notices to indicate deprecation of jCard in favor of JSContact.</li>
+<li>Reference: https://tools.ietf.org/html/draft-loffredo-regext-rdap-jcard-deprecation</li>
+</ul>
+<p id="rfc.section.8.1.p.10">Organization:  E-Voyageurs Technologies</p>
+<p></p>
+
+<ul>
+<li>Description: Deprecation header is incorporated in Hesperides, a configuration management tool providing universal text file templating and properties editing through a REST API or a webapp.</li>
+<li>Reference: https://github.com/voyages-sncf-technologies/hesperides/blob/master/documentation/lightweight-architecture-decision-records/deprecated_endpoints.md</li>
+</ul>
+<p id="rfc.section.8.1.p.12">Organization: Open-Xchange</p>
+<p></p>
+
+<ul>
+<li>Description: Deprecation header is used in Open-Xchange appsuite-middleware</li>
+<li>Reference: https://github.com/open-xchange/appsuite-middleware</li>
+</ul>
+<p id="rfc.section.8.1.p.14">Organization: MediaWiki</p>
+<p></p>
+
+<ul>
+<li>Description: Core REST API of MediaWiki would use Deprecation header for endpoints that have been deprecated because a new endpoint provides the same or better functionality.</li>
+<li>Reference: https://phabricator.wikimedia.org/T232485</li>
+</ul>
 <h1 id="rfc.section.8.2">
 <a href="#rfc.section.8.2">8.2.</a> <a href="#implementing-the-concept" id="implementing-the-concept">Implementing the Concept</a>
 </h1>
 <p id="rfc.section.8.2.p.1">This is a list of implementations that implement the general concept, but do so using different mechanisms:</p>
-<p id="rfc.section.8.2.p.2">Organization: Zapier - Description: Zapier uses two custom HTTP headers named <samp>X-API-Deprecation-Date</samp> and <samp>X-API-Deprecation-Info</samp> - Reference:  https://zapier.com/engineering/api-geriatrics/</p>
-<p id="rfc.section.8.2.p.3">Organization: IBM - Description: IBM uses a custom HTTP header named <samp>Deprecated</samp> - Reference: https://www.ibm.com/support/knowledgecenter/en/SS42VS_7.3.1/com.ibm.qradar.doc/c_rest_api_getting_started.html</p>
-<p id="rfc.section.8.2.p.4">Organization: Ultipro - Description: Ultipro uses the HTTP <samp>Warning</samp> header as described in Section 5.5 of <a href="#RFC7234" class="xref">[RFC7234]</a> with code <samp>299</samp> - Reference:  https://connect.ultipro.com/api-deprecation</p>
-<p id="rfc.section.8.2.p.5">Organization: Clearbit - Description: Clearbit uses a custom HTTP header named <samp>X-API-Warn</samp> - Reference: https://blog.clearbit.com/dealing-with-deprecation/</p>
-<p id="rfc.section.8.2.p.6">Organization: PayPal - Description: PayPal uses a custom HTTP header named <samp>PayPal-Deprecated</samp> - Reference: https://github.com/paypal/api-standards/blob/master/api-style-guide.md#runtime</p>
+<p id="rfc.section.8.2.p.2">Organization: Zapier</p>
+<p></p>
+
+<ul>
+<li>Description: Zapier uses two custom HTTP headers named <samp>X-API-Deprecation-Date</samp> and <samp>X-API-Deprecation-Info</samp>
+</li>
+<li>Reference:  https://zapier.com/engineering/api-geriatrics/</li>
+</ul>
+<p id="rfc.section.8.2.p.4">Organization: IBM</p>
+<p></p>
+
+<ul>
+<li>Description: IBM uses a custom HTTP header named <samp>Deprecated</samp>
+</li>
+<li>Reference: https://www.ibm.com/support/knowledgecenter/en/SS42VS_7.3.1/com.ibm.qradar.doc/c_rest_api_getting_started.html</li>
+</ul>
+<p id="rfc.section.8.2.p.6">Organization: Ultipro</p>
+<p></p>
+
+<ul>
+<li>Description: Ultipro uses the HTTP <samp>Warning</samp> header as described in Section 5.5 of <a href="#RFC7234" class="xref">[RFC7234]</a> with code <samp>299</samp>
+</li>
+<li>Reference:  https://connect.ultipro.com/api-deprecation</li>
+</ul>
+<p id="rfc.section.8.2.p.8">Organization: Clearbit</p>
+<p></p>
+
+<ul>
+<li>Description: Clearbit uses a custom HTTP header named <samp>X-API-Warn</samp>
+</li>
+<li>Reference: https://blog.clearbit.com/dealing-with-deprecation/</li>
+</ul>
+<p id="rfc.section.8.2.p.10">Organization: PayPal</p>
+<p></p>
+
+<ul>
+<li>Description: PayPal uses a custom HTTP header named <samp>PayPal-Deprecated</samp>
+</li>
+<li>Reference: https://github.com/paypal/api-standards/blob/master/api-style-guide.md#runtime</li>
+</ul>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
@@ -690,7 +776,8 @@ Link: &lt;https://api.example.com/v2/customers&gt;; rel="successor-version"
 <pre>
 Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
 Sunset: Wed, 11 Nov 2020 23:59:59 GMT
-Link: &lt;https://api.example.com/v2/customers&gt;; rel="successor-version", &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"
+Link: &lt;https://api.example.com/v2/customers&gt;; rel="successor-version", 
+      &lt;https://developer.example.com/deprecation&gt;; rel="deprecation"
 </pre>
 <h1 id="rfc.references">
 <a href="#rfc.references">11.</a> References</h1>

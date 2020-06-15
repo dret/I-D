@@ -77,22 +77,22 @@ Table of Contents
      7.2.  The Deprecation Link Relation Type  . . . . . . . . . . .   7
    8.  Implementation Status . . . . . . . . . . . . . . . . . . . .   7
      8.1.  Implementing the Deprecation Header Field . . . . . . . .   8
-     8.2.  Implementing the Concept  . . . . . . . . . . . . . . . .   8
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
-   10. Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .   9
-   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  10
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  11
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  11
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  11
+     8.2.  Implementing the Concept  . . . . . . . . . . . . . . . .   9
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  10
+   10. Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  11
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  11
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  11
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  12
+   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  13
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  13
 
 1.  Introduction
 
-   Deprecation of a URI-identified resource is a technique to
-   communicate information about the lifecycle of a resource.  It
-   encourages applications to migrate away from the resource,
-   discourages applications from forming new dependencies on the
-   resource, and informs applications about the risk of continuing
+   Deprecation of an HTTP resource as defined in Section 2 of [RFC7231]
+   is a technique to communicate information about the lifecycle of a
+   resource.  It encourages applications to migrate away from the
+   resource, discourages applications from forming new dependencies on
+   the resource, and informs applications about the risk of continuing
    dependence upon the resource.
 
    The act of deprecation does not change any behavior of the resource.
@@ -129,11 +129,14 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
    notation of [RFC5234] and includes, by reference, the IMF-fixdate
    rule as defined in Section 7.1.1.1 of [RFC7231].
 
+   The term "resource" is to be interpreted as defined in Section 2 of
+   [RFC7231], that is identified by an URI.
+
 2.  The Deprecation HTTP Response Header Field
 
    The "Deprecation" HTTP response header field allows a server to
-   communicate to a client that the URI-identified resource in context
-   of the message is or will be deprecated.
+   communicate to a client that the resource in context of the message
+   is or will be deprecated.
 
 2.1.  Syntax
 
@@ -159,9 +162,6 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
    The deprecation date can be in the future.  If the value of "date" is
    in the future, it means that the resource will be deprecated at the
    given date in future.
-
-
-
 
 
 
@@ -193,9 +193,9 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
 
 3.1.  Documentation
 
-   For a URI-identified resource, deprecation could involve one or more
-   parts of request, response or both.  These parts could be one or more
-   of the following.
+   For a resource, deprecation could involve one or more parts of
+   request, response or both.  These parts could be one or more of the
+   following.
 
    o  URI - deprecation of one ore more query parameter(s) or path
       element(s)
@@ -229,7 +229,8 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
    could provide a link to the resource documentation using a "Link"
    header with relation type "deprecation" as shown below.
 
-Link: <https://developer.example.com/deprecation>; rel="deprecation"; type="text/html"
+   Link: <https://developer.example.com/deprecation>;
+         rel="deprecation"; type="text/html"
 
    In this example the interlinked content provides additional
    information about the deprecation of the resource context.  There is
@@ -244,8 +245,9 @@ Link: <https://developer.example.com/deprecation>; rel="deprecation"; type="text
    The following example uses the same link header, but also announces a
    deprecation date using a Deprecation header field.
 
-Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
-Link: <https://developer.example.com/deprecation>; rel="deprecation"; type="text/html"
+   Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+   Link: <https://developer.example.com/deprecation>;
+         rel="deprecation"; type="text/html"
 
    Given that the deprecation date is in the past, the linked resource
    may have been updated to include information about the deprecation,
@@ -272,8 +274,6 @@ Link: <https://developer.example.com/deprecation>; rel="deprecation"; type="text
 
    Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
    Link: <https://api.example.com/v2/customers>; rel="successor-version"
-
-
 
 
 
@@ -409,39 +409,39 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
    This is a list of implementations that implement the deprecation
    header field:
 
-   Organization: Apollo - Description: Deprecation header is returned
-   when deprecated functionality (as declared in the GraphQL schema) is
-   accessed - Reference: https://www.npmjs.com/package/apollo-server-
-   tools
+   Organization: Apollo
 
-8.2.  Implementing the Concept
+   o  Description: Deprecation header is returned when deprecated
+      functionality (as declared in the GraphQL schema) is accessed
 
-   This is a list of implementations that implement the general concept,
-   but do so using different mechanisms:
+   o  Reference: https://www.npmjs.com/package/apollo-server-tools
 
-   Organization: Zapier - Description: Zapier uses two custom HTTP
-   headers named "X-API-Deprecation-Date" and "X-API-Deprecation-Info" -
-   Reference: https://zapier.com/engineering/api-geriatrics/
+   Organization: Zalando
 
-   Organization: IBM - Description: IBM uses a custom HTTP header named
-   "Deprecated" - Reference:
-   https://www.ibm.com/support/knowledgecenter/en/SS42VS_7.3.1/
-   com.ibm.qradar.doc/c_rest_api_getting_started.html
+   o  Description: Deprecation header is recommended as the preferred
+      way to communicate API deprecation in Zalando API designs.
 
-   Organization: Ultipro - Description: Ultipro uses the HTTP "Warning"
-   header as described in Section 5.5 of [RFC7234] with code "299" -
-   Reference: https://connect.ultipro.com/api-deprecation
+   o  Reference: https://opensource.zalando.com/restful-api-
+      guidelines/#deprecation
 
-   Organization: Clearbit - Description: Clearbit uses a custom HTTP
-   header named "X-API-Warn" - Reference: https://blog.clearbit.com/
-   dealing-with-deprecation/
+   Organization: Palantir Technologies
 
-   Organization: PayPal - Description: PayPal uses a custom HTTP header
-   named "PayPal-Deprecated" - Reference: https://github.com/paypal/api-
-   standards/blob/master/api-style-guide.md#runtime
+   o  Description: Deprecation header is incorporated in code generated
+      by conjure-java, a CLI to generate Java POJOs and interfaces from
+      Conjure API definitions
 
+   o  Reference: https://github.com/palantir/conjure-java
 
+   Organization: IETF Internet Draft, Registration Protocols Extensions
 
+   o  Description: Deprecation link relation is returned in Registration
+      Data Access Protocol (RDAP) notices to indicate deprecation of
+      jCard in favor of JSContact.
+
+   o  Reference: https://tools.ietf.org/html/draft-loffredo-regext-rdap-
+      jcard-deprecation
+
+   Organization: E-Voyageurs Technologies
 
 
 
@@ -449,6 +449,78 @@ Dalal & Wilde           Expires December 15, 2020               [Page 8]
 
 Internet-Draft      The Deprecation HTTP Header Field          June 2020
 
+
+   o  Description: Deprecation header is incorporated in Hesperides, a
+      configuration management tool providing universal text file
+      templating and properties editing through a REST API or a webapp.
+
+   o  Reference: https://github.com/voyages-sncf-
+      technologies/hesperides/blob/master/documentation/lightweight-
+      architecture-decision-records/deprecated_endpoints.md
+
+   Organization: Open-Xchange
+
+   o  Description: Deprecation header is used in Open-Xchange appsuite-
+      middleware
+
+   o  Reference: https://github.com/open-xchange/appsuite-middleware
+
+   Organization: MediaWiki
+
+   o  Description: Core REST API of MediaWiki would use Deprecation
+      header for endpoints that have been deprecated because a new
+      endpoint provides the same or better functionality.
+
+   o  Reference: https://phabricator.wikimedia.org/T232485
+
+8.2.  Implementing the Concept
+
+   This is a list of implementations that implement the general concept,
+   but do so using different mechanisms:
+
+   Organization: Zapier
+
+   o  Description: Zapier uses two custom HTTP headers named "X-API-
+      Deprecation-Date" and "X-API-Deprecation-Info"
+
+   o  Reference: https://zapier.com/engineering/api-geriatrics/
+
+   Organization: IBM
+
+   o  Description: IBM uses a custom HTTP header named "Deprecated"
+
+   o  Reference:
+      https://www.ibm.com/support/knowledgecenter/en/SS42VS_7.3.1/
+      com.ibm.qradar.doc/c_rest_api_getting_started.html
+
+   Organization: Ultipro
+
+   o  Description: Ultipro uses the HTTP "Warning" header as described
+      in Section 5.5 of [RFC7234] with code "299"
+
+
+
+
+Dalal & Wilde           Expires December 15, 2020               [Page 9]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2020
+
+
+   o  Reference: https://connect.ultipro.com/api-deprecation
+
+   Organization: Clearbit
+
+   o  Description: Clearbit uses a custom HTTP header named "X-API-Warn"
+
+   o  Reference: https://blog.clearbit.com/dealing-with-deprecation/
+
+   Organization: PayPal
+
+   o  Description: PayPal uses a custom HTTP header named "PayPal-
+      Deprecated"
+
+   o  Reference: https://github.com/paypal/api-standards/blob/master/
+      api-style-guide.md#runtime
 
 9.  Security Considerations
 
@@ -482,6 +554,14 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
    attack vectors opened by automatically following, trusting, or
    otherwise using links gathered from the HTTP headers.  In particular,
    Link headers that use the "successor-version", "latest-version" or
+
+
+
+Dalal & Wilde           Expires December 15, 2020              [Page 10]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2020
+
+
    "alternate" relation types should be treated with due caution.  See
    [RFC5829] for security considerations relating to these link relation
    types.
@@ -499,20 +579,14 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
    Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
    Link: <https://api.example.com/v2/customers>; rel="successor-version"
 
-
-
-Dalal & Wilde           Expires December 15, 2020               [Page 9]
-
-Internet-Draft      The Deprecation HTTP Header Field          June 2020
-
-
    The third example shows a deprecation header field with links for the
    successor version and for the API's deprecation policy.  In addition,
    it shows the sunset date for the deprecated resource:
 
-Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
-Sunset: Wed, 11 Nov 2020 23:59:59 GMT
-Link: <https://api.example.com/v2/customers>; rel="successor-version", <https://developer.example.com/deprecation>; rel="deprecation"
+  Deprecation: Sun, 11 Nov 2018 23:59:59 GMT
+  Sunset: Wed, 11 Nov 2020 23:59:59 GMT
+  Link: <https://api.example.com/v2/customers>; rel="successor-version",
+        <https://developer.example.com/deprecation>; rel="deprecation"
 
 11.  References
 
@@ -537,6 +611,13 @@ Link: <https://api.example.com/v2/customers>; rel="successor-version", <https://
               Identifiers (IRIs)", RFC 3987, DOI 10.17487/RFC3987,
               January 2005, <https://www.rfc-editor.org/info/rfc3987>.
 
+
+
+Dalal & Wilde           Expires December 15, 2020              [Page 11]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2020
+
+
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
               DOI 10.17487/RFC5234, January 2008,
@@ -551,16 +632,6 @@ Link: <https://api.example.com/v2/customers>; rel="successor-version", <https://
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
               <https://www.rfc-editor.org/info/rfc7231>.
-
-
-
-
-
-
-Dalal & Wilde           Expires December 15, 2020              [Page 10]
-
-Internet-Draft      The Deprecation HTTP Header Field          June 2020
-
 
    [RFC7234]  Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "Hypertext Transfer Protocol (HTTP/1.1): Caching",
@@ -591,6 +662,18 @@ Internet-Draft      The Deprecation HTTP Header Field          June 2020
               DOI 10.17487/RFC8594, May 2019,
               <https://www.rfc-editor.org/info/rfc8594>.
 
+
+
+
+
+
+
+
+Dalal & Wilde           Expires December 15, 2020              [Page 12]
+
+Internet-Draft      The Deprecation HTTP Header Field          June 2020
+
+
 Appendix A.  Acknowledgments
 
    The authors would like to thank Nikhil Kolekar, Mark Nottingham, and
@@ -613,4 +696,33 @@ Authors' Addresses
 
 
 
-Dalal & Wilde           Expires December 15, 2020              [Page 11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dalal & Wilde           Expires December 15, 2020              [Page 13]
