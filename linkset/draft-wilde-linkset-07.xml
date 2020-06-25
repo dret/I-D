@@ -44,7 +44,7 @@
                 <uri>https://orcid.org/0000-0002-0715-6126</uri>
             </address>
         </author>
-        <date day="1" month="May" year="2020"/>
+        <date day="25" month="June" year="2020"/>
         <abstract>
            <t>This specification defines two document formats and respective media types for representing sets of links as stand-alone resources. One format is JSON-based, the other aligned with the format for representing links in the HTTP "Link" header field. This specification also introduces a link relation type to support discovery of sets of links.</t>
         </abstract>
@@ -143,11 +143,13 @@
                     with select relation types, thereby limiting the value of the HTTP "Link" header field to clients. 
                     Providing links by means of a standalone document overcomes challenges related to the unpredictable 
                     nature of the size of HTTP "Link" header fields.</t>
+                <!--
                 <t>In more extreme scenarios it is conceivable that the number of links to be conveyed becomes so 
                     large that even a standalone document would become too large. 
                     For example, this could be the case for highly interlinked resources and when links are provided in which such 
                     resources participates as both link context and link target.
                     In such cases, the links could be delivered incrementally, for example, by means of a paged resource model.</t>
+                    -->
             </section>
         </section>
         <section title="Document Formats for Sets of Links" anchor="linkset-formats">
@@ -163,7 +165,7 @@
             
             <t>Note that <xref target="RFC8288"/> deprecates the "rev" construct that was provided by <xref target="RFC5988"/> 
                 as a means to express links with a directionality that is the inverse of direct links that use the "rel" construct. In both serializations for 
-                link sets defined here, inverse links are handled as direct links by switching the position of the resources involved 
+                link sets defined here, inverse links SHOULD be represented as direct links using the "rel" construct and by switching the position of the resources involved 
                 in the link.</t>
             
             <section title="HTTP Link Document Format: application/linkset" anchor="linkset-native">
@@ -744,6 +746,13 @@ Connection: close
             <t>Note to RFC Editor: Please remove this section before publication.</t>
             <t>This section records the status of known implementations of the protocol defined by this specification at the time of posting of this Internet-Draft, and is based on a proposal described in RFC 6982 <xref target="RFC6982"/>. The description of implementations in this section is intended to assist the IETF in its decision processes in progressing drafts to RFCs. Please note that the listing of any individual implementation here does not imply endorsement by the IETF. Furthermore, no effort has been spent to verify the information presented here that was supplied by IETF contributors. This is not intended as, and must not be construed to be, a catalog of available implementations or their features. Readers are advised to note that other implementations may exist.</t>
             <t>According to RFC 6982, "this will allow reviewers and working groups to assign due consideration to documents that have the benefit of running code, which may serve as evidence of valuable experimentation and feedback that have made the implemented protocols more mature. It is up to the individual working groups to use this information as they see fit".</t>
+            <section title="GS1" anchor="implementation-GS1">
+                <t>GS1 is a provider of barcodes (GS1 GTINs and EAN/UPC) for retail products and manages an ecology of services and standards to leverage them at a global scale. 
+                GS1 has  indicated that it will implement this "linkset" specification as a means to allow requesting and representing links pertaining to products from various retailers. 
+                Currently, the GS1 Digital Link specification makes an informative reference
+                to version 03 of the "linkset" I-D. GS1 expresses confidence that this will become a normative reference in the
+                next iteration of that specification, likely to be ratified as a GS1 standard around February 2021.</t>
+            </section>
             <section title="Open Journal Systems (OJS)" anchor="implementation-ojs">
                 <t>Open Journal Systems (OJS) is an open-source software for the management of peer-reviewed academic journals, and is created by the Public Knowledge Project (PKP), released under the GNU General Public License. Open Journal Systems (OJS) is a journal management and publishing system that has been developed by PKP through its federally funded efforts to expand and improve access to research.</t>
                 <t>The OJS platform has implemented "linkset" support as an alternative way to provide links when there are more than a configured limit (they consider using about 10 as a good default, for testing purpose it is currently set to 8).</t>
@@ -826,7 +835,7 @@ Connection: close
             <t>For the specific mechanisms defined in this specification, two security considerations should be taken into account:</t>
             <t>
                 <list style="symbols">
-                    <t>The original model of Web Linking always has an "implicit context", which is the resource of the HTTP interaction. This context can be lost or can change when using self-contained link representations. Changing the context can change the interpretation of links when they have no explicit anchor, or when they use relative URIs. Applications may choose to ignore links that have no explicit anchor or that use relative URIs when these are exchanged in stand-alone resources.</t>
+                    <t>The Web Linking model always has an "implicit context", which is the resource of the HTTP interaction. This original context can be lost or can change when self-contained link representations are moved. Changing the context can change the interpretation of links when they have no explicit anchor, or when they use relative URIs. Applications may choose to ignore links that have no explicit anchor or that use relative URIs when these are exchanged in stand-alone resources.</t>
                     <t>The model introduced in this specification supports "3rd party links", where one party can provide links that have another party's resource as an anchor. Depending on the link semantics and the application context, it is important to verify that there is sufficient trust in that 3rd party to allow it to provide these links. Applications may choose to treat 3rd party links differently than cases where a resource and the links for that resource are provided by the same party.</t>
                 </list>
             </t>
@@ -1055,4 +1064,6 @@ Content-Length: 638
 
     </back>
 </rfc>
+
+
 
