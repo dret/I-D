@@ -231,8 +231,19 @@ Content-Warning: "embedded-warning"; 1590190500
       </section>
       <section anchor="cache.considerations" title="Cache Considerations">
          <t>
-            tbd.
+            The Content-Warning field itself does not encourage a specific handling when it comes to caching responses. It is up to the Content-Warning type to specify if caching can be used or not.
          </t>
+         <section anchor="embedded-warning-and-caching" title='Caching the "embedded-warning" Content-Warning type'>
+            <t>
+               The reasons for returning the Content-Warning Type "embedded-warning" can be manifold. A system could e.g. return warnings due to circumstances in the backend that can either still exist on subsequent requests or that have been solved in the meantime.
+            </t>
+            <t>
+               Intermediaries can fall into the same category. When a warning occurs, it can add warnings to the response making it possible to debug what happened at the intermediary. The reason for said warning can persist or may disappear on subsequent requests.
+            </t>
+            <t>
+               Therefore caching embedded-warnings shouldn't be done. As one can't predict if the reason for returning embedded-warnings is still persistent.
+            </t>
+         </section>
       </section>
       <section anchor="security.considerations" title="Security Considerations">
          <t>
