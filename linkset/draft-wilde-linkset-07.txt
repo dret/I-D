@@ -88,24 +88,24 @@ Table of Contents
        4.2.2.  Link Context Object . . . . . . . . . . . . . . . . .   7
        4.2.3.  Link Target Object  . . . . . . . . . . . . . . . . .   8
        4.2.4.  Link Target Attributes  . . . . . . . . . . . . . . .   9
-   5.  The "linkset" Relation Type for Linking to a Set of Links . .  14
-   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  15
-     6.1.  Set of Links Provided as application/linkset  . . . . . .  15
-     6.2.  Set of Links Provided as application/linkset+json . . . .  16
+   5.  The "linkset" Relation Type for Linking to a Set of Links . .  13
+   6.  Examples  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     6.1.  Set of Links Provided as application/linkset  . . . . . .  14
+     6.2.  Set of Links Provided as application/linkset+json . . . .  15
      6.3.  Discovering a Link Set via the "linkset" Link Relation
-           Type  . . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .  19
-     7.1.  GS1 . . . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     7.2.  Open Journal Systems (OJS)  . . . . . . . . . . . . . . .  20
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
-     8.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .  20
-     8.2.  Media Type: application/linkset . . . . . . . . . . . . .  21
-       8.2.1.  IANA Considerations . . . . . . . . . . . . . . . . .  21
-     8.3.  Media Type: application/linkset+json  . . . . . . . . . .  22
-   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  23
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  23
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  25
+           Type  . . . . . . . . . . . . . . . . . . . . . . . . . .  18
+   7.  Implementation Status . . . . . . . . . . . . . . . . . . . .  18
+     7.1.  GS1 . . . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     7.2.  Open Journal Systems (OJS)  . . . . . . . . . . . . . . .  19
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
+     8.1.  Link Relation Type: linkset . . . . . . . . . . . . . . .  19
+     8.2.  Media Type: application/linkset . . . . . . . . . . . . .  20
+       8.2.1.  IANA Considerations . . . . . . . . . . . . . . . . .  20
+     8.3.  Media Type: application/linkset+json  . . . . . . . . . .  21
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  22
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  22
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  24
 
 
 
@@ -114,9 +114,9 @@ Wilde & Van de Sompel    Expires April 19, 2021                 [Page 2]
 Internet-Draft                   Linkset                    October 2020
 
 
-   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  25
-   Appendix B.  JSON-LD Context  . . . . . . . . . . . . . . . . . .  25
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
+   Appendix A.  Acknowledgements . . . . . . . . . . . . . . . . . .  24
+   Appendix B.  JSON-LD Context  . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  28
 
 1.  Introduction
 
@@ -490,7 +490,7 @@ Internet-Draft                   Linkset                    October 2020
 
 4.2.4.  Link Target Attributes
 
-   A link may be further qualified by target attributes.  Four types of
+   A link may be further qualified by target attributes.  Three types of
    attributes exist:
 
    o  Attributes defined by the serialization of Web Linking [RFC8288].
@@ -508,9 +508,6 @@ Internet-Draft                   Linkset                    October 2020
 
    o  Internationalized versions of the "title" attribute defined by
       [RFC8288] and of extension attributes allowed by [RFC8288].
-
-   o  Attributes defined by Link Hints [I-D.nottingham-link-hint] and
-      the associated HTTP Link Hint Registry.
 
    The handling of these different types of attributes is described in
    the sections below.
@@ -554,6 +551,9 @@ Internet-Draft                   Linkset                    October 2020
    The following example illustrates how the repeatable "hreflang" and
    the not repeatable "type" target attributes are represented in a link
    target object.
+
+
+
 
 
 
@@ -710,58 +710,6 @@ Internet-Draft                   Linkset                    October 2020
      ]
  }
 
-4.2.4.4.  Target Attributes in the HTTP Link Hints Registry
-
-   In order to augment interoperability regarding target attributes,
-   Link Hints [I-D.nottingham-link-hint] defines a registration
-   mechanism for target attributes, an associated HTTP Link Hint
-   Registry, and a set of attributes to initially populate that
-   registry.  The initial registry, for example, includes the "allow"
-   attribute that can be used to convey the HTTP methods that are
-   supported to interact with the target resource.
-
-   The JSON serialization for these target attributes MUST be as
-   follows:
-
-
-
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 13]
-
-Internet-Draft                   Linkset                    October 2020
-
-
-   o  A Link Hint target attribute is represented as a member of the
-      link context object with the same name of the attribute as
-      registered in the HTTP Link Hint Registry.
-
-   o  The value of a Link Hint target attribute MUST adhere to the
-      content model specified for the attribute in the HTTP Link Hint
-      Registry.
-
-   o  Internationalization of Link Hint target attributes is not
-      applicable.
-
-   The example shows a link target object with the "Type" attribute
-   defined by [RFC8187] and the "allow" attribute that is registered in
-   the HTTP Link Hint Registry.  The registry specifies the content
-   model for this attribute as an array of strings.  Therefor, that same
-   content model is used in the "application/linkset+json" serialization
-   of sets of links.
-
-   {
-     "linkset":
-       [
-         { "anchor": "http://example.net/bar",
-           "next": [
-                 { "href": "http://example.com/foo",
-                   "type": "text/html",
-                   "allow":  [ "GET", "POST" ]]
-                 }
-           ]
-         }
-       ]
-   }
-
 5.  The "linkset" Relation Type for Linking to a Set of Links
 
    The target of a link with the "linkset" relation type provides a set
@@ -774,17 +722,16 @@ Internet-Draft                   Linkset                    October 2020
 
    A resource MAY provide more than one link with a "linkset" relation
    type.  Multiple such links can refer to the same set of links
-   expressed using different media types, or to different sets of links,
-   potentially provided by different third-party services.
 
 
 
-
-
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 14]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 13]
 
 Internet-Draft                   Linkset                    October 2020
 
+
+   expressed using different media types, or to different sets of links,
+   potentially provided by different third-party services.
 
    A user agent that follows a "linkset" link MUST be aware that the set
    of links provided by the resource that is the target of the link can
@@ -834,10 +781,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-
-
-
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 15]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 14]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -893,7 +837,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 16]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 15]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -949,7 +893,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 17]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 16]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1005,7 +949,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 18]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 17]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1061,7 +1005,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 19]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 18]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1117,7 +1061,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 20]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 19]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1173,7 +1117,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 21]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 20]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1229,7 +1173,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 22]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 21]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1274,10 +1218,6 @@ Internet-Draft                   Linkset                    October 2020
 
 10.1.  Normative References
 
-   [I-D.nottingham-link-hint]
-              Nottingham, M., "HTTP Link Hints", draft-nottingham-link-
-              hint-02 (work in progress), March 2020.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -1285,7 +1225,11 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 23]
+
+
+
+
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 22]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1341,7 +1285,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 24]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 23]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1397,7 +1341,7 @@ Appendix B.  JSON-LD Context
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 25]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 24]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1453,7 +1397,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 26]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 25]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1509,7 +1453,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 27]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 26]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1565,7 +1509,7 @@ Internet-Draft                   Linkset                    October 2020
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 28]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 27]
 
 Internet-Draft                   Linkset                    October 2020
 
@@ -1621,4 +1565,4 @@ Authors' Addresses
 
 
 
-Wilde & Van de Sompel    Expires April 19, 2021                [Page 29]
+Wilde & Van de Sompel    Expires April 19, 2021                [Page 28]

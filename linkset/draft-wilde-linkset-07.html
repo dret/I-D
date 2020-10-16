@@ -711,14 +711,13 @@
 <h1 id="rfc.section.4.2.4">
 <a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#json-target-attributes" id="json-target-attributes">Link Target Attributes</a>
 </h1>
-<p id="rfc.section.4.2.4.p.1">A link may be further qualified by target attributes. Four types of attributes exist:</p>
+<p id="rfc.section.4.2.4.p.1">A link may be further qualified by target attributes. Three types of attributes exist:</p>
 <p></p>
 
 <ul>
 <li>Attributes defined by the serialization of <a href="#RFC8288" class="xref">Web Linking</a>.</li>
 <li>Extension attributes defined and used by communities as allowed by <a href="#RFC8288" class="xref">[RFC8288]</a>.</li>
 <li>Internationalized versions of the "title" attribute defined by <a href="#RFC8288" class="xref">[RFC8288]</a> and of extension attributes allowed by <a href="#RFC8288" class="xref">[RFC8288]</a>.</li>
-<li>Attributes defined by <a href="#I-D.nottingham-link-hint" class="xref">Link Hints</a> and the associated HTTP Link Hint Registry.</li>
 </ul>
 <p id="rfc.section.4.2.4.p.3">The handling of these different types of attributes is described in the sections below.</p>
 <h1 id="rfc.section.4.2.4.1">
@@ -812,34 +811,6 @@
     ]
 }                               
                         </pre>
-<h1 id="rfc.section.4.2.4.4">
-<a href="#rfc.section.4.2.4.4">4.2.4.4.</a> <a href="#json-target-attributes-hints" id="json-target-attributes-hints">Target Attributes in the HTTP Link Hints Registry</a>
-</h1>
-<p id="rfc.section.4.2.4.4.p.1">In order to augment interoperability regarding target attributes, <a href="#I-D.nottingham-link-hint" class="xref">Link Hints</a> defines a registration mechanism for target attributes, an associated HTTP Link Hint Registry, and a set of attributes to initially populate that registry.  The initial registry, for example, includes the "allow" attribute that can be used to convey the HTTP methods that are supported to interact with the target resource.</p>
-<p id="rfc.section.4.2.4.4.p.2">The JSON serialization for these target attributes MUST be as follows:</p>
-<p></p>
-
-<ul>
-<li>A Link Hint target attribute is represented as a member of the link context object with the same name of the attribute as registered in the HTTP Link Hint Registry.</li>
-<li>The value of a Link Hint target attribute MUST adhere to the content model specified for the attribute in the HTTP Link Hint Registry.</li>
-<li>Internationalization of Link Hint target attributes is not applicable.</li>
-</ul>
-<p id="rfc.section.4.2.4.4.p.4">The example shows a link target object with the "Type" attribute defined by <a href="#RFC8187" class="xref">[RFC8187]</a> and the "allow" attribute that is registered in the HTTP Link Hint Registry.  The registry specifies the content model for this attribute as an array of strings. Therefor, that same content model is used in the "application/linkset+json" serialization of sets of links.</p>
-<pre>
-{
-  "linkset":
-    [ 
-      { "anchor": "http://example.net/bar", 
-        "next": [
-              { "href": "http://example.com/foo",
-                "type": "text/html",
-                "allow":  [ "GET", "POST" ]]
-              }
-        ]
-      } 
-    ]
-}                               
-                            </pre>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#linkset-link-relation" id="linkset-link-relation">The "linkset" Relation Type for Linking to a Set of Links</a>
 </h1>
@@ -1105,11 +1076,6 @@ Connection: close
 <h1 id="rfc.references.1">
 <a href="#rfc.references.1">10.1.</a> Normative References</h1>
 <table><tbody>
-<tr>
-<td class="reference"><b id="I-D.nottingham-link-hint">[I-D.nottingham-link-hint]</b></td>
-<td class="top">
-<a>Nottingham, M.</a>, "<a href="https://tools.ietf.org/html/draft-nottingham-link-hint-02">HTTP Link Hints</a>", Internet-Draft draft-nottingham-link-hint-02, March 2020.</td>
-</tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
 <td class="top">
