@@ -252,20 +252,20 @@ Content-Warning: "embedded-warning"; 1590190500
          <t>
             Clients processing warning information SHOULD make sure the right type of content was transmitted by checking the content-type header as well as the content-warning field. Content in the bodys warnings object SHOULD be processed accordingly. If no content-warning field was provided, clients are advised to ignore the content provided in the bodys warnings object.
          </t>
-         <section anchor="absence-of-a-response-body" title="Absence of a response body">
+         <section anchor="absence-of-a-response-body" title="Absence of a Response Body">
             <t>
                As described in <xref target="allowed-http-request-methods-for-embedded-warning" /> the embedded-warning Content-Warning type is expecting a body to be returned in the HTTP response unless the HEAD method has been used for the request.
             </t>
             <t>
-               Therefore API clients SHOULD only parse a responses' body when the Content-Warning type is "embedded-warning". When the body is absent, a client SHOULD stop processing the response and return an adequate error message.
+               Therefore API clients SHOULD only parse a response's body when the Content-Warning type is "embedded-warning". When the body is absent, a client SHOULD stop processing the response and return an adequate error message.
             </t>
             <t>
                If an intermediary discovers a missing response body it MAY adjust the response to return a http status code of 500 - internal server error (see Section 6.6.1 of <xref target="RFC7231" />).
             </t>
          </section>
-         <section anchor="absence-of-warnings-in-the-response-body" title="Absence of warnings in the response body">
+         <section anchor="absence-of-warnings-in-the-response-body" title="Absence of Warnings in the Response Body">
             <t>
-               When the response body does not contain warnings a client MAY use appropriate ways to inform the api provider about the fact. An error message MAY be
+               When the response body does not contain warnings a client MAY use appropriate ways to inform the API provider about the fact. An error message MAY be ...
             </t>
             <t>
                If an intermediary discovers missing warnings in the response body it MAY adjust the response to return warnings containing this information.
